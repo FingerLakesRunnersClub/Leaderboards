@@ -6,7 +6,7 @@ namespace ChallengeDashboard
     {
         public Course Course { get; set; }
         public Athlete Athlete { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime Duration { get; set; }
+        public DateTime? StartTime { get; set; }
+        public decimal Duration { get; set; }
     }
 }

@@ -5,9 +5,9 @@ namespace ChallengeDashboard
 {
     public class Athlete
     {
-        public Guid ID { get; set; }
+        public uint ID { get; set; }
         public string Name { get; set; }
-        public DateTime DOB { get; set; }
-        public ICollection<Result> Results { get; set; }
+        public byte Age { get; set; }
+        public IEnumerable<Result> Results { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace ChallengeDashboard
@@ -10,6 +9,6 @@ namespace ChallengeDashboard
         public string Type { get; set; }
         public string Distance { get; set; }
         public string URL { get; set; }
-        public ICollection<Result> Results { get; set; }
+        public IEnumerable<Result> Results { get; set; }
     }
 }

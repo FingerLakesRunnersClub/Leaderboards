@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -24,9 +25,8 @@ namespace ChallengeDashboard.Controllers
 
         public async Task<IEnumerable<Course>> Courses()
         {
-            var tasks = _configuration.GetValue<string[]>("Courses")
-                .Select(id => _courseService.GetCourse(id))
-                .ToArray();
+            var ids = _configuration.GetSection("Courses").AsEnumerable().Where(kvp => !string.IsNullOrWhiteSpace(kvp.Value));
+            var tasks = ids.Select(kvp => _courseService.GetCourse(Convert.ToUInt32(kvp.Value))).ToArray();
             await Task.WhenAll(tasks);
             return tasks.Select(t => t.GetAwaiter().GetResult());
         }
