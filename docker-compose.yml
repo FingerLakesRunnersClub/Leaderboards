@@ -5,7 +5,7 @@ services:
     build:
       context: ChallengeDashboard
     volumes:
-      - ".:/app"
+      - "./ChallengeDashboard:/app"
     links:
       - db
     ports:
