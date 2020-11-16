@@ -9,31 +9,19 @@ namespace ChallengeDashboard.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IConfiguration _configuration;
         private readonly CourseService _courseService;
+        private readonly IEnumerable<uint> _courseIDs;
 
         public HomeController(IConfiguration configuration, CourseService courseService)
         {
-            _configuration = configuration;
             _courseService = courseService;
+            _courseIDs = configuration.GetSection("Courses").AsEnumerable()
+                .Where(id => !string.IsNullOrWhiteSpace(id.Value))
+                .Select(id => Convert.ToUInt32(id.Value));
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public async Task<IActionResult> Index() => View(await _courseService.All(_courseIDs));
 
-        public async Task<IEnumerable<Course>> Courses()
-        {
-            var ids = _configuration.GetSection("Courses").AsEnumerable().Where(kvp => !string.IsNullOrWhiteSpace(kvp.Value));
-            var tasks = ids.Select(kvp => _courseService.GetCourse(Convert.ToUInt32(kvp.Value))).ToArray();
-            await Task.WhenAll(tasks);
-            return tasks.Select(t => t.GetAwaiter().GetResult());
-        }
-
-        public async Task<Course> Course(uint id)
-        {
-            return await _courseService.GetCourse(id);
-        }
+        public async Task<IActionResult> Course(uint id) => View(await _courseService.GetCourse(id));
     }
 }

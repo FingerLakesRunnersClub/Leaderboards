@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using static System.Text.Json.JsonElement;
+using Microsoft.Extensions.Configuration;
 
 namespace ChallengeDashboard
 {
@@ -13,10 +13,10 @@ namespace ChallengeDashboard
         private readonly HttpClient _httpClient;
         private readonly string _baseURL;
 
-        public API(HttpClient httpClient, string baseURL)
+        public API(HttpClient httpClient, IConfiguration configuration)
         {
             _httpClient = httpClient;
-            _baseURL = baseURL;
+            _baseURL = configuration.GetValue<string>("API");
         }
 
         public async Task<Course> GetCourse(uint id)
@@ -27,6 +27,7 @@ namespace ChallengeDashboard
             var root = json.RootElement;
             var distances = root.GetProperty("Distances");
             var results = root.GetProperty("Racers");
+
             return new Course
             {
                 ID = root.GetProperty("RaceId").GetUInt32(),
@@ -36,34 +37,29 @@ namespace ChallengeDashboard
                     ? string.Join(", ", distances.EnumerateArray().Select(r => r.GetProperty("Name").GetString()))
                     : null,
                 Results = results.GetArrayLength() > 0
-                    ? ParseResults(results.EnumerateArray())
+                    ? ParseResults(results)
                     : null
             };
         }
 
-        private IEnumerable<Result> ParseResults(ArrayEnumerator results)
-        {
-            return results.Select(r => new Result
+        private static IEnumerable<Result> ParseResults(JsonElement results)
+            => results.EnumerateArray().Where(r => r.GetProperty("Finished").GetByte() == 1).Select(r => new Result
             {
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
-                Duration = r.GetProperty("RaceTime").GetDecimal()
+                Duration = TimeSpan.FromSeconds(r.GetProperty("RaceTime").GetDouble())
             });
-        }
 
-        private Athlete ParseAthlete(JsonElement result)
-        {
-            return new Athlete
+        private static Athlete ParseAthlete(JsonElement result)
+            => new Athlete
             {
                 ID = result.GetProperty("RacerId").GetUInt32(),
                 Name = result.GetProperty("Name").GetString(),
-                Age = result.GetProperty("Age").GetByte()
+                Age = result.GetProperty("Age").GetByte(),
+                Category = result.GetProperty("Gender").GetString()
             };
-        }
 
-        private DateTime? ParseStart(string value)
-        {
-            return value != null ? DateTime.Parse(value) : null;
-        }
+        private static DateTime? ParseStart(string value)
+            => value != null ? DateTime.Parse(value) : (DateTime?) null;
     }
 }

@@ -1,7 +1,5 @@
-using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -22,9 +20,7 @@ namespace ChallengeDashboard
         {
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddEntityFrameworkNpgsql();
-            services.AddDbContext<DB>(o => o.UseNpgsql(Configuration.GetConnectionString("DB")));
-            services.AddSingleton(s => new API(s.GetService<IHttpClientFactory>().CreateClient(), Configuration.GetValue<string>("API")));
+            services.AddSingleton<API>();
             services.AddSingleton<CourseService>();
         }
 

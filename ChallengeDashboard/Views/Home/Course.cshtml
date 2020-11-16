@@ -1,0 +1,30 @@
+﻿@using ChallengeDashboard
+@model Course
+
+<h2>@Model.Name</h2>
+<h4>@Model.Distance (@Model.Type)</h4>
+
+<table class="table table-bordered table-striped table-sm">
+    <thead>
+    <tr>
+        <th class="text-center">Place</th>
+        <th class="text-center">Name</th>
+        <th class="text-center">Category</th>
+        <th class="text-center">Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    @{ var results = Model.Results.OrderBy(r => r.Duration).ToArray(); }
+    @for (var place = 1; place <= results.Length; place++)
+    {
+        var result = results[place - 1];
+        var hours = result.Duration.Hours > 0 ? @"h\:" : "";
+        <tr>
+            <td class="text-center">@place</td>
+            <td>@result.Athlete.Name</td>
+            <td class="text-center">@result.Athlete.Category</td>
+            <td class="text-right">@result.Duration.ToString($@"{hours}mm\:ss\.f")</td>
+        </tr>
+    }
+    </tbody>
+</table>
