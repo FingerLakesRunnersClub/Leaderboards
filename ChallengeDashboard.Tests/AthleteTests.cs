@@ -13,10 +13,7 @@ namespace ChallengeDashboard.Tests
         public void CanGetAgeAsOfACertainDate(ushort year, byte month, byte day, byte expected)
         {
             //arrange
-            var athlete = new Athlete
-            {
-                DateOfBirth = new DateTime(year, month, day)
-            };
+            var athlete = new Athlete { DateOfBirth = new DateTime(year, month, day) };
 
             var asOf = new DateTime(2021, 1, 1);
 
