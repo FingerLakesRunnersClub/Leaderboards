@@ -7,21 +7,19 @@ using Microsoft.Extensions.Configuration;
 
 namespace ChallengeDashboard.Controllers
 {
-    public class HomeController : Controller
+    public class DashboardController : Controller
     {
-        private readonly CourseService _courseService;
+        private readonly DataService _dataService;
         private readonly IEnumerable<uint> _courseIDs;
 
-        public HomeController(IConfiguration configuration, CourseService courseService)
+        public DashboardController(IConfiguration configuration, DataService dataService)
         {
-            _courseService = courseService;
+            _dataService = dataService;
             _courseIDs = configuration.GetSection("Courses").AsEnumerable()
                 .Where(id => !string.IsNullOrWhiteSpace(id.Value))
                 .Select(id => Convert.ToUInt32(id.Value));
         }
 
-        public async Task<IActionResult> Index() => View(await _courseService.All(_courseIDs));
-
-        public async Task<IActionResult> Course(uint id) => View(await _courseService.GetCourse(id));
+        public async Task<IActionResult> Index() => View(await _dataService.GetAllCourses(_courseIDs));
     }
 }

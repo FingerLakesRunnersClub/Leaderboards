@@ -8,12 +8,9 @@ namespace ChallengeDashboard
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
         public IConfiguration Configuration { get; }
+
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -21,7 +18,7 @@ namespace ChallengeDashboard
             services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddSingleton<API>();
-            services.AddSingleton<CourseService>();
+            services.AddSingleton<DataService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,12 +30,7 @@ namespace ChallengeDashboard
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller=Dashboard}/{action=Index}/{id?}"));
         }
     }
 }

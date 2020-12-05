@@ -1,8 +1,8 @@
 ﻿namespace ChallengeDashboard
 {
-    public enum Categories
+    public enum Category
     {
-        Male = 77,
-        Female = 70
+        M = 'M',
+        F = 'F'
     }
 }

@@ -1,0 +1,68 @@
+﻿@using System.Text.Json
+@using ChallengeDashboard
+@model Course
+@{ ViewBag.Title = Model.Name; }
+
+<h2>@Model.Name</h2>
+<h4>@Model.Distance (@Model.Type)</h4>
+
+<app>
+    <div v-if="!show_results" class="alert alert-danger">No results found</div>
+    <table v-if="show_results" class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th v-for="field in fields" class="sortable text-center" :class="field.class" @@click="toggleSort(field)">
+                    {{field.label || field.name}}
+                    <span v-if="sort.field == field && !sort.descending">▾</span>
+                    <span v-if="sort.field == field && sort.descending">▴</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="result in sorted_results">
+                <td v-for="field in fields" :class="field.class">{{field.value(result)}}</td>
+            </tr>
+        </tbody>
+    </table>
+</app>
+
+<script>
+    new Vue({
+        el: 'app',
+        data: {
+            fields: [
+                { name: 'Rank', class: ['col-1', 'text-center'], value: r => r.Rank },
+                { name: 'Name', class: ['col-3', 'text-left'], value: r => r.Athlete.Name },
+                { name: 'Age', class: ['col-1', 'text-center'], value: r => r.Athlete.Age },
+                { name: 'Team', class: ['col-1', 'text-center'], value: r => r.Athlete.Team },
+                { name: 'Category', class: ['col-1', 'text-center'], value: r => r.Athlete.Category },
+                { name: 'Time', class: ['col-2', 'text-center'], value: r => r.Value.DisplayTime },
+                { name: 'BehindLeader', label: 'Behind', class: ['col-2', 'text-center'], value: r => r.BehindLeaderDisplay },
+                { name: 'AgeGrade', label: 'Age Grade', class: ['col-2', 'text-center'], value: r => r.AgeGradeDisplay },
+            ],
+            sort: {
+                field: null,
+                descending: false
+            },
+            results: @Html.Raw(JsonSerializer.Serialize(Model.Fastest()))
+        },
+        computed: {
+            show_results: function() {
+                return this.results.length > 0;
+            },
+            sorted_results: function() {
+                if (!this.sort.field)
+                    this.sort.field = this.fields[0];
+                const sorted = this.results.concat().sort((r1, r2) => this.sort.field.value(r1) > this.sort.field.value(r2));
+                return this.sort.descending ? sorted.reverse() : sorted;
+            }
+        },
+        methods: {
+            toggleSort: function(field, object) {
+                this.sort.descending = (field === this.sort.field) ? !this.sort.descending : false;
+                this.sort.field = field;
+                this.sort.object = object;
+            }
+        }
+    });
+</script>

@@ -55,7 +55,7 @@ namespace ChallengeDashboard
             {
                 ID = result.GetProperty("RacerId").GetUInt32(),
                 Name = result.GetProperty("Name").GetString(),
-                DateOfBirth = result.GetProperty("DateOfBirth").GetDateTime(),
+                Age = result.GetProperty("Age").GetByte(),
                 Category = result.GetProperty("Gender").GetString()
             };
 
