@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -9,27 +10,10 @@ using Xunit;
 
 namespace ChallengeDashboard.Tests
 {
-    public class APITests
+    public class DataParserTests
     {
-        private class MockHttpMessageHandler : HttpMessageHandler
-        {
-            private readonly string _data;
-
-            public MockHttpMessageHandler(string data)
-            {
-                _data = data;
-            }
-
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                var content = new StringContent(_data);
-                var message = new HttpResponseMessage { Content = content };
-                return Task.FromResult(message);
-            }
-        }
-
         [Fact]
-        public async Task CanGetCourseInfo()
+        public void CanGetCourseInfo()
         {
             var data = @"{
                     ""RaceId"": 123,
@@ -38,13 +22,10 @@ namespace ChallengeDashboard.Tests
                     ""Distances"": [{""Name"": ""50K""}],
                     ""Racers"": []
                 }";
-            var http = new MockHttpMessageHandler(data);
-            var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
-            var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
-            var api = new API(new HttpClient(http), configuration);
+            var json = JsonDocument.Parse(data).RootElement;
 
             //act
-            var course = await api.GetCourse(123);
+            var course = DataParser.ParseCourse(json);
 
             //assert
             Assert.Equal((uint)123, course.ID);
@@ -54,7 +35,7 @@ namespace ChallengeDashboard.Tests
         }
 
         [Fact]
-        public async Task CanGetResultsForCourse()
+        public void CanGetResultsForCourse()
         {
             //arrange
             var data = @"{
@@ -72,16 +53,13 @@ namespace ChallengeDashboard.Tests
                         ""RaceTime"": 18240
                     }]
                 }";
-            var http = new MockHttpMessageHandler(data);
-            var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
-            var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
-            var api = new API(new HttpClient(http), configuration);
+            var json = JsonDocument.Parse(data).RootElement;
 
             //act
-            var course = await api.GetCourse(123);
+            var course = DataParser.ParseCourse(json);
+            var result = course.Results.First();
 
             //assert
-            var result = course.Results.First();
             Assert.Equal((ushort)234, result.Athlete.ID);
             Assert.Equal("Steve Desmond", result.Athlete.Name);
             Assert.Equal(26, result.Athlete.Age);
@@ -91,7 +69,7 @@ namespace ChallengeDashboard.Tests
         }
 
         [Fact]
-        public async Task DNFsAreIgnored()
+        public void DNFsAreIgnored()
         {
             //arrange
             var data = @"{
@@ -109,13 +87,10 @@ namespace ChallengeDashboard.Tests
                         ""RaceTime"": 0
                     }]
                 }";
-            var http = new MockHttpMessageHandler(data);
-            var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
-            var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
-            var api = new API(new HttpClient(http), configuration);
+            var json = JsonDocument.Parse(data).RootElement;
 
             //act
-            var course = await api.GetCourse(123);
+            var course = DataParser.ParseCourse(json);
 
             //assert
             Assert.Empty(course.Results);

@@ -1,38 +1,22 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace ChallengeDashboard
 {
-    public class API
+    public static class DataParser
     {
-        private readonly HttpClient _httpClient;
-        private readonly string _baseURL;
-
-        public API(HttpClient httpClient, IConfiguration configuration)
+        public static Course ParseCourse(JsonElement json)
         {
-            _httpClient = httpClient;
-            _baseURL = configuration.GetValue<string>("API");
-        }
-
-        public async Task<Course> GetCourse(uint id)
-        {
-            var url = $"{_baseURL}/results?raceid={id}";
-            var response = await _httpClient.GetStreamAsync(url);
-            var json = await JsonDocument.ParseAsync(response);
-            var root = json.RootElement;
-            var distances = root.GetProperty("Distances");
-            var results = root.GetProperty("Racers");
+            var distances = json.GetProperty("Distances");
+            var results = json.GetProperty("Racers");
 
             return new Course
             {
-                ID = root.GetProperty("RaceId").GetUInt32(),
-                Name = root.GetProperty("Name").GetString(),
-                Type = root.GetProperty("SportType").GetString(),
+                ID = json.GetProperty("RaceId").GetUInt32(),
+                Name = json.GetProperty("Name").GetString(),
+                Type = json.GetProperty("SportType").GetString(),
                 Distance = distances.GetArrayLength() > 0
                     ? string.Join(", ", distances.EnumerateArray().Select(d => d.GetProperty("Name").GetString()))
                     : null,
@@ -60,6 +44,6 @@ namespace ChallengeDashboard
             };
 
         private static DateTime? ParseStart(string value)
-            => value != null ? DateTime.Parse(value) : (DateTime?) null;
+            => value != null ? DateTime.Parse(value) : (DateTime?)null;
     }
 }
