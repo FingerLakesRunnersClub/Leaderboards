@@ -34,7 +34,7 @@ namespace ChallengeDashboard
                 Name = root.GetProperty("Name").GetString(),
                 Type = root.GetProperty("SportType").GetString(),
                 Distance = distances.GetArrayLength() > 0
-                    ? string.Join(", ", distances.EnumerateArray().Select(r => r.GetProperty("Name").GetString()))
+                    ? string.Join(", ", distances.EnumerateArray().Select(d => d.GetProperty("Name").GetString()))
                     : null,
                 Results = results.GetArrayLength() > 0
                     ? ParseResults(results)

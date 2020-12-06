@@ -24,6 +24,6 @@ namespace ChallengeDashboard
             => Results.Where(r => !category.HasValue || r.Athlete.Category[0] == Convert.ToChar(category.Value))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
-        public ushort AverageThreshold => (ushort)Math.Ceiling(GroupedResults().Average(r => r.Count()));
+        public ushort AverageThreshold => GroupedResults().Any() ? (ushort)Math.Ceiling(GroupedResults().Average(r => r.Count())) : 0;
     }
 }
