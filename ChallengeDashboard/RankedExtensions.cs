@@ -17,7 +17,7 @@ namespace ChallengeDashboard
             var ranks = new RankedList<T>();
 
             var list = sorted.ToList();
-            for (ushort rank = 1; rank < list.Count; rank++)
+            for (ushort rank = 1; rank <= list.Count; rank++)
             {
                 var result = list[rank - 1];
                 var value = getValue(result);

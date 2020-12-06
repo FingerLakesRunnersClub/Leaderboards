@@ -2,3 +2,8 @@ th.sortable {
     cursor: pointer;
     white-space: nowrap;
 }
+
+th.sortable .spacer {
+    display: inline-block;
+    width: 0.375rem;
+}

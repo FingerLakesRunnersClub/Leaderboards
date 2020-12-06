@@ -44,7 +44,7 @@ namespace ChallengeDashboard.Tests
                     ""SportType"": ""Running (Trail)"",
                     ""Distances"": [{""Name"": ""50K""}],
                     ""Racers"": [{
-                        ""RacerId"": 234,
+                        ""UserId"": 234,
                         ""Name"": ""Steve Desmond"",
                         ""Age"": 26,
                         ""Gender"": ""M"",
@@ -78,7 +78,7 @@ namespace ChallengeDashboard.Tests
                     ""SportType"": ""Running (Trail)"",
                     ""Distances"": [{""Name"": ""50K""}],
                     ""Racers"": [{
-                        ""RacerId"": 234,
+                        ""UserId"": 234,
                         ""Name"": ""Steve Desmond"",
                         ""Age"": 26,
                         ""Gender"": ""M"",

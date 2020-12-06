@@ -23,9 +23,7 @@ namespace ChallengeDashboard
         public IEnumerator<Result> GetEnumerator() => _group.GetEnumerator();
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int CompareTo(GroupedResult other)
-            => string.Compare(_group.Key.Name, other.Key.Name, StringComparison.Ordinal);
-
+        public int CompareTo(GroupedResult other) => _group.Key.ID.CompareTo(other.Key.ID);
         public int CompareTo(object obj) => CompareTo(obj as GroupedResult);
     }
 }

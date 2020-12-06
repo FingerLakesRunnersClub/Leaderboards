@@ -34,14 +34,21 @@ namespace ChallengeDashboard
                 Duration = TimeSpan.FromSeconds(r.GetProperty("RaceTime").GetDouble())
             });
 
+        private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
         private static Athlete ParseAthlete(JsonElement result)
-            => new Athlete
-            {
-                ID = result.GetProperty("RacerId").GetUInt32(),
-                Name = result.GetProperty("Name").GetString(),
-                Age = result.GetProperty("Age").GetByte(),
-                Category = result.GetProperty("Gender").GetString()
-            };
+        {
+            var id = result.GetProperty("UserId").GetUInt32();
+            if (!athletes.ContainsKey(id))
+                athletes.Add(id, new Athlete
+                {
+                    ID = id,
+                    Name = result.GetProperty("Name").GetString(),
+                    Age = result.GetProperty("Age").GetByte(),
+                    Category = result.GetProperty("Gender").GetString()
+                });
+
+            return athletes[id];
+        }
 
         private static DateTime? ParseStart(string value)
             => value != null ? DateTime.Parse(value) : (DateTime?)null;

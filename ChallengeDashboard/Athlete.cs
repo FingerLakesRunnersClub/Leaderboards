@@ -13,6 +13,5 @@ namespace ChallengeDashboard
         public byte AgeAsOf(DateTime date) => (byte) (date.Subtract(DateOfBirth).TotalDays / 365.2425);
 
         public byte Team => (byte)(Age / 10 * 10);
-
     }
 }
