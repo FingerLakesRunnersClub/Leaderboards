@@ -23,5 +23,22 @@ namespace ChallengeDashboard.Tests
             //assert
             Assert.Equal(expected, age);
         }
+
+        [Theory]
+        [InlineData(20, 20)]
+        [InlineData(29, 20)]
+        [InlineData(70, 70)]
+        [InlineData(79, 70)]
+        public void CanGetTeamForAge(byte age, byte expected)
+        {
+            //arrange
+            var athlete = new Athlete { Age = age };
+
+            //act
+            var team = athlete.Team;
+
+            //assert
+            Assert.Equal(expected, team);
+        }
     }
 }
