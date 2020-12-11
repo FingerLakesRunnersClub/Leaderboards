@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class Startup
     {

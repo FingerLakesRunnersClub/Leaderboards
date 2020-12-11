@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace ChallengeDashboard.Controllers
+namespace FLRC.ChallengeDashboard.Controllers
 {
     public class DashboardController : Controller
     {

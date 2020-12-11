@@ -1,6 +1,6 @@
 using System;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class Athlete
     {

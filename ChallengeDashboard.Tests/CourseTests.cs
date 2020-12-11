@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Xunit;
 
-namespace ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests
 {
     public class CourseTests
     {

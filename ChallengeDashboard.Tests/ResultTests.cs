@@ -1,7 +1,7 @@
 ﻿using System;
 using Xunit;
 
-namespace ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests
 {
     public class ResultTests
     {

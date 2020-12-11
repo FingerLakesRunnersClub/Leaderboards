@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
-namespace ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests
 {
     public class DataAPITests
     {

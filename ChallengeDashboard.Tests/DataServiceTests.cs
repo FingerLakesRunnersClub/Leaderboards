@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using NSubstitute;
 using Xunit;
 
-namespace ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests
 {
     public class DataServiceTests
     {

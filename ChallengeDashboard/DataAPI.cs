@@ -3,7 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class DataAPI : IDataAPI
     {

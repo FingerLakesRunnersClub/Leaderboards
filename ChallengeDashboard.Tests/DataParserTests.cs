@@ -5,7 +5,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests
 {
     public class DataParserTests
     {

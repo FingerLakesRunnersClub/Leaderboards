@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class Course
     {

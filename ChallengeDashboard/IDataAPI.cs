@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public interface IDataAPI
     {

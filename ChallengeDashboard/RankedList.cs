@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class RankedList<T> : List<Ranked<T>>
     {

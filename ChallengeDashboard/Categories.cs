@@ -1,4 +1,4 @@
-﻿namespace ChallengeDashboard
+﻿namespace FLRC.ChallengeDashboard
 {
     public enum Category
     {

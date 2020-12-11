@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class Program
     {

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace ChallengeDashboard.Controllers
+namespace FLRC.ChallengeDashboard.Controllers
 {
     public class CourseController : Controller
     {

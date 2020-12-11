@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public class DataService
     {

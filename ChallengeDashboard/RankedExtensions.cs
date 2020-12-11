@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ChallengeDashboard
+namespace FLRC.ChallengeDashboard
 {
     public static class RankedExtensions
     {
