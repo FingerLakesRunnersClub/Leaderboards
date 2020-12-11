@@ -11,12 +11,12 @@ namespace FLRC.ChallengeDashboard
 
         public GroupedResult(IGrouping<Athlete, Result> group) => _group = group;
 
-        public Result Average(int threshold)
+        public Result Average(ushort? threshold = null)
             => new Result
             {
                 Athlete = Key,
                 Duration = TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
-                    .Take(threshold).Average(r => r.Duration.TotalSeconds))
+                    .Take(threshold ?? _group.Count()).Average(r => r.Duration.TotalSeconds))
             };
 
         public Athlete Key => _group.Key;
