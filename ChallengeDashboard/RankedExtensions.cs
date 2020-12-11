@@ -16,7 +16,7 @@ namespace ChallengeDashboard
         {
             var ranks = new RankedList<T>();
 
-            var list = sorted.ToList();
+            var list = sorted.ThenBy(rs => rs.Min(r => r.Duration)).ToList();
             for (ushort rank = 1; rank <= list.Count; rank++)
             {
                 var result = list[rank - 1];

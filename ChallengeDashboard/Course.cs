@@ -16,7 +16,7 @@ namespace ChallengeDashboard
 
         public RankedList<Result> Fastest(Category? category = null) => GroupedResults(category).Rank(rs => rs.OrderBy(r => r.Duration).First());
 
-        public RankedList<Result> BestAverage(Category? category = null) => GroupedResults(category).Where(rs => rs.Count() >= AverageThreshold).Rank(r => r.Average(AverageThreshold));
+        public RankedList<Result> BestAverage(Category? category = null) => GroupedResults(category).Where(rs => rs.Count() >= AverageThreshold(category)).Rank(r => r.Average(AverageThreshold(category)));
 
         public RankedList<ushort> MostRuns(Category? category = null) => GroupedResults(category).RankDescending(r => (ushort)r.Count());
 
@@ -24,6 +24,9 @@ namespace ChallengeDashboard
             => Results.Where(r => !category.HasValue || r.Athlete.Category[0] == Convert.ToChar(category.Value))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
-        public ushort AverageThreshold => GroupedResults().Any() ? (ushort)Math.Ceiling(GroupedResults().Average(r => r.Count())) : 0;
+        private ushort AverageThreshold(Category? category = null)
+            => GroupedResults(category).Any()
+                ? (ushort)Math.Ceiling(GroupedResults(category).Average(r => r.Count()))
+                : 0;
     }
 }
