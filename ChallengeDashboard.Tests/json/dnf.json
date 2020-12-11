@@ -1,0 +1,21 @@
+{
+    "RaceId": 123,
+    "Name": "Virgil Crest Ultramarathons",
+    "SportType": "Running (Trail)",
+    "Distances": [
+        {
+            "Name": "50K"
+        }
+    ],
+    "Racers": [
+        {
+            "UserId": 234,
+            "Name": "Steve Desmond",
+            "Age": 26,
+            "Gender": "M",
+            "StartTime": "2011-09-24",
+            "Finished": 0,
+            "RaceTime": 0
+        }
+    ]
+}

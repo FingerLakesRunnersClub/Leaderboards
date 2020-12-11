@@ -1,11 +1,8 @@
 using System;
-using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text.Json;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace ChallengeDashboard.Tests
@@ -13,15 +10,9 @@ namespace ChallengeDashboard.Tests
     public class DataParserTests
     {
         [Fact]
-        public void CanGetCourseInfo()
+        public async Task CanGetCourseInfo()
         {
-            var data = @"{
-                    ""RaceId"": 123,
-                    ""Name"": ""Virgil Crest Ultramarathons"",
-                    ""SportType"": ""Running (Trail)"",
-                    ""Distances"": [{""Name"": ""50K""}],
-                    ""Racers"": []
-                }";
+            var data = await File.ReadAllTextAsync("json/empty.json");
             var json = JsonDocument.Parse(data).RootElement;
 
             //act
@@ -35,24 +26,10 @@ namespace ChallengeDashboard.Tests
         }
 
         [Fact]
-        public void CanGetResultsForCourse()
+        public async Task CanGetResultsForCourse()
         {
             //arrange
-            var data = @"{
-                    ""RaceId"": 123,
-                    ""Name"": ""Virgil Crest Ultramarathons"",
-                    ""SportType"": ""Running (Trail)"",
-                    ""Distances"": [{""Name"": ""50K""}],
-                    ""Racers"": [{
-                        ""UserId"": 234,
-                        ""Name"": ""Steve Desmond"",
-                        ""Age"": 26,
-                        ""Gender"": ""M"",
-                        ""StartTime"": ""2011-09-24"",
-                        ""Finished"": 1,
-                        ""RaceTime"": 18240
-                    }]
-                }";
+            var data = await File.ReadAllTextAsync("json/athlete.json");
             var json = JsonDocument.Parse(data).RootElement;
 
             //act
@@ -69,24 +46,10 @@ namespace ChallengeDashboard.Tests
         }
 
         [Fact]
-        public void DNFsAreIgnored()
+        public async Task DNFsAreIgnored()
         {
             //arrange
-            var data = @"{
-                    ""RaceId"": 123,
-                    ""Name"": ""Virgil Crest Ultramarathons"",
-                    ""SportType"": ""Running (Trail)"",
-                    ""Distances"": [{""Name"": ""50K""}],
-                    ""Racers"": [{
-                        ""UserId"": 234,
-                        ""Name"": ""Steve Desmond"",
-                        ""Age"": 26,
-                        ""Gender"": ""M"",
-                        ""StartTime"": ""2011-09-24"",
-                        ""Finished"": 0,
-                        ""RaceTime"": 0
-                    }]
-                }";
+            var data = await File.ReadAllTextAsync("json/dnf.json");
             var json = JsonDocument.Parse(data).RootElement;
 
             //act
