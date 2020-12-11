@@ -16,7 +16,7 @@ namespace ChallengeDashboard
         {
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddSingleton<DataAPI>();
+            services.AddSingleton<IDataAPI, DataAPI>();
             services.AddSingleton<DataService>();
         }
 

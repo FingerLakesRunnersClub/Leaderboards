@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace ChallengeDashboard
 {
-    public class DataAPI
+    public class DataAPI : IDataAPI
     {
         private readonly HttpClient _httpClient;
         private readonly string _baseURL;

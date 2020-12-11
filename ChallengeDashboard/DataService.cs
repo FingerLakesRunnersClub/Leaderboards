@@ -6,19 +6,21 @@ namespace ChallengeDashboard
 {
     public class DataService
     {
-        private readonly DataAPI _api;
+        private readonly IDataAPI _api;
 
         private readonly IDictionary<uint, Course> _courseCache = new Dictionary<uint, Course>();
 
-        public DataService(DataAPI api) => _api = api;
+        public DataService(IDataAPI api) => _api = api;
 
         public async Task<Course> GetCourse(uint id)
         {
-            if (_courseCache.ContainsKey(id)) return _courseCache[id];
+            if (!_courseCache.ContainsKey(id))
+            {
+                var json = await _api.GetCourse(id);
+                var course = DataParser.ParseCourse(json);
+                _courseCache.Add(id, course);
+            }
 
-            var json = await _api.GetCourse(id);
-            var course = DataParser.ParseCourse(json);
-            _courseCache.Add(id, course);
             return _courseCache[id];
         }
 
