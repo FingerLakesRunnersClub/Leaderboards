@@ -1,3 +1,7 @@
+.navbar-brand .logo {
+    max-width: 10rem;
+}
+
 th.sortable {
     cursor: pointer;
     white-space: nowrap;

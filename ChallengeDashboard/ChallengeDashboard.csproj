@@ -4,6 +4,6 @@
     <RootNamespace>FLRC.ChallengeDashboard</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AgeGradeCalculator" Version="1.0.1" />
+    <PackageReference Include="AgeGradeCalculator" Version="1.0.2" />
   </ItemGroup>
 </Project>
