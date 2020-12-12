@@ -13,5 +13,7 @@ namespace FLRC.ChallengeDashboard
         
         public int CompareTo(Result other) => Duration.CompareTo(other.Duration);
         public int CompareTo(object obj) => CompareTo(obj as Result);
+
+        public TimeSpan Behind(Result other) => Duration - other.Duration;
     }
 }

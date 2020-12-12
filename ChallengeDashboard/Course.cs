@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using FLRC.AgeGradeCalculator;
 
 namespace FLRC.ChallengeDashboard
 {
@@ -14,11 +15,14 @@ namespace FLRC.ChallengeDashboard
 
         public IEnumerable<Result> Results { get; set; }
 
-        public RankedList<Result> Fastest(Category? category = null) => GroupedResults(category).Rank(rs => rs.OrderBy(r => r.Duration).First());
+        public RankedList<TimeSpan> Fastest(Category? category = null)
+            => Rank(category, rs => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration));
 
-        public RankedList<Result> BestAverage(Category? category = null) => GroupedResults(category).Where(rs => rs.Count() >= AverageThreshold(category)).Rank(r => r.Average(AverageThreshold(category)));
+        public RankedList<TimeSpan> BestAverage(Category? category = null)
+            => Rank(category, rs => rs.Count() >= AverageThreshold(category), rs => rs.Average(AverageThreshold(category)), rs => rs.Average(AverageThreshold(category)).Duration);
 
-        public RankedList<ushort> MostRuns(Category? category = null) => GroupedResults(category).RankDescending(r => (ushort)r.Count());
+        public RankedList<ushort> MostRuns(Category? category = null)
+            => RankDescending(category, rs => true, r => r.Average(), r => (ushort)r.Count());
 
         private IEnumerable<GroupedResult> GroupedResults(Category? category = null)
             => Results.Where(r => !category.HasValue || r.Athlete.Category == category.Value)
@@ -28,5 +32,40 @@ namespace FLRC.ChallengeDashboard
             => GroupedResults(category).Any()
                 ? (ushort)Math.Ceiling(GroupedResults(category).Average(r => r.Count()))
                 : (ushort)0;
+
+        private RankedList<T> Rank<T>(Category? category, Func<GroupedResult, bool> filter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
+            => RankedList(GroupedResults(category).Where(filter).OrderBy(sort), getResult, sort);
+
+        private RankedList<T> RankDescending<T>(Category? category, Func<GroupedResult, bool> filter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
+            => RankedList(GroupedResults(category).Where(filter).OrderByDescending(sort), getResult, sort);
+
+
+
+        private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
+        {
+            var ranks = new RankedList<T>();
+
+            var list = sorted.ThenBy(rs => getResult(rs).Duration).ToList();
+            for (ushort rank = 1; rank <= list.Count; rank++)
+            {
+                var results = list[rank - 1];
+                var athlete = results.Key;
+                var result = getResult(results);
+                var value = getValue(results);
+                ranks.Add(new Ranked<T>
+                {
+                    Rank = rank,
+                    Athlete = athlete,
+                    Result = result,
+                    Value = value,
+                    BehindLeader = rank == 1 ? default : result.Behind(ranks.First().Result),
+                    AgeGrade = athlete.Category != null
+                        ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category ?? throw null, athlete.Age, Distance, result.Duration)
+                        : 0
+                });
+            }
+
+            return ranks;
+        }
     }
 }

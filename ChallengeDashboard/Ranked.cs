@@ -6,6 +6,7 @@ namespace FLRC.ChallengeDashboard
     {
         public ushort Rank { get; set; }
         public Athlete Athlete { get; set; }
+        public Result Result{ get; set; }
         public T Value { get; set; }
 
         public TimeSpan BehindLeader { get; set; }

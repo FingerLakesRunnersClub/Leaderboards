@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using FLRC.AgeGradeCalculator;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
