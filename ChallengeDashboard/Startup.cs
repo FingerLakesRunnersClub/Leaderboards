@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using FLRC.ChallengeDashboard.AgeGrade;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +21,7 @@ namespace FLRC.ChallengeDashboard
             services.AddHttpClient();
             services.AddSingleton<IDataAPI, DataAPI>();
             services.AddSingleton<IDataService, DataService>();
+            services.AddSingleton(Loader.Load().GetAwaiter().GetResult());
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
