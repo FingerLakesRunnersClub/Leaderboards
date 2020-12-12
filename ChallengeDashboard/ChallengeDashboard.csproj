@@ -4,7 +4,6 @@
     <RootNamespace>FLRC.ChallengeDashboard</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <None Include ="AgeGrade\F.csv" CopyToOutputDirectory="PreserveNewest"/>
-    <None Include ="AgeGrade\M.csv" CopyToOutputDirectory="PreserveNewest"/>
+    <PackageReference Include="AgeGradeCalculator" Version="1.0.1" />
   </ItemGroup>
 </Project>
