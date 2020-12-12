@@ -27,6 +27,6 @@ namespace FLRC.ChallengeDashboard
         private ushort AverageThreshold(Category? category = null)
             => GroupedResults(category).Any()
                 ? (ushort)Math.Ceiling(GroupedResults(category).Average(r => r.Count()))
-                : 0;
+                : (ushort)0;
     }
 }
