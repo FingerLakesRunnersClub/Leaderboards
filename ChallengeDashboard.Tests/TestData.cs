@@ -5,10 +5,10 @@ namespace FLRC.ChallengeDashboard.Tests
 {
     public static class TestData
     {
-        public static readonly Athlete Athlete1 = new Athlete { Category = "M" };
-        public static readonly Athlete Athlete2 = new Athlete { Category = "F" };
-        public static readonly Athlete Athlete3 = new Athlete { Category = "M" };
-        public static readonly Athlete Athlete4 = new Athlete { Category = "F" };
+        public static readonly Athlete Athlete1 = new Athlete { Category = Category.M };
+        public static readonly Athlete Athlete2 = new Athlete { Category = Category.F };
+        public static readonly Athlete Athlete3 = new Athlete { Category = Category.M };
+        public static readonly Athlete Athlete4 = new Athlete { Category = Category.F };
 
         public static readonly IEnumerable<Result> Results = new List<Result>()
         {

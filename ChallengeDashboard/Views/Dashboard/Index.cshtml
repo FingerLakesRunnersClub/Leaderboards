@@ -4,8 +4,6 @@
 
 @foreach (var course in Model)
 {
-    var top3f = course.Results.Where(r => r.Athlete.Category == "F").OrderBy(r => r.Duration).Take(3);
-
     <h4>@course.Name</h4>
 
     <a href="/Course/Index/@course.ID">View All</a>

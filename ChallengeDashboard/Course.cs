@@ -9,7 +9,7 @@ namespace FLRC.ChallengeDashboard
         public uint ID { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public string Distance { get; set; }
+        public double Distance { get; set; }
         public string URL { get; set; }
 
         public IEnumerable<Result> Results { get; set; }
@@ -21,7 +21,7 @@ namespace FLRC.ChallengeDashboard
         public RankedList<ushort> MostRuns(Category? category = null) => GroupedResults(category).RankDescending(r => (ushort)r.Count());
 
         private IEnumerable<GroupedResult> GroupedResults(Category? category = null)
-            => Results.Where(r => !category.HasValue || r.Athlete.Category[0] == Convert.ToChar(category.Value))
+            => Results.Where(r => !category.HasValue || r.Athlete.Category == category.Value)
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
         private ushort AverageThreshold(Category? category = null)

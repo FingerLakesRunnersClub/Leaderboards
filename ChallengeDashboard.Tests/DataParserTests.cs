@@ -22,7 +22,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal((uint)123, course.ID);
             Assert.Equal("Virgil Crest Ultramarathons", course.Name);
             Assert.Equal("Running (Trail)", course.Type);
-            Assert.Equal("50K", course.Distance);
+            Assert.Equal(50000, course.Distance);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal((ushort)234, result.Athlete.ID);
             Assert.Equal("Steve Desmond", result.Athlete.Name);
             Assert.Equal(26, result.Athlete.Age);
-            Assert.Equal("M", result.Athlete.Category);
+            Assert.Equal(Category.M, result.Athlete.Category);
             Assert.Equal(new DateTime(2011, 09, 24), result.StartTime);
             Assert.Equal(new TimeSpan(0, 5, 04, 0), result.Duration);
         }
