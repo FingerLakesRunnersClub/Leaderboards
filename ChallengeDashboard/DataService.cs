@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FLRC.ChallengeDashboard
 {
-    public class DataService
+    public class DataService : IDataService
     {
         private readonly IDataAPI _api;
 

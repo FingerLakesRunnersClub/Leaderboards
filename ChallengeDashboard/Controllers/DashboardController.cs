@@ -9,10 +9,10 @@ namespace FLRC.ChallengeDashboard.Controllers
 {
     public class DashboardController : Controller
     {
-        private readonly DataService _dataService;
+        private readonly IDataService _dataService;
         private readonly IEnumerable<uint> _courseIDs;
 
-        public DashboardController(IConfiguration configuration, DataService dataService)
+        public DashboardController(IConfiguration configuration, IDataService dataService)
         {
             _dataService = dataService;
             _courseIDs = configuration.GetSection("Courses").AsEnumerable()
