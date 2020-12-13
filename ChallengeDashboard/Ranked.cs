@@ -8,9 +8,10 @@ namespace FLRC.ChallengeDashboard
         public Athlete Athlete { get; set; }
         public Result Result{ get; set; }
         public T Value { get; set; }
+        public uint Count {get; set;}
 
         public TimeSpan BehindLeader { get; set; }
-        public string BehindLeaderDisplay => BehindLeader.ToString(Result.TimeFormat);
+        public string BehindLeaderDisplay => '+' + BehindLeader.ToString(Result.TimeFormat);
 
         public double AgeGrade { get; set; }
         public string AgeGradeDisplay => AgeGrade > 0 ? AgeGrade.ToString("F1") + "%" : string.Empty;
