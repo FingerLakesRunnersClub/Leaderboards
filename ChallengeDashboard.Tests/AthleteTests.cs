@@ -25,10 +25,10 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Theory]
-        [InlineData(20, 20)]
-        [InlineData(29, 20)]
-        [InlineData(70, 70)]
-        [InlineData(79, 70)]
+        [InlineData(20, 2)]
+        [InlineData(29, 2)]
+        [InlineData(70, 7)]
+        [InlineData(79, 7)]
         public void CanGetTeamForAge(byte age, byte expected)
         {
             //arrange
@@ -39,6 +39,20 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(expected, team);
+        }
+
+        [Fact]
+        public void CanGetTeamDisplayNameFromAge()
+        {
+            //arrange
+            var athlete = new Athlete {Age = 25 };
+
+            //act
+            var teamName = athlete.TeamDisplay;
+
+            //assert
+            Assert.StartsWith("20", teamName);
+            Assert.EndsWith("29", teamName);
         }
     }
 }

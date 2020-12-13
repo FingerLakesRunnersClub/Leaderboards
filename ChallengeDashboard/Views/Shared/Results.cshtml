@@ -1,0 +1,27 @@
+<app>
+    <div v-if="!show_results" class="alert alert-danger">No results found</div>
+    <table v-if="show_results" class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th v-for="field in fields" class="sortable" :class="{'text-center': field.center}"
+                    :style="{'flex-grow': field.width}" @@click="toggleSort(field)">
+                    <span v-if="field.center" class="spacer"></span>
+                    {{field.label || field.name}}
+                    <div class="spacer">
+                        <span v-if="sort.field == field && !sort.descending">▾</span>
+                        <span v-if="sort.field == field && sort.descending">▴</span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="result in sorted_results">
+                <td v-for="field in fields" :class="{'text-center': field.center}">
+                    {{field.value(result)}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</app>
+
+<script src="~/results.js"></script>
