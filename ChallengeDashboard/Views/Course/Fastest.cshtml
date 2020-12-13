@@ -1,10 +1,8 @@
 ﻿@using System.Text.Json
 @using FLRC.ChallengeDashboard
-@model Course
-@{ ViewBag.Title = Model.Name; }
+@model ResultsViewModel<TimeSpan>
 
-<h2>@Model.Name</h2>
-<h4>@Model.Distance m (@Model.Type)</h4>
+@await Html.PartialAsync("CourseInfo")
 
 <script>
     const fields = [
@@ -14,11 +12,11 @@
         { name: 'Team', width: 1, center: true, value: r => r.Athlete.TeamDisplay },
         { name: 'Category', width: 1, center: true, value: r => r.Athlete.CategoryDisplay },
         { name: 'Time', width: 2, center: true, value: r => r.Result.DisplayTime },
-        { name: 'BehindLeader', label: 'Behind', width: 2, center: true, value: r => r.BehindLeaderDisplay },
+        { name: 'BehindLeader', label: 'Behind Leader', width: 2, center: true, value: r => r.BehindLeaderDisplay },
         { name: 'AgeGrade', label: 'Age Grade', width: 1, center: true, value: r => r.AgeGradeDisplay },
     ];
 
-    results = @Html.Raw(JsonSerializer.Serialize(Model.Fastest()));
+    results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
 </script>
 
 @await Html.PartialAsync("Results")

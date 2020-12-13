@@ -28,7 +28,10 @@ namespace FLRC.ChallengeDashboard
             app.UseStaticFiles();
             app.UseRouting();
 
-            app.UseEndpoints(endpoints => endpoints.MapControllerRoute("default", "{controller=Dashboard}/{action=Index}/{id?}"));
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllerRoute("default", "{controller=Dashboard}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute("courses", "{controller=Courses}/{id}/{action=Fastest}/{category?}");
+            });
         }
     }
 }
