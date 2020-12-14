@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests.Controllers
+namespace FLRC.ChallengeDashboard.Tests
 {
-    public class DashboardTests
+    public class DashboardControllerTests
     {
         [Fact]
         public async Task CanDashboardGetsAllCourses()
