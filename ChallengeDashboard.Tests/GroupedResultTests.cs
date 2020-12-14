@@ -33,9 +33,9 @@ namespace FLRC.ChallengeDashboard.Tests
         [Fact]
         public void CanGetAverageFromTopAttempts()
         {
+            //arrange
             var athlete = new Athlete();
 
-            //arrange
             var results = new List<Result>
             {
                 new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:00") },
@@ -50,6 +50,30 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(TimeSpan.Parse("1:05"), avg.Duration);
+        }
+
+        [Fact]
+        public void CanCompareGroupedResultsByAthleteID()
+        {
+            //arrange
+            var athlete1 = new Athlete { ID = 234 };
+            var athlete2 = new Athlete { ID = 123 };
+
+            var results = new List<Result>
+            {
+                new Result { Athlete = athlete1, Duration = TimeSpan.Parse("1:00") },
+                new Result { Athlete = athlete2, Duration = TimeSpan.Parse("1:10") }
+            };
+
+            var groups = results.GroupBy(r => r.Athlete).ToArray();
+
+            //act
+            var group1 = new GroupedResult(groups[0]);
+            var group2 = new GroupedResult(groups[1]);
+
+            //assert
+            Assert.Equal(1, group1.CompareTo(group2));
+            Assert.Equal(-1, group2.CompareTo(group1));
         }
     }
 }

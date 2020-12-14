@@ -1,11 +1,11 @@
 {
-    "RaceId": 123,
-    "Name": "Virgil Crest Ultramarathons",
-    "SportType": "Running (Trail)",
-    "Distances": [
-        {
-            "Name": "50K"
-        }
-    ],
-    "Racers": []
+  "RaceId": 123,
+  "Name": "Virgil Crest Ultramarathons",
+  "SportType": "Running (Trail)",
+  "Distances": [
+    {
+      "Name": "50K"
+    }
+  ],
+  "Racers": []
 }

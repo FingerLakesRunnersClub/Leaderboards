@@ -53,8 +53,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var dataService = new DataService(api);
 
             //act
-            var course1 = await dataService.GetCourse(123);
-            var course2 = await dataService.GetCourse(123);
+            await dataService.GetCourse(123);
+            await dataService.GetCourse(123);
 
             //assert
             await api.Received(1).GetCourse(Arg.Any<uint>());

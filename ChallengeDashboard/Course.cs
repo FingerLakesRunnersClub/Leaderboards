@@ -39,8 +39,6 @@ namespace FLRC.ChallengeDashboard
         private RankedList<T> RankDescending<T>(Category? category, Func<GroupedResult, bool> filter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
             => RankedList(GroupedResults(category).Where(filter).OrderByDescending(sort), getResult, sort);
 
-
-
         private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
         {
             var ranks = new RankedList<T>();

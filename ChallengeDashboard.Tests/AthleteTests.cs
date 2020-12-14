@@ -1,10 +1,27 @@
 using System;
+using FLRC.AgeGradeCalculator;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
     public class AthleteTests
     {
+        [Theory]
+        [InlineData(Category.F, "F")]
+        [InlineData(Category.M, "M")]
+        [InlineData(null, null)]
+        public void CanDisplayCategory(Category? category, string expected)
+        {
+            //arrange
+            var athlete = new Athlete { Category = category };
+
+            //act
+            var display = athlete.CategoryDisplay;
+
+            //assert
+            Assert.Equal(expected, display);
+        }
+
         [Theory]
         [InlineData(2000, 01, 01, 21)]
         [InlineData(2000, 01, 02, 20)]
@@ -45,7 +62,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetTeamDisplayNameFromAge()
         {
             //arrange
-            var athlete = new Athlete {Age = 25 };
+            var athlete = new Athlete { Age = 25 };
 
             //act
             var teamName = athlete.TeamDisplay;

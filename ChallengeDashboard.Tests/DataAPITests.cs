@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,11 +30,7 @@ namespace FLRC.ChallengeDashboard.Tests
         [Fact]
         public async Task CanGetJSONFromResponse()
         {
-            var data = @"{
-                    ""RaceId"": 123,
-                    ""Name"": ""Virgil Crest Ultramarathons"",
-                    ""SportType"": ""Running (Trail)""
-                }";
+            var data = await File.ReadAllTextAsync("json/empty.json");
             var http = new MockHttpMessageHandler(data);
             var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
