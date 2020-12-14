@@ -2,9 +2,12 @@
     max-width: 10rem;
 }
 
+table.results {
+    white-space: nowrap;
+}
+
 th.sortable {
     cursor: pointer;
-    white-space: nowrap;
 }
 
 th.sortable .spacer {

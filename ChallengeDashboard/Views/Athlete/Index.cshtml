@@ -1,0 +1,36 @@
+﻿@using FLRC.ChallengeDashboard
+@model AthleteViewModel
+@{ ViewBag.Title = Model.Athlete.Name; }
+
+<h2>@Model.Athlete.Name</h2>
+
+@foreach (var course in Model.Results)
+{
+    <h3>@course.Key.Name</h3>
+    <h4>@course.Key.Distance (@course.Key.Type)</h4>
+
+    <details>
+        <summary>All Runs</summary>
+        <table class="table table-sm">
+            <thead>
+            <tr>
+                <th>Time</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var result in course.Value)
+            {
+                <tr>
+                    <td>
+                        @result.DisplayTime
+                    </td>
+                    <td>
+                        @result.StartTime?.ToString("MM/dd/yyyy")
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </details>
+}

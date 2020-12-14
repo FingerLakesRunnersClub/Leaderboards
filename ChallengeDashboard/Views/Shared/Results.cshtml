@@ -1,6 +1,6 @@
 <app>
     <div v-if="!show_results" class="alert alert-danger">No results found</div>
-    <table v-if="show_results" class="table table-bordered table-striped table-sm">
+    <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-lg">
         <thead>
             <tr>
                 <th v-for="field in fields" class="sortable" :class="{'text-center': field.center}"
@@ -17,7 +17,8 @@
         <tbody>
             <tr v-for="result in sorted_results">
                 <td v-for="field in fields" :class="{'text-center': field.center}">
-                    {{field.value(result)}}
+                    <a v-if="field.link" :href="field.link(result)">{{field.value(result)}}</a>
+                    <span v-else>{{field.value(result)}}</span>
                 </td>
             </tr>
         </tbody>

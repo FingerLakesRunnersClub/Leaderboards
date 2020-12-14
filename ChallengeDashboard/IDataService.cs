@@ -6,6 +6,6 @@ namespace FLRC.ChallengeDashboard
     public interface IDataService
     {
         Task<Course> GetCourse(uint id);
-        Task<IEnumerable<Course>> GetAllCourses(IEnumerable<uint> ids);
+        Task<IEnumerable<Course>> GetAllCourses();
     }
 }

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
 
@@ -17,7 +17,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var api = Substitute.For<IDataAPI>();
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
             api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var dataService = new DataService(api);
+            var config = Substitute.For<IConfiguration>();
+            var dataService = new DataService(api, config);
 
             //act
             var course = await dataService.GetCourse(123);
@@ -34,10 +35,13 @@ namespace FLRC.ChallengeDashboard.Tests
             var api = Substitute.For<IDataAPI>();
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
             api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var dataService = new DataService(api);
+            var config = Substitute.For<IConfigurationRoot>();
+            var configSection = new ConfigurationSection(config, "Courses") { Value = "123" };
+            config.GetSection("Courses").Returns(configSection);
+            var dataService = new DataService(api, config);
 
             //act
-            var courses = await dataService.GetAllCourses(new List<uint>() { 123 });
+            var courses = await dataService.GetAllCourses();
 
             //assert
             Assert.Equal("Virgil Crest Ultramarathons", courses.First().Name);
@@ -50,7 +54,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var api = Substitute.For<IDataAPI>();
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
             api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var dataService = new DataService(api);
+            var config = Substitute.For<IConfiguration>();
+            var dataService = new DataService(api, config);
 
             //act
             await dataService.GetCourse(123);
