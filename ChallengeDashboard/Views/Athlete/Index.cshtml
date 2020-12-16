@@ -4,33 +4,61 @@
 
 <h2>@Model.Athlete.Name</h2>
 
-@foreach (var course in Model.Results)
-{
-    <h3>@course.Key.Name</h3>
-    <h4>@course.Key.Distance (@course.Key.Type)</h4>
+<div class="row">
+    @foreach (var course in Model.Results)
+    {
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <h3>@course.Key.Name</h3>
+            <h4>@course.Key.Distance (@course.Key.Type)</h4>
 
-    <details>
-        <summary>All Runs</summary>
-        <table class="table table-sm">
-            <thead>
-            <tr>
-                <th>Time</th>
-                <th>Date</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach (var result in course.Value)
-            {
-                <tr>
-                    <td>
-                        @result.DisplayTime
-                    </td>
-                    <td>
-                        @result.StartTime?.ToString("MM/dd/yyyy")
-                    </td>
-                </tr>
-            }
-            </tbody>
-        </table>
-    </details>
-}
+            <table class="table table-striped table-bordered table-sm text-center">
+                <thead>
+                    <tr>
+                        <th># of Runs</th>
+                        <th>Fastest Time</th>
+                        <th>Average Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            @course.Value.Count()
+                        </td>
+                        <td>
+                            @course.Value.Min(r => r.Duration).ToString(Result.TimeFormat)
+                        </td>
+                        <td>
+                            @TimeSpan.FromSeconds(course.Value.Average(r =>
+                                   r.Duration.TotalSeconds)).ToString(Result.TimeFormat)
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <details>
+                <summary>All Runs</summary>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var result in course.Value.OrderBy(r => r.StartTime))
+                        {
+                            <tr>
+                                <td>
+                                    @result.StartTime?.ToString("MM/dd/yyyy")
+                                </td>
+                                <td>
+                                    @result.DisplayTime
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </details>
+        </div>
+    }
+</div>

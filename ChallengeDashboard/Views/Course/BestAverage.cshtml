@@ -12,7 +12,7 @@
         { name: 'Team', width: 1, center: true, value: r => r.Athlete.TeamDisplay },
         { name: 'Category', width: 1, center: true, value: r => r.Athlete.CategoryDisplay },
         { name: 'Average Time', width: 2, center: true, value: r => r.Result.DisplayTime },
-        { name: 'Number of Runs', width: 2, center: true, value: r => r.Count }
+        { name: '# of Runs', width: 2, center: true, value: r => r.Count }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
