@@ -9,6 +9,6 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public DashboardController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<IActionResult> Index() => View(await _dataService.GetAllCourses());
+        public async Task<IActionResult> Index() => View(await _dataService.GetAllResults());
     }
 }

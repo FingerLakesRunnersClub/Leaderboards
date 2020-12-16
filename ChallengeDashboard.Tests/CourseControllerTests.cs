@@ -15,14 +15,14 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetCourse(Arg.Any<uint>()).Returns(new Course { Results = new List<Result>() });
+            dataService.GetResults(Arg.Any<uint>()).Returns(new Course { Results = new List<Result>() });
             var controller = new CourseController(dataService);
 
             //act
             await controller.Fastest(123);
 
             //assert
-            await dataService.Received().GetCourse(123);
+            await dataService.Received().GetResults(123);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard.Tests
             };
 
             var dataService = Substitute.For<IDataService>();
-            dataService.GetCourse(Arg.Any<uint>()).Returns(course);
+            dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
             var controller = new CourseController(dataService);
 
@@ -60,7 +60,7 @@ namespace FLRC.ChallengeDashboard.Tests
             };
 
             var dataService = Substitute.For<IDataService>();
-            dataService.GetCourse(Arg.Any<uint>()).Returns(course);
+            dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
             var controller = new CourseController(dataService);
 
@@ -83,7 +83,7 @@ namespace FLRC.ChallengeDashboard.Tests
             };
 
             var dataService = Substitute.For<IDataService>();
-            dataService.GetCourse(Arg.Any<uint>()).Returns(course);
+            dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
             var controller = new CourseController(dataService);
 

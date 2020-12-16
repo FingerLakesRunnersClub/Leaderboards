@@ -13,7 +13,7 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         private async Task<AthleteViewModel> GetAthlete(uint id)
         {
-            var courses = (await _dataService.GetAllCourses()).ToList();
+            var courses = (await _dataService.GetAllResults()).ToList();
             var athlete = courses.SelectMany(c => c.Results.Select(r => r.Athlete)).FirstOrDefault(a => a.ID == id);
             var results = courses.Where(c => c.Results.Any(r => r.Athlete == athlete))
                 .ToDictionary(c => c, c => c.Results.Where(r => r.Athlete == athlete));

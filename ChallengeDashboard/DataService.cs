@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -9,33 +8,32 @@ namespace FLRC.ChallengeDashboard
     public class DataService : IDataService
     {
         private readonly IDataAPI _api;
-        private readonly IEnumerable<uint> _courseIDs;
-
-        private readonly IDictionary<uint, Course> _courseCache = new Dictionary<uint, Course>();
+        private readonly IDictionary<uint, Course> _courses;
 
         public DataService(IDataAPI api, IConfiguration configuration)
         {
             _api = api;
-            _courseIDs = configuration.GetSection("Courses").AsEnumerable()
-                .Where(id => !string.IsNullOrWhiteSpace(id.Value))
-                .Select(id => Convert.ToUInt32(id.Value));
+            _courses = configuration.GetSection("Courses").GetChildren()
+                .ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
+
+            foreach (var course in _courses.Values)
+                course.Meters = DataParser.ParseDistance(course.Distance);
         }
 
-        public async Task<Course> GetCourse(uint id)
+        public async Task<Course> GetResults(uint id)
         {
-            if (!_courseCache.ContainsKey(id))
+            if (_courses[id].Results == null)
             {
-                var json = await _api.GetCourse(id);
-                var course = DataParser.ParseCourse(json);
-                _courseCache.Add(id, course);
+                var json = await _api.GetResults(id);
+                _courses[id].Results = DataParser.ParseCourse(json);
             }
 
-            return _courseCache[id];
+            return _courses[id];
         }
 
-        public async Task<IEnumerable<Course>> GetAllCourses()
+        public async Task<IEnumerable<Course>> GetAllResults()
         {
-            var tasks = _courseIDs.Select(GetCourse).ToArray();
+            var tasks = _courses.Select(c => GetResults(c.Key)).ToArray();
             await Task.WhenAll(tasks);
             return tasks.Select(t => t.GetAwaiter().GetResult());
         }

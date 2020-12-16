@@ -9,25 +9,15 @@ namespace FLRC.ChallengeDashboard
 {
     public static class DataParser
     {
-        public static Course ParseCourse(JsonElement json)
+        public static IEnumerable<Result> ParseCourse(JsonElement json)
         {
-            var distances = json.GetProperty("Distances");
             var results = json.GetProperty("Racers");
 
-            return new Course
-            {
-                ID = json.GetProperty("RaceId").GetUInt32(),
-                Name = json.GetProperty("Name").GetString(),
-                Type = json.GetProperty("SportType").GetString(),
-                Distance = distances.GetArrayLength() > 0
-                    ? ParseDistance(distances.EnumerateArray().Select(d => d.GetProperty("Name").GetString()).First())
-                    : 0,
-                Results = results.GetArrayLength() > 0
-                    ? ParseResults(results)
-                    : null
-            };
+            return results.GetArrayLength() > 0
+                ? ParseResults(results)
+                : new List<Result>();
         }
-        private static double ParseDistance(string value)
+        public static double ParseDistance(string value)
         {
             var split = Regex.Match(value, @"([\d\.]+)(.*)").Groups;
             if (split.Count < 2)
@@ -64,6 +54,9 @@ namespace FLRC.ChallengeDashboard
         private static Athlete ParseAthlete(JsonElement result)
         {
             var id = result.GetProperty("UserId").GetUInt32();
+            if (id == 0)
+                id = result.GetProperty("RacerId").GetUInt32();
+
             if (!athletes.ContainsKey(id))
                 athletes.Add(id, new Athlete
                 {

@@ -11,40 +11,38 @@ namespace FLRC.ChallengeDashboard.Tests
     public class DataServiceTests
     {
         [Fact]
-        public async Task CanParseCourseFromAPI()
+        public async Task CanParseResultsFromAPI()
         {
             //arrange
             var api = Substitute.For<IDataAPI>();
-            var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
-            api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var config = Substitute.For<IConfiguration>();
+            var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+            api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
+            var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
             var dataService = new DataService(api, config);
 
             //act
-            var course = await dataService.GetCourse(123);
+            var course = await dataService.GetResults(123);
 
             //assert
-            Assert.Equal("Virgil Crest Ultramarathons", course.Name);
+            Assert.Equal("Steve Desmond", course.Results.First().Athlete.Name);
         }
 
 
         [Fact]
-        public async Task CanGetAllCourses()
+        public async Task CanGetAllResults()
         {
             //arrange
             var api = Substitute.For<IDataAPI>();
-            var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
-            api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var config = Substitute.For<IConfigurationRoot>();
-            var configSection = new ConfigurationSection(config, "Courses") { Value = "123" };
-            config.GetSection("Courses").Returns(configSection);
+            var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+            api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
+            var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
             var dataService = new DataService(api, config);
 
             //act
-            var courses = await dataService.GetAllCourses();
+            var allResults = await dataService.GetAllResults();
 
             //assert
-            Assert.Equal("Virgil Crest Ultramarathons", courses.First().Name);
+            Assert.Equal("Steve Desmond", allResults.First().Results.First().Athlete.Name);
         }
 
         [Fact]
@@ -52,17 +50,17 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var api = Substitute.For<IDataAPI>();
-            var json = await JsonDocument.ParseAsync(File.OpenRead("json/empty.json"));
-            api.GetCourse(Arg.Any<uint>()).Returns(json.RootElement);
-            var config = Substitute.For<IConfiguration>();
+            var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+            api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
+            var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
             var dataService = new DataService(api, config);
 
             //act
-            await dataService.GetCourse(123);
-            await dataService.GetCourse(123);
+            await dataService.GetResults(123);
+            await dataService.GetResults(123);
 
             //assert
-            await api.Received(1).GetCourse(Arg.Any<uint>());
+            await api.Received(1).GetResults(Arg.Any<uint>());
         }
     }
 }

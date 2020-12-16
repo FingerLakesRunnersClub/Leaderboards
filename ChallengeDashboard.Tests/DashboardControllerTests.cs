@@ -18,7 +18,7 @@ namespace FLRC.ChallengeDashboard.Tests
             await controller.Index();
 
             //assert
-            await dataService.Received().GetAllCourses();
+            await dataService.Received().GetAllResults();
         }
     }
 }

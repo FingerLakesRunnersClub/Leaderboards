@@ -5,6 +5,6 @@ namespace FLRC.ChallengeDashboard
 {
     public interface IDataAPI
     {
-        Task<JsonElement> GetCourse(uint id);
+        Task<JsonElement> GetResults(uint id);
     }
 }

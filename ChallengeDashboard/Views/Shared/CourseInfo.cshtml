@@ -4,7 +4,7 @@
 @{ ViewBag.Title = $"{Model.ResultType} — {Model.Course.Name}"; }
 
 <h2>@Model.Course.Name</h2>
-<h4>@{@Model.Course.Distance}m (@Model.Course.Type)</h4>
+<h4>@Model.Course.Distance (@Model.Course.Type)</h4>
 
 <p>
 @if (Model.ResultType == ResultType.Fastest)

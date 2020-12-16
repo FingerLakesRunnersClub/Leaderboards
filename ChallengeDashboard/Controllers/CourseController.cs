@@ -19,7 +19,7 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         private async Task<ResultsViewModel<T>> GetResults<T>(uint courseID, ResultType resultType, Category? category, Func<Course, RankedList<T>> results)
         {
-            var course = await _dataService.GetCourse(courseID);
+            var course = await _dataService.GetResults(courseID);
             return new ResultsViewModel<T>
             {
                 EntityType = EntityType.Athlete,

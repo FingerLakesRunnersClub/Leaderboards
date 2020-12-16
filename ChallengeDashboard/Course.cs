@@ -10,7 +10,8 @@ namespace FLRC.ChallengeDashboard
         public uint ID { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
-        public double Distance { get; set; }
+        public string Distance { get; set; }
+        public double Meters { get; set; }
         public string URL { get; set; }
 
         public IEnumerable<Result> Results { get; set; }
@@ -59,7 +60,7 @@ namespace FLRC.ChallengeDashboard
                     Count = (uint)results.Count(),
                     BehindLeader = rank == 1 ? default : result.Behind(ranks.First().Result),
                     AgeGrade = athlete.Category != null
-                        ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category ?? throw null, athlete.Age, Distance, result.Duration)
+                        ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category ?? throw null, athlete.Age, Meters, result.Duration)
                         : 0
                 });
             }

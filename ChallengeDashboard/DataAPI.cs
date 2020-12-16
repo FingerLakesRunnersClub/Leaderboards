@@ -16,7 +16,7 @@ namespace FLRC.ChallengeDashboard
             _baseURL = configuration.GetValue<string>("API");
         }
 
-        public async Task<JsonElement> GetCourse(uint id)
+        public async Task<JsonElement> GetResults(uint id)
         {
             var url = $"{_baseURL}/results?raceid={id}";
             var response = await _httpClient.GetStreamAsync(url);

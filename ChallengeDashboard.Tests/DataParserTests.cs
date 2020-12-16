@@ -11,22 +11,6 @@ namespace FLRC.ChallengeDashboard.Tests
     public class DataParserTests
     {
         [Fact]
-        public async Task CanGetCourseInfo()
-        {
-            var data = await File.ReadAllTextAsync("json/empty.json");
-            var json = JsonDocument.Parse(data).RootElement;
-
-            //act
-            var course = DataParser.ParseCourse(json);
-
-            //assert
-            Assert.Equal((uint)123, course.ID);
-            Assert.Equal("Virgil Crest Ultramarathons", course.Name);
-            Assert.Equal("Running (Trail)", course.Type);
-            Assert.Equal(50000, course.Distance);
-        }
-
-        [Fact]
         public async Task CanGetResultsForCourse()
         {
             //arrange
@@ -34,8 +18,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var json = JsonDocument.Parse(data).RootElement;
 
             //act
-            var course = DataParser.ParseCourse(json);
-            var result = course.Results.First();
+            var results = DataParser.ParseCourse(json);
+            var result = results.First();
 
             //assert
             Assert.Equal((ushort)234, result.Athlete.ID);
@@ -54,10 +38,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var json = JsonDocument.Parse(data).RootElement;
 
             //act
-            var course = DataParser.ParseCourse(json);
+            var results = DataParser.ParseCourse(json);
 
             //assert
-            Assert.Empty(course.Results);
+            Assert.Empty(results);
         }
     }
 }

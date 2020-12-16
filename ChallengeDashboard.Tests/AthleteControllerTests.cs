@@ -13,7 +13,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetAllCourses().Returns(new List<Course>
+            dataService.GetAllResults().Returns(new List<Course>
             {
                 new Course
                 {

@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var api = new DataAPI(new HttpClient(http), configuration);
 
             //act
-            var json = await api.GetCourse(123);
+            var json = await api.GetResults(123);
 
             //assert
             Assert.Equal((uint)123, json.GetProperty("RaceId").GetUInt32());
