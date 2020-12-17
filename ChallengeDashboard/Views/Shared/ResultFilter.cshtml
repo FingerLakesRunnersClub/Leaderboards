@@ -1,0 +1,61 @@
+﻿@using FLRC.AgeGradeCalculator
+@using FLRC.ChallengeDashboard
+@model ResultsViewModel
+
+<p>
+    @if (Model.ResultType == ResultType.Fastest)
+    {
+        <b>Fastest</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/Fastest/@Model.Category">Fastest</a>
+    }
+    |
+    @if (Model.ResultType == ResultType.MostRuns)
+    {
+        <b>Most Runs</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/MostRuns/@Model.Category">Most Runs</a>
+    }
+    |
+    @if (Model.ResultType == ResultType.BestAverage)
+    {
+        <b>Best Average</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/BestAverage/@Model.Category">Best Average</a>
+    }
+</p>
+
+<p>
+    @if (Model.Category == null)
+    {
+        <b>All</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/@Model.ResultType">All</a>
+    }
+    |
+    @if (Model.Category == Category.M)
+    {
+        <b>M</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/@Model.ResultType/M">M</a>
+    }
+    |
+    @if (Model.Category == Category.F)
+    {
+        <b>F</b>
+    }
+    else
+    {
+        <a href="/Course/@Model.Course.ID/@Model.ResultType/F">F</a>
+    }
+</p>

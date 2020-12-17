@@ -1,8 +1,12 @@
 ﻿@using System.Text.Json
 @using FLRC.ChallengeDashboard
 @model ResultsViewModel<ushort>
+@{
+    ViewBag.Title = $"{Model.ResultType} — {Model.Course.Name}";
+}
 
-@await Html.PartialAsync("CourseInfo")
+@await Html.PartialAsync("CourseInfo", Model.Course)
+@await Html.PartialAsync("ResultFilter")
 
 <script>
     const fields = [
