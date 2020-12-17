@@ -1,0 +1,37 @@
+﻿<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
+        <div class="container justify-content-center">
+            <a class="navbar-brand" href="/">
+                <img class="logo" src="~/logo.png" alt="FLRC logo" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="d-sm-flex flex-sm-column">
+                <h1>FLRC 2021 Club Challenge</h1>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="/rules">Rules</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown">Races</a>
+                            <ul class="dropdown-menu">
+                                @foreach (var course in (IDictionary<uint, string>)ViewBag.CourseNames)
+                                {
+                                    <li class="dropdown-item">
+                                        <a class="nav-link text-dark" href="/Course/@course.Key/Fastest">@course.Value</a>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>

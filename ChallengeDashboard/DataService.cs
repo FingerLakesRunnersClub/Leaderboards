@@ -20,6 +20,9 @@ namespace FLRC.ChallengeDashboard
                 course.Meters = DataParser.ParseDistance(course.Distance);
         }
 
+        public IDictionary<uint, string> CourseNames
+            => _courses.ToDictionary(c => c.Key, c => c.Value.Name);
+
         public async Task<Course> GetResults(uint id)
         {
             if (_courses[id].Results == null)

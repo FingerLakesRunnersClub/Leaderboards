@@ -9,7 +9,11 @@ namespace FLRC.ChallengeDashboard.Controllers
         private readonly IDataService _dataService;
         public AthleteController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
+        public async Task<ViewResult> Index(uint id)
+        {
+            ViewBag.CourseNames = _dataService.CourseNames;
+            return View(await GetAthlete(id));
+        }
 
         private async Task<AthleteViewModel> GetAthlete(uint id)
         {
