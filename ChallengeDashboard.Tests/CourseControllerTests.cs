@@ -32,8 +32,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var course = Substitute.For<Course>();
             course.Results = new List<Result>
             {
-                new Result { Athlete = new Athlete { ID = 123 }, Duration = TimeSpan.Parse("2:34") },
-                new Result { Athlete = new Athlete { ID = 234 }, Duration = TimeSpan.Parse("1:23") },
+                new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+                new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
             };
 
             var dataService = Substitute.For<IDataService>();
@@ -45,7 +45,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.Fastest(123);
 
             //assert
-            Assert.Equal((uint)234, ((ResultsViewModel<TimeSpan>)(response.Model)).RankedResults.First().Athlete.ID);
+            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Athlete.ID);
         }
 
         [Fact]
@@ -55,8 +55,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var course = Substitute.For<Course>();
             course.Results = new List<Result>
             {
-                new Result { Athlete = new Athlete { ID = 123 }, Duration = TimeSpan.Parse("2:34") },
-                new Result { Athlete = new Athlete { ID = 234 }, Duration = TimeSpan.Parse("1:23") },
+                new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+                new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
             };
 
             var dataService = Substitute.For<IDataService>();
@@ -68,7 +68,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.BestAverage(123);
 
             //assert
-            Assert.Equal((uint)234, ((ResultsViewModel<TimeSpan>)(response.Model)).RankedResults.First().Athlete.ID);
+            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Athlete.ID);
         }
 
         [Fact]
@@ -78,8 +78,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var course = Substitute.For<Course>();
             course.Results = new List<Result>
             {
-                new Result { Athlete = new Athlete { ID = 123 }, Duration = TimeSpan.Parse("2:34") },
-                new Result { Athlete = new Athlete { ID = 234 }, Duration = TimeSpan.Parse("1:23") },
+                new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+                new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
             };
 
             var dataService = Substitute.For<IDataService>();

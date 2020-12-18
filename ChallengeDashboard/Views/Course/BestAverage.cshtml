@@ -1,6 +1,6 @@
 ﻿@using System.Text.Json
 @using FLRC.ChallengeDashboard
-@model ResultsViewModel<TimeSpan>
+@model ResultsViewModel<Time>
 @{
     ViewBag.Title = $"{Model.ResultType} — {Model.Course.Name}";
 }
@@ -8,14 +8,16 @@
 @await Html.PartialAsync("CourseInfo", Model.Course)
 @await Html.PartialAsync("ResultFilter")
 
+<div class="alert alert-info">Only athletes who have run this course at least @Model.Course.AverageThreshold(Model.Category) times are displayed</div>
+
 <script>
     const fields = [
         { name: 'Rank', width: 1, center: true, value: r => r.Rank },
         { name: 'Name', width: 2, center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
         { name: 'Age', width: 1, center: true, value: r => r.Athlete.Age },
-        { name: 'Team', width: 1, center: true, value: r => r.Athlete.TeamDisplay },
-        { name: 'Category', width: 1, center: true, value: r => r.Athlete.CategoryDisplay },
-        { name: 'Average Time', width: 2, center: true, value: r => r.Result.DisplayTime },
+        { name: 'Team', width: 1, center: true, value: r => r.Athlete.Team.Display },
+        { name: 'Category', width: 1, center: true, value: r => r.Athlete.Category.Display },
+        { name: 'Average Time', width: 2, center: true, value: r => r.Result.Duration.Display },
         { name: '# of Runs', width: 2, center: true, value: r => r.Count }
     ];
 

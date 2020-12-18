@@ -1,5 +1,4 @@
-﻿@using FLRC.AgeGradeCalculator
-@using FLRC.ChallengeDashboard
+﻿@using FLRC.ChallengeDashboard
 @model IEnumerable<Course>
 @{
     ViewBag.Title = "Dashboard";
@@ -9,10 +8,10 @@
 {
     <h4>@course.Name</h4>
 
-    <a href="/Course/@course.ID/Fastest">View All</a>
+    <a href="/Course/@course.ID">View All</a>
 
     <div class="row">
-        @foreach (var category in Enum.GetValues<Category>())
+        @foreach (var category in new[] { Category.F, Category.M })
         {
             var top3 = course.Fastest(category).Take(3).ToArray();
 
@@ -22,7 +21,7 @@
                     <table class="table table-bordered table-striped table-sm">
                         <thead>
                             <tr>
-                                <th colspan="3" class="text-center">Fastest 3 (@category)</th>
+                                <th colspan="3" class="text-center">Fastest 3 (@category.Display)</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -31,7 +30,7 @@
                                 <tr>
                                     <td class="text-center">@result.Rank</td>
                                     <td>@result.Athlete.Name</td>
-                                    <td class="text-right">@result.Result.DisplayTime</td>
+                                    <td class="text-right">@result.Result.Duration.Display</td>
                                 </tr>
                             }
                         </tbody>

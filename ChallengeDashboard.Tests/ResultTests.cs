@@ -9,10 +9,10 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetDisplayTimeOfDuration()
         {
             //arrange
-            var result = new Result { Duration = new TimeSpan(0, 1, 2, 3, 456) };
+            var result = new Result { Duration = new Time(new TimeSpan(0, 1, 2, 3, 456)) };
 
             //act
-            var displayTime = result.DisplayTime;
+            var displayTime = result.Duration.Display;
 
             //assert
             Assert.Equal("1:02:03.4", displayTime);
@@ -22,10 +22,10 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanCompareResultsByDuration()
         {
             //arrange
-            var result1 = new Result { Duration = new TimeSpan(2, 3, 4) };
+            var result1 = new Result { Duration = new Time(new TimeSpan(2, 3, 4)) };
 
             //act
-            var result2 = new Result { Duration = new TimeSpan(1, 2, 3) };
+            var result2 = new Result { Duration = new Time(new TimeSpan(1, 2, 3)) };
 
             //assert
             Assert.Equal(1, result1.CompareTo(result2));

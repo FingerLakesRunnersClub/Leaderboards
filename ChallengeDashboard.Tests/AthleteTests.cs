@@ -1,5 +1,4 @@
 using System;
-using FLRC.AgeGradeCalculator;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
@@ -7,16 +6,16 @@ namespace FLRC.ChallengeDashboard.Tests
     public class AthleteTests
     {
         [Theory]
-        [InlineData(Category.F, "F")]
-        [InlineData(Category.M, "M")]
+        [InlineData(AgeGradeCalculator.Category.F, "F")]
+        [InlineData(AgeGradeCalculator.Category.M, "M")]
         [InlineData(null, null)]
-        public void CanDisplayCategory(Category? category, string expected)
+        public void CanDisplayCategory(AgeGradeCalculator.Category? category, string expected)
         {
             //arrange
-            var athlete = new Athlete { Category = category };
+            var athlete = new Athlete { Category = new Category(category) };
 
             //act
-            var display = athlete.CategoryDisplay;
+            var display = athlete.Category.Display;
 
             //assert
             Assert.Equal(expected, display);
@@ -55,7 +54,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var team = athlete.Team;
 
             //assert
-            Assert.Equal(expected, team);
+            Assert.Equal(expected, team.Value);
         }
 
         [Fact]
@@ -65,7 +64,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var athlete = new Athlete { Age = 25 };
 
             //act
-            var teamName = athlete.TeamDisplay;
+            var teamName = athlete.Team.Display;
 
             //assert
             Assert.StartsWith("20", teamName);

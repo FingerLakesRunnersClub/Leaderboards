@@ -26,11 +26,10 @@
                             @course.Value.Count()
                         </td>
                         <td>
-                            @course.Value.Min(r => r.Duration).ToString(Result.TimeFormat)
+                            @course.Value.Min(r => r.Duration).Display
                         </td>
                         <td>
-                            @TimeSpan.FromSeconds(course.Value.Average(r =>
-                                   r.Duration.TotalSeconds)).ToString(Result.TimeFormat)
+                            @(new Time(TimeSpan.FromSeconds(course.Value.Average(r => r.Duration.Value.TotalSeconds))).Display)
                         </td>
                     </tr>
                 </tbody>
@@ -53,7 +52,7 @@
                                     @result.StartTime?.ToString("MM/dd/yyyy")
                                 </td>
                                 <td>
-                                    @result.DisplayTime
+                                    @result.Duration.Display
                                 </td>
                             </tr>
                         }

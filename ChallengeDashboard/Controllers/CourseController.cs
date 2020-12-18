@@ -1,5 +1,4 @@
-﻿using FLRC.AgeGradeCalculator;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 
@@ -11,30 +10,49 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public CourseController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Fastest(uint id, Category? category = null)
+        public async Task<ViewResult> Fastest(uint id, string cat = null)
         {
+            var category = DataParser.ParseCategory(cat);
             ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.Fastest, category, c => c.Fastest(category)));
         }
 
-        public async Task<ViewResult> MostRuns(uint id, Category? category = null)
+        public async Task<ViewResult> MostRuns(uint id, string cat = null)
         {
+            var category = DataParser.ParseCategory(cat);
             ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.MostRuns, category, c => c.MostRuns(category)));
         }
 
-        public async Task<ViewResult> BestAverage(uint id, Category? category = null)
+        public async Task<ViewResult> BestAverage(uint id, string cat = null)
         {
+            var category = DataParser.ParseCategory(cat);
             ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.BestAverage, category, c => c.BestAverage(category)));
         }
 
-        private async Task<ResultsViewModel<T>> GetResults<T>(uint courseID, ResultType resultType, Category? category, Func<Course, RankedList<T>> results)
+        public async Task<ViewResult> Team(uint id)
+        {
+            ViewBag.CourseNames = _dataService.CourseNames;
+            return View(await GetTeamResults(id));
+        }
+
+        private async Task<TeamResultsViewModel> GetTeamResults(uint courseID)
+        {
+            var course = await _dataService.GetResults(courseID);
+            return new TeamResultsViewModel
+            {
+                ResultType = ResultType.Team,
+                Course = course,
+                Results = course.TeamPoints()
+            };
+        }
+
+        private async Task<ResultsViewModel<T>> GetResults<T>(uint courseID, ResultType resultType, Category category, Func<Course, RankedList<T>> results)
         {
             var course = await _dataService.GetResults(courseID);
             return new ResultsViewModel<T>
             {
-                EntityType = EntityType.Athlete,
                 ResultType = resultType,
                 Category = category,
                 Course = course,

@@ -15,10 +15,10 @@ namespace FLRC.ChallengeDashboard.Tests
             //arrange
             var results = new List<Result>
             {
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:00") },
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:10") },
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:20") },
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:30") }
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) },
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:30")) }
             };
 
             var groupedResult = new GroupedResult(results.GroupBy(r => r.Athlete).First());
@@ -27,9 +27,9 @@ namespace FLRC.ChallengeDashboard.Tests
             var avg = groupedResult.Average();
 
             //assert
-            Assert.Equal(TimeSpan.Parse("1:15"), avg.Duration);
+            Assert.Equal(TimeSpan.Parse("1:15"), avg.Duration.Value);
         }
-        
+
         [Fact]
         public void CanGetAverageFromTopAttempts()
         {
@@ -38,9 +38,9 @@ namespace FLRC.ChallengeDashboard.Tests
 
             var results = new List<Result>
             {
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:00") },
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:10") },
-                new Result { Athlete = athlete, Duration = TimeSpan.Parse("1:20") }
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
+                new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) }
             };
 
             var groupedResult = new GroupedResult(results.GroupBy(r => r.Athlete).First());
@@ -49,7 +49,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var avg = groupedResult.Average(2);
 
             //assert
-            Assert.Equal(TimeSpan.Parse("1:05"), avg.Duration);
+            Assert.Equal(TimeSpan.Parse("1:05"), avg.Duration.Value);
         }
 
         [Fact]
@@ -61,8 +61,8 @@ namespace FLRC.ChallengeDashboard.Tests
 
             var results = new List<Result>
             {
-                new Result { Athlete = athlete1, Duration = TimeSpan.Parse("1:00") },
-                new Result { Athlete = athlete2, Duration = TimeSpan.Parse("1:10") }
+                new Result { Athlete = athlete1, Duration = new Time(TimeSpan.Parse("1:00")) },
+                new Result { Athlete = athlete2, Duration = new Time(TimeSpan.Parse("1:10")) }
             };
 
             var groups = results.GroupBy(r => r.Athlete).ToArray();

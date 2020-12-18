@@ -4,6 +4,7 @@ namespace FLRC.ChallengeDashboard
     {
         Fastest = 'F',
         MostRuns = 'M',
-        BestAverage = 'A'
+        BestAverage = 'A',
+        Team = 'T'
     }
 }

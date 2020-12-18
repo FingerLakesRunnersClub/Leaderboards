@@ -6,14 +6,11 @@ namespace FLRC.ChallengeDashboard
     {
         public ushort Rank { get; set; }
         public Athlete Athlete { get; set; }
-        public Result Result{ get; set; }
+        public Result Result { get; set; }
         public T Value { get; set; }
-        public uint Count {get; set;}
+        public uint Count { get; set; }
 
-        public TimeSpan BehindLeader { get; set; }
-        public string BehindLeaderDisplay => '+' + BehindLeader.ToString(Result.TimeFormat);
-
-        public double AgeGrade { get; set; }
-        public string AgeGradeDisplay => AgeGrade > 0 ? AgeGrade.ToString("F1") + "%" : string.Empty;
+        public Time BehindLeader { get; set; }
+        public AgeGrade AgeGrade { get; set; }
     }
 }

@@ -15,8 +15,8 @@ namespace FLRC.ChallengeDashboard
             => new Result
             {
                 Athlete = Key,
-                Duration = TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
-                    .Take(threshold ?? _group.Count()).Average(r => r.Duration.TotalSeconds))
+                Duration = new Time(TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
+                    .Take(threshold ?? _group.Count()).Average(r => r.Duration.Value.TotalSeconds)))
             };
 
         public Athlete Key => _group.Key;

@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FLRC.AgeGradeCalculator;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
@@ -25,9 +24,9 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal((ushort)234, result.Athlete.ID);
             Assert.Equal("Steve Desmond", result.Athlete.Name);
             Assert.Equal(26, result.Athlete.Age);
-            Assert.Equal(Category.M, result.Athlete.Category);
+            Assert.Equal(AgeGradeCalculator.Category.M, result.Athlete.Category.Value);
             Assert.Equal(new DateTime(2011, 09, 24), result.StartTime);
-            Assert.Equal(new TimeSpan(0, 5, 04, 0), result.Duration);
+            Assert.Equal(new Time(new TimeSpan(0, 5, 04, 0)), result.Duration);
         }
 
         [Fact]

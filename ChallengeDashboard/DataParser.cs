@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using FLRC.AgeGradeCalculator;
 
 namespace FLRC.ChallengeDashboard
 {
@@ -46,7 +45,7 @@ namespace FLRC.ChallengeDashboard
             {
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
-                Duration = TimeSpan.FromSeconds(r.GetProperty("RaceTime").GetDouble())
+                Duration = new Time(TimeSpan.FromSeconds(r.GetProperty("RaceTime").GetDouble()))
             });
 
         private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
@@ -69,10 +68,10 @@ namespace FLRC.ChallengeDashboard
             return athletes[id];
         }
 
-        private static Category? ParseCategory(string value)
-            => Enum.TryParse<Category>(value, true, out var category)
-                ? category
-                : (Category?)null;
+        public static Category ParseCategory(string value)
+            => Enum.TryParse<AgeGradeCalculator.Category>(value, true, out var category)
+                ? new Category(category)
+                : null;
 
         private static DateTime? ParseStart(string value)
             => value != null ? DateTime.Parse(value) : (DateTime?)null;

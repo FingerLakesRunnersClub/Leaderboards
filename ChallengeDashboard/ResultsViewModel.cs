@@ -1,5 +1,3 @@
-using FLRC.AgeGradeCalculator;
-
 namespace FLRC.ChallengeDashboard
 {
     public class ResultsViewModel<T> : ResultsViewModel
@@ -9,9 +7,8 @@ namespace FLRC.ChallengeDashboard
 
     public class ResultsViewModel
     {
-        public EntityType EntityType { get; set; }
         public ResultType ResultType { get; set; }
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
         public Course Course { get; set; }
     }
 }

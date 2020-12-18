@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using FLRC.AgeGradeCalculator;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
@@ -13,14 +12,14 @@ namespace FLRC.ChallengeDashboard.Tests
 
         public static readonly IEnumerable<Result> Results = new List<Result>()
         {
-            new Result { Athlete = Athlete1, Duration = TimeSpan.Parse("1:23:45.6") },
-            new Result { Athlete = Athlete1, Duration = TimeSpan.Parse("2:34:56.7") },
-            new Result { Athlete = Athlete2, Duration = TimeSpan.Parse("0:54:32.1") },
-            new Result { Athlete = Athlete3, Duration = TimeSpan.Parse("1:02:03.4") },
-            new Result { Athlete = Athlete3, Duration = TimeSpan.Parse("1:00:00.0") },
-            new Result { Athlete = Athlete4, Duration = TimeSpan.Parse("2:03:04.5") },
-            new Result { Athlete = Athlete4, Duration = TimeSpan.Parse("2:22:22.2") },
-            new Result { Athlete = Athlete4, Duration = TimeSpan.Parse("2:00:00.0") }
+            new Result { Athlete = Athlete1, Duration = new Time(TimeSpan.Parse("1:23:45.6")) },
+            new Result { Athlete = Athlete1, Duration = new Time(TimeSpan.Parse("2:34:56.7")) },
+            new Result { Athlete = Athlete2, Duration = new Time(TimeSpan.Parse("0:54:32.1")) },
+            new Result { Athlete = Athlete3, Duration = new Time(TimeSpan.Parse("1:02:03.4")) },
+            new Result { Athlete = Athlete3, Duration = new Time(TimeSpan.Parse("1:00:00.0")) },
+            new Result { Athlete = Athlete4, Duration = new Time(TimeSpan.Parse("2:03:04.5")) },
+            new Result { Athlete = Athlete4, Duration = new Time(TimeSpan.Parse("2:22:22.2")) },
+            new Result { Athlete = Athlete4, Duration = new Time(TimeSpan.Parse("2:00:00.0")) }
         };
     }
 }
