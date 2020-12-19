@@ -37,7 +37,6 @@ namespace FLRC.ChallengeDashboard
         {
             var teamResults = GroupedResults()
                 .GroupBy(g => g.Key.Team)
-                .Where(t => t.Count() >= 10)
                 .Select(t => new TeamResults
                 {
                     Team = t.Key,
@@ -47,13 +46,17 @@ namespace FLRC.ChallengeDashboard
 
             var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
             for (var x = 0; x < fastestTeams.Length; x++)
-                fastestTeams[x].AgeGradePoints = (byte)(x + 1);
+                fastestTeams[x].AgeGradePoints = x > 0 && fastestTeams[x].AverageAgeGrade.Equals(fastestTeams[x-1].AverageAgeGrade)
+                    ? fastestTeams[x-1].AgeGradePoints
+                    : (byte)(7 - x);
 
             var mostRunTeams = teamResults.OrderByDescending(t => t.TotalRuns).ToArray();
             for (var x = 0; x < mostRunTeams.Length; x++)
-                mostRunTeams[x].MostRunsPoints = (byte)(x + 1);
+                mostRunTeams[x].MostRunsPoints = x > 0 && mostRunTeams[x].TotalRuns.Equals(mostRunTeams[x - 1].TotalRuns)
+                        ? mostRunTeams[x - 1].MostRunsPoints
+                        : (byte)(7 - x);
 
-            var topTeams = teamResults.OrderBy(t => t.TotalPoints).ToArray();
+            var topTeams = teamResults.OrderByDescending(t => t.TotalPoints).ToArray();
             for (var x = 0; x < topTeams.Length; x++)
                 topTeams[x].Rank = x > 0 && topTeams[x].TotalPoints == topTeams[x - 1].TotalPoints
                     ? topTeams[x - 1].Rank
