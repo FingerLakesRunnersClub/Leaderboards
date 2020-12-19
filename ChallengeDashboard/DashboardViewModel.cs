@@ -59,7 +59,7 @@ namespace FLRC.ChallengeDashboard
                     Title = "Best Average (M)",
                     Course = Course,
                     ResultType = new FormattedResultType(ResultType.BestAverage),
-                    Category = Category.F,
+                    Category = Category.M,
                     Rows = Course.BestAverage(Category.M).Take(3).Select(r => new DashboardResultRow
                         {Name = r.Athlete.Name, Value = r.Value.Display})
                 },
