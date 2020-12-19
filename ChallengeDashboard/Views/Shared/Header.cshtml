@@ -1,4 +1,7 @@
-﻿<header>
+﻿@using FLRC.ChallengeDashboard
+@model ViewModel
+
+<header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
         <div class="container justify-content-center">
             <a class="navbar-brand" href="/">
@@ -21,7 +24,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown">Races</a>
                             <ul class="dropdown-menu">
-                                @foreach (var course in (IDictionary<uint, string>)ViewBag.CourseNames)
+                                @foreach (var course in Model.CourseNames)
                                 {
                                     <li class="dropdown-item">
                                         <a class="nav-link text-dark" href="/Course/@course.Key/Fastest">@course.Value</a>

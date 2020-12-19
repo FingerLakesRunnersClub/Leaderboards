@@ -13,36 +13,30 @@ namespace FLRC.ChallengeDashboard.Controllers
         public async Task<ViewResult> Fastest(uint id, string cat = null)
         {
             var category = DataParser.ParseCategory(cat);
-            ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.Fastest, category, c => c.Fastest(category)));
         }
 
         public async Task<ViewResult> MostRuns(uint id, string cat = null)
         {
             var category = DataParser.ParseCategory(cat);
-            ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.MostRuns, category, c => c.MostRuns(category)));
         }
 
         public async Task<ViewResult> BestAverage(uint id, string cat = null)
         {
             var category = DataParser.ParseCategory(cat);
-            ViewBag.CourseNames = _dataService.CourseNames;
             return View(await GetResults(id, ResultType.BestAverage, category, c => c.BestAverage(category)));
         }
 
-        public async Task<ViewResult> Team(uint id)
-        {
-            ViewBag.CourseNames = _dataService.CourseNames;
-            return View(await GetTeamResults(id));
-        }
+        public async Task<ViewResult> Team(uint id) => View(await GetTeamResults(id));
 
         private async Task<TeamResultsViewModel> GetTeamResults(uint courseID)
         {
             var course = await _dataService.GetResults(courseID);
             return new TeamResultsViewModel
             {
-                ResultType = ResultType.Team,
+                CourseNames = _dataService.CourseNames,
+                ResultType = new FormattedResultType(ResultType.Team),
                 Course = course,
                 Results = course.TeamPoints()
             };
@@ -53,7 +47,8 @@ namespace FLRC.ChallengeDashboard.Controllers
             var course = await _dataService.GetResults(courseID);
             return new ResultsViewModel<T>
             {
-                ResultType = resultType,
+                CourseNames = _dataService.CourseNames,
+                ResultType = new FormattedResultType(resultType),
                 Category = category,
                 Course = course,
                 RankedResults = results(course)

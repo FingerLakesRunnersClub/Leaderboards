@@ -5,9 +5,11 @@ namespace FLRC.ChallengeDashboard
         public RankedList<T> RankedResults { get; set; }
     }
 
-    public class ResultsViewModel
+    public class ResultsViewModel : ViewModel
     {
-        public ResultType ResultType { get; set; }
+        public override string Title => $"{ResultType.Display} — {Course.Name}";
+
+        public FormattedResultType ResultType { get; set; }
         public Category Category { get; set; }
         public Course Course { get; set; }
     }

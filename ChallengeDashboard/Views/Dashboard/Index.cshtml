@@ -1,42 +1,39 @@
 ﻿@using FLRC.ChallengeDashboard
-@model IEnumerable<Course>
-@{
-    ViewBag.Title = "Dashboard";
-}
+@model DashboardViewModel
 
-@foreach (var course in Model)
+@foreach (var results in Model.CourseResults)
 {
-    <h4>@course.Name</h4>
-
-    <a href="/Course/@course.ID">View All</a>
+    <h4>@results.Key.Name</h4>
 
     <div class="row">
-        @foreach (var category in new[] { Category.F, Category.M })
+        @foreach (var table in results.Value)
         {
-            var top3 = course.Fastest(category).Take(3).ToArray();
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th colspan="3">
+                                <span class="d-flex justify-content-between">
+                                    <span>@table.Title</span>
+                                    <a href="/Course/@results.Key.ID/@table.ResultType.Value/@table.Category?.Value">View All</a>
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var x = 1; x <= table.Rows.Count(); x++)
+                        {
+                            var result = table.Rows.Skip(x - 1).First();
 
-            if (top3.Length > 0)
-            {
-                <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                    <table class="table table-bordered table-striped table-sm">
-                        <thead>
                             <tr>
-                                <th colspan="3" class="text-center">Fastest 3 (@category.Display)</th>
+                                <td class="text-center">@x</td>
+                                <td>@result.Name</td>
+                                <td class="text-center">@result.Value</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var result in top3)
-                            {
-                                <tr>
-                                    <td class="text-center">@result.Rank</td>
-                                    <td>@result.Athlete.Name</td>
-                                    <td class="text-right">@result.Result.Duration.Display</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            }
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
     </div>
 }

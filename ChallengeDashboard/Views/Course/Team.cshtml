@@ -1,9 +1,6 @@
 ﻿@using System.Text.Json
 @using FLRC.ChallengeDashboard
 @model TeamResultsViewModel
-@{
-    ViewBag.Title = $"{Model.ResultType} — {Model.Course.Name}";
-}
 
 @await Html.PartialAsync("CourseInfo", Model.Course)
 @await Html.PartialAsync("ResultFilter")

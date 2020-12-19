@@ -12,6 +12,10 @@
     white-space: unset;
 }
 
+th a {
+    font-weight: normal;
+}
+
 .btn {
     border: 1px solid #dae0e5;
 }

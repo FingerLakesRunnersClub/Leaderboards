@@ -9,11 +9,7 @@ namespace FLRC.ChallengeDashboard.Controllers
         private readonly IDataService _dataService;
         public AthleteController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Index(uint id)
-        {
-            ViewBag.CourseNames = _dataService.CourseNames;
-            return View(await GetAthlete(id));
-        }
+        public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
 
         private async Task<AthleteViewModel> GetAthlete(uint id)
         {
@@ -21,9 +17,10 @@ namespace FLRC.ChallengeDashboard.Controllers
             var athlete = courses.SelectMany(c => c.Results.Select(r => r.Athlete)).FirstOrDefault(a => a.ID == id);
             var results = courses.Where(c => c.Results.Any(r => r.Athlete == athlete))
                 .ToDictionary(c => c, c => c.Results.Where(r => r.Athlete == athlete));
-            
+
             return new AthleteViewModel
             {
+                CourseNames = _dataService.CourseNames,
                 Athlete = athlete,
                 Results = results
             };
