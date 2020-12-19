@@ -1,5 +1,10 @@
 @using FLRC.ChallengeDashboard
 @model Course
 
-<h3>@Model.Name</h3>
-<h4>@Model.Distance (@Model.Type)</h4>
+<h4>@Model.Name</h4>
+<h5>@Model.Distance (@Model.Type)</h5>
+<h6>
+    <a href="@Model.URL">
+        Course Info
+    </a>
+</h6>
