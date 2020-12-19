@@ -10,7 +10,11 @@ namespace FLRC.ChallengeDashboard
         public T Value { get; set; }
         public uint Count { get; set; }
 
-        public Time BehindLeader { get; set; }
         public AgeGrade AgeGrade { get; set; }
+
+        public Time BehindLeader { get; set; }
+
+        public int Points => (int)(Result.Duration.Subtract(BehindLeader).Value.TotalSeconds /
+            Result.Duration.Value.TotalSeconds * 100);
     }
 }
