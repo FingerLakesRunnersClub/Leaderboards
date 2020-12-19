@@ -15,7 +15,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var behind = rankedResult.BehindLeader.Display;
 
             //assert
-            Assert.Equal("0:01:23.4", behind);
+            Assert.Equal("1:23.4", behind);
         }
 
         [Fact]
