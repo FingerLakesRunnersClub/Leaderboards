@@ -21,6 +21,12 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if (!table.Rows.Any())
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center text-danger">(no results yet)</td>
+                            </tr>
+                        }
                         @for (var x = 1; x <= table.Rows.Count(); x++)
                         {
                             var result = table.Rows.Skip(x - 1).First();
