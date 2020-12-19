@@ -3,10 +3,9 @@
     <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-lg">
         <thead>
             <tr>
-                <th v-for="field in fields" class="sortable" :class="{'text-center': field.center}"
-                    :style="{'flex-grow': field.width}" @@click="toggleSort(field)">
+                <th v-for="field in fields" class="sortable" :class="{'text-center': field.center}" @@click="toggleSort(field)">
                     <span v-if="field.center" class="spacer"></span>
-                    {{field.label || field.name}}
+                    {{field.name}}
                     <div class="spacer">
                         <span v-if="sort.field == field && !sort.descending">▾</span>
                         <span v-if="sort.field == field && sort.descending">▴</span>

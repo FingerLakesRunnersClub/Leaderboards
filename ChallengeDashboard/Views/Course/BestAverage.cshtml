@@ -5,17 +5,18 @@
 @await Html.PartialAsync("CourseInfo", Model.Course)
 @await Html.PartialAsync("ResultFilter")
 
-<div class="alert alert-info">Only athletes who have run this course at least @Model.Course.AverageThreshold(Model.Category) times are displayed</div>
+@{ var threshold = Model.Course.AverageThreshold(Model.Category);}
+
+<div class="alert alert-info">Only athletes who have run this course at least @threshold times are displayed</div>
 
 <script>
     const fields = [
-        { name: 'Rank', width: 1, center: true, value: r => r.Rank },
-        { name: 'Name', width: 2, center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
-        { name: 'Age', width: 1, center: true, value: r => r.Athlete.Age },
-        { name: 'Team', width: 1, center: true, value: r => r.Athlete.Team.Display },
-        { name: 'Category', width: 1, center: true, value: r => r.Athlete.Category.Display },
-        { name: 'Average Time', width: 2, center: true, value: r => r.Result.Duration.Display },
-        { name: '# of Runs', width: 2, center: true, value: r => r.Count }
+        { name: 'Rank', center: true, value: r => r.Rank },
+        { name: 'Name', center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
+        { name: 'Age', center: true, value: r => r.Athlete.Age },
+        { name: 'Team', center: true, value: r => r.Athlete.Team.Display },
+        { name: 'Average Time (Top @threshold)', center: true, value: r => r.Result.Duration.Display },
+        { name: '# of Runs', center: true, value: r => r.Count }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));

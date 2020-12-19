@@ -7,14 +7,14 @@
 
 <script>
     const fields = [
-        { name: 'Rank', width: 1, center: true, value: r => r.Rank },
-        { name: 'Name', width: 2, center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
-        { name: 'Age', width: 1, center: true, value: r => r.Athlete.Age },
-        { name: 'Team', width: 1, center: true, value: r => r.Athlete.Team.Display },
-        { name: 'Category', width: 1, center: true, value: r => r.Athlete.Category.Display },
-        { name: 'Time', width: 2, center: true, value: r => r.Result.Duration.Display },
-        { name: 'BehindLeader', label: 'Behind Leader', width: 2, center: true, value: r => '+' + r.BehindLeader.Display },
-        { name: 'AgeGrade', label: 'Age Grade', width: 1, center: true, value: r => r.AgeGrade.Display },
+        { name: 'Rank', center: true, value: r => r.Rank },
+        { name: 'Name', center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
+        { name: 'Age', center: true, value: r => r.Athlete.Age },
+        { name: 'Team', center: true, value: r => r.Athlete.Team.Display },
+        { name: 'Time', center: true, value: r => r.Result.Duration.Display },
+        { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display },
+        { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}` },
+        { name: 'Points', center: true, value: r => r.Points }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
