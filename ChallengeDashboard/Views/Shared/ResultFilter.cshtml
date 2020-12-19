@@ -1,61 +1,31 @@
-﻿@using FLRC.AgeGradeCalculator
-@using FLRC.ChallengeDashboard
+﻿@using FLRC.ChallengeDashboard
 @model ResultsViewModel
 
-<p>
-    @if (Model.ResultType == ResultType.Fastest)
-    {
-        <b>Fastest</b>
-    }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/Fastest/@Model.Category">Fastest</a>
-    }
-    |
-    @if (Model.ResultType == ResultType.MostRuns)
-    {
-        <b>Most Runs</b>
-    }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/MostRuns/@Model.Category">Most Runs</a>
-    }
-    |
-    @if (Model.ResultType == ResultType.BestAverage)
-    {
-        <b>Best Average</b>
-    }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/BestAverage/@Model.Category">Best Average</a>
-    }
-</p>
+@functions
+{
+    string style(ResultType type) => Model.ResultType.Value == type
+        ? "secondary"
+        : "light";
 
-<p>
-    @if (Model.Category == null)
+    string style(Category category) => (Model.Category == null && category == null)
+                                       || (Model.Category?.Equals(category) ?? false)
+        ? "secondary"
+        : "light";
+}
+
+<div class="btn-group mb-2">
+    @foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
     {
-        <b>All</b>
+        <a class="btn btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
     }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/@Model.ResultType">All</a>
-    }
-    |
-    @if (Model.Category == Category.M)
-    {
-        <b>M</b>
-    }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/@Model.ResultType/M">M</a>
-    }
-    |
-    @if (Model.Category == Category.F)
-    {
-        <b>F</b>
-    }
-    else
-    {
-        <a href="/Course/@Model.Course.ID/@Model.ResultType/F">F</a>
-    }
-</p>
+</div>
+
+@if (Model.ResultType.Value != ResultType.Team)
+{
+    <div class="btn-group mb-2">
+        <a class="btn btn-@style(null)" href="/Course/@Model.Course.ID/@Model.ResultType.Value">All</a>
+        <a class="btn btn-@style(Category.F)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/F">F</a>
+        <a class="btn btn-@style(Category.M)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/M">M</a>
+    </div>
+}
+<div class="clear clearfix"></div>
