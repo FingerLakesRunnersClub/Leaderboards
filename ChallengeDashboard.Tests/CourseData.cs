@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
-    public static class TestData
+    public static class CourseData
     {
         public static readonly Athlete Athlete1 = new Athlete { Category = Category.M };
         public static readonly Athlete Athlete2 = new Athlete { Category = Category.F };
