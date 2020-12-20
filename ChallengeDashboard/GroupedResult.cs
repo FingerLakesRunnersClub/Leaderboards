@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FLRC.ChallengeDashboard
 {
-    public class GroupedResult : IGrouping<Athlete, Result>, IComparable<GroupedResult>, IComparable
+    public class GroupedResult : IGrouping<Athlete, Result>, IComparable<GroupedResult>
     {
         private readonly IGrouping<Athlete, Result> _group;
 
@@ -24,6 +24,5 @@ namespace FLRC.ChallengeDashboard
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public int CompareTo(GroupedResult other) => _group.Key.ID.CompareTo(other.Key.ID);
-        public int CompareTo(object obj) => CompareTo(obj as GroupedResult);
     }
 }
