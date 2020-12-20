@@ -1,4 +1,5 @@
 {
+  "Rules": "https://example.com",
   "Courses": [
     {
       "ID": 123,

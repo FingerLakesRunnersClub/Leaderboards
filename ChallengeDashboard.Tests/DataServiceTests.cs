@@ -11,6 +11,21 @@ namespace FLRC.ChallengeDashboard.Tests
     public class DataServiceTests
     {
         [Fact]
+        public void CanGetCourseNames()
+        {
+            //arrange
+            var api = Substitute.For<IDataAPI>();
+            var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+            var dataService = new DataService(api, config);
+
+            //act
+            var courseNames = dataService.CourseNames;
+
+            //assert
+            Assert.Equal("Virgil Crest Ultramarathons", courseNames.First().Value);
+        }
+
+        [Fact]
         public async Task CanParseResultsFromAPI()
         {
             //arrange

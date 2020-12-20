@@ -93,5 +93,41 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal((uint)234, ((ResultsViewModel<ushort>)(response.Model)).RankedResults.First().Athlete.ID);
         }
+
+        [Fact]
+        public async Task CanGetTeamResults()
+        {
+            //arrange
+            var course = new Course
+            {
+                Meters = 10 * Course.MetersPerMile,
+                Results = new List<Result>
+                {
+                    new Result {Athlete = new Athlete {ID = 123, Age = 20}, Duration = new Time(TimeSpan.Parse("2:34"))},
+                    new Result {Athlete = new Athlete {ID = 123, Age = 20}, Duration = new Time(TimeSpan.Parse("2:35"))},
+                    new Result {Athlete = new Athlete {ID = 234, Age = 30}, Duration = new Time(TimeSpan.Parse("1:23"))},
+                }
+            };
+
+            var dataService = Substitute.For<IDataService>();
+            dataService.GetResults(Arg.Any<uint>()).Returns(course);
+
+            var controller = new CourseController(dataService);
+
+            //act
+            var response = await controller.Team(123);
+
+            //assert
+            var vm = (TeamResultsViewModel)response.Model;
+            var results = vm.Results.ToList();
+            var team2 = results.First(r => r.Team == Athlete.Teams[2]);
+            var team3 = results.First(r => r.Team == Athlete.Teams[3]);
+            Assert.Equal(7, team3.AgeGradePoints);
+            Assert.Equal(6, team2.AgeGradePoints);
+            Assert.Equal(7, team2.MostRunsPoints);
+            Assert.Equal(6, team3.MostRunsPoints);
+            Assert.Equal(13, team2.TotalPoints);
+            Assert.Equal(13, team3.TotalPoints);
+        }
     }
 }
