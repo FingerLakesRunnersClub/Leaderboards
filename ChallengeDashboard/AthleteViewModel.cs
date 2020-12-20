@@ -6,7 +6,7 @@ namespace FLRC.ChallengeDashboard
     {
         public override string Title => Athlete.Name;
 
-        public Athlete Athlete { get; set; }
-        public IDictionary<Course, IEnumerable<Result>> Results { get; set; }
+        public Athlete Athlete { get; init; }
+        public IDictionary<Course, IEnumerable<Result>> Results { get; init; }
     }
 }

@@ -1,20 +1,17 @@
-﻿using System;
-
-namespace FLRC.ChallengeDashboard
+﻿namespace FLRC.ChallengeDashboard
 {
     public class Ranked<T>
     {
-        public ushort Rank { get; set; }
-        public Athlete Athlete { get; set; }
-        public Result Result { get; set; }
-        public T Value { get; set; }
-        public uint Count { get; set; }
+        public ushort Rank { get; init; }
+        public Athlete Athlete { get; init; }
+        public Result Result { get; init; }
+        public T Value { get; init; }
+        public uint Count { get; init; }
 
-        public AgeGrade AgeGrade { get; set; }
+        public AgeGrade AgeGrade { get; init; }
 
-        public Time BehindLeader { get; set; }
+        public Time BehindLeader { get; init; }
 
-        public int Points => (int)(Result.Duration.Subtract(BehindLeader).Value.TotalSeconds /
-            Result.Duration.Value.TotalSeconds * 100);
+        public int Points => (int)(Result.Duration.Subtract(BehindLeader).Value.TotalSeconds / Result.Duration.Value.TotalSeconds * 100);
     }
 }

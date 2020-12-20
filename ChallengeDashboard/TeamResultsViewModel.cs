@@ -4,6 +4,6 @@ namespace FLRC.ChallengeDashboard
 {
     public class TeamResultsViewModel : ResultsViewModel
     {
-        public IEnumerable<TeamResults> Results { get; set; }
+        public IEnumerable<TeamResults> Results { get; init; }
     }
 }

@@ -6,12 +6,14 @@ namespace FLRC.ChallengeDashboard
 {
     public class Course
     {
-        public uint ID { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public string Distance { get; set; }
+        public const double MetersPerMile = 1609.344;
+
+        public uint ID { get; init; }
+        public string Name { get; init; }
+        public string Type { get; init; }
+        public string Distance { get; init; }
         public double Meters { get; set; }
-        public string URL { get; set; }
+        public string URL { get; init; }
 
         public IEnumerable<Result> Results { get; set; }
 
@@ -25,7 +27,7 @@ namespace FLRC.ChallengeDashboard
             => RankDescending(category, rs => true, r => r.Average(), r => (ushort)r.Count());
 
         private IEnumerable<GroupedResult> GroupedResults(Category category = null)
-            => Results.Where(r => category == null || r.Athlete.Category.Equals(category))
+            => Results.Where(r => category == null || (r.Athlete.Category?.Equals(category) ?? false))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
         public ushort AverageThreshold(Category category = null)
@@ -40,7 +42,7 @@ namespace FLRC.ChallengeDashboard
                 .Select(t => new TeamResults
                 {
                     Team = t.Key,
-                    AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration)).Take(10).Select(r => AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(r.First().Athlete.Category.Value ?? Category.M.Value ?? throw null, r.First().Athlete.Age, Meters, r.First().Duration.Value)).Average()),
+                    AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration)).Take(10).Select(r => AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(r.First().Athlete.Category?.Value ?? Category.M.Value ?? throw null, r.First().Athlete.Age, Meters, r.First().Duration.Value)).Average()),
                     TotalRuns = (ushort)t.Sum(rs => rs.Count())
                 }).ToList();
 

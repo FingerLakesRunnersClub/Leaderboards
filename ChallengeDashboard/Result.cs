@@ -5,9 +5,9 @@ namespace FLRC.ChallengeDashboard
     public class Result : IComparable<Result>
     {
 
-        public Athlete Athlete { get; set; }
-        public DateTime? StartTime { get; set; }
-        public Time Duration { get; set; }
+        public Athlete Athlete { get; init; }
+        public DateTime? StartTime { get; init; }
+        public Time Duration { get; init; }
 
         public int CompareTo(Result other) => Duration.CompareTo(other.Duration);
 

@@ -2,13 +2,13 @@ namespace FLRC.ChallengeDashboard
 {
     public class TeamResults
     {
-        public byte Rank { get; internal set; }
-        public Team Team { get; set; }
+        public byte Rank { get; set; }
+        public Team Team { get; init; }
 
-        public AgeGrade AverageAgeGrade { get; set; }
+        public AgeGrade AverageAgeGrade { get; init; }
         public double AgeGradePoints { get; set; }
 
-        public ushort TotalRuns { get; set; }
+        public ushort TotalRuns { get; init; }
         public byte MostRunsPoints { get; set; }
 
         public byte TotalPoints => (byte)(AgeGradePoints + MostRunsPoints);
