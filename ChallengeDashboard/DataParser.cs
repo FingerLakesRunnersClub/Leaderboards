@@ -34,7 +34,7 @@ namespace FLRC.ChallengeDashboard
                 case "mi":
                 case "mile":
                 case "miles":
-                    return digits * 1609.344;
+                    return digits * Course.MetersPerMile;
             }
 
             return digits;

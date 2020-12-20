@@ -7,7 +7,7 @@
 
 <h5>
     Total runs: @Model.RankedResults.Sum(r => r.Value)
-    (@(Model.RankedResults.Sum(r => r.Value) * Model.Course.Meters / 1609.344) miles)
+    (@(Model.RankedResults.Sum(r => r.Value) * Model.Course.Meters / Course.MetersPerMile) miles)
 </h5>
 
 <h6>Average runs per athlete: @Model.Course.AverageThreshold(Model.Category)</h6>
