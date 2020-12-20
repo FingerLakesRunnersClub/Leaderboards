@@ -7,7 +7,7 @@ namespace FLRC.ChallengeDashboard
 
     public class ResultsViewModel : ViewModel
     {
-        public override string Title => $"{ResultType.Display} — {Course.Name}";
+        public override string Title => $"{ResultType.Display} â€” {Course.Name}";
 
         public FormattedResultType ResultType { get; set; }
         public Category Category { get; set; }

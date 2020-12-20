@@ -14,8 +14,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var teamName = team.Display;
 
             //assert
-            Assert.StartsWith("20", teamName);
-            Assert.EndsWith("29", teamName);
+            Assert.Equal("20–29", teamName);
         }
     }
 }

@@ -42,5 +42,37 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Empty(results);
         }
+
+        [Theory]
+        [InlineData("1 mile", 1609.344)]
+        [InlineData("2 miles", 2 * 1609.344)]
+        [InlineData("3 mi", 3 * 1609.344)]
+        [InlineData("1000 m", 1000)]
+        [InlineData("2 km", 2000)]
+        [InlineData("3 K", 3000)]
+        public void CanParseDistance(string distance, double expected)
+        {
+            //act
+            var actual = DataParser.ParseDistance(distance);
+
+            //assert
+            Assert.Equal(expected, actual);
+        }
+
+        [Theory]
+        [InlineData("F", AgeGradeCalculator.Category.F)]
+        [InlineData("M", AgeGradeCalculator.Category.M)]
+        [InlineData("X", null)]
+        public void CanParseCategory(string cat, AgeGradeCalculator.Category? expected)
+        {
+            //act
+            var category = DataParser.ParseCategory(cat);
+
+            //assert
+            if (expected != null)
+                Assert.Equal(expected, category.Value);
+            else
+                Assert.Null(category);
+        }
     }
 }
