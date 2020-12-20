@@ -12,16 +12,22 @@ namespace FLRC.ChallengeDashboard
 
         public DashboardViewModel(IEnumerable<Course> courses) => _courses = courses;
 
-
-        public List<DashboardResultsTable> OverallResults => new List<DashboardResultsTable>
+        public List<DashboardResultsTable> OverallResults
         {
-            new DashboardResultsTable
+            get
             {
-                Title = "Top Teams",
-                ResultType = new FormattedResultType(ResultType.Team),
-                Rows = Athlete.Teams.ToDictionary(t => t.Value, t => (byte)CourseResults.Sum(r => r.Key.TeamPoints().FirstOrDefault(p => p.Team == t.Value)?.TotalPoints ?? 0)).OrderBy(t => t.Value).Take(3).Select(t => new DashboardResultRow { Name = t.Key.Display, Value = t.Value.ToString() })
+                var teamResults = _courses.SelectMany(c => c.TeamPoints()).GroupBy(r => r.Team).ToDictionary(g => g.Key, g => g.Sum(r => r.TotalPoints));
+                return new List<DashboardResultsTable>
+                {
+                    new DashboardResultsTable
+                    {
+                        Title = "Top Teams",
+                        ResultType = new FormattedResultType(ResultType.Team),
+                        Rows = teamResults.Select(t => new DashboardResultRow { Name = t.Key.Display, Value = t.Value.ToString() })
+                    }
+                };
             }
-        };
+        }
 
 
         public IDictionary<Course, List<DashboardResultsTable>> CourseResults => _courses.ToDictionary(c => c, Course =>
