@@ -63,8 +63,8 @@ namespace FLRC.ChallengeDashboard.Tests
             
             //assert
             var result = results.First();
-            Assert.StartsWith("13", result.Rows.First().Value);
-            Assert.StartsWith("13", result.Rows.Skip(1).First().Value);
+            Assert.StartsWith("3", result.Rows.First().Value);
+            Assert.StartsWith("3", result.Rows.Skip(1).First().Value);
         }
     }
 }

@@ -122,12 +122,12 @@ namespace FLRC.ChallengeDashboard.Tests
             var results = vm.Results.ToList();
             var team2 = results.First(r => r.Team == Athlete.Teams[2]);
             var team3 = results.First(r => r.Team == Athlete.Teams[3]);
-            Assert.Equal(7, team3.AgeGradePoints);
-            Assert.Equal(6, team2.AgeGradePoints);
-            Assert.Equal(7, team2.MostRunsPoints);
-            Assert.Equal(6, team3.MostRunsPoints);
-            Assert.Equal(13, team2.TotalPoints);
-            Assert.Equal(13, team3.TotalPoints);
+            Assert.Equal(1, team3.AgeGradePoints);
+            Assert.Equal(2, team2.AgeGradePoints);
+            Assert.Equal(1, team2.MostRunsPoints);
+            Assert.Equal(2, team3.MostRunsPoints);
+            Assert.Equal(3, team2.TotalPoints);
+            Assert.Equal(3, team3.TotalPoints);
         }
     }
 }
