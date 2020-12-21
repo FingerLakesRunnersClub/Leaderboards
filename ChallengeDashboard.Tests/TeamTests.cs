@@ -4,17 +4,20 @@ namespace FLRC.ChallengeDashboard.Tests
 {
     public class TeamTests
     {
-        [Fact]
-        public void CanGetTeamDisplayNameFromAge()
+        [Theory]
+        [InlineData(1, "1–19")]
+        [InlineData(2, "20–29")]
+        [InlineData(7, "70+")]
+        public void CanGetTeamDisplayNameFromAge(byte id, string expected)
         {
             //arrange
-            var team = new Team(2);
+            var team = new Team(id);
 
             //act
             var teamName = team.Display;
 
             //assert
-            Assert.Equal("20–29", teamName);
+            Assert.Equal(expected, teamName);
         }
     }
 }

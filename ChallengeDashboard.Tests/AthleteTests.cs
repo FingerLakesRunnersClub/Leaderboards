@@ -25,7 +25,7 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Theory]
-        [InlineData(19, 2)]
+        [InlineData(19, 1)]
         [InlineData(20, 2)]
         [InlineData(29, 2)]
         [InlineData(70, 7)]

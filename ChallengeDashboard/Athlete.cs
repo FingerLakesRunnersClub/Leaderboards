@@ -16,10 +16,10 @@ namespace FLRC.ChallengeDashboard
 
         public byte AgeAsOf(DateTime date) => (byte)(date.Subtract(DateOfBirth).TotalDays / 365.2425);
 
-        public Team Team => Age < 20 ? Teams[2]
+        public Team Team => Age < 20 ? Teams[1]
             : Age >= 80 ? Teams[7]
             : Teams[(byte)(Age / 10)];
 
-        public static IDictionary<byte, Team> Teams = Enumerable.Range(2, 6).ToDictionary(t => (byte)t, t => new Team((byte)t));
+        public static IDictionary<byte, Team> Teams = Enumerable.Range(1, 7).ToDictionary(t => (byte)t, t => new Team((byte)t));
     }
 }
