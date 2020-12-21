@@ -16,13 +16,13 @@ new Vue({
             if (!this.sort.field)
                 this.sort.field = this.fields[0];
             const sorted = this.results.concat().sort((r1, r2) => {
-                const v1 = this.sort.field.value(r1);
-                const v2 = this.sort.field.value(r2);
+                const v1 = this.sort.field.sort ? this.sort.field.sort(r1) : this.sort.field.value(r1);
+                const v2 = this.sort.field.sort ? this.sort.field.sort(r2) : this.sort.field.value(r2);
                 return v1 > v2 ? 1
                     : (v1 < v2 ? -1
                         : 0);
             });
-            return this.sort.descending ? sorted.reverse() : sorted;
+            return this.sort.descending ^ this.sort.field.descending ? sorted.reverse() : sorted;
         }
     },
     methods: {
