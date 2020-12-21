@@ -14,7 +14,7 @@
         { name: 'Time', center: true, value: r => r.Result.Duration.Display },
         { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display },
         { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}` },
-        { name: 'Points', center: true, value: r => r.Points }
+        { name: 'Points', center: true, value: r => r.Points.Display }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));

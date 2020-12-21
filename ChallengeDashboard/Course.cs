@@ -92,6 +92,7 @@ namespace FLRC.ChallengeDashboard
                     Value = value,
                     Count = (uint)results.Count(),
                     BehindLeader = rank == 1 ? new Time(TimeSpan.Zero) : result.Behind(ranks.First().Result),
+                    Points = new Points(rank == 1 ? 100 : ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100), 
                     AgeGrade = new AgeGrade(athlete.Category != null
                         ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category.Value ?? throw null, athlete.Age, Meters, result.Duration.Value)
                         : 0)

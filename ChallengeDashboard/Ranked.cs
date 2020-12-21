@@ -12,6 +12,6 @@
 
         public Time BehindLeader { get; init; }
 
-        public int Points => (int)(Result.Duration.Subtract(BehindLeader).Value.TotalSeconds / Result.Duration.Value.TotalSeconds * 100);
+        public Points Points { get; init; }
     }
 }

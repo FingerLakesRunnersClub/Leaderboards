@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
@@ -111,6 +113,32 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Single(avg);
             Assert.Equal(CourseData.Athlete4, avg[0].Athlete);
+        }
+        
+        [Fact]
+        public void CanGetPointsForFastestTime()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results };
+
+            //act
+            var results = course.Fastest();
+
+            //assert
+            Assert.Equal(100, results.First().Points.Value);
+        }
+        
+        [Fact]
+        public void CanGetPointsBasedOnFastestTime()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results };
+
+            //act
+            var results = course.Fastest(Category.M);
+
+            //assert
+            Assert.Equal(75, results.Skip(1).First().Points.Value);
         }
     }
 }

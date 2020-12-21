@@ -12,7 +12,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
         public static readonly IEnumerable<Result> Results = new List<Result>()
         {
-            new Result { Athlete = Athlete1, Duration = new Time(TimeSpan.Parse("1:23:45.6")) },
+            new Result { Athlete = Athlete1, Duration = new Time(TimeSpan.Parse("1:20:00.0")) },
             new Result { Athlete = Athlete1, Duration = new Time(TimeSpan.Parse("2:34:56.7")) },
             new Result { Athlete = Athlete2, Duration = new Time(TimeSpan.Parse("0:54:32.1")) },
             new Result { Athlete = Athlete3, Duration = new Time(TimeSpan.Parse("1:02:03.4")) },
