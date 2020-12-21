@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -25,10 +26,16 @@ namespace FLRC.ChallengeDashboard
 
         public async Task<Course> GetResults(uint id)
         {
-            if (_courses[id].Results == null)
+            if (_courses[id].LastUpdated < DateTime.Now.Subtract(TimeSpan.FromSeconds(5)))
             {
                 var json = await _api.GetResults(id);
-                _courses[id].Results = DataParser.ParseCourse(json);
+                var newHash = json.GetHashCode();
+                if (newHash != _courses[id].LastHash)
+                {
+                    _courses[id].Results = DataParser.ParseCourse(json);
+                    _courses[id].LastHash = newHash;
+                }
+                _courses[id].LastUpdated = DateTime.Now;
             }
 
             return _courses[id];

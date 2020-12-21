@@ -14,6 +14,9 @@ namespace FLRC.ChallengeDashboard
         public string Distance { get; init; }
         public double Meters { get; set; }
         public string URL { get; init; }
+        
+        public DateTime LastUpdated { get; set; }
+        public int LastHash { get; set; }
 
         public IEnumerable<Result> Results { get; set; }
 
