@@ -35,8 +35,8 @@ namespace FLRC.ChallengeDashboard
                 },
                 new DashboardResultsTable
                 {
-                    Title = "Most Runs",
-                    Rows = _courses.SelectMany(c => c.MostRuns())
+                    Title = "Most Miles",
+                    Rows = _courses.SelectMany(c => c.MostMiles())
                         .GroupBy(r => r.Athlete)
                         .ToDictionary(g => g.Key, g => g.Sum(r => r.Value))
                         .OrderByDescending(r => r.Value).Take(3)

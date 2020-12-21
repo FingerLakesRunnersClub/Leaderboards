@@ -64,7 +64,7 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.First().Name);
             Assert.Equal("A1", results.First(r => r.Title == "Most Points (M)").Rows.First().Name);
-            Assert.Equal("A2", results.First(r => r.Title == "Most Runs").Rows.First().Name);
+            Assert.Equal("A2", results.First(r => r.Title == "Most Miles").Rows.First().Name);
             Assert.StartsWith("20", results.First(r => r.Title == "Top Teams").Rows.First().Name);
         }
     }

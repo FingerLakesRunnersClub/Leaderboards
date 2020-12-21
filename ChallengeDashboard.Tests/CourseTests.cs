@@ -71,6 +71,38 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public void CanGetMostMiles()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results, Meters = 2 * Course.MetersPerMile };
+
+            //act
+            var most = course.MostMiles().ToArray();
+
+            //assert
+            Assert.Equal(4, most.Length);
+            Assert.Equal(CourseData.Athlete4, most[0].Athlete);
+            Assert.Equal(CourseData.Athlete3, most[1].Athlete);
+            Assert.Equal(CourseData.Athlete1, most[2].Athlete);
+            Assert.Equal(CourseData.Athlete2, most[3].Athlete);
+        }
+
+        [Fact]
+        public void CanGetMostMilesForCategory()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results };
+
+            //act
+            var most = course.MostMiles(Category.M).ToArray();
+
+            //assert
+            Assert.Equal(2, most.Length);
+            Assert.Equal(CourseData.Athlete3, most[0].Athlete);
+            Assert.Equal(CourseData.Athlete1, most[1].Athlete);
+        }
+
+        [Fact]
         public void CanGetBestAverage()
         {
             //arrange

@@ -29,6 +29,9 @@ namespace FLRC.ChallengeDashboard
         public RankedList<ushort> MostRuns(Category category = null)
             => RankDescending(category, rs => true, r => r.Average(), r => (ushort)r.Count());
 
+        public RankedList<double> MostMiles(Category category = null)
+            => RankDescending(category, rs => true, r => r.Average(), r => r.Count() * Meters / MetersPerMile);
+
         private IEnumerable<GroupedResult> GroupedResults(Category category = null)
             => Results.Where(r => category == null || (r.Athlete.Category?.Equals(category) ?? false))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
