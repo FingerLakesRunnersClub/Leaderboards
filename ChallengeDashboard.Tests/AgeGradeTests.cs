@@ -8,13 +8,13 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanDisplayRoundedAgeGradeAsPercent()
         {
             //arrange
-            var ageGrade = new AgeGrade(98.76);
+            var ageGrade = new AgeGrade(98.765);
 
             //act
             var display = ageGrade.Display;
 
             //assert
-            Assert.Equal("98.8%", display);
+            Assert.Equal("98.77%", display);
         }
 
         [Fact]
