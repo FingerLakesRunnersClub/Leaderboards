@@ -14,7 +14,7 @@ namespace FLRC.ChallengeDashboard
         public string Distance { get; init; }
         public double Meters { get; set; }
         public string URL { get; init; }
-        
+
         public DateTime LastUpdated { get; set; }
         public int LastHash { get; set; }
 
@@ -54,8 +54,8 @@ namespace FLRC.ChallengeDashboard
 
             var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
             for (var x = 0; x < fastestTeams.Length; x++)
-                fastestTeams[x].AgeGradePoints = x > 0 && fastestTeams[x].AverageAgeGrade.Equals(fastestTeams[x-1].AverageAgeGrade)
-                    ? fastestTeams[x-1].AgeGradePoints
+                fastestTeams[x].AgeGradePoints = x > 0 && fastestTeams[x].AverageAgeGrade.Equals(fastestTeams[x - 1].AverageAgeGrade)
+                    ? fastestTeams[x - 1].AgeGradePoints
                     : (byte)(x + 1);
 
             var mostRunTeams = teamResults.OrderByDescending(t => t.TotalRuns).ToArray();
@@ -64,13 +64,7 @@ namespace FLRC.ChallengeDashboard
                         ? mostRunTeams[x - 1].MostRunsPoints
                         : (byte)(x + 1);
 
-            var topTeams = teamResults.OrderBy(t => t.TotalPoints).ToArray();
-            for (var x = 0; x < topTeams.Length; x++)
-                topTeams[x].Rank = x > 0 && topTeams[x].TotalPoints == topTeams[x - 1].TotalPoints
-                    ? topTeams[x - 1].Rank
-                    : (byte)(x + 1);
-
-            return topTeams.ToList();
+            return teamResults.Rank();
         }
 
         private RankedList<T> Rank<T>(Category category, Func<GroupedResult, bool> filter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
@@ -98,7 +92,7 @@ namespace FLRC.ChallengeDashboard
                     Value = value,
                     Count = (uint)results.Count(),
                     BehindLeader = rank == 1 ? new Time(TimeSpan.Zero) : result.Behind(ranks.First().Result),
-                    Points = new Points(rank == 1 ? 100 : ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100), 
+                    Points = new Points(rank == 1 ? 100 : ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
                     AgeGrade = new AgeGrade(athlete.Category != null
                         ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category.Value ?? throw null, athlete.Age, Meters, result.Duration.Value)
                         : 0)
