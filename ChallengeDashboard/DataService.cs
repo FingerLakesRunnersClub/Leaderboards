@@ -29,7 +29,7 @@ namespace FLRC.ChallengeDashboard
             if (_courses[id].LastUpdated < DateTime.Now.Subtract(TimeSpan.FromSeconds(5)))
             {
                 var json = await _api.GetResults(id);
-                var newHash = json.GetHashCode();
+                var newHash = json.ToString()?.GetHashCode() ?? 0;
                 if (newHash != _courses[id].LastHash)
                 {
                     _courses[id].Results = DataParser.ParseCourse(json);
