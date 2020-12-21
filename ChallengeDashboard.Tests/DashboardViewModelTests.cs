@@ -62,9 +62,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var results = vm.OverallResults;
             
             //assert
-            var result = results.First();
-            Assert.StartsWith("3", result.Rows.First().Value);
-            Assert.StartsWith("3", result.Rows.Skip(1).First().Value);
+            Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.First().Name);
+            Assert.Equal("A1", results.First(r => r.Title == "Most Points (M)").Rows.First().Name);
+            Assert.Equal("A2", results.First(r => r.Title == "Most Runs").Rows.First().Name);
+            Assert.StartsWith("20", results.First(r => r.Title == "Top Teams").Rows.First().Name);
         }
     }
 }

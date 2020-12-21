@@ -1,45 +1,21 @@
 ﻿@using FLRC.ChallengeDashboard
 @model DashboardViewModel
 
+<h3>Overall</h3>
+<div class="row">
+    @foreach (var table in Model.OverallResults)
+    {
+        @await Html.PartialAsync("Table", table)
+    }
+</div>
+
 @foreach (var results in Model.CourseResults)
 {
     <h4>@results.Key.Name</h4>
-
     <div class="row">
         @foreach (var table in results.Value)
         {
-            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-                <table class="table table-bordered table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th colspan="3">
-                                <span class="d-flex justify-content-between">
-                                    <span>@table.Title</span>
-                                    <a href="/Course/@results.Key.ID/@table.ResultType.Value/@table.Category?.Value">View All</a>
-                                </span>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!table.Rows.Any())
-                        {
-                            <tr>
-                                <td colspan="3" class="text-center text-danger">(no results yet)</td>
-                            </tr>
-                        }
-                        @for (var x = 1; x <= table.Rows.Count(); x++)
-                        {
-                            var result = table.Rows.Skip(x - 1).First();
-
-                            <tr>
-                                <td class="text-center">@x</td>
-                                <td>@result.Name</td>
-                                <td class="text-center">@result.Value</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+            @await Html.PartialAsync("Table", table)
         }
     </div>
 }

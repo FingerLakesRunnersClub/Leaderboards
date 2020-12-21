@@ -8,6 +8,7 @@ namespace FLRC.ChallengeDashboard
         public Course Course { get; init; }
         public FormattedResultType ResultType { get; init; }
         public Category Category { get; init; }
+        public string Link { get; set; }
         public IEnumerable<DashboardResultRow> Rows { get; init; }
     }
 }
