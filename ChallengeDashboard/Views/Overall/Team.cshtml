@@ -1,0 +1,19 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model OverallTeamResultsViewModel
+
+<h2>@Model.Title</h2>
+
+<script>
+    const fields = [
+        { name: 'Rank', center: true, value: r => r.Rank },
+        { name: 'Team', center: false, value: r => r.Team.Display },
+        { name: 'Age Grade Points', center: true, value: r => r.AgeGradePoints },
+        { name: 'Most Runs Points', center: true, value: r => r.MostRunsPoints },
+        { name: 'Total Points', center: true, value: r => r.TotalPoints },
+    ];
+
+    results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+</script>
+
+@await Html.PartialAsync("Results")

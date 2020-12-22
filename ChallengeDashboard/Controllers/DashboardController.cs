@@ -9,7 +9,7 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public DashboardController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<IActionResult> Index() => View(await GetDashboard());
+        public async Task<ViewResult> Index() => View(await GetDashboard());
 
         private async Task<DashboardViewModel> GetDashboard()
         {

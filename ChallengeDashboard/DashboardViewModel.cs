@@ -13,45 +13,43 @@ namespace FLRC.ChallengeDashboard
         public DashboardViewModel(IEnumerable<Course> courses) => _courses = courses;
 
         public List<DashboardResultsTable> OverallResults
-            => new List<DashboardResultsTable>
+        {
+            get
             {
-                new DashboardResultsTable
+                var vm = new OverallViewModel(_courses);
+                return new List<DashboardResultsTable>
                 {
-                    Title = "Most Points (F)",
-                    Rows = _courses.SelectMany(c => c.Fastest(Category.F))
-                        .GroupBy(r => r.Athlete)
-                        .ToDictionary(g => g.Key, g => g.Sum(r => r.Points.Value))
-                        .OrderByDescending(r => r.Value).Take(3)
-                        .Select(r => new DashboardResultRow {Name = r.Key.Name, Value = new Points(r.Value).Display})
-                },
-                new DashboardResultsTable
-                {
-                    Title = "Most Points (M)",
-                    Rows = _courses.SelectMany(c => c.Fastest(Category.M))
-                        .GroupBy(r => r.Athlete)
-                        .ToDictionary(g => g.Key, g => g.Sum(r => r.Points.Value))
-                        .OrderByDescending(r => r.Value).Take(3)
-                        .Select(r => new DashboardResultRow {Name = r.Key.Name, Value = new Points(r.Value).Display})
-                },
-                new DashboardResultsTable
-                {
-                    Title = "Most Miles",
-                    Rows = _courses.SelectMany(c => c.MostMiles())
-                        .GroupBy(r => r.Athlete)
-                        .ToDictionary(g => g.Key, g => g.Sum(r => r.Value))
-                        .OrderByDescending(r => r.Value).Take(3)
-                        .Select(r => new DashboardResultRow {Name = r.Key.Name, Value = r.Value.ToString()})
-                },
-                new DashboardResultsTable
-                {
-                    Title = "Top Teams",
-                    Rows = _courses.SelectMany(c => c.TeamPoints())
-                        .GroupBy(r => r.Team)
-                        .ToDictionary(g => g.Key, g => g.Sum(r => r.TotalPoints) + 14 * (10 - g.Count()))
-                        .OrderBy(g => g.Value).Take(3)
-                        .Select(t => new DashboardResultRow {Name = t.Key.Display, Value = t.Value.ToString()})
-                }
-            };
+                    new DashboardResultsTable
+                    {
+                        Title = "Most Points (F)",
+                        Link = "/Overall/Points/F",
+                        Rows = vm.MostPoints(Category.F).Take(3)
+                            .Select(r => new DashboardResultRow {Name = r.Athlete.Name, Value = r.Value.Display })
+                    },
+                    new DashboardResultsTable
+                    {
+                        Title = "Most Points (M)",
+                        Link = "/Overall/Points/M",
+                        Rows = vm.MostPoints(Category.M).Take(3)
+                            .Select(r => new DashboardResultRow {Name = r.Athlete.Name, Value = r.Value.Display})
+                    },
+                    new DashboardResultsTable
+                    {
+                        Title = "Most Miles",
+                        Link = "/Overall/Miles",
+                        Rows = vm.MostMiles().Take(3)
+                            .Select(r => new DashboardResultRow {Name = r.Athlete.Name, Value = r.Value.ToString()})
+                    },
+                    new DashboardResultsTable
+                    {
+                        Title = "Top Teams",
+                        Link = "/Overall/Team",
+                        Rows = vm.TeamPoints().Take(3)
+                            .Select(t => new DashboardResultRow {Name = t.Team.Display, Value = t.TotalPoints.ToString() })
+                    }
+                };
+            }
+        }
 
         public IDictionary<Course, List<DashboardResultsTable>> CourseResults => _courses.ToDictionary(c => c, c =>
             new List<DashboardResultsTable>
