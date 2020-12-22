@@ -32,3 +32,7 @@ th.sortable .spacer {
     display: inline-block;
     width: 1rem;
 }
+
+[v-cloak] {
+    display: none;
+}
