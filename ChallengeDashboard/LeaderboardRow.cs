@@ -1,6 +1,6 @@
 ﻿namespace FLRC.ChallengeDashboard
 {
-    public class DashboardResultRow
+    public class LeaderboardRow
     {
         public string Name { get; init; }
         public string Value { get; init; }

@@ -4,19 +4,19 @@ using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
-    public class DashboardViewModelTests
+    public class LeaderboardViewModelTests
     {
         [Fact]
         public void TitleIsStatic()
         {
             //arrange
-            var vm = new DashboardViewModel(new List<Course>());
+            var vm = new LeaderboardViewModel(new List<Course>());
             
             //act
             var title = vm.Title;
             
             //assert
-            Assert.Equal("Dashboard", title);
+            Assert.Equal("Leaderboard", title);
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var courses = new List<Course> {new Course {Name = "Virgil Crest Ultramarathons"}};
-            var vm = new DashboardViewModel(courses);
+            var vm = new LeaderboardViewModel(courses);
             
             //act
             var names = vm.CourseNames;
@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CourseResultsContainsAllTables()
         {
             //arrange
-            var vm = new DashboardViewModel(DashboardData.Courses);
+            var vm = new LeaderboardViewModel(LeaderboardData.Courses);
 
             //act
             var results = vm.CourseResults;
@@ -56,7 +56,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void OverallResultsContainsAllTables()
         {
             //arrange
-            var vm = new DashboardViewModel(DashboardData.Courses);
+            var vm = new LeaderboardViewModel(LeaderboardData.Courses);
             
             //act
             var results = vm.OverallResults;

@@ -5,14 +5,14 @@ using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
-    public class DashboardControllerTests
+    public class LeaderboardControllerTests
     {
         [Fact]
-        public async Task CanDashboardGetsAllCourses()
+        public async Task CanGetAllCourses()
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            var controller = new DashboardController(dataService);
+            var controller = new LeaderboardController(dataService);
 
             //act
             await controller.Index();

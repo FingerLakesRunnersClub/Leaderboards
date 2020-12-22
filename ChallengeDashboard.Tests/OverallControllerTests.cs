@@ -13,7 +13,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetAllResults().Returns(DashboardData.Courses);
+            dataService.GetAllResults().Returns(LeaderboardData.Courses);
             var controller = new OverallController(dataService);
 
             //act
@@ -21,7 +21,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (OverallResultsViewModel<Points>) response.Model;
-            Assert.Equal(DashboardData.Athlete1, vm.RankedResults.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete1, vm.RankedResults.First().Athlete);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetAllResults().Returns(DashboardData.Courses);
+            dataService.GetAllResults().Returns(LeaderboardData.Courses);
             var controller = new OverallController(dataService);
 
             //act
@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (OverallResultsViewModel<double>) response.Model;
-            Assert.Equal(DashboardData.Athlete2, vm.RankedResults.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Athlete);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetAllResults().Returns(DashboardData.Courses);
+            dataService.GetAllResults().Returns(LeaderboardData.Courses);
             var controller = new OverallController(dataService);
 
             //act
