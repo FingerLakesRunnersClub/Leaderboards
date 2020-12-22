@@ -3,9 +3,6 @@ version: '3'
 services:
   dashboard:
     build:
-      context: .
       dockerfile: Dockerfile.dev
-    ports:
-    - "5000:80"
     volumes:
     - ".:/app"

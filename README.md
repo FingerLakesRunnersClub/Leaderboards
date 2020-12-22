@@ -8,3 +8,9 @@ Throughout 2021, the Finger Lakes Runners Club Challenge will open 10 race cours
 - Run `dotnet watch --project ChallengeDashboard run` to start the server
 - Browse to `http://localhost:5000`
 - Run `dotnet test` to run tests before committing/pushing
+
+## Running via Docker
+
+- Run `./dcd up` (where `dcd` is short for Docker Compose Dev, a simple Bash script that translates Docker Compose commands to always use )
+- Browse to `http://localhost:5000`
+- Run `docker-compose exec dashboard dotnet test` to run tests before committing/pushing
