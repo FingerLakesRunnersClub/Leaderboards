@@ -1,3 +1,4 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0
 WORKDIR /app
+RUN apt-get update && apt-get install -y procps
 ENTRYPOINT ["dotnet", "watch", "--project", "ChallengeDashboard", "run", "--urls", "http://0.0.0.0:80"]
