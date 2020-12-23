@@ -17,7 +17,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var controller = new OverallController(dataService);
 
             //act
-            var response = await controller.Points();
+            var response = await controller.Points("");
 
             //assert
             var vm = (OverallResultsViewModel<Points>) response.Model;
