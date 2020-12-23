@@ -32,7 +32,7 @@
                 <thead>
                     <tr>
                         <th>Fastest Time</th>
-                        <th>Average Time</th>
+                        <th>Average Time (Top @course.Key.AverageThreshold(Model.Athlete.Category))</th>
                         <th># of Runs</th>
                     </tr>
                 </thead>
@@ -42,7 +42,14 @@
                             @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
                         </td>
                         <td>
-                            @Model.Average[course.Key].Value.Display (@Model.Average[course.Key].Rank.Display)
+                            @if (Model.Average[course.Key] != null)
+                            {
+                                @(Model.Average[course.Key].Value.Display + " (" + Model.Average[course.Key].Rank.Display + ")") 
+                            }
+                            else
+                            {
+                                @("(not enough runs)")
+                            }    
                         </td>
                         <td>
                             @Model.Runs[course.Key].Value (@Model.Runs[course.Key].Rank.Display)
