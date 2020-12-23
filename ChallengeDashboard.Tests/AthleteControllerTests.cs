@@ -10,15 +10,14 @@ namespace FLRC.ChallengeDashboard.Tests
     public class AthleteControllerTests
     {
         [Fact]
-        public async Task CanGetAthleteInfo()
+        public async Task PageContainsAllInfo()
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            dataService.GetAllResults().Returns(new List<Course>
+            Course course = new Course
             {
-                new Course
-                {
-                    Results = new List<Result>
+                Meters = 10 * Course.MetersPerMile,
+                Results = new List<Result>
                     {
                         new Result
                         {
@@ -26,15 +25,22 @@ namespace FLRC.ChallengeDashboard.Tests
                             Duration = new Time(new TimeSpan(1, 2, 3))
                         }
                     }
-                }
-            });
+            };
+            dataService.GetAllResults().Returns(new List<Course> { course });
             var controller = new AthleteController(dataService);
 
             //act
             var response = await controller.Index(123);
 
             //assert
-            Assert.Equal((uint)123, ((AthleteViewModel)(response.Model)).Athlete.ID);
+            var vm = (AthleteViewModel)(response.Model);
+            Assert.Equal((uint)123, vm.Athlete.ID);
+            Assert.Equal(1, vm.Fastest[course].Rank.Value);
+            Assert.Equal(1, vm.Average[course].Rank.Value);
+            Assert.Equal(1, vm.Runs[course].Rank.Value);
+            Assert.Equal(1, vm.TeamResults.Rank.Value);
+            Assert.Equal(100, vm.OverallPoints.Value.Value);
+            Assert.Equal(10, vm.OverallMiles.Value);
         }
     }
 }
