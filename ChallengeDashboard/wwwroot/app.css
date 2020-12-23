@@ -6,6 +6,7 @@
     left: unset;
     top: unset;
     max-width: 100vw;
+    margin-left: -4rem;
 }
 
 .dropdown-item {
