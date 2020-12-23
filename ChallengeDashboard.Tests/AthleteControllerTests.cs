@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
@@ -21,10 +22,8 @@ namespace FLRC.ChallengeDashboard.Tests
                     {
                         new Result
                         {
-                            Athlete = new Athlete
-                            {
-                                ID = 123
-                            }
+                            Athlete = new Athlete { ID = 123 },
+                            Duration = new Time(new TimeSpan(1, 2, 3))
                         }
                     }
                 }

@@ -2,33 +2,50 @@
 @model AthleteViewModel
 
 <h2>@Model.Athlete.Name</h2>
-<h3>Age: @Model.Athlete.Age</h3>
-<h4>Team: @Model.Athlete.Team.Display</h4>
+
+<table class="table table-bordered table-striped table-sm text-center f-left">
+    <thead>
+    <tr>
+        <th>Age</th>
+        <th>Team</th>
+        <th>Overall Points</th>
+        <th>Total Miles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+            <td>@Model.Athlete.Age</td>
+            <td>@Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)</td>
+            <td>@Model.OverallPoints.Value.Display (@Model.OverallPoints.Rank.Display)</td>
+            <td>@Model.OverallMiles.Value.ToString("F1") (@Model.OverallMiles.Rank.Display)</td>
+        </tr>
+    </tbody>
+</table>
 
 <div class="row">
-    @foreach (var course in Model.Results.Where(r => r.Value.Any()))
+    @foreach (var course in Model.AllResults.Where(r => r.Value.Any()))
     {
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="col-12 col-md-6">
             @await Html.PartialAsync("CourseInfo", course.Key)
 
             <table class="table table-striped table-bordered table-sm text-center">
                 <thead>
                     <tr>
-                        <th># of Runs</th>
                         <th>Fastest Time</th>
                         <th>Average Time</th>
+                        <th># of Runs</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>
-                            @course.Value.Count()
+                            @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
                         </td>
                         <td>
-                            @course.Value.Min(r => r.Duration).Display
+                            @Model.Average[course.Key].Value.Display (@Model.Average[course.Key].Rank.Display)
                         </td>
                         <td>
-                            @(new Time(TimeSpan.FromSeconds(course.Value.Average(r => r.Duration.Value.TotalSeconds))).Display)
+                            @Model.Runs[course.Key].Value (@Model.Runs[course.Key].Rank.Display)
                         </td>
                     </tr>
                 </tbody>
