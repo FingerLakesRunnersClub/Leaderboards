@@ -21,9 +21,9 @@ namespace FLRC.ChallengeDashboard.Tests
             var ranked = list.Rank();
 
             //assert
-            Assert.Equal(1, ranked.First().Rank);
-            Assert.Equal(2, ranked.Skip(1).First().Rank);
-            Assert.Equal(3, ranked.Skip(2).First().Rank);
+            Assert.Equal(1, ranked.First().Rank.Value);
+            Assert.Equal(2, ranked.Skip(1).First().Rank.Value);
+            Assert.Equal(3, ranked.Skip(2).First().Rank.Value);
         }
     }
 }

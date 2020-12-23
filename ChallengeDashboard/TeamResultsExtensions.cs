@@ -11,7 +11,7 @@ namespace FLRC.ChallengeDashboard
             for (var x = 0; x < topTeams.Length; x++)
                 topTeams[x].Rank = x > 0 && topTeams[x].TotalPoints == topTeams[x - 1].TotalPoints
                     ? topTeams[x - 1].Rank
-                    : (byte)(x + 1);
+                    : new Rank((ushort)(x + 1));
 
             return topTeams;
         }

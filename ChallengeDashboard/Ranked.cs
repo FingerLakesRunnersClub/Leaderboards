@@ -2,7 +2,7 @@
 {
     public class Ranked<T>
     {
-        public ushort Rank { get; init; }
+        public Rank Rank { get; init; }
         public Athlete Athlete { get; init; }
         public Result Result { get; init; }
         public T Value { get; init; }

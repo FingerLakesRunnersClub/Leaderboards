@@ -2,7 +2,7 @@ namespace FLRC.ChallengeDashboard
 {
     public class TeamResults
     {
-        public byte Rank { get; set; }
+        public Rank Rank { get; set; }
         public Team Team { get; init; }
 
         public AgeGrade AverageAgeGrade { get; init; }

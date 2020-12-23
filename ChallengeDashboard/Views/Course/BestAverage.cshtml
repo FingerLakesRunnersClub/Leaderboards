@@ -11,7 +11,7 @@
 
 <script>
     const fields = [
-        { name: 'Rank', center: true, value: r => r.Rank },
+        { name: 'Rank', center: true, value: r => r.Rank.Value },
         { name: 'Name', center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
         { name: 'Age', center: true, value: r => r.Athlete.Age },
         { name: 'Team', center: true, value: r => r.Athlete.Team.Display, sort: r => r.Athlete.Team.Value },

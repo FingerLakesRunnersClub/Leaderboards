@@ -154,7 +154,7 @@ namespace FLRC.ChallengeDashboard
                 var value = getValue(results);
                 ranks.Add(new Ranked<T>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : rank,
+                    Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
                     Athlete = athlete,
                     Result = result,
                     Value = value,

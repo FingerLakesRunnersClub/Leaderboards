@@ -7,7 +7,7 @@
 
 <script>
     const fields = [
-        { name: 'Rank', width: 1, center: true, value: r => r.Rank },
+        { name: 'Rank', width: 1, center: true, value: r => r.Rank.Value },
         { name: 'Team', width: 2, center: true, value: r => r.Team.Display, sort: r => r.Team.Value },
         { name: 'Average Age Grade', width: 2, center: true, value: r => r.AverageAgeGrade.Display, sort: r => r.AverageAgeGrade.Value, descending: true },
         { name: 'Age Grade Points', width: 2, center: true, value: r => r.AgeGradePoints },

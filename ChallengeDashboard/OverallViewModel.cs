@@ -41,7 +41,7 @@ namespace FLRC.ChallengeDashboard
                 var result = list[rank - 1];
                 ranks.Add(new Ranked<T>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value.Equals(result.Value) ? ranks.Last().Rank : rank,
+                    Rank = ranks.Any() && ranks.Last().Value.Equals(result.Value) ? ranks.Last().Rank : new Rank(rank),
                     Athlete = result.Key,
                     Value = result.Value
                 });
