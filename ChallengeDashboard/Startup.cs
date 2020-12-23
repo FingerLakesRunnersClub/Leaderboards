@@ -30,7 +30,6 @@ namespace FLRC.ChallengeDashboard
 
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute("Leaderboard", "{controller=Leaderboard}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute("Overall", "{controller=Overall}/{action}/{cat?}");
                 endpoints.MapControllerRoute("Courses", "{controller=Courses}/{id}/{action=Fastest}/{cat?}");
             });
         }

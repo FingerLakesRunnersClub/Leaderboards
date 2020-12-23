@@ -11,10 +11,10 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public OverallController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Points(string cat = null)
+        public async Task<ViewResult> Points(string id)
         {
-            var category = DataParser.ParseCategory(cat);
-            return View(await GetResults($"Most Points ({cat})", vm => vm.MostPoints(category)));
+            var category = DataParser.ParseCategory(id);
+            return View(await GetResults($"Most Points ({id})", vm => vm.MostPoints(category)));
         }
 
         public async Task<ViewResult> Miles()
