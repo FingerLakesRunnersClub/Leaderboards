@@ -1,0 +1,17 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model AthleteCourseViewModel
+
+<h2>@Model.Athlete.Name</h2>
+@await Html.PartialAsync("CourseInfo", Model.Course)
+
+<script>
+    const fields = [
+        { name: 'Date', center: true, value: r => r.StartTime.Display, sort: r => r.StartTime.Value },
+        { name: 'Time', center: true, value: r => r.Duration.Display, sort: r => r.Duration.Value }
+    ];
+
+    results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+</script>
+
+@await Html.PartialAsync("Results")

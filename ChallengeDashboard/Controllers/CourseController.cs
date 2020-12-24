@@ -10,21 +10,21 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public CourseController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Fastest(uint id, string cat = null)
+        public async Task<ViewResult> Fastest(uint id, string other = null)
         {
-            var category = DataParser.ParseCategory(cat);
+            var category = DataParser.ParseCategory(other);
             return View(await GetResults(id, ResultType.Fastest, category, c => c.Fastest(category)));
         }
 
-        public async Task<ViewResult> MostRuns(uint id, string cat = null)
+        public async Task<ViewResult> MostRuns(uint id, string other = null)
         {
-            var category = DataParser.ParseCategory(cat);
+            var category = DataParser.ParseCategory(other);
             return View(await GetResults(id, ResultType.MostRuns, category, c => c.MostRuns(category)));
         }
 
-        public async Task<ViewResult> BestAverage(uint id, string cat = null)
+        public async Task<ViewResult> BestAverage(uint id, string other = null)
         {
-            var category = DataParser.ParseCategory(cat);
+            var category = DataParser.ParseCategory(other);
             return View(await GetResults(id, ResultType.BestAverage, category, c => c.BestAverage(category)));
         }
 

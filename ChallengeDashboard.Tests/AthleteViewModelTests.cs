@@ -8,7 +8,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void TitleIsAthleteName()
         {
             //arrange
-            var vm = new AthleteViewModel { Athlete = new Athlete { Name = "Steve Desmond" } };
+            var vm = new AthleteSummaryViewModel { Athlete = new Athlete { Name = "Steve Desmond" } };
 
             //act
             var title = vm.Title;
