@@ -1,22 +1,39 @@
 ﻿@using FLRC.ChallengeDashboard
 @model LeaderboardViewModel
 
+@functions
+{
+    string style(LeaderboardResultType type) => Model.LeaderboardResultType == type
+        ? "secondary"
+        : "light";
+}
+
 <h3>Overall Leaders</h3>
 <div class="row">
     @foreach (var table in Model.OverallResults)
     {
-        @await Html.PartialAsync("Table", table)
+        <div class="col-12 col-sm-6 col-lg-3">
+            @await Html.PartialAsync("Table", table)
+        </div>
     }
 </div>
 
-<h3>Course Leaders</h3>
+<h4>Course Leaders</h4>
+<div class="btn-group mb-2">
+    @foreach (var type in Enum.GetValues<LeaderboardResultType>())
+    {
+        <a class="btn btn-@style(type)" href="/Leaderboard/Index/@type">@type</a>
+    }
+</div>
 @foreach (var results in Model.CourseResults)
 {
-    <h4>@results.Key.Name</h4>
+    <h5>@results.Key.Name</h5>
     <div class="row">
         @foreach (var table in results.Value)
         {
-            @await Html.PartialAsync("Table", table)
+            <div class="@(results.Value.Count() == 3 ? "col-12 col-md-4" : "col-12 col-sm-6")">
+                @await Html.PartialAsync("Table", table)
+            </div>
         }
     </div>
 }

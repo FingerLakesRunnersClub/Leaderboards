@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace FLRC.ChallengeDashboard
@@ -6,11 +7,22 @@ namespace FLRC.ChallengeDashboard
     public class LeaderboardViewModel : ViewModel
     {
         public override string Title => "Leaderboard";
+        
 
         public override IDictionary<uint, string> CourseNames
             => _courses.ToDictionary(c => c.ID, c => c.Name);
 
-        public LeaderboardViewModel(IEnumerable<Course> courses) => _courses = courses;
+        public LeaderboardResultType LeaderboardResultType { get; }
+        
+        private readonly IEnumerable<Course> _courses;
+        private readonly Func<LeaderboardTable, bool> _filter;
+
+        public LeaderboardViewModel(IEnumerable<Course> courses, LeaderboardResultType type)
+        {
+            _courses = courses;
+            LeaderboardResultType = type;
+            _filter = GetFilter(type);
+        }
 
         public List<LeaderboardTable> OverallResults
         {
@@ -38,7 +50,7 @@ namespace FLRC.ChallengeDashboard
                         Title = "Most Miles",
                         Link = "/Overall/Miles",
                         Rows = vm.MostMiles().Take(3)
-                            .Select(r => new LeaderboardRow {Name = r.Athlete.Name, Value = r.Value.ToString()})
+                            .Select(r => new LeaderboardRow {Name = r.Athlete.Name, Value = r.Value.ToString("F1")})
                     },
                     new LeaderboardTable
                     {
@@ -51,7 +63,7 @@ namespace FLRC.ChallengeDashboard
             }
         }
 
-        public IDictionary<Course, List<LeaderboardTable>> CourseResults => _courses.ToDictionary(c => c, c =>
+        public IDictionary<Course, IEnumerable<LeaderboardTable>> CourseResults => _courses.ToDictionary(c => c, c =>
             new List<LeaderboardTable>
             {
                 new()
@@ -121,8 +133,19 @@ namespace FLRC.ChallengeDashboard
                     Rows = c.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3).Select(r =>
                         new LeaderboardRow {Name = r.Team.Display, Value = r.TotalRuns.ToString()})
                 }
-            });
+            }.Where(_filter));
 
-        private readonly IEnumerable<Course> _courses;
+        private static Func<LeaderboardTable, bool> GetFilter(LeaderboardResultType type)
+        {
+            switch (type)
+            {
+                case LeaderboardResultType.F:
+                    return t => t.Category?.Equals(Category.F) ?? t.ResultType.Value != ResultType.Team;
+                case LeaderboardResultType.M:
+                    return t => t.Category?.Equals(Category.M) ?? t.ResultType.Value != ResultType.Team;
+                default:
+                    return t => t.ResultType.Value == ResultType.Team;
+            }
+        }
     }
 }

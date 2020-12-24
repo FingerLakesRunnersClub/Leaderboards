@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.ChallengeDashboard.Controllers
@@ -9,13 +10,17 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public LeaderboardController(IDataService dataService) => _dataService = dataService;
 
-        public async Task<ViewResult> Index() => View(await GetLeaderboard());
+        public async Task<ViewResult> Index(string id = null)
+        {
+            if (!Enum.TryParse<LeaderboardResultType>(id, out var type))
+                type = LeaderboardResultType.Team;
+            return View(await GetLeaderboard(type));
+        }
 
-        private async Task<LeaderboardViewModel> GetLeaderboard()
+        private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type)
         {
             var results = await _dataService.GetAllResults();
-
-            return new LeaderboardViewModel(results);
+            return new LeaderboardViewModel(results, type);
         }
     }
 }
