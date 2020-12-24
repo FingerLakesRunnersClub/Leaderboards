@@ -1,7 +1,7 @@
 ﻿@using FLRC.ChallengeDashboard
 @model LeaderboardViewModel
 
-<h3>Overall</h3>
+<h3>Overall Leaders</h3>
 <div class="row">
     @foreach (var table in Model.OverallResults)
     {
@@ -9,6 +9,7 @@
     }
 </div>
 
+<h3>Course Leaders</h3>
 @foreach (var results in Model.CourseResults)
 {
     <h4>@results.Key.Name</h4>
