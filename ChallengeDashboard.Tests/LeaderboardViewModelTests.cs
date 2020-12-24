@@ -48,6 +48,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.StartsWith("2:", result.First(r => r.Category.Equals(Category.M) && r.ResultType.Value == ResultType.BestAverage).Rows.First().Value);
             Assert.Equal("3:02:01.0", result.First(r => r.Category.Equals(Category.F) && r.ResultType.Value == ResultType.Fastest).Rows.First().Value);
             Assert.StartsWith("4:", result.First(r => r.Category.Equals(Category.F) && r.ResultType.Value == ResultType.BestAverage).Rows.First().Value);
+            Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.First().Value);
             Assert.StartsWith("20", result.First(r => r.ResultType.Value == ResultType.Team && r.Title.StartsWith("Fastest")).Rows.First().Name);
             Assert.StartsWith("30", result.First(r => r.ResultType.Value == ResultType.Team && r.Title.StartsWith("Most")).Rows.First().Name);
         }

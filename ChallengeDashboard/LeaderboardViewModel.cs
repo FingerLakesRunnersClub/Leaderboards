@@ -96,6 +96,15 @@ namespace FLRC.ChallengeDashboard
                 },
                 new LeaderboardTable
                 {
+                    Title = "Most Runs",
+                    Course = c,
+                    ResultType = new FormattedResultType(ResultType.MostRuns),
+                    Link = $"/Course/{c.ID}/{ResultType.MostRuns}",
+                    Rows = c.MostRuns().Take(3).Select(r => new LeaderboardRow
+                        {Name = r.Athlete.Name, Value = r.Value.ToString()})
+                },
+                new LeaderboardTable
+                {
                     Title = "Fastest (Team)",
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
