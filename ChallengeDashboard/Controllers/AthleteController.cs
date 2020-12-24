@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,8 +26,34 @@ namespace FLRC.ChallengeDashboard.Controllers
                 CourseNames = _dataService.CourseNames,
                 Athlete = athlete,
                 Course = course,
-                Results = results
+                Results = Rank(results, course)
             };
+        }
+
+        private RankedList<Time> Rank(IEnumerable<Result> results, Course course)
+        {
+            var ranks = new RankedList<Time>();
+
+            var sorted = results.OrderBy(r => r.Duration.Value).ToList();
+            for (byte rank = 1; rank <= sorted.Count; rank++)
+            {
+                var result = sorted[rank - 1];
+                ranks.Add(new Ranked<Time>
+                {
+                    Rank = ranks.Any() && ranks.Last().Value.Equals(result.Duration)
+                        ? ranks.Last().Rank
+                        : new Rank(rank),
+                    Athlete = result.Athlete,
+                    Result = result,
+                    Value = result.Duration,
+                    AgeGrade = new AgeGrade(result.Athlete.Category != null
+                        ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(result.Athlete.Category.Value ?? throw null,
+                            result.Athlete.Age, course.Meters, result.Duration.Value)
+                        : 0)
+                });
+            }
+
+            return ranks;
         }
 
         private async Task<AthleteSummaryViewModel> GetAthlete(uint id)

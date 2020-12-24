@@ -140,10 +140,10 @@ namespace FLRC.ChallengeDashboard
             Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
             => RankedList(GroupedResults(category).Where(filter).OrderByDescending(sort), getResult, sort);
 
-        private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted,
-            Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
+        private RankedList<T1> RankedList<T1>(IOrderedEnumerable<GroupedResult> sorted,
+            Func<GroupedResult, Result> getResult, Func<GroupedResult, T1> getValue)
         {
-            var ranks = new RankedList<T>();
+            var ranks = new RankedList<T1>();
 
             var list = sorted.ThenBy(rs => getResult(rs).Duration).ToList();
             for (ushort rank = 1; rank <= list.Count; rank++)
@@ -152,7 +152,7 @@ namespace FLRC.ChallengeDashboard
                 var athlete = results.Key;
                 var result = getResult(results);
                 var value = getValue(results);
-                ranks.Add(new Ranked<T>
+                ranks.Add(new Ranked<T1>
                 {
                     Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
                     Athlete = athlete,

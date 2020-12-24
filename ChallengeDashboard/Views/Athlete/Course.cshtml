@@ -7,8 +7,10 @@
 
 <script>
     const fields = [
-        { name: 'Date', center: true, value: r => r.StartTime.Display, sort: r => r.StartTime.Value },
-        { name: 'Time', center: true, value: r => r.Duration.Display, sort: r => r.Duration.Value }
+        { name: 'Rank', center: true, value: r => r.Rank.Display, sort: r => r.Rank.Value },
+        { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value },
+        { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
+        { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
