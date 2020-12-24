@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,7 +42,7 @@ namespace FLRC.ChallengeDashboard
         }
 
         private readonly IDictionary<string, RankedList<Time>> _fastestCache =
-            new Dictionary<string, RankedList<Time>>();
+            new ConcurrentDictionary<string, RankedList<Time>>();
 
         public RankedList<Time> Fastest(Category category = null, byte? ag = null)
         {
