@@ -1,5 +1,5 @@
 ﻿@using FLRC.ChallengeDashboard
-@model AthleteViewModel
+@model AthleteSummaryViewModel
 
 <h2>@Model.Athlete.Name</h2>
 
@@ -23,7 +23,7 @@
 </table>
 
 <div class="row">
-    @foreach (var course in Model.AllResults.Where(r => r.Value.Any()))
+    @foreach (var course in Model.Fastest.Where(r => r.Value != null))
     {
         <div class="col-12 col-md-6">
             @await Html.PartialAsync("CourseInfo", course.Key)
@@ -58,30 +58,7 @@
                 </tbody>
             </table>
 
-            <details>
-                <summary>All Runs</summary>
-                <table class="table table-sm">
-                    <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var result in course.Value.OrderBy(r => r.StartTime))
-                        {
-                            <tr>
-                                <td>
-                                    @result.StartTime?.ToString("MM/dd/yyyy")
-                                </td>
-                                <td>
-                                    @result.Duration.Display
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </details>
+            <a href="/Athlete/@Model.Athlete.ID/Course/@course.Key.ID">View All Runs</a>
         </div>
     }
 </div>

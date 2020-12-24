@@ -73,7 +73,6 @@ namespace FLRC.ChallengeDashboard
                 ? new Category(category)
                 : null;
 
-        private static DateTime? ParseStart(string value)
-            => value != null ? DateTime.Parse(value) : (DateTime?)null;
+        private static Date ParseStart(string value) => new Date(DateTime.Parse(value ?? string.Empty));
     }
 }

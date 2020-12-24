@@ -6,7 +6,7 @@ namespace FLRC.ChallengeDashboard
     {
 
         public Athlete Athlete { get; init; }
-        public DateTime? StartTime { get; init; }
+        public Date StartTime { get; init; }
         public Time Duration { get; init; }
 
         public int CompareTo(Result other) => Duration.CompareTo(other.Duration);
