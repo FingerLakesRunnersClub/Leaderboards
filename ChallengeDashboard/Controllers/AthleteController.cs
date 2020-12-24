@@ -43,7 +43,6 @@ namespace FLRC.ChallengeDashboard.Controllers
                     Rank = ranks.Any() && ranks.Last().Value.Equals(result.Duration)
                         ? ranks.Last().Rank
                         : new Rank(rank),
-                    Athlete = result.Athlete,
                     Result = result,
                     Value = result.Duration,
                     AgeGrade = new AgeGrade(result.Athlete.Category != null
@@ -68,11 +67,11 @@ namespace FLRC.ChallengeDashboard.Controllers
                 CourseNames = _dataService.CourseNames,
                 Athlete = athlete,
                 TeamResults = overallViewModel.TeamPoints().First(r => r.Team == athlete.Team),
-                OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Athlete.ID == id),
-                OverallMiles = overallViewModel.MostMiles(athlete.Category).FirstOrDefault(r => r.Athlete.ID == id),
-                Fastest = courses.ToDictionary(c => c, c => c.Fastest().FirstOrDefault(r => r.Athlete.ID == id)),
-                Average = courses.ToDictionary(c => c, c => c.BestAverage().FirstOrDefault(r => r.Athlete.ID == id)),
-                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Athlete.ID == id))
+                OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
+                OverallMiles = overallViewModel.MostMiles(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
+                Fastest = courses.ToDictionary(c => c, c => c.Fastest().FirstOrDefault(r => r.Result.Athlete.ID == id)),
+                Average = courses.ToDictionary(c => c, c => c.BestAverage().FirstOrDefault(r => r.Result.Athlete.ID == id)),
+                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.ID == id))
             };
         }
     }

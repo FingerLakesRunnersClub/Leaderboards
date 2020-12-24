@@ -175,7 +175,6 @@ namespace FLRC.ChallengeDashboard
                 ranks.Add(new Ranked<T1>
                 {
                     Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
-                    Athlete = athlete,
                     Result = result,
                     Value = value,
                     Count = (uint) results.Count(),

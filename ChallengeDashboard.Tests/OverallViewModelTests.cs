@@ -15,7 +15,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var mostPoints = vm.MostPoints();
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete1, mostPoints.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete1, mostPoints.First().Result.Athlete);
         }
         
         [Fact]
@@ -28,7 +28,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var mostPoints = vm.MostPoints(Category.F);
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Result.Athlete);
         }
         
         [Fact]
@@ -41,7 +41,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var mostPoints = vm.MostMiles();
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete2, mostPoints.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete2, mostPoints.First().Result.Athlete);
         }
         
         [Fact]
@@ -54,7 +54,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var mostPoints = vm.MostMiles(Category.F);
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete4, mostPoints.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete4, mostPoints.First().Result.Athlete);
         }
         
         [Fact]

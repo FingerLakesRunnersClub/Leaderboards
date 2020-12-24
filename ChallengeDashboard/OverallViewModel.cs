@@ -11,10 +11,10 @@ namespace FLRC.ChallengeDashboard
         public OverallViewModel(IEnumerable<Course> courses) => _courses = courses;
 
         public RankedList<Points> MostPoints(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
+            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
 
         public RankedList<double> MostMiles(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value));
+            => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Result.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value));
 
         public IEnumerable<TeamResults> TeamPoints()
             => _courses.SelectMany(c => c.TeamPoints())
@@ -38,7 +38,7 @@ namespace FLRC.ChallengeDashboard
                 ranks.Add(new Ranked<T1>
                 {
                     Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
-                    Athlete = result.Key,
+                    Result = new Result { Athlete = result.Key },
                     AgeGrade = new AgeGrade(result.Average(r => r.AgeGrade.Value)),
                     Value = value
                 });

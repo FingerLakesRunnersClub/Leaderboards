@@ -3,7 +3,6 @@
     public class Ranked<T>
     {
         public Rank Rank { get; init; }
-        public Athlete Athlete { get; init; }
         public Result Result { get; init; }
         public T Value { get; init; }
         public uint Count { get; init; }

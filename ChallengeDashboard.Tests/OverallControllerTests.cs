@@ -21,7 +21,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (OverallResultsViewModel<Points>) response.Model;
-            Assert.Equal(LeaderboardData.Athlete1, vm.RankedResults.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete1, vm.RankedResults.First().Result.Athlete);
         }
 
         [Fact]
@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (OverallResultsViewModel<double>) response.Model;
-            Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Athlete);
+            Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Result.Athlete);
         }
 
         [Fact]

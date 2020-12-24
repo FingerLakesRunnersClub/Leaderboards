@@ -9,9 +9,9 @@
 <script>
     const fields = [
         { name: 'Rank', center: true, value: r => r.Rank.Value },
-        { name: 'Name', center: false, value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
-        { name: 'Age', center: true, value: r => r.Athlete.Age },
-        { name: 'Team', center: true, value: r => r.Athlete.Team.Display, sort: r => r.Athlete.Team.Value },
+        { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+        { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+        { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
         { name: 'Average Time (Top @Model.Course.AverageThreshold(Model.Category))', center: true, value: r => r.Result.Duration.Display, sort: r => r.result.duration.Value.TotalSeconds },
         { name: '# of Runs', center: true, value: r => r.Count }
     ];

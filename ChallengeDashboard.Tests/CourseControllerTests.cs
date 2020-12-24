@@ -45,7 +45,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.Fastest(123);
 
             //assert
-            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Athlete.ID);
+            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Result.Athlete.ID);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.BestAverage(123);
 
             //assert
-            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Athlete.ID);
+            Assert.Equal((uint)234, ((ResultsViewModel<Time>)(response.Model)).RankedResults.First().Result.Athlete.ID);
         }
 
         [Fact]
@@ -91,7 +91,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.MostRuns(123);
 
             //assert
-            Assert.Equal((uint)234, ((ResultsViewModel<ushort>)(response.Model)).RankedResults.First().Athlete.ID);
+            Assert.Equal((uint)234, ((ResultsViewModel<ushort>)(response.Model)).RankedResults.First().Result.Athlete.ID);
         }
 
         [Fact]

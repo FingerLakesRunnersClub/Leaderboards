@@ -17,10 +17,10 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(4, fastest.Length);
-            Assert.Equal(CourseData.Athlete2, fastest[0].Athlete);
-            Assert.Equal(CourseData.Athlete3, fastest[1].Athlete);
-            Assert.Equal(CourseData.Athlete1, fastest[2].Athlete);
-            Assert.Equal(CourseData.Athlete4, fastest[3].Athlete);
+            Assert.Equal(CourseData.Athlete2, fastest[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete3, fastest[1].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, fastest[2].Result.Athlete);
+            Assert.Equal(CourseData.Athlete4, fastest[3].Result.Athlete);
         }
 
         [Fact]
@@ -34,8 +34,8 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(2, fastest.Length);
-            Assert.Equal(CourseData.Athlete2, fastest[0].Athlete);
-            Assert.Equal(CourseData.Athlete4, fastest[1].Athlete);
+            Assert.Equal(CourseData.Athlete2, fastest[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete4, fastest[1].Result.Athlete);
         }
 
         [Fact]
@@ -49,10 +49,10 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(4, most.Length);
-            Assert.Equal(CourseData.Athlete4, most[0].Athlete);
-            Assert.Equal(CourseData.Athlete3, most[1].Athlete);
-            Assert.Equal(CourseData.Athlete1, most[2].Athlete);
-            Assert.Equal(CourseData.Athlete2, most[3].Athlete);
+            Assert.Equal(CourseData.Athlete4, most[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete3, most[1].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, most[2].Result.Athlete);
+            Assert.Equal(CourseData.Athlete2, most[3].Result.Athlete);
         }
 
         [Fact]
@@ -66,8 +66,8 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(2, most.Length);
-            Assert.Equal(CourseData.Athlete3, most[0].Athlete);
-            Assert.Equal(CourseData.Athlete1, most[1].Athlete);
+            Assert.Equal(CourseData.Athlete3, most[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, most[1].Result.Athlete);
         }
 
         [Fact]
@@ -81,10 +81,10 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(4, most.Length);
-            Assert.Equal(CourseData.Athlete4, most[0].Athlete);
-            Assert.Equal(CourseData.Athlete3, most[1].Athlete);
-            Assert.Equal(CourseData.Athlete1, most[2].Athlete);
-            Assert.Equal(CourseData.Athlete2, most[3].Athlete);
+            Assert.Equal(CourseData.Athlete4, most[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete3, most[1].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, most[2].Result.Athlete);
+            Assert.Equal(CourseData.Athlete2, most[3].Result.Athlete);
         }
 
         [Fact]
@@ -98,8 +98,8 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(2, most.Length);
-            Assert.Equal(CourseData.Athlete3, most[0].Athlete);
-            Assert.Equal(CourseData.Athlete1, most[1].Athlete);
+            Assert.Equal(CourseData.Athlete3, most[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, most[1].Result.Athlete);
         }
 
         [Fact]
@@ -113,9 +113,9 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(3, avg.Length);
-            Assert.Equal(CourseData.Athlete3, avg[0].Athlete);
-            Assert.Equal(CourseData.Athlete1, avg[1].Athlete);
-            Assert.Equal(CourseData.Athlete4, avg[2].Athlete);
+            Assert.Equal(CourseData.Athlete3, avg[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, avg[1].Result.Athlete);
+            Assert.Equal(CourseData.Athlete4, avg[2].Result.Athlete);
         }
 
         [Fact]
@@ -129,8 +129,8 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(2, avg.Length);
-            Assert.Equal(CourseData.Athlete3, avg[0].Athlete);
-            Assert.Equal(CourseData.Athlete1, avg[1].Athlete);
+            Assert.Equal(CourseData.Athlete3, avg[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete1, avg[1].Result.Athlete);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Single(avg);
-            Assert.Equal(CourseData.Athlete4, avg[0].Athlete);
+            Assert.Equal(CourseData.Athlete4, avg[0].Result.Athlete);
         }
         
         [Fact]
