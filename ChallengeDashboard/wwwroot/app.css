@@ -94,6 +94,11 @@ th.sortable .spacer {
     display: none;
 }
 
+.course-icon {
+    opacity: 0.35;
+    margin-right: 5px;
+}
+
 @media (max-width: 575px) {
     .primary-nav {
         flex: 1;

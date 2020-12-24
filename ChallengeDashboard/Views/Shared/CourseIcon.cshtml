@@ -1,0 +1,12 @@
+@using FLRC.ChallengeDashboard
+@model Course
+
+@switch (@Model.Type)
+{
+    case "Road": <i class="course-icon fas fa-road" title="Road Course"></i>
+    break;
+    case "Trail": <i class="course-icon fas fa-leaf" title="Trail Course"></i>
+    break;
+    case "Mixed": <i class="course-icon fas fa-balance-scale" title="Mixed Course"></i>
+    break;
+}

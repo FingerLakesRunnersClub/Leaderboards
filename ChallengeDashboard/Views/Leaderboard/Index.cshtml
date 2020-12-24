@@ -27,13 +27,18 @@
 </div>
 @foreach (var results in Model.CourseResults)
 {
-    <h5>@results.Key.Name</h5>
-    <div class="row">
-        @foreach (var table in results.Value)
-        {
-            <div class="@(results.Value.Count() == 3 ? "col-12 col-md-4" : "col-12 col-sm-6")">
-                @await Html.PartialAsync("Table", table)
+    <div class="card mb-3">
+        <div class="card-header">@await Html.PartialAsync("CourseIcon", @results.Key) @results.Key.Name</div>
+        <div class="card-body">
+            <div class="row">
+                @foreach (var table in results.Value)
+                {
+                    <div class="@(results.Value.Count() == 3 ? "col-12 col-md-4" : "col-12 col-sm-6")">
+                        @await Html.PartialAsync("Table", table)
+                    </div>
+                }
             </div>
-        }
+        </div>
     </div>
+    
 }
