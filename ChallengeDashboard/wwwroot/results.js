@@ -12,6 +12,9 @@ new Vue({
         show_results: function () {
             return this.results.length > 0;
         },
+        fields_to_show: function () {
+            return this.fields.filter(f => f.show === undefined || f.show === true);
+        },
         sorted_results: function () {
             if (!this.sort.field)
                 this.sort.field = this.fields[0];

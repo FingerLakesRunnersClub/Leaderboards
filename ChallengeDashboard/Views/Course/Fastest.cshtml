@@ -13,7 +13,7 @@
         { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
         { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
         { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}`, sort: r => r.BehindLeader.Value.TotalSeconds },
-        { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true }
+        { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true, show: @((Model.Category != null && ViewBag.AgeGroup == null).ToString().ToLower()) }
     ];
 
     results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
