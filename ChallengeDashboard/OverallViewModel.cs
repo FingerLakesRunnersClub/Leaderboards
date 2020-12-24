@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,16 +11,10 @@ namespace FLRC.ChallengeDashboard
         public OverallViewModel(IEnumerable<Course> courses) => _courses = courses;
 
         public RankedList<Points> MostPoints(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.Fastest(category))
-                .GroupBy(r => r.Athlete)
-                .ToDictionary(g => g.Key, g => new Points(g.Sum(r => r.Points.Value)))
-                .OrderByDescending(r => r.Value.Value));
+            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
 
         public RankedList<double> MostMiles(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.MostMiles(category))
-                .GroupBy(r => r.Athlete)
-                .ToDictionary(g => g.Key, g => g.Sum(r => r.Value))
-                .OrderByDescending(r => r.Value));
+            => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value));
 
         public IEnumerable<TeamResults> TeamPoints()
             => _courses.SelectMany(c => c.TeamPoints())
@@ -32,18 +27,20 @@ namespace FLRC.ChallengeDashboard
                 })
                 .Rank();
 
-        private RankedList<T> RankedList<T>(IOrderedEnumerable<KeyValuePair<Athlete, T>> results)
+        private RankedList<T1> RankedList<T1,T2,T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort)
         {
-            var ranks = new RankedList<T>();
-            var list = results.ToList();
-            for (ushort rank = 1; rank <= list.Count(); rank++)
+            var ranks = new RankedList<T1>();
+            var list = results.OrderByDescending(sort).ToList();
+            for (ushort rank = 1; rank <= list.Count; rank++)
             {
                 var result = list[rank - 1];
-                ranks.Add(new Ranked<T>
+                var value = getValue(result);
+                ranks.Add(new Ranked<T1>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value.Equals(result.Value) ? ranks.Last().Rank : new Rank(rank),
+                    Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
                     Athlete = result.Key,
-                    Value = result.Value
+                    AgeGrade = new AgeGrade(result.Average(r => r.AgeGrade.Value)),
+                    Value = value
                 });
             }
 
