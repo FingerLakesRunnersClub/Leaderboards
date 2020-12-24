@@ -1,0 +1,6 @@
+﻿@using FLRC.ChallengeDashboard
+@model TeamResultsViewModel
+
+<h3>Course Results</h3>
+@await Html.PartialAsync("CourseInfo", Model.Course)
+@await Html.PartialAsync("ResultFilter")

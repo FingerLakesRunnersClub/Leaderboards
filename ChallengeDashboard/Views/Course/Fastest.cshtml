@@ -2,8 +2,7 @@
 @using FLRC.ChallengeDashboard
 @model ResultsViewModel<Time>
 
-@await Html.PartialAsync("CourseInfo", Model.Course)
-@await Html.PartialAsync("ResultFilter")
+@await Html.PartialAsync("CourseHeader")
 
 <script>
     const fields = [

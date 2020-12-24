@@ -2,8 +2,7 @@
 @using FLRC.ChallengeDashboard
 @model ResultsViewModel<ushort>
 
-@await Html.PartialAsync("CourseInfo", Model.Course)
-@await Html.PartialAsync("ResultFilter")
+@await Html.PartialAsync("CourseHeader")
 
 <h5>
     Total runs: @Model.RankedResults.Sum(r => r.Value)
