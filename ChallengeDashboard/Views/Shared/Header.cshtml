@@ -3,34 +3,30 @@
 
 <header>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-3">
-        <div class="container justify-content-center">
+        <div class="container">
+            <h1 class="sr-only">FLRC 2021 Club Challenge</h1>
             <a class="navbar-brand" href="/">
                 <img class="logo" src="~/logo.png" alt="FLRC logo" />
             </a>
-            <div class="d-sm-flex flex-sm-column">
-                <h1 class="sr-only">FLRC 2021 Club Challenge</h1>
-                <div class="d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/">Leaderboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Rules">Rules</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown">Races</a>
-                            <ul class="dropdown-menu position-absolute">
-                                @foreach (var course in Model.CourseNames)
-                                {
-                                    <li class="dropdown-item">
-                                        <a class="nav-link text-dark" href="/Course/@course.Key/Fastest">@course.Value</a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
+            <ul class="primary-nav nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/">Leaderboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown">Races</a>
+                    <ul class="dropdown-menu position-absolute">
+                        @foreach (var course in Model.CourseNames)
+                        {
+                            <li class="dropdown-item">
+                                <a class="nav-link text-dark" href="/Course/@course.Key/Fastest">@course.Value</a>
+                            </li>
+                        }
                     </ul>
-                </div>
-            </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/Rules">Rules</a>
+                </li>
+            </ul>
         </div>
     </nav>
 </header>
