@@ -15,7 +15,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var display = date.Display;
             
             //assert
-            Assert.Equal("1/1/2000 12:00:00 AM", display);
+            Assert.Equal("1/1/2000 12:00am", display);
         }
     }
 }

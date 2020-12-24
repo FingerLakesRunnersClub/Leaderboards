@@ -9,6 +9,6 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Value.ToString(CultureInfo.CurrentCulture);
+        public override string Display => Value.ToString("M/d/yyyy h:mmtt").ToLower();
     }
 }
