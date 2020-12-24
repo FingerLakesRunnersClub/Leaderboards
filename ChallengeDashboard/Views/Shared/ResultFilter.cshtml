@@ -13,19 +13,46 @@
         : "light";
 }
 
-<div class="btn-group mb-2">
-    @foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
-    {
-        <a class="btn btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
-    }
-</div>
+<form class="float-left">
+    <section class="mb-3">
+        <div class="btn-group">
+            @foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
+            {
+                <a class="btn btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
+            }
+        </div>
+    </section>
 
-@if (Model.ResultType.Value != ResultType.Team)
-{
-    <div class="btn-group mb-2">
-        <a class="btn btn-@style(null)" href="/Course/@Model.Course.ID/@Model.ResultType.Value">All</a>
-        <a class="btn btn-@style(Category.F)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/F">F</a>
-        <a class="btn btn-@style(Category.M)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/M">M</a>
-    </div>
-}
-<div class="clear clearfix"></div>
+    @if (Model.ResultType.Value != ResultType.Team)
+    {
+        <section class="mb-4">
+            <div class="btn-group">
+                <a class="btn btn-@style(null)" href="/Course/@Model.Course.ID/@Model.ResultType.Value">All</a>
+                <a class="btn btn-@style(Category.F)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/F">F</a>
+                <a class="btn btn-@style(Category.M)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/M">M</a>
+            </div>
+
+            @if (Model.ResultType.Value == ResultType.Fastest)
+            {
+                <div class="float-right">
+                    <select class="form-control" onchange="goToAgeGroup(this.value)">
+                        <option value="">All Age Groups</option>
+                        @foreach (var team in Athlete.Teams)
+                        {
+                            <option value="@team.Key" @(ViewBag.AgeGroup == team.Key ? "selected" : "")>
+                                @team.Value.Display
+                            </option>
+                        }
+                    </select>
+                </div>
+            }
+        </section>
+    }
+</form>
+<div class="clearfix"></div>
+
+<script>
+    function goToAgeGroup(ag) {
+        location.href='/Course/@Model.Course.ID/@Model.ResultType.Value/@Model.Category?.Value' + (ag ? '?ag=' + ag : '');
+    }
+</script>

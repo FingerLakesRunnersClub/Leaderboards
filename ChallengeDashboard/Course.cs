@@ -19,6 +19,7 @@ namespace FLRC.ChallengeDashboard
         public int LastHash { get; set; }
 
         private IEnumerable<Result> _results;
+
         public IEnumerable<Result> Results
         {
             get => _results;
@@ -39,45 +40,62 @@ namespace FLRC.ChallengeDashboard
             _teamCache = null;
         }
 
-        private readonly IDictionary<string, RankedList<Time>> _fastestCache = new Dictionary<string, RankedList<Time>>();
+        private readonly IDictionary<string, RankedList<Time>> _fastestCache =
+            new Dictionary<string, RankedList<Time>>();
 
-        public RankedList<Time> Fastest(Category category = null)
+        public RankedList<Time> Fastest(Category category = null, byte? ag = null)
         {
             var key = category?.Value?.ToString() ?? "X";
-            if (_fastestCache.ContainsKey(key))
+            if (ag == null && _fastestCache.ContainsKey(key))
                 return _fastestCache[key];
+
+            var results = Rank(category, rs => ag == null || rs.Key.Team.Value == ag,
+                rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration));
             
-            return _fastestCache[key] = Rank(category, rs => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration));
+            if (ag != null)
+                return results;
+            
+            return _fastestCache[key] = results;
+
         }
 
-        private readonly IDictionary<string, RankedList<Time>> _averageCache = new Dictionary<string, RankedList<Time>>();
+        private readonly IDictionary<string, RankedList<Time>> _averageCache =
+            new Dictionary<string, RankedList<Time>>();
+
         public RankedList<Time> BestAverage(Category category = null)
         {
             var key = category?.Value?.ToString() ?? "X";
             if (_averageCache.ContainsKey(key))
                 return _averageCache[key];
-            
-            return _averageCache[key] = Rank(category, rs => rs.Count() >= AverageThreshold(category), rs => rs.Average(AverageThreshold(category)), rs => rs.Average(AverageThreshold(category)).Duration);
+
+            return _averageCache[key] = Rank(category, rs => rs.Count() >= AverageThreshold(category),
+                rs => rs.Average(AverageThreshold(category)), rs => rs.Average(AverageThreshold(category)).Duration);
         }
 
-        private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache = new Dictionary<string, RankedList<ushort>>();
+        private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache =
+            new Dictionary<string, RankedList<ushort>>();
+
         public RankedList<ushort> MostRuns(Category category = null)
         {
             var key = category?.Value?.ToString() ?? "X";
             if (_mostRunsCache.ContainsKey(key))
                 return _mostRunsCache[key];
-            
-            return _mostRunsCache[key] = RankDescending(category, rs => true, r => r.Average(), r => (ushort) r.Count());
+
+            return _mostRunsCache[key] =
+                RankDescending(category, rs => true, r => r.Average(), r => (ushort) r.Count());
         }
 
-        private readonly IDictionary<string, RankedList<double>> _mostMilesCache = new Dictionary<string, RankedList<double>>();
+        private readonly IDictionary<string, RankedList<double>> _mostMilesCache =
+            new Dictionary<string, RankedList<double>>();
+
         public RankedList<double> MostMiles(Category category = null)
         {
             var key = category?.Value?.ToString() ?? "X";
             if (_mostMilesCache.ContainsKey(key))
                 return _mostMilesCache[key];
-            
-            return _mostMilesCache[key] = RankDescending(category, rs => true, r => r.Average(), r => r.Count() * Meters / MetersPerMile);
+
+            return _mostMilesCache[key] = RankDescending(category, rs => true, r => r.Average(),
+                r => r.Count() * Meters / MetersPerMile);
         }
 
         private IEnumerable<GroupedResult> GroupedResults(Category category = null)
@@ -85,12 +103,13 @@ namespace FLRC.ChallengeDashboard
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
         private readonly IDictionary<string, ushort> _thresholdCache = new Dictionary<string, ushort>();
+
         public ushort AverageThreshold(Category category = null)
         {
             var key = category?.Value?.ToString() ?? "X";
             if (_thresholdCache.ContainsKey(key))
                 return _thresholdCache[key];
-            
+
             var groupedResults = GroupedResults(category).ToList();
             return _thresholdCache[key] = groupedResults.Any()
                 ? (ushort) Math.Ceiling(groupedResults.Average(r => r.Count()))
@@ -98,11 +117,12 @@ namespace FLRC.ChallengeDashboard
         }
 
         private IEnumerable<TeamResults> _teamCache;
+
         public IEnumerable<TeamResults> TeamPoints()
         {
             if (_teamCache != null)
                 return _teamCache;
-            
+
             var teamResults = GroupedResults()
                 .GroupBy(g => g.Key.Team)
                 .Select(t => new TeamResults
