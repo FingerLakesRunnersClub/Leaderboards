@@ -1,6 +1,10 @@
 ﻿@using FLRC.ChallengeDashboard
 @model ResultsViewModel
 
-<h3>Course Results</h3>
-@await Html.PartialAsync("CourseInfo", Model.Course)
+<h2>Course Results</h2>
+<div class="card-highlighted card mb-3">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+    </div>
+</div>
 @await Html.PartialAsync("ResultFilter")

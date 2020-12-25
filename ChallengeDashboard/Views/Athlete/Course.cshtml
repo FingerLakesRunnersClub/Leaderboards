@@ -2,8 +2,19 @@
 @using FLRC.ChallengeDashboard
 @model AthleteCourseViewModel
 
-<h3>@Model.Athlete.Name</h3>
-@await Html.PartialAsync("CourseInfo", Model.Course)
+<h2 class="mb-0">
+    <a class="btn btn-light btn-xs float-right" href="/Athlete/Index/@Model.Athlete.ID">
+        Athlete Page <i class="fas fa-arrow-right"></i> 
+    </a>
+    @Model.Athlete.Name
+</h2>
+<h5>All Runs for Course</h5>
+
+<div class="card-highlighted card mb-3">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+    </div>
+</div>
 
 <script>
     const fields = [
@@ -17,3 +28,4 @@
 </script>
 
 @await Html.PartialAsync("Results")
+

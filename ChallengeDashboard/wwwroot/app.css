@@ -15,6 +15,15 @@ html, body {
     height: 100%;
 }
 
+h1, h2, h3 {
+    font-family: 'Raleway', sans-serif;
+    color: var(--dark-blue-color);
+}
+
+h2 .btn {
+    font-family: sans-serif;
+}
+
 .navbar {
     min-height: 120px;
     border-bottom: 10px solid var(--dark-blue-color);
@@ -95,8 +104,22 @@ th.sortable .spacer {
 }
 
 .course-icon {
-    opacity: 0.35;
     margin-right: 5px;
+}
+
+.card-highlighted {
+    border-top: 4px solid var(--light-blue-color);
+}
+
+.btn-group-xs>.btn, .btn-xs {
+    padding: .1rem .5rem;
+    font-size: .75rem;
+    line-height: 1.8;
+    border-radius: .2rem;
+}
+
+.tp-35 {
+    opacity: 0.35;
 }
 
 @media (max-width: 575px) {

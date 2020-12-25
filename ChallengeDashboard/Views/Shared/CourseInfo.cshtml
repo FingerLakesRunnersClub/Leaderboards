@@ -1,10 +1,13 @@
 @using FLRC.ChallengeDashboard
 @model Course
 
-<h4>@await Html.PartialAsync("CourseIcon", @Model) @Model.Name</h4>
-<h5>@Model.Distance (@Model.Type)</h5>
-<h6>
-    <a href="@Model.URL">
-        Course Info
+<h4 class="mb-0">
+    <a class="btn btn-sm btn-outline-dark float-right" href="@Model.URL">
+        <i class="fas fa-info-circle tp-35"></i> Course Info 
     </a>
-</h6>
+    @await Html.PartialAsync("CourseIcon", @Model) @Model.Name
+</h4>
+<div>
+    <span class="badge badge-pill badge-secondary">@Model.Type</span>
+    <span class="badge badge-pill badge-warning">@Model.Distance</span>
+</div>

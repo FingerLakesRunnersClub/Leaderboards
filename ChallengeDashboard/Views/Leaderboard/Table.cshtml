@@ -1,13 +1,16 @@
 ﻿@using FLRC.ChallengeDashboard
 @model LeaderboardTable
 
-    <table class="table table-bordered table-striped table-sm">
+    <table class="table table-bordered table-striped table-sm mb-0">
         <thead>
         <tr>
             <th colspan="3">
                 <span class="d-flex justify-content-between">
                     <span>@Model.Title</span>
-                    <a href="@Model.Link">View All</a>
+                    <a class="btn btn-light btn-xs" href="@Model.Link">
+                        View All
+                        <i class="far fa-arrow-alt-circle-right"></i>
+                    </a>
                 </span>
             </th>
         </tr>
@@ -16,7 +19,7 @@
         @if (!Model.Rows.Any())
         {
             <tr>
-                <td colspan="3" class="text-center text-danger">(no results yet)</td>
+                <td colspan="3" class="text-center text-info">(no results yet)</td>
             </tr>
         }
         @for (var x = 1; x <= Model.Rows.Count(); x++)
