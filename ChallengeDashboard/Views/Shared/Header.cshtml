@@ -13,8 +13,8 @@
                     <a class="nav-link text-dark" href="/">Leaderboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark dropdown-toggle" href="#" data-toggle="dropdown">Races</a>
-                    <ul class="dropdown-menu position-absolute">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown();">Races</a>
+                    <ul id="dropdown" class="dropdown-menu position-absolute">
                         @foreach (var course in Model.CourseNames)
                         {
                             <li class="dropdown-item">
@@ -30,3 +30,12 @@
         </div>
     </nav>
 </header>
+
+<script>
+    const dropdown = document.getElementById('dropdown');
+    function toggleDropdown() {
+        dropdown.style = dropdown.style.length === 0
+            ? "display: block;"
+            : "";
+    }
+</script>
