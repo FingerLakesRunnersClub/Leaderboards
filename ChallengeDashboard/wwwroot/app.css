@@ -16,12 +16,12 @@ html, body {
 }
 
 h1, h2, h3 {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Raleway', inherit;
     color: var(--dark-blue-color);
 }
 
 h2 .btn {
-    font-family: sans-serif;
+    font-family: inherit;
 }
 
 .navbar {
