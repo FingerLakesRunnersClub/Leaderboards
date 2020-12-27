@@ -3,7 +3,7 @@
     <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-lg">
         <thead>
             <tr>
-                <th v-for="field in fields_to_show" class="sortable" :class="{'text-center': field.center}" @@click="toggleSort(field)">
+                <th v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">
                     <span v-if="field.center" class="spacer"></span>
                     {{field.name}}
                     <div class="spacer">
