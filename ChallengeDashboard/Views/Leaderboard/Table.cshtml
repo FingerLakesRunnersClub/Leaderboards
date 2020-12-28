@@ -1,4 +1,5 @@
-﻿@using FLRC.ChallengeDashboard
+﻿
+@using FLRC.ChallengeDashboard
 @model LeaderboardTable
 
     <table class="table table-bordered table-striped table-sm mb-0">
@@ -27,8 +28,19 @@
             var result = Model.Rows.Skip(x - 1).First();
 
             <tr>
-                <td class="text-center">@x</td>
-                <td>@result.Name</td>
+                <td class="text-center">
+                    @(result.Rank?.Value ?? x)
+                </td>
+                <td>
+                    @if(result.Link != null)
+                    {
+                        <a href="@result.Link">@result.Name</a>
+                    }
+                    else
+                    {
+                        @result.Name
+                    }
+                </td>
                 <td class="text-center">@result.Value</td>
             </tr>
         }

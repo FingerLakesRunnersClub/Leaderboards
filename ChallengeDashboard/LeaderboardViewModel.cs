@@ -36,21 +36,21 @@ namespace FLRC.ChallengeDashboard
                         Title = "Most Points (F)",
                         Link = "/Overall/Points/F",
                         Rows = vm.MostPoints(Category.F).Take(3)
-                            .Select(r => new LeaderboardRow {Name = r.Result.Athlete.Name, Value = r.Value.Display })
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
                     },
                     new LeaderboardTable
                     {
                         Title = "Most Points (M)",
                         Link = "/Overall/Points/M",
                         Rows = vm.MostPoints(Category.M).Take(3)
-                            .Select(r => new LeaderboardRow {Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                     },
                     new LeaderboardTable
                     {
                         Title = "Most Miles",
                         Link = "/Overall/Miles",
                         Rows = vm.MostMiles().Take(3)
-                            .Select(r => new LeaderboardRow {Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
                     },
                     new LeaderboardTable
                     {
@@ -73,8 +73,8 @@ namespace FLRC.ChallengeDashboard
                     ResultType = new FormattedResultType(ResultType.Fastest),
                     Category = Category.F,
                     Link = $"/Course/{c.ID}/{ResultType.Fastest}/F",
-                    Rows = c.Fastest(Category.F).Take(3).Select(r => new LeaderboardRow
-                        {Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Rows = c.Fastest(Category.F).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
@@ -83,8 +83,8 @@ namespace FLRC.ChallengeDashboard
                     ResultType = new FormattedResultType(ResultType.Fastest),
                     Category = Category.M,
                     Link = $"/Course/{c.ID}/{ResultType.Fastest}/M",
-                    Rows = c.Fastest(Category.M).Take(3).Select(r => new LeaderboardRow
-                        {Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Rows = c.Fastest(Category.M).Take(3)
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
@@ -93,8 +93,8 @@ namespace FLRC.ChallengeDashboard
                     ResultType = new FormattedResultType(ResultType.BestAverage),
                     Category = Category.F,
                     Link = $"/Course/{c.ID}/{ResultType.BestAverage}/F",
-                    Rows = c.BestAverage(Category.F).Take(3).Select(r => new LeaderboardRow
-                        {Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Rows = c.BestAverage(Category.F).Take(3)
+                    .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
@@ -103,8 +103,8 @@ namespace FLRC.ChallengeDashboard
                     ResultType = new FormattedResultType(ResultType.BestAverage),
                     Category = Category.M,
                     Link = $"/Course/{c.ID}/{ResultType.BestAverage}/M",
-                    Rows = c.BestAverage(Category.M).Take(3).Select(r => new LeaderboardRow
-                        {Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Rows = c.BestAverage(Category.M).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
@@ -112,8 +112,8 @@ namespace FLRC.ChallengeDashboard
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.MostRuns),
                     Link = $"/Course/{c.ID}/{ResultType.MostRuns}",
-                    Rows = c.MostRuns().Take(3).Select(r => new LeaderboardRow
-                        {Name = r.Result.Athlete.Name, Value = r.Value.ToString()})
+                    Rows = c.MostRuns().Take(3)
+                      .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString()})
                 },
                 new LeaderboardTable
                 {
