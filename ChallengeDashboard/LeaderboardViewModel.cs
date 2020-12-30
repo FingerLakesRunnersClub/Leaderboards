@@ -117,7 +117,7 @@ namespace FLRC.ChallengeDashboard
                 },
                 new LeaderboardTable
                 {
-                    Title = "Fastest (Team)",
+                    Title = "Fastest",
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
@@ -126,12 +126,21 @@ namespace FLRC.ChallengeDashboard
                 },
                 new LeaderboardTable
                 {
-                    Title = "Most Runs (Team)",
+                    Title = "Most Runs",
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
                     Rows = c.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3).Select(r =>
                         new LeaderboardRow {Name = r.Team.Display, Value = r.TotalRuns.ToString()})
+                },
+                new LeaderboardTable
+                {
+                    Title = "Total Points",
+                    Course = c,
+                    ResultType = new FormattedResultType(ResultType.Team),
+                    Link = $"/Course/{c.ID}/{ResultType.Team}",
+                    Rows = c.TeamPoints().Take(3).Select(r =>
+                        new LeaderboardRow {Name = r.Team.Display, Value = r.TotalPoints.ToString()})
                 }
             }.Where(_filter));
 

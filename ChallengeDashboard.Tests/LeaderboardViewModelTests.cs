@@ -46,6 +46,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var result = results.First().Value.ToList();
             Assert.StartsWith("20", result.First(r => r.ResultType.Value == ResultType.Team && r.Title.StartsWith("Fastest")).Rows.First().Name);
             Assert.StartsWith("30", result.First(r => r.ResultType.Value == ResultType.Team && r.Title.StartsWith("Most")).Rows.First().Name);
+            Assert.StartsWith("20", result.First(r => r.ResultType.Value == ResultType.Team && r.Title.StartsWith("Total")).Rows.First().Name);
         }
         
         [Fact]
