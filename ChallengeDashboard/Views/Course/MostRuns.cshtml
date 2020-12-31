@@ -4,9 +4,12 @@
 
 @await Html.PartialAsync("CourseHeader")
 
+    @{
+        var total = Model.RankedResults.Sum(r => r.Value);
+        var miles = total * Model.Course.Meters / Course.MetersPerMile;
+    }
 <h5>
-    Total runs: @Model.RankedResults.Sum(r => r.Value)
-    (@(Model.RankedResults.Sum(r => r.Value) * Model.Course.Meters / Course.MetersPerMile) miles)
+    Total runs: @total (@miles.ToString("F1") miles)
 </h5>
 
 <h6>Average runs per athlete: @Model.Course.AverageThreshold(Model.Category)</h6>
