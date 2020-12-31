@@ -8,7 +8,7 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Value.ToString(Value.TotalHours >= 1 ? @"h\:mm\:ss\.f" : @"m\:ss\.f");
+        public override string Display => Value.ToString(Value.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss");
 
         public Time Subtract(Time other) => new Time(Value - other.Value);
 

@@ -60,7 +60,7 @@ namespace FLRC.ChallengeDashboard.Tests
             
             //assert
             var result = results.First().Value.ToList();
-            Assert.Equal("3:02:01.0", result.First(r => r.Category.Equals(Category.F) && r.ResultType.Value == ResultType.Fastest).Rows.First().Value);
+            Assert.Equal("3:02:01", result.First(r => r.Category.Equals(Category.F) && r.ResultType.Value == ResultType.Fastest).Rows.First().Value);
             Assert.StartsWith("4:", result.First(r => r.Category.Equals(Category.F) && r.ResultType.Value == ResultType.BestAverage).Rows.First().Value);
             Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.First().Value);
         }
@@ -76,7 +76,7 @@ namespace FLRC.ChallengeDashboard.Tests
             
             //assert
             var result = results.First().Value.ToList();
-            Assert.Equal("1:02:03.0", result.First(r => r.Category.Equals(Category.M) && r.ResultType.Value == ResultType.Fastest).Rows.First().Value);
+            Assert.Equal("1:02:03", result.First(r => r.Category.Equals(Category.M) && r.ResultType.Value == ResultType.Fastest).Rows.First().Value);
             Assert.StartsWith("2:", result.First(r => r.Category.Equals(Category.M) && r.ResultType.Value == ResultType.BestAverage).Rows.First().Value);
             Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.First().Value);
         }
