@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace FLRC.ChallengeDashboard
 {
     public class DataService : IDataService
     {
         private readonly IDataAPI _api;
+        private readonly ILogger _logger;
         private readonly IDictionary<uint, Course> _courses;
 
-        public DataService(IDataAPI api, IConfiguration configuration)
+        public DataService(IDataAPI api, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             _api = api;
+            _logger = loggerFactory.CreateLogger("DataService");
             _courses = configuration.GetSection("Courses").GetChildren()
                 .ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
 
@@ -26,16 +29,23 @@ namespace FLRC.ChallengeDashboard
 
         public async Task<Course> GetResults(uint id)
         {
-            if (_courses[id].LastUpdated < DateTime.Now.Subtract(TimeSpan.FromSeconds(5)))
+            try
             {
-                var json = await _api.GetResults(id);
-                var newHash = json.ToString()?.GetHashCode() ?? 0;
-                if (newHash != _courses[id].LastHash)
+                if (_courses[id].LastUpdated < DateTime.Now.Subtract(TimeSpan.FromSeconds(5)))
                 {
-                    _courses[id].Results = DataParser.ParseCourse(json);
-                    _courses[id].LastHash = newHash;
+                    var json = await _api.GetResults(id);
+                    var newHash = json.ToString()?.GetHashCode() ?? 0;
+                    if (newHash != _courses[id].LastHash)
+                    {
+                        _courses[id].Results = DataParser.ParseCourse(json);
+                        _courses[id].LastHash = newHash;
+                    }
+                    _courses[id].LastUpdated = DateTime.Now;
                 }
-                _courses[id].LastUpdated = DateTime.Now;
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Could not retrieve results");
             }
 
             return _courses[id];

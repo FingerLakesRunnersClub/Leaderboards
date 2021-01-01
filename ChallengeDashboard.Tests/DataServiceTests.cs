@@ -1,14 +1,17 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
-    public class DataServiceTests
+    public partial class DataServiceTests
     {
         [Fact]
         public void CanGetCourseNames()
@@ -16,7 +19,8 @@ namespace FLRC.ChallengeDashboard.Tests
             //arrange
             var api = Substitute.For<IDataAPI>();
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-            var dataService = new DataService(api, config);
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            var dataService = new DataService(api, config, loggerFactory);
 
             //act
             var courseNames = dataService.CourseNames;
@@ -33,7 +37,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
             api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-            var dataService = new DataService(api, config);
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            var dataService = new DataService(api, config, loggerFactory);
 
             //act
             var course = await dataService.GetResults(123);
@@ -51,7 +56,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
             api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-            var dataService = new DataService(api, config);
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            var dataService = new DataService(api, config, loggerFactory);
 
             //act
             var allResults = await dataService.GetAllResults();
@@ -68,7 +74,8 @@ namespace FLRC.ChallengeDashboard.Tests
             var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
             api.GetResults(Arg.Any<uint>()).Returns(json.RootElement);
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-            var dataService = new DataService(api, config);
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            var dataService = new DataService(api, config, loggerFactory);
 
             //act
             await dataService.GetResults(123);
@@ -76,6 +83,26 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             await api.Received(1).GetResults(Arg.Any<uint>());
+        }
+
+        [Fact]
+        public async Task APIExceptionsAreLogged()
+        {
+            //arrange
+            var api = Substitute.For<IDataAPI>();
+            api.GetResults(Arg.Any<uint>()).Throws(new Exception());
+            var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+
+            var logger = new TestLogger();
+            var loggerFactory = Substitute.For<ILoggerFactory>();
+            loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+            var dataService = new DataService(api, config, loggerFactory);
+
+            //act
+            await dataService.GetResults(123);
+
+            //assert
+            Assert.True(logger.Called);
         }
     }
 }
