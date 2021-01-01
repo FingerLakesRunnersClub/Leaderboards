@@ -37,7 +37,7 @@ namespace FLRC.ChallengeDashboard
                         Title = "Top Teams",
                         Link = "/Overall/Team",
                         Rows = vm.TeamPoints().Take(3)
-                            .Select(t => new LeaderboardRow {Name = t.Team.Display, Value = t.TotalPoints.ToString() })
+                            .Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Value = t.TotalPoints.ToString() })
                     },
                     new LeaderboardTable
                     {
@@ -122,8 +122,8 @@ namespace FLRC.ChallengeDashboard
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3).Select(r =>
-                        new LeaderboardRow {Name = r.Team.Display, Value = r.AverageAgeGrade.Display})
+                    Rows = c.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = new Rank(r.AgeGradePoints), Name = r.Team.Display, Value = r.AverageAgeGrade.Display })
                 },
                 new LeaderboardTable
                 {
@@ -131,8 +131,8 @@ namespace FLRC.ChallengeDashboard
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3).Select(r =>
-                        new LeaderboardRow {Name = r.Team.Display, Value = r.TotalRuns.ToString()})
+                    Rows = c.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = new Rank(r.MostRunsPoints), Name = r.Team.Display, Value = r.TotalRuns.ToString() })
                 },
                 new LeaderboardTable
                 {
@@ -140,8 +140,8 @@ namespace FLRC.ChallengeDashboard
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().Take(3).Select(r =>
-                        new LeaderboardRow {Name = r.Team.Display, Value = r.TotalPoints.ToString()})
+                    Rows = c.TeamPoints().Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Team.Display, Value = r.TotalPoints.ToString() })
                 }
             }.Where(_filter));
 

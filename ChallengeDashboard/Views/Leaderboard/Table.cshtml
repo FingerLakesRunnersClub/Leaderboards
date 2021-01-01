@@ -23,13 +23,11 @@
                 <td colspan="3" class="text-center text-info">(no results yet)</td>
             </tr>
         }
-        @for (var x = 1; x <= Model.Rows.Count(); x++)
+        @foreach (var result in Model.Rows)
         {
-            var result = Model.Rows.Skip(x - 1).First();
-
             <tr>
                 <td class="text-center">
-                    @(result.Rank?.Value ?? x)
+                    @result.Rank.Value
                 </td>
                 <td>
                     @if(result.Link != null)

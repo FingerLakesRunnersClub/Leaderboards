@@ -6,7 +6,7 @@ namespace FLRC.ChallengeDashboard
         public Team Team { get; init; }
 
         public AgeGrade AverageAgeGrade { get; init; }
-        public double AgeGradePoints { get; set; }
+        public byte AgeGradePoints { get; set; }
 
         public ushort TotalRuns { get; init; }
         public byte MostRunsPoints { get; set; }
