@@ -2,9 +2,13 @@
 @using FLRC.ChallengeDashboard
 @model TeamResultsViewModel
 
-@await Html.PartialAsync("CourseHeader")
+<h2>Course Results</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+        @await Html.PartialAsync("ResultFilter")
 
-<script>
+        <script>
     const fields = [
         { name: 'Rank', width: 1, center: true, value: r => r.Rank.Value },
         { name: 'Team', width: 2, center: true, value: r => r.Team.Display, sort: r => r.Team.Value },
@@ -18,4 +22,7 @@
     results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
 </script>
 
-@await Html.PartialAsync("Results")
+        @await Html.PartialAsync("Results")
+
+    </div>
+</div>

@@ -2,21 +2,28 @@
 @using FLRC.ChallengeDashboard
 @model ResultsViewModel<Time>
 
-@await Html.PartialAsync("CourseHeader")
+<h2>Course Results</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+        @await Html.PartialAsync("ResultFilter")
 
-<script>
-    const fields = [
-        { name: 'Rank', center: true, value: r => r.Rank.Value },
-        { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
-        { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
-        { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
-        { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
-        { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
-        { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}`, sort: r => r.BehindLeader.Value.TotalSeconds },
-        { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true, show: @((Model.Category != null && ViewBag.AgeGroup == null).ToString().ToLower()) }
-    ];
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
+                { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
+                { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
+                { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}`, sort: r => r.BehindLeader.Value.TotalSeconds },
+                { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true, show: @((Model.Category != null && ViewBag.AgeGroup == null).ToString().ToLower()) }
+            ];
+        
+            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+        </script>
 
-    results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
-</script>
+        @await Html.PartialAsync("Results")
 
-@await Html.PartialAsync("Results")
+    </div>
+</div>

@@ -3,22 +3,50 @@
 
 <h2>@Model.Athlete.Name</h2>
 
-<table class="table table-bordered table-striped table-sm text-center f-left">
+<table class="table table-bordered table-sm text-center">
     <thead>
     <tr>
-        <th>Age</th>
-        <th>Team</th>
-        <th>Overall Points</th>
-        <th>Total Miles</th>
+        <th>
+            Age
+        </th>
+        <th>
+            Team
+        </th>
+        <th>
+            Overall Points
+        </th>
+        <th>
+            Total Miles
+        </th>
     </tr>
     </thead>
     <tbody>
     <tr>
-            <td>@Model.Athlete.Age</td>
-            <td>@Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)</td>
-            <td>@Model.OverallPoints.Value.Display (@Model.OverallPoints.Rank.Display)</td>
-            <td>@Model.OverallMiles.Value.ToString("F1") (@Model.OverallMiles.Rank.Display)</td>
-        </tr>
+        <td>
+            @Model.Athlete.Age
+        </td>
+        <td>
+            @Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)
+            <br/>
+            <a href="/Overall/Team">
+                View All
+            </a>
+        </td>
+        <td>
+            @Model.OverallPoints.Value.Display (@Model.OverallPoints.Rank.Display)
+            <br/>
+            <a href="/Overall/Points/@Model.Athlete.Category.Value">
+                View All
+            </a>
+        </td>
+        <td>
+            @Model.OverallMiles.Value.ToString("F1") (@Model.OverallMiles.Rank.Display)
+            <br/>
+            <a href="/Overall/Miles">
+                View All
+            </a>
+        </td>
+    </tr>
     </tbody>
 </table>
 
@@ -29,33 +57,51 @@
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course.Key)
-                    <table class="table table-striped table-bordered table-sm text-center mt-2 mb-0">
+                    <table class="table table-bordered table-sm text-center mt-2 mb-0">
                         <thead>
-                            <tr>
-                                <th>Fastest Time</th>
-                                <th>Average Time (Top @course.Key.AverageThreshold(Model.Athlete.Category))</th>
-                                <th># of Runs</th>
-                            </tr>
+                        <tr>
+                            <th>
+                                Fastest Time
+                            </th>
+                            <th>
+                                Average Time (Top @course.Key.AverageThreshold(Model.Athlete.Category))
+                            </th>
+                            <th>
+                                # of Runs
+                            </th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>
-                                    @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
-                                </td>
-                                <td>
-                                    @if (Model.Average[course.Key] != null)
-                                    {
-                                        @(Model.Average[course.Key].Value.Display + " (" + Model.Average[course.Key].Rank.Display + ")") 
-                                    }
-                                    else
-                                    {
-                                        @("(not enough runs)")
-                                    }    
-                                </td>
-                                <td>
-                                    @Model.Runs[course.Key].Value (@Model.Runs[course.Key].Rank.Display)
-                                </td>
-                            </tr>
+                        <tr>
+                            <td>
+                                @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
+                                <br/>
+                                <a href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category.Value">
+                                    View All
+                                </a>
+                            </td>
+                            <td>
+                                @if (Model.Average[course.Key] != null)
+                                {
+                                    @(Model.Average[course.Key].Value.Display + " (" + Model.Average[course.Key].Rank.Display + ")")
+                                }
+                                else
+                                {
+                                    @("(not enough runs)")
+                                }
+                                <br/>
+                                <a href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category.Value">
+                                    View All
+                                </a>
+                            </td>
+                            <td>
+                                @Model.Runs[course.Key].Value (@Model.Runs[course.Key].Rank.Display)
+                                <br/>
+                                <a href="/Course/@course.Key.ID/MostRuns">
+                                    View All
+                                </a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

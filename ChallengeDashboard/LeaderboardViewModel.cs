@@ -31,6 +31,21 @@ namespace FLRC.ChallengeDashboard
                 var vm = new OverallViewModel(_courses);
                 return new List<LeaderboardTable>
                 {
+                    
+                    new LeaderboardTable
+                    {
+                        Title = "Top Teams",
+                        Link = "/Overall/Team",
+                        Rows = vm.TeamPoints().Take(3)
+                            .Select(t => new LeaderboardRow {Name = t.Team.Display, Value = t.TotalPoints.ToString() })
+                    },
+                    new LeaderboardTable
+                    {
+                        Title = "Most Miles",
+                        Link = "/Overall/Miles",
+                        Rows = vm.MostMiles().Take(3)
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
+                    },
                     new LeaderboardTable
                     {
                         Title = "Most Points (F)",
@@ -44,20 +59,6 @@ namespace FLRC.ChallengeDashboard
                         Link = "/Overall/Points/M",
                         Rows = vm.MostPoints(Category.M).Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
-                    },
-                    new LeaderboardTable
-                    {
-                        Title = "Most Miles",
-                        Link = "/Overall/Miles",
-                        Rows = vm.MostMiles().Take(3)
-                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
-                    },
-                    new LeaderboardTable
-                    {
-                        Title = "Top Teams",
-                        Link = "/Overall/Team",
-                        Rows = vm.TeamPoints().Take(3)
-                            .Select(t => new LeaderboardRow {Name = t.Team.Display, Value = t.TotalPoints.ToString() })
                     }
                 };
             }

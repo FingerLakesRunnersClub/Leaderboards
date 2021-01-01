@@ -2,28 +2,35 @@
 @using FLRC.ChallengeDashboard
 @model ResultsViewModel<ushort>
 
-@await Html.PartialAsync("CourseHeader")
+<h2>Course Results</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+        @await Html.PartialAsync("ResultFilter")
 
-    @{
-        var total = Model.RankedResults.Sum(r => r.Value);
-        var miles = total * Model.Course.Meters / Course.MetersPerMile;
-    }
-<h5>
-    Total runs: @total (@miles.ToString("F1") miles)
-</h5>
+        @{
+            var total = Model.RankedResults.Sum(r => r.Value);
+            var miles = total * Model.Course.Meters / Course.MetersPerMile;
+        }
+        <h5>
+            Total runs: @total (@miles.ToString("F1") miles)
+        </h5>
 
-<h6>Average runs per athlete: @Model.Course.AverageThreshold(Model.Category)</h6>
+        <h6>Average runs per athlete: @Model.Course.AverageThreshold(Model.Category)</h6>
 
-<script>
-    const fields = [
-        { name: 'Rank', center: true, value: r => r.Rank.Value },
-        { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
-        { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
-        { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
-        { name: '# of Runs', center: true, value: r => r.Count }
-    ];
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
+                { name: '# of Runs', center: true, value: r => r.Count }
+            ];
+        
+            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+        </script>
 
-    results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
-</script>
+        @await Html.PartialAsync("Results")
 
-@await Html.PartialAsync("Results")
+    </div>
+</div>
