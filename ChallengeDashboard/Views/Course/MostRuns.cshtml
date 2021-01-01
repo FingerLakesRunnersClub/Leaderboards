@@ -23,7 +23,7 @@
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
-                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value },
+                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}` },
                 { name: '# of Runs', center: true, value: r => r.Count }
             ];
         

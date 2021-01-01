@@ -1,0 +1,83 @@
+﻿@using FLRC.ChallengeDashboard
+@model TeamSummaryViewModel
+
+<a class="btn btn-light btn-xs float-right mt-3" href="/Overall/Team">
+    View All
+    <i class="far fa-arrow-alt-circle-right"></i>
+</a>
+<h2>Team @Model.Team.Display</h2>
+
+<table class="table table-bordered table-sm text-center">
+    <thead>
+    <tr>
+        <th>
+            Age Grade Points
+        </th>
+        <th>
+            Most Runs Points
+        </th>
+        <th>
+            Total Points
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            @Model.Overall.AgeGradePoints
+        </td>
+        <td>
+            @Model.Overall.MostRunsPoints
+        </td>
+        <td>
+            @Model.Overall.TotalPoints (@Model.Overall.Rank.Display)
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row">
+    @foreach (var course in Model.Courses.Where(r => r.Value != null))
+    {
+        <div class="col-12 col-md-6">
+            <div class="card-highlighted card mb-3">
+                <div class="card-body">
+                    @await Html.PartialAsync("CourseInfo", course.Key)
+                    <table class="table table-bordered table-sm text-center mt-2 mb-0">
+                        <thead>
+                        <tr>
+                            <th>
+                                Average Age Grade
+                            </th>
+                            <th>
+                                Total Runs
+                            </th>
+                            <th>
+                                Team Points
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                @course.Value.AverageAgeGrade.Display (@(new Rank(course.Value.AgeGradePoints).Display))
+                            </td>
+                            <td>
+                                @course.Value.TotalRuns (@(new Rank(course.Value.MostRunsPoints).Display))
+                            </td>
+                            <td>
+                                @course.Value.TotalPoints (@course.Value.Rank.Display)
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <a class="btn btn-light btn-xs mt-2 float-right" href="/Course/@course.Key.ID/Team">
+                        View All
+                        <i class="far fa-arrow-alt-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

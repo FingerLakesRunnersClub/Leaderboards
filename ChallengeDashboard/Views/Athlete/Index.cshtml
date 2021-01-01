@@ -28,22 +28,25 @@
         <td>
             @Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)
             <br/>
-            <a href="/Overall/Team">
+            <a class="btn btn-light btn-xs" href="/Overall/Team">
                 View All
+                <i class="far fa-arrow-alt-circle-right"></i>
             </a>
         </td>
         <td>
             @Model.OverallPoints.Value.Display (@Model.OverallPoints.Rank.Display)
             <br/>
-            <a href="/Overall/Points/@Model.Athlete.Category.Value">
+            <a class="btn btn-light btn-xs" href="/Overall/Points/@Model.Athlete.Category.Value">
                 View All
+                <i class="far fa-arrow-alt-circle-right"></i>
             </a>
         </td>
         <td>
             @Model.OverallMiles.Value.ToString("F1") (@Model.OverallMiles.Rank.Display)
             <br/>
-            <a href="/Overall/Miles">
+            <a class="btn btn-light btn-xs" href="/Overall/Miles">
                 View All
+                <i class="far fa-arrow-alt-circle-right"></i>
             </a>
         </td>
     </tr>
@@ -76,8 +79,9 @@
                             <td>
                                 @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
                                 <br/>
-                                <a href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category.Value">
+                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category.Value">
                                     View All
+                                    <i class="far fa-arrow-alt-circle-right"></i>
                                 </a>
                             </td>
                             <td>
@@ -90,15 +94,17 @@
                                     @("(not enough runs)")
                                 }
                                 <br/>
-                                <a href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category.Value">
+                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category.Value">
                                     View All
+                                    <i class="far fa-arrow-alt-circle-right"></i>
                                 </a>
                             </td>
                             <td>
                                 @Model.Runs[course.Key].Value (@Model.Runs[course.Key].Rank.Display)
                                 <br/>
-                                <a href="/Course/@course.Key.ID/MostRuns">
+                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/MostRuns">
                                     View All
+                                    <i class="far fa-arrow-alt-circle-right"></i>
                                 </a>
                             </td>
                         </tr>
