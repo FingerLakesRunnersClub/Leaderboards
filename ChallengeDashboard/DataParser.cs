@@ -8,6 +8,8 @@ namespace FLRC.ChallengeDashboard
 {
     public static class DataParser
     {
+        private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
+
         public static IEnumerable<Result> ParseCourse(JsonElement json)
         {
             var results = json.GetProperty("Racers");
@@ -46,7 +48,7 @@ namespace FLRC.ChallengeDashboard
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
                 Duration = new Time(TimeSpan.FromSeconds(Math.Ceiling(r.GetProperty("RaceTime").GetDouble())))
-            });
+            }).Where(r => r.Duration.Value >= MinimumDuration);
 
         private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
 

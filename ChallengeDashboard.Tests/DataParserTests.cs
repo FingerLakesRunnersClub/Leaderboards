@@ -43,6 +43,20 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Empty(results);
         }
 
+        [Fact]
+        public async Task FalseStartsAreIgnored()
+        {
+            //arrange
+            var data = await File.ReadAllTextAsync("json/false-start.json");
+            var json = JsonDocument.Parse(data).RootElement;
+
+            //act
+            var results = DataParser.ParseCourse(json);
+
+            //assert
+            Assert.Empty(results);
+        }
+
         [Theory]
         [InlineData("1 mile", Course.MetersPerMile)]
         [InlineData("2 miles", 2 * Course.MetersPerMile)]
