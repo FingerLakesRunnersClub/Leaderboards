@@ -10,6 +10,9 @@ namespace FLRC.ChallengeDashboard.Tests
         [InlineData(2, "2nd")]
         [InlineData(3, "3rd")]
         [InlineData(4, "4th")]
+        [InlineData(11, "11th")]
+        [InlineData(12, "12th")]
+        [InlineData(13, "13th")]
         public void CanDisplayOrdinal(ushort value, string expected)
         {
             //arrange

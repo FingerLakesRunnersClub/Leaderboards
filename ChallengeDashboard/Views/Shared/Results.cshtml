@@ -1,6 +1,9 @@
+@using FLRC.ChallengeDashboard
+@model ResultsViewModel
+
 <app v-cloak>
     <div v-if="!show_results" class="alert alert-secondary">No results found</div>
-    <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-lg">
+    <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
         <thead>
             <tr>
                 <th v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">

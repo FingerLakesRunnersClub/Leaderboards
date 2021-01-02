@@ -68,7 +68,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.Course(123, 123);
             
             //assert
-            var vm = (AthleteCourseViewModel) response.Model;
+            var vm = (AthleteCourseResultsViewModel) response.Model;
             Assert.NotEmpty(vm.Results);
         }
     }

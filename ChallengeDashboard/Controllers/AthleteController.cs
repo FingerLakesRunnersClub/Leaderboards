@@ -15,13 +15,13 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public async Task<ViewResult> Course(uint id, uint other) => View(await GetResults(id, other));
 
-        private async Task<AthleteCourseViewModel> GetResults(uint id, uint courseID)
+        private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID)
         {
             var course = await _dataService.GetResults(courseID);
             var results = course.Results.Where(r => r.Athlete.ID == id).ToList();
             var athlete = results.First().Athlete;
 
-            return new AthleteCourseViewModel
+            return new AthleteCourseResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Athlete = athlete,

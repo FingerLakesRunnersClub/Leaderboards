@@ -32,28 +32,28 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public async Task<ViewResult> Team(uint id) => View(await GetTeamResults(id));
 
-        private async Task<TeamResultsViewModel> GetTeamResults(uint courseID)
+        private async Task<CourseTeamResultsViewModel> GetTeamResults(uint courseID)
         {
             var course = await _dataService.GetResults(courseID);
-            return new TeamResultsViewModel
+            return new CourseTeamResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 ResultType = new FormattedResultType(ResultType.Team),
                 Course = course,
-                Results = course.TeamPoints()
+                Results = course.TeamPoints(),
             };
         }
 
-        private async Task<ResultsViewModel<T>> GetResults<T>(uint courseID, ResultType resultType, Category category, Func<Course, RankedList<T>> results)
+        private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, ResultType resultType, Category category, Func<Course, RankedList<T>> results)
         {
             var course = await _dataService.GetResults(courseID);
-            return new ResultsViewModel<T>
+            return new CourseResultsViewModel<T>
             {
                 CourseNames = _dataService.CourseNames,
                 ResultType = new FormattedResultType(resultType),
                 Category = category,
                 Course = course,
-                RankedResults = results(course)
+                RankedResults = results(course),
             };
         }
     }

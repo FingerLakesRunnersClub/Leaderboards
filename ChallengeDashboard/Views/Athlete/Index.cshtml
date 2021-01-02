@@ -56,7 +56,7 @@
 <div class="row">
     @foreach (var course in Model.Fastest.Where(r => r.Value != null))
     {
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course.Key)

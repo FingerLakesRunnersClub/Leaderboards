@@ -1,10 +1,10 @@
 ﻿@using System.Text.Json
 @using FLRC.ChallengeDashboard
-@model AthleteCourseViewModel
+@model AthleteCourseResultsViewModel
 
 <h2 class="mb-0">
     <a class="btn btn-light btn-sm float-right" href="/Athlete/Index/@Model.Athlete.ID">
-        Athlete Page <i class="fas fa-arrow-right"></i> 
+        Athlete Page <i class="fas fa-arrow-right"></i>
     </a>
     @Model.Athlete.Name
 </h2>
@@ -13,19 +13,19 @@
 <div class="card-highlighted card mb-3">
     <div class="card-body">
         @await Html.PartialAsync("CourseInfo", Model.Course)
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value },
+                { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
+                { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
+            ];
+        
+            results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+        </script>
+
+        @await Html.PartialAsync("Results")
+
     </div>
 </div>
-
-<script>
-    const fields = [
-        { name: 'Rank', center: true, value: r => r.Rank.Value },
-        { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value },
-        { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
-        { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
-    ];
-
-    results = @Html.Raw(JsonSerializer.Serialize(Model.Results));
-</script>
-
-@await Html.PartialAsync("Results")
-
