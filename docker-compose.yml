@@ -6,3 +6,4 @@ services:
       context: .
     ports:
     - "5000:80"
+    restart: always
