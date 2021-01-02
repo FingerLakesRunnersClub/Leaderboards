@@ -118,7 +118,7 @@ namespace FLRC.ChallengeDashboard
                 },
                 new LeaderboardTable
                 {
-                    Title = "Fastest",
+                    Title = "Age Grade",
                     Course = c,
                     ResultType = new FormattedResultType(ResultType.Team),
                     Link = $"/Course/{c.ID}/{ResultType.Team}",
