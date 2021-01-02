@@ -13,7 +13,7 @@
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
-                { name: 'Team', center: true, value: r => r.Result.Athlete., link: r => `/Team/Index/${r.Team.Value}`, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}` },
+                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, link: r => `/Team/Index/${r.Team.Value}`, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}` },
                 { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
                 { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
                 { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}`, sort: r => r.BehindLeader.Value.TotalSeconds },
