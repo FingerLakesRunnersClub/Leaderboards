@@ -76,10 +76,6 @@ a {
     white-space: nowrap;
 }
 
-th a {
-    font-weight: normal;
-}
-
 .btn {
     border: 1px solid #dae0e5;
 }
@@ -97,6 +93,18 @@ th.sortable {
 th.sortable .spacer {
     display: inline-block;
     width: 1rem;
+}
+
+th a {
+    font-weight: normal;
+}
+
+table.leaderboard td.rank {
+    width: 2rem;
+}
+
+table.leaderboard td.value {
+    width: 5rem;
 }
 
 [v-cloak] {
