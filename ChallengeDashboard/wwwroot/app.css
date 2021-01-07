@@ -16,7 +16,7 @@ html, body {
 }
 
 h1, h2, h3 {
-    font-family: 'Raleway', inherit;
+    font-family: 'Raleway', sans-serif;
     color: var(--dark-blue-color);
 }
 
@@ -25,12 +25,11 @@ h2 .btn {
 }
 
 .navbar {
-    min-height: 120px;
-    border-bottom: 10px solid var(--dark-blue-color);
+    min-height: 7.5rem;
+    border-bottom: 0.5rem solid var(--dark-blue-color);
     background: var(--yellow-color);
     background: linear-gradient(0deg, var(--yellow-color) 0%, var(--light-yellow-color) 30%, white 100%);
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
-    margin-bottom: 3em !important;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 }
 
 .navbar .container {
@@ -41,10 +40,10 @@ h2 .btn {
 .navbar-brand .logo {
     max-width: min(10rem, 37vw);
     position: absolute;
-    top: -75px;
-    left: 0px;
+    top: -4.6rem;
+    left: 0;
     transform: rotate(-12deg);
-    filter: drop-shadow(0px 0px 8px #999);
+    filter: drop-shadow(0 0 0.5rem #999);
 }
 
 .content-container {
@@ -53,15 +52,15 @@ h2 .btn {
 
 .footer {
     flex-shrink: 0;
-    border-top: 10px solid var(--dark-blue-color);
+    border-top: 0.5rem solid var(--dark-blue-color);
     background-color: var(--dark-blue-color);
-    color: white !important;
-    padding: 1em 1em 2em;
-    box-shadow: 0 0 1em rgba(0, 0, 0, 0.5);
-    margin-top: 2em;
+    color: white;
+    padding: 1rem 1rem 2rem;
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+    margin-top: 2rem;
 }
 
-a { 
+a {
     color: var(--dark-blue-color);
 }
 
@@ -69,7 +68,7 @@ a {
     left: unset;
     top: unset;
     max-width: 100vw;
-    margin-left: -4rem;
+    margin-left: -5rem;
 }
 
 .dropdown-item {
@@ -83,7 +82,7 @@ a {
 table {
     white-space: nowrap;
     background-color: white;
-    border-radius: 10px;
+    border-radius: 0.5rem;
 }
 
 th.sortable {
@@ -112,18 +111,18 @@ table.leaderboard td.value {
 }
 
 .course-icon {
-    margin-right: 5px;
+    margin-right: 0.25rem;
 }
 
 .card-highlighted {
-    border-top: 4px solid var(--light-blue-color);
+    border-top: 0.25rem solid var(--light-blue-color);
 }
 
 .btn-xs {
-    padding: .1rem .5rem;
-    font-size: .75rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.75rem;
     line-height: 1.8;
-    border-radius: .2rem;
+    border-radius: 0.2rem;
 }
 
 .tp-35 {
@@ -134,16 +133,22 @@ table.leaderboard td.value {
     .primary-nav {
         flex: 1;
     }
+
     .navbar {
-        min-height: 200px;
-        margin-bottom: 1em !important;
+        padding: 0;
+        margin-bottom: 1rem;
     }
+
     .navbar-brand {
-        left: 50%; transform: translate(-50%,0); position: absolute; z-index: 1;    top: -160px;
+        display: block;
+        padding: 0;
+        margin: -0.4rem 0 0 0;
+        width: 100vw;
+        text-align: center;
     }
+
     .navbar-brand .logo {
-        position: relative;
-        top: initial;
-        transform: initial;
+        position: revert;
+        transform: revert;
     }
 }
