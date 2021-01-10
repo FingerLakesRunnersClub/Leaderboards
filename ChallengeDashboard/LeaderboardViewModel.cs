@@ -24,7 +24,7 @@ namespace FLRC.ChallengeDashboard
             _filter = GetFilter(type);
         }
 
-        public List<LeaderboardTable> OverallResults
+        public IEnumerable<LeaderboardTable> OverallResults
         {
             get
             {
@@ -36,13 +36,23 @@ namespace FLRC.ChallengeDashboard
                     {
                         Title = "Top Teams",
                         Link = "/Overall/Team",
+                        ResultType = new FormattedResultType(ResultType.Team),
                         Rows = vm.TeamPoints().Take(3)
                             .Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Link = $"/Team/Index/{t.Team.Value}", Value = t.TotalPoints.ToString() })
                     },
                     new LeaderboardTable
                     {
+                        Title = "Age Grade",
+                        Link = "/Overall/AgeGrade",
+                        ResultType = new FormattedResultType(ResultType.BestAverage),
+                        Rows = vm.AgeGrade().Take(3)
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })
+                    },
+                    new LeaderboardTable
+                    {
                         Title = "Most Miles",
                         Link = "/Overall/Miles",
+                        ResultType = new FormattedResultType(ResultType.MostRuns),
                         Rows = vm.MostMiles().Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
                     },
@@ -50,6 +60,8 @@ namespace FLRC.ChallengeDashboard
                     {
                         Title = "Most Points (F)",
                         Link = "/Overall/Points/F",
+                        ResultType = new FormattedResultType(ResultType.Fastest),
+                        Category = Category.F,
                         Rows = vm.MostPoints(Category.F).Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
                     },
@@ -57,6 +69,8 @@ namespace FLRC.ChallengeDashboard
                     {
                         Title = "Most Points (M)",
                         Link = "/Overall/Points/M",
+                        ResultType = new FormattedResultType(ResultType.Fastest),
+                        Category = Category.M,
                         Rows = vm.MostPoints(Category.M).Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                     }
@@ -150,11 +164,11 @@ namespace FLRC.ChallengeDashboard
             switch (type)
             {
                 case LeaderboardResultType.F:
-                    return t => t.Category?.Equals(Category.F) ?? t.ResultType.Value != ResultType.Team;
+                    return t => t.Category?.Equals(Category.F) ?? t.ResultType?.Value != ResultType.Team;
                 case LeaderboardResultType.M:
-                    return t => t.Category?.Equals(Category.M) ?? t.ResultType.Value != ResultType.Team;
+                    return t => t.Category?.Equals(Category.M) ?? t.ResultType?.Value != ResultType.Team;
                 default:
-                    return t => t.ResultType.Value == ResultType.Team;
+                    return t => t.ResultType?.Value == ResultType.Team;
             }
         }
     }

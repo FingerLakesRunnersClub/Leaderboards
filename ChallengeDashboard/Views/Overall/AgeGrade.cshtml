@@ -1,0 +1,25 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model OverallResultsViewModel<double>
+
+<h2>Overall Leaders</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("OverallFilter")
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+                { name: 'Courses Run', center: true, value: r => r.Count, sort: r => -r.Count },
+                { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
+            ];
+        
+            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+        </script>
+
+        @await Html.PartialAsync("Results")
+
+    </div>
+</div>

@@ -11,10 +11,10 @@
 <h2>Overall Leaders</h2>
 <div class="card card-highlighted">
     <div class="card-body">
-        <div class="row">
+        <div class="row justify-content-center">
             @foreach (var table in Model.OverallResults)
             {
-                <div class="col-12 col-sm-6 col-lg-3 mb-3 mb-lg-0">
+                <div class="col-12 col-lg-4 mb-3">
                     @await Html.PartialAsync("Table", table)
                 </div>
             }
@@ -47,8 +47,8 @@
         <div class="row">
             @foreach (var table in results.Value)
                 {
-                    var margin = table == results.Value.Last() ? "mb-0" : "mb-3 mb-md-0"; 
-                    <div class="col-12 col-md-4 @margin">
+                    var margin = table == results.Value.Last() ? "mb-0" : "mb-3 mb-lg-0"; 
+                    <div class="col-12 col-lg-4 @margin">
                         @await Html.PartialAsync("Table", table)
                     </div>
                 }

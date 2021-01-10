@@ -20,6 +20,9 @@ namespace FLRC.ChallengeDashboard.Controllers
         public async Task<ViewResult> Miles()
             => View(await GetResults("Most Miles", vm => vm.MostMiles()));
 
+        public async Task<ViewResult> AgeGrade()
+            => View(await GetResults("Age Grade", vm => vm.AgeGrade()));
+
         public async Task<ViewResult> Team()
             => View(await GetTeamResults("Team Points", vm => vm.TeamPoints()));
 
