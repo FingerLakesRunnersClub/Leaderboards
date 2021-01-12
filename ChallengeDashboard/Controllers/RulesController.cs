@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard.Controllers
 {
     public class RulesController : Controller
     {

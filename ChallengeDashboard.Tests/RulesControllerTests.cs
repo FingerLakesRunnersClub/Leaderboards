@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FLRC.ChallengeDashboard.Controllers;
+using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
