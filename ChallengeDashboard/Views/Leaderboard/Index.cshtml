@@ -14,7 +14,8 @@
         <div class="row justify-content-center">
             @foreach (var table in Model.OverallResults)
             {
-                <div class="col-12 col-lg-4 mb-3">
+                var width = table.Category != null ? "col-lg-6" : "col-lg-4";
+                <div class="col-12 @width mb-3">
                     @await Html.PartialAsync("Table", table)
                 </div>
             }

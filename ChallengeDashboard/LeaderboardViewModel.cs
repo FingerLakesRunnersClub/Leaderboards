@@ -31,14 +31,23 @@ namespace FLRC.ChallengeDashboard
                 var vm = new OverallViewModel(_courses);
                 return new List<LeaderboardTable>
                 {
-
                     new LeaderboardTable
                     {
-                        Title = "Top Teams",
-                        Link = "/Overall/Team",
-                        ResultType = new FormattedResultType(ResultType.Team),
-                        Rows = vm.TeamPoints().Take(3)
-                            .Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Link = $"/Team/Index/{t.Team.Value}", Value = t.TotalPoints.ToString() })
+                        Title = "Most Points (F)",
+                        Link = "/Overall/Points/F",
+                        ResultType = new FormattedResultType(ResultType.Fastest),
+                        Category = Category.F,
+                        Rows = vm.MostPoints(Category.F).Take(3)
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
+                    },
+                    new LeaderboardTable
+                    {
+                        Title = "Most Points (M)",
+                        Link = "/Overall/Points/M",
+                        ResultType = new FormattedResultType(ResultType.Fastest),
+                        Category = Category.M,
+                        Rows = vm.MostPoints(Category.M).Take(3)
+                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                     },
                     new LeaderboardTable
                     {
@@ -58,21 +67,11 @@ namespace FLRC.ChallengeDashboard
                     },
                     new LeaderboardTable
                     {
-                        Title = "Most Points (F)",
-                        Link = "/Overall/Points/F",
-                        ResultType = new FormattedResultType(ResultType.Fastest),
-                        Category = Category.F,
-                        Rows = vm.MostPoints(Category.F).Take(3)
-                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
-                    },
-                    new LeaderboardTable
-                    {
-                        Title = "Most Points (M)",
-                        Link = "/Overall/Points/M",
-                        ResultType = new FormattedResultType(ResultType.Fastest),
-                        Category = Category.M,
-                        Rows = vm.MostPoints(Category.M).Take(3)
-                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                        Title = "Top Teams",
+                        Link = "/Overall/Team",
+                        ResultType = new FormattedResultType(ResultType.Team),
+                        Rows = vm.TeamPoints().Take(3)
+                            .Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Link = $"/Team/Index/{t.Team.Value}", Value = t.TotalPoints.ToString() })
                     }
                 };
             }
