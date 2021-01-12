@@ -11,15 +11,17 @@ namespace FLRC.ChallengeDashboard
     {
         private readonly IDataAPI _api;
         private readonly ILogger _logger;
+        private readonly TimeSpan _cacheLength;
         private readonly IDictionary<uint, Course> _courses;
 
         public DataService(IDataAPI api, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             _api = api;
             _logger = loggerFactory.CreateLogger("DataService");
+            _cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
+            
             _courses = configuration.GetSection("Courses").GetChildren()
                 .ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
-
             foreach (var course in _courses.Values)
                 course.Meters = DataParser.ParseDistance(course.Distance);
         }
@@ -31,7 +33,7 @@ namespace FLRC.ChallengeDashboard
         {
             try
             {
-                if (_courses[id].LastUpdated < DateTime.Now.Subtract(TimeSpan.FromSeconds(5)))
+                if (_courses[id].LastUpdated < DateTime.Now.Subtract(_cacheLength))
                 {
                     var json = await _api.GetResults(id);
                     var newHash = json.ToString()?.GetHashCode() ?? 0;
