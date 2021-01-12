@@ -1,0 +1,26 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model TeamMembersViewModel
+
+<a class="btn btn-light btn-sm float-right" href="/Team/Index/@Model.Team.Value">
+    Team Page <i class="fas fa-arrow-right"></i>
+</a>
+<h2>@Model.Title</h2>
+
+<div class="card card-highlighted">
+    <div class="card-body">
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Number of Runs', center: true, value: r => r.Count, sort: r => -r.Count },
+                { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
+            ];
+        
+            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+        </script>
+
+        @await Html.PartialAsync("Results")
+    </div>
+</div>

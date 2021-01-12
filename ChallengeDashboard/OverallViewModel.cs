@@ -11,13 +11,16 @@ namespace FLRC.ChallengeDashboard
         public OverallViewModel(IEnumerable<Course> courses) => _courses = courses;
 
         public RankedList<Points> MostPoints(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
+            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value), _ => 0);
 
         public RankedList<double> MostMiles(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Result.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value));
+            => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Result.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value), _ => 0);
 
         public RankedList<double> AgeGrade(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count());
+            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count(), g => (uint)g.Count());
+
+        public RankedList<double> TeamMembers(byte ag)
+            => RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Average(r => r.AgeGrade.Value), g => (uint)g.Sum(r => r.Count));
 
         public IEnumerable<TeamResults> TeamPoints()
             => _courses.SelectMany(c => c.TeamPoints())
@@ -30,7 +33,7 @@ namespace FLRC.ChallengeDashboard
                 })
                 .Rank();
 
-        private RankedList<T1> RankedList<T1,T2,T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort)
+        private RankedList<T1> RankedList<T1,T2,T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
         {
             var ranks = new RankedList<T1>();
             var list = results.OrderByDescending(sort).ThenByDescending(getValue).ToList();
@@ -42,7 +45,7 @@ namespace FLRC.ChallengeDashboard
                 {
                     Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
                     Result = new Result { Athlete = result.Key },
-                    Count = (uint)result.Count(),
+                    Count = count(result),
                     AgeGrade = new AgeGrade(result.Average(r => r.AgeGrade.Value)),
                     Value = value
                 });

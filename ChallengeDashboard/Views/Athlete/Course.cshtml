@@ -2,15 +2,15 @@
 @using FLRC.ChallengeDashboard
 @model AthleteCourseResultsViewModel
 
-<h2 class="mb-0">
-    <a class="btn btn-light btn-sm float-right" href="/Athlete/Index/@Model.Athlete.ID">
-        Athlete Page <i class="fas fa-arrow-right"></i>
-    </a>
-    @Model.Athlete.Name
-</h2>
-<h5>All Runs for Course</h5>
+<a class="btn btn-light btn-sm float-right" href="/Athlete/Index/@Model.Athlete.ID">
+    Athlete Page <i class="fas fa-arrow-right"></i>
+</a>
+<h2>@Model.Athlete.Name</h2>
 
 <div class="card-highlighted card mb-3">
+    <div class="card-header">
+        All Runs for Course
+    </div>
     <div class="card-body">
         @await Html.PartialAsync("CourseInfo", Model.Course)
 

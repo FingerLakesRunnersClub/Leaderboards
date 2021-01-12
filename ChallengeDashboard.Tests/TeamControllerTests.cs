@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
 using Xunit;
 
@@ -52,6 +53,24 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             var vm = (TeamSummaryViewModel)response.Model;
             Assert.Equal(1, vm.Courses.First().Value.Rank.Value);
+        }
+
+        [Fact]
+        public async Task CanGetTeamMembers()
+        {
+            //arrange
+            var dataService = Substitute.For<IDataService>();
+            dataService.GetAllResults().Returns(LeaderboardData.Courses);
+            var controller = new TeamController(dataService);
+
+            //act
+            var response = await controller.Members(3);
+
+            //assert
+            var vm = (TeamMembersViewModel)response.Model;
+            Assert.Equal(2, vm.RankedResults.Count);
+            Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Result.Athlete);
+            Assert.Equal(LeaderboardData.Athlete4, vm.RankedResults.Skip(1).First().Result.Athlete);
         }
     }
 }

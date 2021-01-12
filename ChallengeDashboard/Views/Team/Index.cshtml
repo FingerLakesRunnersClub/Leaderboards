@@ -1,10 +1,10 @@
 ﻿@using FLRC.ChallengeDashboard
 @model TeamSummaryViewModel
 
-<a class="btn btn-light btn-xs float-right mt-3" href="/Overall/Team">
-    View All
-    <i class="far fa-arrow-alt-circle-right"></i>
+<a class="btn btn-light btn-sm float-right" href="/Team/Members/@Model.Team.Value">
+    Team Members <i class="fas fa-arrow-right"></i>
 </a>
+
 <h2>Team @Model.Team.Display</h2>
 
 <table class="table table-bordered table-sm text-center">
@@ -31,6 +31,12 @@
         </td>
         <td>
             @Model.Overall.TotalPoints (@Model.Overall.Rank.Display)
+            <br/>
+            <a class="btn btn-light btn-xs" href="/Overall/Team">
+                View All
+                <i class="far fa-arrow-alt-circle-right"></i>
+            </a>
+
         </td>
     </tr>
     </tbody>
@@ -39,7 +45,7 @@
 <div class="row">
     @foreach (var course in Model.Courses.Where(r => r.Value != null))
     {
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course.Key)

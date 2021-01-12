@@ -95,5 +95,18 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal("20–29", mostPoints.First().Team.Display);
         }
+        
+        [Fact]
+        public void CanGetTeamMembers()
+        {
+            //arrange
+            var vm = new OverallViewModel(LeaderboardData.Courses);
+            
+            //act
+            var members = vm.TeamMembers(2);
+
+            //assert
+            Assert.Equal("20–29", members.First().Result.Athlete.Team.Display);
+        }
     }
 }
