@@ -16,5 +16,19 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal("98.77", display);
         }
+
+        [Fact]
+        public void CanComparePoints()
+        {
+            //arrange
+            var p1 = new Points(12.34);
+
+            //act
+            var p2 = new Points(23.45);
+            
+            //assert
+            Assert.Equal(1, p2.CompareTo(p1));
+            Assert.Equal(-1, p1.CompareTo(p2));
+        }
     }
 }

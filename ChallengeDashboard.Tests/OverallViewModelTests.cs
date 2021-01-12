@@ -58,6 +58,32 @@ namespace FLRC.ChallengeDashboard.Tests
         }
         
         [Fact]
+        public void CanGetBestAverageAgeGrade()
+        {
+            //arrange
+            var vm = new OverallViewModel(LeaderboardData.Courses);
+            
+            //act
+            var mostPoints = vm.AgeGrade();
+
+            //assert
+            Assert.Equal(LeaderboardData.Athlete1, mostPoints.First().Result.Athlete);
+        }
+        
+        [Fact]
+        public void CanGetBestAverageAgeGradeForCategory()
+        {
+            //arrange
+            var vm = new OverallViewModel(LeaderboardData.Courses);
+            
+            //act
+            var mostPoints = vm.AgeGrade(Category.F);
+
+            //assert
+            Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Result.Athlete);
+        }
+        
+        [Fact]
         public void CanGetTeamPoints()
         {
             //arrange

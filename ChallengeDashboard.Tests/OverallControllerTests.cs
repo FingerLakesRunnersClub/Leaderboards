@@ -41,6 +41,22 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public async Task CanGetBestAgeGradeAverage()
+        {
+            //arrange
+            var dataService = Substitute.For<IDataService>();
+            dataService.GetAllResults().Returns(LeaderboardData.Courses);
+            var controller = new OverallController(dataService);
+
+            //act
+            var response = await controller.AgeGrade();
+
+            //assert
+            var vm = (OverallResultsViewModel<double>) response.Model;
+            Assert.Equal(LeaderboardData.Athlete1, vm.RankedResults.First().Result.Athlete);
+        }
+
+        [Fact]
         public async Task CanGetTeamPoints()
         {
             //arrange
