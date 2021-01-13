@@ -7,7 +7,7 @@
 
 body {
     background-color: #ecf7ff;
-    font-family: "Roboto";
+    font-family: "Roboto", sans-serif;
     display: flex;
     flex-direction: column;
 }
