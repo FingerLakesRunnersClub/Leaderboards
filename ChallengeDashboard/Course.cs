@@ -52,12 +52,11 @@ namespace FLRC.ChallengeDashboard
 
             var results = Rank(category, rs => ag == null || rs.Key.Team.Value == ag,
                 rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration));
-            
+
             if (ag != null)
                 return results;
-            
-            return _fastestCache[key] = results;
 
+            return _fastestCache[key] = results;
         }
 
         private readonly IDictionary<string, RankedList<Time>> _averageCache =
@@ -129,10 +128,16 @@ namespace FLRC.ChallengeDashboard
                 .Select(t => new TeamResults
                 {
                     Team = t.Key,
-                    AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration)).Take(10).Select(r =>
-                        AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
-                            r.First().Athlete.Category?.Value ?? Category.M.Value ?? throw null, r.First().Athlete.Age,
-                            Meters, r.First().Duration.Value)).Average()),
+                    AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration))
+                        .Take(10)
+                        .Select(rs =>
+                            AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
+                                rs.First().Athlete.Category?.Value ?? Category.M.Value ?? throw null,
+                                rs.First().Athlete.Age,
+                                Meters,
+                                rs.Min(r => r.Duration.Value)))
+                        .Average()
+                    ),
                     TotalRuns = (ushort) t.Sum(rs => rs.Count())
                 }).ToList();
 

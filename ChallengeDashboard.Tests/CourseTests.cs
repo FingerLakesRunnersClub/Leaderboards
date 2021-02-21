@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using Xunit;
 
@@ -171,6 +170,19 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal(75, results.Skip(1).First().Points.Value);
+        }
+
+        [Fact]
+        public void AverageAgeGradeBasedOnIndividualFastestTime()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results, Meters = 10000};
+
+            //act
+            var results = course.TeamPoints();
+
+            //assert
+            Assert.Equal("43.81%", results.First().AverageAgeGrade.Display); 
         }
     }
 }
