@@ -13,6 +13,9 @@
                     <a class="nav-link text-dark" href="/">Leaderboard</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link text-dark" href="/Athletes">Participants</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(event);">Races</a>
                     <ul id="dropdown" class="dropdown-menu position-absolute" onclick="event.stopPropagation();">
                         @foreach (var course in Model.CourseNames)
