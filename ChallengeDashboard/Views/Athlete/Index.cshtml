@@ -34,15 +34,15 @@
             </a>
         </td>
         <td>
-            @Model.OverallPoints.Value.Display (@Model.OverallPoints.Rank.Display)
+            @Model.OverallPoints?.Value?.Display (@Model.OverallPoints?.Rank?.Display)
             <br/>
-            <a class="btn btn-light btn-xs" href="/Overall/Points/@Model.Athlete.Category.Value">
+            <a class="btn btn-light btn-xs" href="/Overall/Points/@Model.Athlete.Category?.Value">
                 View All
                 <i class="far fa-arrow-alt-circle-right"></i>
             </a>
         </td>
         <td>
-            @Model.OverallMiles.Value.ToString("F1") (@Model.OverallMiles.Rank.Display)
+            @Model.OverallMiles?.Value.ToString("F1") (@Model.OverallMiles?.Rank?.Display)
             <br/>
             <a class="btn btn-light btn-xs" href="/Overall/Miles">
                 View All
