@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
@@ -14,6 +15,7 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
+            var athlete = new Athlete { ID = 123 };
             var course = new Course
             {
                 Meters = 10 * Course.MetersPerMile,
@@ -21,11 +23,12 @@ namespace FLRC.ChallengeDashboard.Tests
                     {
                         new Result
                         {
-                            Athlete = new Athlete { ID = 123 },
+                            Athlete = athlete,
                             Duration = new Time(new TimeSpan(1, 2, 3))
                         }
                     }
             };
+            dataService.GetAthlete(123).Returns(athlete);
             dataService.GetAllResults().Returns(new List<Course> { course });
             var controller = new AthleteController(dataService);
 

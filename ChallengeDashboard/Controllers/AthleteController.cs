@@ -57,10 +57,9 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
         {
+            var athlete = await _dataService.GetAthlete(id);
             var courses = (await _dataService.GetAllResults()).ToList();
             var overallViewModel = new OverallViewModel(courses);
-            var allResults = courses.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.ID == id));
-            var athlete = allResults.First(r => r.Value.Any()).Value.First().Athlete;
 
             return new AthleteSummaryViewModel
             {
