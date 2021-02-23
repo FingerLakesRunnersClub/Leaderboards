@@ -10,6 +10,24 @@ namespace FLRC.ChallengeDashboard.Tests
     public class DataParserTests
     {
         [Fact]
+        public async Task CanParseAthlete()
+        {
+            //arrange
+            var data = await File.ReadAllTextAsync("json/athlete.json");
+            var json = JsonDocument.Parse(data).RootElement;
+            var element = json.GetProperty("Racers").EnumerateArray().First();
+            
+            //act
+            var athlete = DataParser.ParseAthlete(element);
+
+            //assert
+            Assert.Equal((ushort)234, athlete.ID);
+            Assert.Equal("Steve Desmond", athlete.Name);
+            Assert.Equal(26, athlete.Age);
+            Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
+        }
+
+        [Fact]
         public async Task CanGetResultsForCourse()
         {
             //arrange

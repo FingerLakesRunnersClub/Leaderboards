@@ -18,6 +18,7 @@ namespace FLRC.ChallengeDashboard
                 ? ParseResults(results)
                 : new List<Result>();
         }
+
         public static double ParseDistance(string value)
         {
             var split = Regex.Match(value, @"([\d\.]+)(.*)").Groups;
@@ -52,7 +53,7 @@ namespace FLRC.ChallengeDashboard
 
         private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
 
-        private static Athlete ParseAthlete(JsonElement result)
+        public static Athlete ParseAthlete(JsonElement result)
         {
             var id = result.GetProperty("UserId").GetUInt32();
             if (id == 0)
