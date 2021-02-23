@@ -1,0 +1,22 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model AthletesViewModel
+
+<h2>@Model.Title</h2>
+
+<div class="card card-highlighted">
+    <div class="card-body">
+        <script>
+            const fields = [
+                { name: 'Name', center: false, value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
+                { name: 'Category', center: true, value: r => r.Category ? r.Category.Display: '' },
+                { name: 'Age', center: true, value: r => r.Age },
+                { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}` },
+            ];
+
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Athletes.Values));
+        </script>
+
+        @await Html.PartialAsync("DataTable")
+    </div>
+</div>
