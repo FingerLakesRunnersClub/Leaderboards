@@ -7,6 +7,9 @@ namespace FLRC.ChallengeDashboard
     {
         IDictionary<uint, string> CourseNames { get; }
 
+        Task<Athlete> GetAthlete(uint id);
+        Task<IDictionary<uint, Athlete>> GetAthletes();
+        
         Task<Course> GetResults(uint id);
         Task<IEnumerable<Course>> GetAllResults();
     }

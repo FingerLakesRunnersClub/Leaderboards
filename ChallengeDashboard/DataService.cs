@@ -13,13 +13,15 @@ namespace FLRC.ChallengeDashboard
         private readonly ILogger _logger;
         private readonly TimeSpan _cacheLength;
         private readonly IDictionary<uint, Course> _courses;
+        private readonly uint _startListID;
 
         public DataService(IDataAPI api, IConfiguration configuration, ILoggerFactory loggerFactory)
         {
             _api = api;
             _logger = loggerFactory.CreateLogger("DataService");
             _cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
-            
+
+            _startListID = configuration.GetValue<uint>("StartListRaceID");
             _courses = configuration.GetSection("Courses").GetChildren()
                 .ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
             foreach (var course in _courses.Values)
@@ -28,6 +30,47 @@ namespace FLRC.ChallengeDashboard
 
         public IDictionary<uint, string> CourseNames
             => _courses.ToDictionary(c => c.Key, c => c.Value.Name);
+
+        private IDictionary<uint, Athlete> _athletes = new Dictionary<uint, Athlete>();
+        private DateTime _athleteCacheTimestamp;
+
+        public async Task<Athlete> GetAthlete(uint id)
+        {
+            try
+            {
+                var athletes = await GetAthletes();
+                return athletes[id];
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Could not retrieve athletes");
+                return null;
+            }
+        }
+
+        public async Task<IDictionary<uint, Athlete>> GetAthletes()
+        {
+            try
+            {
+                if (_athleteCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
+                {
+                    var json = await _api.GetResults(_startListID);
+                    foreach (var element in json.GetProperty("Racers").EnumerateArray())
+                    {
+                        var athlete = DataParser.ParseAthlete(element);
+                        _athletes[athlete.ID] = athlete;
+                    }
+
+                    _athleteCacheTimestamp = DateTime.Now;
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, "Could not retrieve athletes");
+            }
+
+            return _athletes;
+        }
 
         public async Task<Course> GetResults(uint id)
         {
@@ -42,6 +85,7 @@ namespace FLRC.ChallengeDashboard
                         _courses[id].Results = DataParser.ParseCourse(json);
                         _courses[id].LastHash = newHash;
                     }
+
                     _courses[id].LastUpdated = DateTime.Now;
                 }
             }
