@@ -20,10 +20,10 @@
                 { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true, show: @((Model.Category != null && ViewBag.AgeGroup == null).ToString().ToLower()) }
             ];
 
-            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("Results")
+        @await Html.PartialAsync("DataTable")
 
     </div>
 </div>

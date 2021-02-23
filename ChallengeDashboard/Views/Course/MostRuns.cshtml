@@ -27,10 +27,10 @@
                 { name: '# of Runs', center: true, value: r => r.Count }
             ];
         
-            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("Results")
+        @await Html.PartialAsync("DataTable")
 
     </div>
 </div>

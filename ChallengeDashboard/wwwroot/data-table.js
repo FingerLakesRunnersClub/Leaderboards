@@ -6,19 +6,19 @@ new Vue({
             field: null,
             descending: false
         },
-        results: results
+        rows: rows
     },
     computed: {
-        show_results: function () {
-            return this.results.length > 0;
+        show_table: function () {
+            return this.rows.length > 0;
         },
         fields_to_show: function () {
             return this.fields.filter(f => f.show === undefined || f.show === true);
         },
-        sorted_results: function () {
+        sorted_rows: function () {
             if (!this.sort.field)
                 this.sort.field = this.fields[0];
-            const sorted = this.results.concat().sort((r1, r2) => {
+            const sorted = this.rows.concat().sort((r1, r2) => {
                 const v1 = this.sort.field.sort ? this.sort.field.sort(r1) : this.sort.field.value(r1);
                 const v2 = this.sort.field.sort ? this.sort.field.sort(r2) : this.sort.field.value(r2);
                 return v1 > v2 ? 1

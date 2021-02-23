@@ -16,10 +16,10 @@
                 { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
             ];
         
-            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("Results")
+        @await Html.PartialAsync("DataTable")
 
     </div>
 </div>

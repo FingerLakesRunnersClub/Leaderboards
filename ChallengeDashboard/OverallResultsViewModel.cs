@@ -5,7 +5,7 @@ namespace FLRC.ChallengeDashboard
         public RankedList<T> RankedResults { get; init; }
     }
 
-    public class OverallResultsViewModel : ResultsViewModel
+    public class OverallResultsViewModel : DataTableViewModel
     {
         public override string Title => ResultType;
         public string ResultType { get; init; }

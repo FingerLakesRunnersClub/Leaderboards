@@ -1,9 +1,9 @@
 @using FLRC.ChallengeDashboard
-@model ResultsViewModel
+@model DataTableViewModel
 
 <app v-cloak>
-    <div v-if="!show_results" class="alert alert-secondary">No results found</div>
-    <table v-if="show_results" class="results table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
+    <div v-if="!show_table" class="alert alert-secondary">No data found</div>
+    <table v-if="show_table" class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
         <thead>
             <tr>
                 <th v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">
@@ -17,14 +17,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="result in sorted_results">
+            <tr v-for="row in sorted_rows">
                 <td v-for="field in fields_to_show" :class="{'text-center': field.center}">
-                    <a v-if="field.link" :href="field.link(result)">{{field.value(result)}}</a>
-                    <span v-else>{{field.value(result)}}</span>
+                    <a v-if="field.link" :href="field.link(row)">{{field.value(row)}}</a>
+                    <span v-else>{{field.value(row)}}</span>
                 </td>
             </tr>
         </tbody>
     </table>
 </app>
 
-<script src="~/results.js"></script>
+<script src="~/data-table.js"></script>

@@ -1,6 +1,6 @@
 ﻿namespace FLRC.ChallengeDashboard
 {
-    public class AthleteCourseResultsViewModel : ResultsViewModel
+    public class AthleteCourseResultsViewModel : DataTableViewModel
     {
         public override string Title => $"{Athlete.Name} — {Course.Name}";
         public Athlete Athlete { get; init; }

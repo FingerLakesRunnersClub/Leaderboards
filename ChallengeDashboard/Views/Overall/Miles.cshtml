@@ -15,10 +15,10 @@
                 { name: 'Miles', center: true, value: r => r.Value.toFixed(1), sort: r => r.Value, descending: true }
             ];
         
-            results = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("Results")
+        @await Html.PartialAsync("DataTable")
 
     </div>
 </div>

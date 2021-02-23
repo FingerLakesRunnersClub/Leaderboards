@@ -5,7 +5,7 @@ namespace FLRC.ChallengeDashboard
         public RankedList<T> RankedResults { get; init; }
     }
 
-    public class CourseResultsViewModel : ResultsViewModel
+    public class CourseResultsViewModel : DataTableViewModel
     {
         public override string Title => $"{ResultType.Display} — {Course.Name}";
 
