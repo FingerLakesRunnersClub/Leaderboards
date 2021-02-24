@@ -6,6 +6,8 @@
 
 <div class="card card-highlighted">
     <div class="card-body">
+        <h5>Total Participants: @Model.Athletes.Count()</h4> 
+        
         <script>
             const fields = [
                 { name: 'Name', center: false, value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
