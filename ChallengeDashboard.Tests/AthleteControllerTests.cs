@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
@@ -15,29 +14,34 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
-            var athlete = new Athlete { ID = 123 };
+            var athlete = new Athlete {ID = 123, Category = Category.M};
             var course = new Course
             {
                 Meters = 10 * Course.MetersPerMile,
                 Results = new List<Result>
+                {
+                    new Result
                     {
-                        new Result
-                        {
-                            Athlete = athlete,
-                            Duration = new Time(new TimeSpan(1, 2, 3))
-                        }
+                        Athlete = athlete,
+                        Duration = new Time(new TimeSpan(2, 4, 6))
+                    },
+                    new Result
+                    {
+                        Athlete = new Athlete {ID = 234, Category = Category.F},
+                        Duration = new Time(new TimeSpan(1, 2, 3))
                     }
+                }
             };
             dataService.GetAthlete(123).Returns(athlete);
-            dataService.GetAllResults().Returns(new List<Course> { course });
+            dataService.GetAllResults().Returns(new List<Course> {course});
             var controller = new AthleteController(dataService);
 
             //act
             var response = await controller.Index(123);
 
             //assert
-            var vm = (AthleteSummaryViewModel)(response.Model);
-            Assert.Equal((uint)123, vm.Athlete.ID);
+            var vm = (AthleteSummaryViewModel) (response.Model);
+            Assert.Equal((uint) 123, vm.Athlete.ID);
             Assert.Equal(1, vm.Fastest[course].Rank.Value);
             Assert.Equal(1, vm.Average[course].Rank.Value);
             Assert.Equal(1, vm.Runs[course].Rank.Value);
@@ -59,17 +63,17 @@ namespace FLRC.ChallengeDashboard.Tests
                 {
                     new Result
                     {
-                        Athlete = new Athlete { ID = 123 },
+                        Athlete = new Athlete {ID = 123},
                         Duration = new Time(new TimeSpan(1, 2, 3))
                     }
                 }
             };
             dataService.GetResults(123).Returns(course);
             var controller = new AthleteController(dataService);
-            
+
             //act
             var response = await controller.Course(123, 123);
-            
+
             //assert
             var vm = (AthleteCourseResultsViewModel) response.Model;
             Assert.NotEmpty(vm.Results);

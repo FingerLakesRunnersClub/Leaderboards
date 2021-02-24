@@ -68,9 +68,9 @@ namespace FLRC.ChallengeDashboard.Controllers
                 TeamResults = overallViewModel.TeamPoints().First(r => r.Team == athlete.Team),
                 OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
                 OverallMiles = overallViewModel.MostMiles(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
-                Fastest = courses.ToDictionary(c => c, c => c.Fastest().FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                Average = courses.ToDictionary(c => c, c => c.BestAverage().FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.ID == id))
+                Fastest = courses.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
+                Average = courses.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
+                Runs = courses.ToDictionary(c => c, c => c.MostRuns(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id))
             };
         }
     }

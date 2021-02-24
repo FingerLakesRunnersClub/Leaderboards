@@ -7,6 +7,9 @@
     <thead>
     <tr>
         <th>
+            Category
+        </th>
+        <th>
             Age
         </th>
         <th>
@@ -22,6 +25,9 @@
     </thead>
     <tbody>
     <tr>
+        <td>
+            @Model.Athlete.Category?.Display
+        </td>
         <td>
             @Model.Athlete.Age
         </td>
@@ -79,7 +85,7 @@
                             <td>
                                 @Model.Fastest[course.Key].Value.Display (@Model.Fastest[course.Key].Rank.Display)
                                 <br/>
-                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category.Value">
+                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category?.Value">
                                     View All
                                     <i class="far fa-arrow-alt-circle-right"></i>
                                 </a>
@@ -94,7 +100,7 @@
                                     @("(not enough runs)")
                                 }
                                 <br/>
-                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category.Value">
+                                <a class="btn btn-light btn-xs" href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category?.Value">
                                     View All
                                     <i class="far fa-arrow-alt-circle-right"></i>
                                 </a>
