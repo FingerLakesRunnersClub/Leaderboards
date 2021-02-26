@@ -14,12 +14,14 @@ namespace FLRC.ChallengeDashboard
         public byte Age { get; init; }
         public DateTime DateOfBirth { get; init; }
 
-        public byte AgeAsOf(DateTimeOffset date) => (byte)(date.Subtract(DateOfBirth).TotalDays / 365.2425);
+        public byte AgeAsOf(DateTimeOffset date) => (byte) (date.Subtract(DateOfBirth).TotalDays / 365.2425);
 
         public Team Team => Age < 20 ? Teams[1]
             : Age >= 80 ? Teams[7]
-            : Teams[(byte)(Age / 10)];
+            : Teams[(byte) (Age / 10)];
 
-        public static IDictionary<byte, Team> Teams = Enumerable.Range(1, 7).ToDictionary(t => (byte)t, t => new Team((byte)t));
+        public byte AgeToday => AgeAsOf(DateTime.Today);
+
+        public static readonly IDictionary<byte, Team> Teams = Enumerable.Range(1, 7).ToDictionary(t => (byte) t, t => new Team((byte) t));
     }
 }

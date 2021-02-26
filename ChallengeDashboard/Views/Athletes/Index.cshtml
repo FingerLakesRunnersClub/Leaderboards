@@ -6,13 +6,13 @@
 
 <div class="card card-highlighted">
     <div class="card-body">
-        <h5>Total Participants: @Model.Athletes.Count()</h4> 
+        <h5>Total Participants: @Model.Athletes.Count</h5> 
         
         <script>
             const fields = [
                 { name: 'Name', center: false, value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
-                { name: 'Category', center: true, value: r => r.Category ? r.Category.Display: '' },
-                { name: 'Age', center: true, value: r => r.Age },
+                { name: 'Category', center: true, value: r => r.Category ? r.Category.Display : '' },
+                { name: 'Age', center: true, value: r => r.AgeToday },
                 { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}` },
             ];
 
