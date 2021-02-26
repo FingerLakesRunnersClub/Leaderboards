@@ -8,6 +8,11 @@ namespace FLRC.ChallengeDashboard
         {
         }
         
-        public override string Display => Value.ToString("M/d/yyyy h:mmtt").ToLower();
+        private static readonly string TimeZoneName = !OperatingSystem.IsWindows()
+            ? "America/New_York"
+            : "Eastern Standard Time";
+        private static readonly TimeZoneInfo TimeZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
+
+        public override string Display => Value.ToOffset(TimeZone.BaseUtcOffset).ToString("M/d/yyyy h:mmtt").ToLower();
     }
 }
