@@ -29,7 +29,7 @@
             @Model.Athlete.Category?.Display
         </td>
         <td>
-            @Model.Athlete.Age
+            @Model.Athlete.AgeAsOf(DateTime.Today)
         </td>
         <td>
             @Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)

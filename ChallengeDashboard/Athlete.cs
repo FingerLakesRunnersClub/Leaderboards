@@ -14,7 +14,7 @@ namespace FLRC.ChallengeDashboard
         public byte Age { get; init; }
         public DateTime DateOfBirth { get; init; }
 
-        public byte AgeAsOf(DateTime date) => (byte)(date.Subtract(DateOfBirth).TotalDays / 365.2425);
+        public byte AgeAsOf(DateTimeOffset date) => (byte)(date.Subtract(DateOfBirth).TotalDays / 365.2425);
 
         public Team Team => Age < 20 ? Teams[1]
             : Age >= 80 ? Teams[7]

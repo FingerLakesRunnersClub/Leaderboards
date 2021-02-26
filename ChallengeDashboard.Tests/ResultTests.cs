@@ -6,6 +6,27 @@ namespace FLRC.ChallengeDashboard.Tests
     public class ResultTests
     {
         [Fact]
+        public void CanGetAgeOnDayOfRun()
+        {
+            //arrange
+            var result = new Result
+            {
+                StartTime = new Date(new DateTime(2021, 1, 3)),
+                Athlete = new Athlete
+                {
+                    Age = 20,
+                    DateOfBirth = new DateTime(2000, 1, 2)
+                }
+            };
+            
+            //act
+            var ageOnDayOfRun = result.AgeOnDayOfRun;
+            
+            //assert
+            Assert.Equal(21, ageOnDayOfRun);
+        }
+        
+        [Fact]
         public void CanCompareResultsByDuration()
         {
             //arrange

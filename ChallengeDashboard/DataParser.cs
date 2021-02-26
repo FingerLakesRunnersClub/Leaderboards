@@ -65,7 +65,8 @@ namespace FLRC.ChallengeDashboard
                     ID = id,
                     Name = result.GetProperty("Name").GetString(),
                     Age = result.GetProperty("Age").GetByte(),
-                    Category = ParseCategory(result.GetProperty("Gender").GetString())
+                    Category = ParseCategory(result.GetProperty("Gender").GetString()),
+                    DateOfBirth = DateTime.Parse(result.GetProperty("Info1").GetString() ?? string.Empty)
                 });
 
             return athletes[id];

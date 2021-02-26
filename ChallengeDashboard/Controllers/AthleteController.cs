@@ -47,7 +47,7 @@ namespace FLRC.ChallengeDashboard.Controllers
                     Value = result.Duration,
                     AgeGrade = new AgeGrade(result.Athlete.Category != null
                         ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(result.Athlete.Category.Value ?? throw null,
-                            result.Athlete.Age, course.Meters, result.Duration.Value)
+                            result.AgeOnDayOfRun, course.Meters, result.Duration.Value)
                         : 0)
                 });
             }

@@ -25,6 +25,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal("Steve Desmond", athlete.Name);
             Assert.Equal(26, athlete.Age);
             Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
+            Assert.Equal(new DateTime(1985, 02, 16), athlete.DateOfBirth);
         }
 
         [Fact]
@@ -42,6 +43,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal((ushort)234, result.Athlete.ID);
             Assert.Equal("Steve Desmond", result.Athlete.Name);
             Assert.Equal(26, result.Athlete.Age);
+            Assert.Equal(new DateTime(1985, 02, 16), result.Athlete.DateOfBirth);
             Assert.Equal(AgeGradeCalculator.Category.M, result.Athlete.Category.Value);
             Assert.Equal(new DateTime(2011, 09, 24), result.StartTime.Value);
             Assert.Equal(new Time(new TimeSpan(0, 5, 04, 0)), result.Duration);
