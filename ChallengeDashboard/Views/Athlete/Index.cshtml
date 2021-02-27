@@ -32,7 +32,7 @@
             @Model.Athlete.AgeToday
         </td>
         <td>
-            @Model.Athlete.Team.Display (@Model.TeamResults.Rank.Display)
+            @Model.Athlete.Team.Display (@Model.TeamResults?.Rank.Display)
             <br/>
             <a class="btn btn-light btn-xs" href="/Overall/Team">
                 View All

@@ -65,7 +65,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             {
                 CourseNames = _dataService.CourseNames,
                 Athlete = athlete,
-                TeamResults = overallViewModel.TeamPoints().First(r => r.Team == athlete.Team),
+                TeamResults = overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team),
                 OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
                 OverallMiles = overallViewModel.MostMiles(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
                 Fastest = courses.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
