@@ -25,6 +25,10 @@ h2 .btn {
     font-family: inherit;
 }
 
+a {
+    color: var(--dark-blue-color);
+}
+
 .navbar {
     min-height: 7.5rem;
     border-bottom: 0.5rem solid var(--dark-blue-color);
@@ -51,8 +55,7 @@ h2 .btn {
     flex: 1 0 auto;
 }
 
-.footer {
-    flex-shrink: 0;
+footer {
     border-top: 0.5rem solid var(--dark-blue-color);
     background-color: var(--dark-blue-color);
     color: white;
@@ -61,8 +64,8 @@ h2 .btn {
     margin-top: 2rem;
 }
 
-a {
-    color: var(--dark-blue-color);
+footer a, footer a:hover, footer a:focus {
+    color: white;
 }
 
 .dropdown-menu {
