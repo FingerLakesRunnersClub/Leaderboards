@@ -1,17 +1,16 @@
 ﻿@using FLRC.ChallengeDashboard
 @model AthleteSummaryViewModel
 
-<h2>@Model.Athlete.Name</h2>
+<h2>
+    @Model.Athlete.Name
+    <small>
+        (@Model.Athlete.AgeToday @Model.Athlete.Category?.Display)
+    </small>
+</h2>
 
 <table class="table table-bordered table-sm text-center">
     <thead>
     <tr>
-        <th>
-            Category
-        </th>
-        <th>
-            Age
-        </th>
         <th>
             Team
         </th>
@@ -25,12 +24,6 @@
     </thead>
     <tbody>
     <tr>
-        <td>
-            @Model.Athlete.Category?.Display
-        </td>
-        <td>
-            @Model.Athlete.AgeToday
-        </td>
         <td>
             @Model.Athlete.Team.Display (@Model.TeamResults?.Rank.Display)
             <br/>
