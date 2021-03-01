@@ -1,0 +1,42 @@
+﻿@using FLRC.ChallengeDashboard
+@model ActivityLogViewModel
+
+<h2>@Model.Title</h2>
+
+<div class="card card-highlighted">
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>Athlete</th>
+                <th>Course</th>
+                <th class="text-right">Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var result in Model.Results)
+            {
+                <tr>
+                    <td>
+                        @result.StartTime.Display
+                    </td>
+                    <td>
+                        <a href="/Athlete/Index/@result.Athlete.ID">
+                            @result.Athlete.Name
+                        </a>
+                    </td>
+                    <td>
+                        <a href="/Course/@result.CourseID/Fastest">
+                            @Model.CourseNames[result.CourseID]
+                        </a>
+                    </td>
+                    <td class="text-right">
+                        @result.Duration.Display
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
