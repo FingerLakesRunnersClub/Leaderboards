@@ -184,5 +184,21 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal("43.81%", results.First().AverageAgeGrade.Display); 
         }
+
+        [Fact]
+        public void CanGetStatisticsForCourse()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results, Meters = 10000};
+
+            //act
+            var stats = course.Statistics();
+            
+            //assert
+            Assert.Equal(4, stats.Participants[string.Empty]);
+            Assert.Equal(8, stats.Runs[string.Empty]);
+            Assert.Equal(8 * 10000 / Course.MetersPerMile, stats.Miles[string.Empty]);
+            Assert.Equal(2, stats.Average[string.Empty]);
+        }
     }
 }

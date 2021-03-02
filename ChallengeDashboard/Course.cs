@@ -197,5 +197,33 @@ namespace FLRC.ChallengeDashboard
 
             return ranks;
         }
+
+        public Statistics Statistics() => new()
+        {
+            Participants = new Dictionary<string, int>
+            {
+                {string.Empty, GroupedResults().Count()},
+                {Category.F.Display, GroupedResults(Category.F).Count()},
+                {Category.M.Display, GroupedResults(Category.M).Count()}
+            },
+            Runs = new Dictionary<string, int>
+            {
+                {string.Empty, Results.Count()},
+                {Category.F.Display, Results.Count(r => r.Athlete.Category.Value == Category.F.Value)},
+                {Category.M.Display, Results.Count(r => r.Athlete.Category.Value == Category.M.Value)}
+            },
+            Miles = new Dictionary<string, double>
+            {
+                {string.Empty, Results.Count() * Meters / MetersPerMile },
+                {Category.F.Display, Results.Count(r => r.Athlete.Category.Value == Category.F.Value) * Meters / MetersPerMile },
+                {Category.M.Display, Results.Count(r => r.Athlete.Category.Value == Category.M.Value) * Meters / MetersPerMile }
+            },
+            Average = new Dictionary<string, double>
+            {
+                {string.Empty, GroupedResults().Any() ? GroupedResults().Average(a => a.Count()) : 0 },
+                {Category.F.Display, GroupedResults(Category.F).Any() ? GroupedResults(Category.F).Average(a => a.Count()) : 0 },
+                {Category.M.Display, GroupedResults(Category.M).Any() ? GroupedResults(Category.M).Average(a => a.Count()) : 0 }
+            }
+        };
     }
 }
