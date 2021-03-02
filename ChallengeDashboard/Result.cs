@@ -4,6 +4,7 @@ namespace FLRC.ChallengeDashboard
 {
     public class Result : IComparable<Result>
     {
+        public uint CourseID { get; init; }
         public Athlete Athlete { get; init; }
         public Date StartTime { get; init; }
         public Time Duration { get; init; }
