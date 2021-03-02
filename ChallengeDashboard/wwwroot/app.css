@@ -163,4 +163,8 @@ table.leaderboard td.value {
         position: revert;
         transform: revert;
     }
+    
+    #races {
+        right: 0.25rem;
+    }
 }
