@@ -73,6 +73,10 @@ footer a, footer a:hover, footer a:focus {
     margin-left: -2rem;
 }
 
+#about {
+    right: 0.25rem;
+}
+
 .dropdown-item {
     white-space: nowrap;
 }
