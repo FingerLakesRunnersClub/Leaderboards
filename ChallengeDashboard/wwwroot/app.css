@@ -43,7 +43,7 @@ a {
 }
 
 .navbar-brand .logo {
-    max-width: min(10rem, 25vw);
+    max-width: min(8rem, 25vw);
     position: absolute;
     top: -4.6rem;
     left: 0;
@@ -69,13 +69,16 @@ footer a, footer a:hover, footer a:focus {
 }
 
 .dropdown-menu {
-    left: unset;
-    top: unset;
-    margin-left: -5rem;
+    left: revert;
+    margin-left: -2rem;
 }
 
 .dropdown-item {
     white-space: nowrap;
+}
+
+.dropdown-item:active {
+    background-color: #f0f2f0;
 }
 
 .btn {
@@ -132,14 +135,13 @@ table.leaderboard td.value {
     opacity: 0.35;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 575px) {
     .primary-nav {
         flex: 1;
     }
 
     .navbar {
-        padding: 0;
-        margin-bottom: 1rem;
+        min-height: revert;
     }
 
     .navbar .container {

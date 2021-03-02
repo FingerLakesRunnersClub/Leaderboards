@@ -40,7 +40,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.Index(123);
 
             //assert
-            var vm = (AthleteSummaryViewModel) (response.Model);
+            var vm = (AthleteSummaryViewModel) response.Model;
             Assert.Equal((uint) 123, vm.Athlete.ID);
             Assert.Equal(1, vm.Fastest[course].Rank.Value);
             Assert.Equal(1, vm.Average[course].Rank.Value);

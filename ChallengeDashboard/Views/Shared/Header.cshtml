@@ -6,28 +6,56 @@
         <div class="container">
             <h1 class="sr-only">FLRC Challenge</h1>
             <a class="navbar-brand" href="/">
-                <img class="logo" src="~/logo.png" alt="FLRC logo" />
+                <img class="logo" src="~/logo.png" alt="FLRC logo"/>
             </a>
             <ul class="primary-nav nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/">Leaderboard</a>
+                    <a class="nav-link text-dark" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/Athletes">Participants</a>
+                    <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(this, event);">
+                        Reports
+                    </a>
+                    <ul id="reports" class="dropdown-menu" onclick="event.stopPropagation();">
+                        <li class="dropdown-item">
+                            <a href="/Athletes">Participants</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/Statistics">Statistics</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/Log">Activity Log</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(event);">Races</a>
-                    <ul id="dropdown" class="dropdown-menu position-absolute" onclick="event.stopPropagation();">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(this, event);">
+                        Races
+                    </a>
+                    <ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
                         @foreach (var course in Model.CourseNames)
                         {
                             <li class="dropdown-item">
-                                <a class="nav-link text-dark" href="/Course/@course.Key/Fastest">@course.Value</a>
+                                <a href="/Course/@course.Key/Fastest">@course.Value</a>
                             </li>
                         }
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-dark" href="/Rules">Rules</a>
+                    <a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(this, event);">
+                        About
+                    </a>
+                    <ul id="about" class="dropdown-menu" onclick="event.stopPropagation();">
+                        <li class="dropdown-item">
+                            <a href="/About">FLRC Challenge</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/About/Rules">Rules</a>
+                        </li>
+                        <li class="dropdown-item">
+                            <a href="/About/Timing">Timing</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -35,13 +63,18 @@
 </header>
 
 <script>
-    const dropdown = document.getElementById('dropdown');
-    function toggleDropdown(event) {
-        dropdown.style = dropdown.style.length === 0
-            ? "display: block;"
-            : "";
+    function hideDropdowns() {
+        document.querySelectorAll('.dropdown-menu').forEach(e => e.style = "");
+    }
+    
+    function toggleDropdown(element, event) {
+        const menu = element.parentElement.querySelector('.dropdown-menu');
+        const show = menu.style.length === 0;
+        hideDropdowns();
+        menu.style = show ? "display: block;" : "";
         event.stopPropagation();
         return false;
     }
-    document.body.onclick = () => dropdown.style = "";
+    
+    document.body.onclick = () => hideDropdowns(); 
 </script>
