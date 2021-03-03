@@ -47,9 +47,9 @@
                     <td>@stats.Runs[Category.F.Display]</td>
                     <td>@stats.Runs[Category.M.Display]</td>
 
-                    <td>@stats.Miles[string.Empty]</td>
-                    <td>@stats.Miles[Category.F.Display]</td>
-                    <td>@stats.Miles[Category.M.Display]</td>
+                    <td>@stats.Miles[string.Empty].ToString("F1")</td>
+                    <td>@stats.Miles[Category.F.Display].ToString("F1")</td>
+                    <td>@stats.Miles[Category.M.Display].ToString("F1")</td>
 
                     <td>@stats.Average[string.Empty].ToString("F1")</td>
                     <td>@stats.Average[Category.F.Display].ToString("F1")</td>
@@ -67,9 +67,9 @@
                 <th>@Model.Total.Runs[Category.F.Display]</th>
                 <th>@Model.Total.Runs[Category.M.Display]</th>
 
-                <th>@Model.Total.Miles[string.Empty]</th>
-                <th>@Model.Total.Miles[Category.F.Display]</th>
-                <th>@Model.Total.Miles[Category.M.Display]</th>
+                <th>@Model.Total.Miles[string.Empty].ToString("F1")</th>
+                <th>@Model.Total.Miles[Category.F.Display].ToString("F1")</th>
+                <th>@Model.Total.Miles[Category.M.Display].ToString("F1")</th>
 
                 <th>@Model.Total.Average[string.Empty].ToString("F1")</th>
                 <th>@Model.Total.Average[Category.F.Display].ToString("F1")</th>
