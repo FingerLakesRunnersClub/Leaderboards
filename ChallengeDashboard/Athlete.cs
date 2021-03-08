@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace FLRC.ChallengeDashboard
 {
@@ -12,6 +13,8 @@ namespace FLRC.ChallengeDashboard
         public Category Category { get; init; }
 
         public byte Age { get; init; }
+        
+        [JsonIgnore]
         public DateTime DateOfBirth { get; init; }
 
         public byte AgeAsOf(DateTimeOffset date) => (byte) (date.Subtract(DateOfBirth).TotalDays / 365.2425);

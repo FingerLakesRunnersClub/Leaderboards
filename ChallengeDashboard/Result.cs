@@ -1,10 +1,13 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace FLRC.ChallengeDashboard
 {
     public class Result : IComparable<Result>
     {
+        [JsonIgnore]
         public uint CourseID { get; init; }
+        
         public Athlete Athlete { get; init; }
         public Date StartTime { get; init; }
         public Time Duration { get; init; }
