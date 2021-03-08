@@ -31,6 +31,9 @@ namespace FLRC.ChallengeDashboard
             }
         }
 
+        public IEnumerable<Result> ResultsAsOf(DateTime date)
+            => Results.Where(r => r.StartTime.Value <= date);
+
         private void resetCaches()
         {
             _fastestCache.Clear();

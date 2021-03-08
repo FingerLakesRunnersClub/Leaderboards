@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Xunit;
 
@@ -199,6 +200,19 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal(8, stats.Runs[string.Empty]);
             Assert.Equal(8 * 10000 / Course.MetersPerMile, stats.Miles[string.Empty]);
             Assert.Equal(2, stats.Average[string.Empty]);
+        }
+
+        [Fact]
+        public void CanGetResultsAsOfDate()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results, Meters = 10000};
+            
+            //act
+            var results = course.ResultsAsOf(new DateTime(2020, 1, 5));
+            
+            //assert
+            Assert.Equal(5, results.Count());
         }
     }
 }
