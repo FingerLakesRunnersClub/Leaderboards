@@ -191,10 +191,7 @@ namespace FLRC.ChallengeDashboard
                     Points = new Points(rank == 1
                         ? 100
                         : ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
-                    AgeGrade = new AgeGrade(athlete.Category != null
-                        ? AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category.Value ?? throw null,
-                            result.AgeOnDayOfRun, Meters, result.Duration.Value)
-                        : 0)
+                    AgeGrade = new AgeGrade(AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category?.Value ?? Category.M.Value ?? throw null, result.AgeOnDayOfRun, Meters, result.Duration.Value))
                 });
             }
 
