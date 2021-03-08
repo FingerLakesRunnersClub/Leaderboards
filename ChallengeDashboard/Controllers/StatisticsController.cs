@@ -29,8 +29,8 @@ namespace FLRC.ChallengeDashboard.Controllers
                     Participants = new Dictionary<string, int>
                     {
                         {string.Empty, athletes.Count},
-                        {Category.F.Display, athletes.Count(a => a.Category.Value == Category.F.Value)},
-                        {Category.M.Display, athletes.Count(a => a.Category.Value == Category.M.Value)},
+                        {Category.F.Display, athletes.Count(a => a.Category?.Value == Category.F.Value)},
+                        {Category.M.Display, athletes.Count(a => a.Category?.Value == Category.M.Value)},
                     },
                     Runs = new Dictionary<string, int>
                     {
@@ -47,8 +47,8 @@ namespace FLRC.ChallengeDashboard.Controllers
                     Average = new Dictionary<string, double>
                     {
                         {string.Empty, (double)courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count},
-                        {Category.F.Display, (double)courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) / athletes.Count(a => a.Category.Value == Category.F.Value)},
-                        {Category.M.Display, (double)courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) / athletes.Count(a => a.Category.Value == Category.M.Value)},
+                        {Category.F.Display, (double)courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) / athletes.Count(a => a.Category?.Value == Category.F.Value)},
+                        {Category.M.Display, (double)courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) / athletes.Count(a => a.Category?.Value == Category.M.Value)},
                     }
                 }
             };
