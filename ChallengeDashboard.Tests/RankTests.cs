@@ -24,5 +24,19 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal(expected, display);
         }
+
+        [Fact]
+        public void CanCompareRanks()
+        {
+            //arrange
+            var r1 = new Rank(1);
+
+            //act
+            var r2 = new Rank(2);
+            
+            //assert
+            Assert.Equal(1, r2.CompareTo(r1));
+            Assert.Equal(-1, r1.CompareTo(r2));
+        }
     }
 }

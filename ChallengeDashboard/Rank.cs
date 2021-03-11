@@ -1,6 +1,8 @@
-﻿namespace FLRC.ChallengeDashboard
+﻿using System;
+
+namespace FLRC.ChallengeDashboard
 {
-    public class Rank : Formatted<ushort>
+    public class Rank : Formatted<ushort>, IComparable<Rank>
     {
         public Rank(ushort value) : base(value)
         {
@@ -22,5 +24,7 @@
                     }
                 }
                 : Value.ToString();
+
+        public int CompareTo(Rank other) => Value.CompareTo(other.Value);
     }
 }
