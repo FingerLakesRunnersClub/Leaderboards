@@ -58,5 +58,33 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal(-1, t1.CompareTo(t2));
             Assert.Equal(1, t2.CompareTo(t1));
         }
+
+        [Fact]
+        public void CanEquateTimes()
+        {
+            //arrange
+            var t1 = new Time(new TimeSpan(1, 2, 3));
+            var t2 = new Time(new TimeSpan(1, 2, 3));
+
+            //act
+            var equal = t1.Equals(t2);
+            
+            //assert
+            Assert.True(equal);
+        }
+
+        [Fact]
+        public void CanEquateToObject()
+        {
+            //arrange
+            var t1 = new Time(new TimeSpan(1, 2, 3));
+            var t2 = new Time(new TimeSpan(1, 2, 3));
+
+            //act
+            var equal = t1.Equals((object)t2);
+            
+            //assert
+            Assert.True(equal);
+        }
     }
 }
