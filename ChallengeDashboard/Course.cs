@@ -209,14 +209,14 @@ namespace FLRC.ChallengeDashboard
             Runs = new Dictionary<string, int>
             {
                 {string.Empty, Results.Count()},
-                {Category.F.Display, Results.Count(r => r.Athlete.Category.Equals(Category.F))},
-                {Category.M.Display, Results.Count(r => r.Athlete.Category.Equals(Category.M))}
+                {Category.F.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.F))},
+                {Category.M.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.M))}
             },
             Miles = new Dictionary<string, double>
             {
                 {string.Empty, Results.Count() * Meters / MetersPerMile },
-                {Category.F.Display, Results.Count(r => r.Athlete.Category.Equals(Category.F)) * Meters / MetersPerMile },
-                {Category.M.Display, Results.Count(r => r.Athlete.Category.Equals(Category.M)) * Meters / MetersPerMile }
+                {Category.F.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.F)) * Meters / MetersPerMile },
+                {Category.M.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.M)) * Meters / MetersPerMile }
             },
             Average = new Dictionary<string, double>
             {
