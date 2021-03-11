@@ -17,5 +17,7 @@ namespace FLRC.ChallengeDashboard
         public bool Equals(Time other) => Value.Equals(other?.Value);
         
         public override bool Equals(object other) => Equals(other as Time);
+
+        public override int GetHashCode() => Value.GetHashCode();
     }
 }

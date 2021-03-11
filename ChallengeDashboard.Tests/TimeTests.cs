@@ -86,5 +86,20 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.True(equal);
         }
+
+        [Fact]
+        public void CanGetHashCode()
+        {
+            //arrange
+            var t1 = new Time(new TimeSpan(1, 2, 3));
+            var t2 = new Time(new TimeSpan(1, 2, 3));
+
+            //act
+            var h1 = t1.GetHashCode();
+            var h2 = t1.GetHashCode();
+            
+            //assert
+            Assert.Equal(h1, h2);
+        }
     }
 }
