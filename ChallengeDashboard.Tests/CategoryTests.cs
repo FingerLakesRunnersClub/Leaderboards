@@ -34,5 +34,19 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Equal(Category.F, f);
             Assert.NotEqual(Category.M, Category.F);
         }
+
+        [Fact]
+        public void CanEquateCategories()
+        {
+            //arrange
+            var f1 = new Category(AgeGradeCalculator.Category.F);
+            var f2 = new Category(AgeGradeCalculator.Category.F);
+
+            //act
+            var equal = f1.Equals(f2);
+            
+            //assert
+            Assert.True(equal);
+        }
     }
 }
