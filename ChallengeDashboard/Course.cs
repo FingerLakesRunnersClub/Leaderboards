@@ -195,7 +195,7 @@ namespace FLRC.ChallengeDashboard
                 });
             }
 
-            return ranks;
+            return new RankedList<T>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToList());
         }
 
         public Statistics Statistics() => new()
