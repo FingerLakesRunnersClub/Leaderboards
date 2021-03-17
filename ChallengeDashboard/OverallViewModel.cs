@@ -20,7 +20,7 @@ namespace FLRC.ChallengeDashboard
             => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count(), g => (uint)g.Count());
 
         public RankedList<double> TeamMembers(byte ag)
-            => RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Average(r => r.AgeGrade.Value), g => (uint)g.Sum(r => r.Count));
+            => RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count(), g => (uint)g.Count());
 
         public IEnumerable<TeamResults> TeamPoints()
             => _courses.SelectMany(c => c.TeamPoints())

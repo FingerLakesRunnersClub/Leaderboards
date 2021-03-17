@@ -14,7 +14,7 @@
             const fields = [
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
-                { name: 'Number of Runs', center: true, value: r => r.Count, sort: r => -r.Count },
+                { name: 'Courses Runs', center: true, value: r => r.Count, sort: r => -r.Count },
                 { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
             ];
         
