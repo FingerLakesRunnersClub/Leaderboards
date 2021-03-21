@@ -29,6 +29,32 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public void CanParseDuration()
+        {
+            //arrange
+            const double seconds = 123.12;
+            
+            //act
+            var duration = DataParser.ParseDuration(seconds);
+            
+            //assert
+            Assert.Equal(new TimeSpan(0, 2, 4), duration.Value);
+        }
+
+        [Fact]
+        public void DurationRoundsAppropriately()
+        {
+            //arrange
+            const double seconds = 123.09;
+            
+            //act
+            var duration = DataParser.ParseDuration(seconds);
+            
+            //assert
+            Assert.Equal(new TimeSpan(0, 2, 3), duration.Value);
+        }
+
+        [Fact]
         public async Task CanGetResultsForCourse()
         {
             //arrange

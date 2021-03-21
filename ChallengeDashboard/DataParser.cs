@@ -50,8 +50,11 @@ namespace FLRC.ChallengeDashboard
                 CourseID = id,
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
-                Duration = new Time(TimeSpan.FromSeconds(Math.Ceiling(r.GetProperty("RaceTime").GetDouble())))
+                Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
             }).Where(r => r.Duration.Value >= MinimumDuration);
+
+        public static Time ParseDuration(double seconds)
+            => new(TimeSpan.FromSeconds(Math.Ceiling(Math.Round(seconds, 1, MidpointRounding.ToZero))));
 
         private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
 
