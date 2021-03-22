@@ -13,6 +13,6 @@ namespace FLRC.ChallengeDashboard
             : "Eastern Standard Time";
         private static readonly TimeZoneInfo TimeZone = TimeZoneInfo.FindSystemTimeZoneById(TimeZoneName);
 
-        public override string Display => Value.ToOffset(TimeZone.BaseUtcOffset).ToString("M/d/yyyy h:mmtt").ToLower();
+        public override string Display => TimeZoneInfo.ConvertTime(Value, TimeZone).ToString("M/d/yyyy h:mmtt").ToLower();
     }
 }
