@@ -104,16 +104,16 @@ th.sortable .spacer {
     width: 1rem;
 }
 
-th a {
-    font-weight: normal;
-}
-
 table.leaderboard td.rank {
     width: 2rem;
 }
 
 table.leaderboard td.value {
     width: 5rem;
+}
+
+dt {
+    text-align: right;
 }
 
 [v-cloak] {
