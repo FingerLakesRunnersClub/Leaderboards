@@ -43,7 +43,7 @@ a {
 }
 
 .navbar-brand .logo {
-    max-width: min(8rem, 25vw);
+    max-width: min(9rem, 28vw);
     position: absolute;
     top: -4.6rem;
     left: 0;
@@ -155,13 +155,12 @@ dt {
     .navbar-brand {
         display: block;
         padding: 0;
-        margin: 0.25rem 0.5rem;
+        margin: -1rem 0 -2rem 0;
         text-align: center;
     }
 
     .navbar-brand .logo {
         position: revert;
-        transform: revert;
     }
     
     #races {
