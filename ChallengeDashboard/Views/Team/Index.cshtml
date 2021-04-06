@@ -11,13 +11,19 @@
     <thead>
     <tr>
         <th>
-            Age Grade Points
+            Age Grade
+            <br class="d-inline d-sm-none"/>
+            Points
         </th>
         <th>
-            Most Runs Points
+            Most Runs
+            <br class="d-inline d-sm-none"/>
+            Points
         </th>
         <th>
-            Total Points
+            Total
+            <br class="d-inline d-sm-none"/>
+            Points
         </th>
     </tr>
     </thead>
@@ -30,13 +36,8 @@
             @Model.Overall.MostRunsPoints
         </td>
         <td>
-            @Model.Overall.TotalPoints (@Model.Overall.Rank.Display)
-            <br/>
-            <a class="btn btn-light btn-xs" href="/Overall/Team">
-                View All
-                <i class="far fa-arrow-alt-circle-right"></i>
-            </a>
-
+            @Model.Overall.TotalPoints
+            (<a href="/Overall/Team">@Model.Overall.Rank.Display</a>)
         </td>
     </tr>
     </tbody>
@@ -53,13 +54,19 @@
                         <thead>
                         <tr>
                             <th>
-                                Average Age Grade
+                                Average
+                                <br class="d-inline d-sm-none"/>
+                                Age Grade
                             </th>
                             <th>
-                                Total Runs
+                                Total
+                                <br class="d-inline d-sm-none"/>
+                                Runs
                             </th>
                             <th>
-                                Team Points
+                                Team
+                                <br class="d-inline d-sm-none"/>
+                                Points
                             </th>
                         </tr>
                         </thead>
@@ -72,16 +79,12 @@
                                 @course.Value.TotalRuns (@(new Rank(course.Value.MostRunsPoints).Display))
                             </td>
                             <td>
-                                @course.Value.TotalPoints (@course.Value.Rank.Display)
+                                @course.Value.TotalPoints
+                                (<a href="/Course/@course.Key.ID/Team">@course.Value.Rank.Display</a>)
                             </td>
                         </tr>
                         </tbody>
                     </table>
-
-                    <a class="btn btn-light btn-xs mt-2 float-right" href="/Course/@course.Key.ID/Team">
-                        View All
-                        <i class="far fa-arrow-alt-circle-right"></i>
-                    </a>
                 </div>
             </div>
         </div>
