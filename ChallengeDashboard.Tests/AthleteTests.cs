@@ -25,12 +25,13 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Theory]
-        [InlineData(19, 1)]
-        [InlineData(20, 2)]
+        [InlineData(1, 2)]
         [InlineData(29, 2)]
-        [InlineData(70, 7)]
-        [InlineData(79, 7)]
-        [InlineData(80, 7)]
+        [InlineData(36, 3)]
+        [InlineData(45, 4)]
+        [InlineData(58, 5)]
+        [InlineData(60, 6)]
+        [InlineData(80, 6)]
         public void CanGetTeamForAge(byte age, byte expected)
         {
             //arrange

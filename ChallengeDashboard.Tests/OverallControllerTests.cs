@@ -69,7 +69,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (OverallTeamResultsViewModel) response.Model;
-            Assert.Equal("20–29", vm.Results.First().Team.Display);
+            Assert.Equal("1–29", vm.Results.First().Team.Display);
         }
     }
 }

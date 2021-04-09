@@ -6,8 +6,8 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Value == 1 ? "1–19"
-            : Value == 7 ? "70+"
+        public override string Display => Value == 2 ? "1–29"
+            : Value == 6 ? "60+"
             : $"{Value}0–{Value}9";
     }
 }

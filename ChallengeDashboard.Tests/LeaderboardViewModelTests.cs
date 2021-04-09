@@ -44,9 +44,9 @@ namespace FLRC.ChallengeDashboard.Tests
             
             //assert
             var result = results.First().Value.ToList();
-            Assert.StartsWith("20", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Age Grade").Rows.First().Name);
-            Assert.StartsWith("30", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Most Runs").Rows.First().Name);
-            Assert.StartsWith("20", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Total Points").Rows.First().Name);
+            Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Age Grade").Rows.First().Name);
+            Assert.Equal("30–39", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Most Runs").Rows.First().Name);
+            Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Total Points").Rows.First().Name);
         }
         
         [Fact]
@@ -88,13 +88,13 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.Team);
             
             //act
-            var results = vm.OverallResults;
+            var results = vm.OverallResults.ToList();
             
             //assert
             Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.First().Name);
             Assert.Equal("A1", results.First(r => r.Title == "Most Points (M)").Rows.First().Name);
             Assert.Equal("A2", results.First(r => r.Title == "Most Miles").Rows.First().Name);
-            Assert.StartsWith("20", results.First(r => r.Title == "Top Teams").Rows.First().Name);
+            Assert.Equal("1–29", results.First(r => r.Title == "Top Teams").Rows.First().Name);
         }
     }
 }

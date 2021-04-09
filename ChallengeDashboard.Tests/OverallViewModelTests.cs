@@ -93,7 +93,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var mostPoints = vm.TeamPoints();
 
             //assert
-            Assert.Equal("20–29", mostPoints.First().Team.Display);
+            Assert.Equal("1–29", mostPoints.First().Team.Display);
         }
         
         [Fact]
@@ -106,7 +106,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var members = vm.TeamMembers(2);
 
             //assert
-            Assert.Equal("20–29", members.First().Result.Athlete.Team.Display);
+            Assert.Equal("1–29", members.First().Result.Athlete.Team.Display);
         }
     }
 }

@@ -31,7 +31,7 @@ namespace FLRC.ChallengeDashboard
         public IDictionary<uint, string> CourseNames
             => _courses.ToDictionary(c => c.Key, c => c.Value.Name);
 
-        private IDictionary<uint, Athlete> _athletes = new Dictionary<uint, Athlete>();
+        private readonly IDictionary<uint, Athlete> _athletes = new Dictionary<uint, Athlete>();
         private DateTime _athleteCacheTimestamp;
 
         public async Task<Athlete> GetAthlete(uint id)
@@ -74,19 +74,21 @@ namespace FLRC.ChallengeDashboard
 
         public async Task<Course> GetResults(uint id)
         {
+            var course = _courses[id];
+            
             try
             {
-                if (_courses[id].LastUpdated < DateTime.Now.Subtract(_cacheLength))
+                if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
                 {
                     var json = await _api.GetResults(id);
                     var newHash = json.ToString()?.GetHashCode() ?? 0;
-                    if (newHash != _courses[id].LastHash)
+                    if (newHash != course.LastHash)
                     {
-                        _courses[id].Results = DataParser.ParseCourse(json);
-                        _courses[id].LastHash = newHash;
+                        course.Results = DataParser.ParseCourse(json);
+                        course.LastHash = newHash;
                     }
 
-                    _courses[id].LastUpdated = DateTime.Now;
+                    course.LastUpdated = DateTime.Now;
                 }
             }
             catch (Exception e)
@@ -94,7 +96,7 @@ namespace FLRC.ChallengeDashboard
                 _logger.LogWarning(e, "Could not retrieve results");
             }
 
-            return _courses[id];
+            return course;
         }
 
         public async Task<IEnumerable<Course>> GetAllResults()
