@@ -30,14 +30,14 @@
     <tbody>
     <tr>
         <td>
-            @Model.Overall.AgeGradePoints
+            @Model.Overall?.AgeGradePoints
         </td>
         <td>
-            @Model.Overall.MostRunsPoints
+            @Model.Overall?.MostRunsPoints
         </td>
         <td>
-            @Model.Overall.TotalPoints
-            (<a href="/Overall/Team">@Model.Overall.Rank.Display</a>)
+            @Model.Overall?.TotalPoints
+            (<a href="/Overall/Team">@Model.Overall?.Rank.Display</a>)
         </td>
     </tr>
     </tbody>
