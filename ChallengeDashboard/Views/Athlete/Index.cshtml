@@ -12,9 +12,12 @@
         <th>
             Team
         </th>
-        <th>
-            Overall Points
-        </th>
+        @if (Model.Athlete.Category != null)
+        {
+            <th>
+                Overall Points
+            </th>
+        }
         <th>
             Total Miles
         </th>
@@ -26,10 +29,13 @@
             @Model.Athlete.Team.Display
             (<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
         </td>
-        <td>
-            @Model.OverallPoints?.Value?.Display
-            (<a href="/Overall/Points">@Model.OverallPoints?.Rank?.Display</a>)
-        </td>
+        @if (Model.Athlete.Category != null)
+        {
+            <td>
+                @Model.OverallPoints?.Value?.Display
+                (<a href="/Overall/Points/@Model.Athlete.Category.Display">@Model.OverallPoints?.Rank?.Display</a>)
+            </td>
+        }
         <td>
             @Model.OverallMiles?.Value.ToString("F1")
             (<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
