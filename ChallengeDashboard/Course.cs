@@ -63,7 +63,7 @@ namespace FLRC.ChallengeDashboard
         }
 
         private readonly IDictionary<string, RankedList<Time>> _averageCache =
-            new Dictionary<string, RankedList<Time>>();
+            new ConcurrentDictionary<string, RankedList<Time>>();
 
         public RankedList<Time> BestAverage(Category category = null)
         {
@@ -76,7 +76,7 @@ namespace FLRC.ChallengeDashboard
         }
 
         private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache =
-            new Dictionary<string, RankedList<ushort>>();
+            new ConcurrentDictionary<string, RankedList<ushort>>();
 
         public RankedList<ushort> MostRuns(Category category = null)
         {
@@ -89,7 +89,7 @@ namespace FLRC.ChallengeDashboard
         }
 
         private readonly IDictionary<string, RankedList<double>> _mostMilesCache =
-            new Dictionary<string, RankedList<double>>();
+            new ConcurrentDictionary<string, RankedList<double>>();
 
         public RankedList<double> MostMiles(Category category = null)
         {
@@ -105,7 +105,7 @@ namespace FLRC.ChallengeDashboard
             => Results.Where(r => category == null || (r.Athlete.Category?.Equals(category) ?? false))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
-        private readonly IDictionary<string, ushort> _thresholdCache = new Dictionary<string, ushort>();
+        private readonly IDictionary<string, ushort> _thresholdCache = new ConcurrentDictionary<string, ushort>();
 
         public ushort AverageThreshold(Category category = null)
         {

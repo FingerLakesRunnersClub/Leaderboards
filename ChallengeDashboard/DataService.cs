@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace FLRC.ChallengeDashboard
         public IDictionary<uint, string> CourseNames
             => _courses.ToDictionary(c => c.Key, c => c.Value.Name);
 
-        private readonly IDictionary<uint, Athlete> _athletes = new Dictionary<uint, Athlete>();
+        private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
         private DateTime _athleteCacheTimestamp;
 
         public async Task<Athlete> GetAthlete(uint id)

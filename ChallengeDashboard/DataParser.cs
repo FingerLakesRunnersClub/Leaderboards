@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -56,7 +57,7 @@ namespace FLRC.ChallengeDashboard
         public static Time ParseDuration(double seconds)
             => new(TimeSpan.FromSeconds(Math.Ceiling(Math.Round(seconds, 1, MidpointRounding.ToZero))));
 
-        private static readonly IDictionary<uint, Athlete> athletes = new Dictionary<uint, Athlete>();
+        private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 
         public static Athlete ParseAthlete(JsonElement result)
         {
