@@ -25,6 +25,6 @@ namespace FLRC.ChallengeDashboard
 
         public byte AgeToday => AgeAsOf(DateTime.Today);
 
-        public static readonly IDictionary<byte, Team> Teams = Enumerable.Range(2, 6).ToDictionary(t => (byte) t, t => new Team((byte) t));
+        public static readonly IDictionary<byte, Team> Teams = Enumerable.Range(2, 5).ToDictionary(t => (byte) t, t => new Team((byte) t));
     }
 }
