@@ -28,8 +28,8 @@ namespace FLRC.ChallengeDashboard
                 .Select(g => new TeamResults
                 {
                     Team = g.Key,
-                    AgeGradePoints = (byte)(g.Sum(r => r.AgeGradePoints) + 7 * (10 - g.Count())),
-                    MostRunsPoints = (byte)(g.Sum(r => r.MostRunsPoints) + 7 * (10 - g.Count()))
+                    AgeGradePoints = (byte)(g.Sum(r => r.AgeGradePoints) + Athlete.Teams.Count * (10 - g.Count())),
+                    MostRunsPoints = (byte)(g.Sum(r => r.MostRunsPoints) + Athlete.Teams.Count * (10 - g.Count()))
                 })
                 .Rank();
 
