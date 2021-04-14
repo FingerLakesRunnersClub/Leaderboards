@@ -33,6 +33,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new OverallResultsViewModel<T>
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 ResultType = title,
                 RankedResults = results(overallViewModel)
             };
@@ -45,6 +46,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new OverallTeamResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 ResultType = title,
                 Results = results(overallViewModel)
             };

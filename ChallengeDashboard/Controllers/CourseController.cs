@@ -38,6 +38,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new CourseTeamResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 ResultType = new FormattedResultType(ResultType.Team),
                 Course = course,
                 Results = course.TeamPoints(),
@@ -50,6 +51,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new CourseResultsViewModel<T>
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 ResultType = new FormattedResultType(resultType),
                 Category = category,
                 Course = course,

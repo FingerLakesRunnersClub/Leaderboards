@@ -19,8 +19,9 @@ namespace FLRC.ChallengeDashboard.Controllers
             var vm = new OverallViewModel(await _dataService.GetAllResults());
             return new TeamMembersViewModel
             {
-                Team = team,
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
+                Team = team,
                 RankedResults = vm.TeamMembers(team.Value)
             };
         }
@@ -32,8 +33,9 @@ namespace FLRC.ChallengeDashboard.Controllers
 
             return new TeamSummaryViewModel
             {
-                Team = team,
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
+                Team = team,
                 Overall = overall.TeamPoints().FirstOrDefault(r => r.Team == team),
                 Courses = courses.ToDictionary(c => c, c => c.TeamPoints().FirstOrDefault(r => r.Team == team))
             };

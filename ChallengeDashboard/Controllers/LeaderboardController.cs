@@ -20,7 +20,10 @@ namespace FLRC.ChallengeDashboard.Controllers
         private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type)
         {
             var results = await _dataService.GetAllResults();
-            return new LeaderboardViewModel(results, type);
+            return new LeaderboardViewModel(results, type)
+            {
+                Links = _dataService.Links
+            };
         }
     }
 }

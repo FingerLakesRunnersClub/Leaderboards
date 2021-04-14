@@ -24,6 +24,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new AthleteCourseResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 Athlete = athlete,
                 Course = course,
                 Results = Rank(results, course)
@@ -61,6 +62,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new AthleteSummaryViewModel
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 Athlete = athlete,
                 TeamResults = overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team),
                 OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),

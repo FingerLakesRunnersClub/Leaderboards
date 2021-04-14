@@ -15,6 +15,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             return new()
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 Athletes = await _dataService.GetAthletes()
             };
         }

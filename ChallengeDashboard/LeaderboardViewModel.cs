@@ -7,11 +7,7 @@ namespace FLRC.ChallengeDashboard
     public class LeaderboardViewModel : ViewModel
     {
         public override string Title => "Leaderboard";
-
-
-        public override IDictionary<uint, string> CourseNames
-            => _courses.ToDictionary(c => c.ID, c => c.Name);
-
+ 
         public LeaderboardResultType LeaderboardResultType { get; }
 
         private readonly IEnumerable<Course> _courses;
@@ -19,9 +15,10 @@ namespace FLRC.ChallengeDashboard
 
         public LeaderboardViewModel(IEnumerable<Course> courses, LeaderboardResultType type)
         {
+            
             _courses = courses;
-            LeaderboardResultType = type;
             _filter = GetFilter(type);
+            CourseNames = courses.ToDictionary(c => c.ID, c => c.Name);LeaderboardResultType = type;
         }
 
         public IEnumerable<LeaderboardTable> OverallResults

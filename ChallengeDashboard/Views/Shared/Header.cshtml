@@ -46,15 +46,12 @@
                         About
                     </a>
                     <ul id="about" class="dropdown-menu" onclick="event.stopPropagation();">
-                        <li class="dropdown-item">
-                            <a href="/About">FLRC Challenge</a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="/About/Rules">Rules</a>
-                        </li>
-                        <li class="dropdown-item">
-                            <a href="/About/Timing">Timing</a>
-                        </li>
+                        @foreach (var link in Model.Links)
+                        {
+                            <li class="dropdown-item">
+                                <a href="@link.Value">@link.Key</a>
+                            </li>
+                        }
                     </ul>
                 </li>
             </ul>

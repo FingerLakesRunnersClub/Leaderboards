@@ -16,6 +16,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             new()
             {
                 CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
                 Results = (await _dataService.GetAllResults()).SelectMany(c => c.Results)
                     .OrderByDescending(r => r.StartTime.Value)
             };
