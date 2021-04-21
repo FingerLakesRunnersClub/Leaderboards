@@ -6,55 +6,66 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@Model.Title — FLRC Challenge</title>
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
 
-    <link rel="stylesheet prefetch" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"/>
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap"/>
-    <link rel="stylesheet prefetch" href="https://ka-f.fontawesome.com/releases/v5.15.1/css/free-v4-font-face.min.css"/>
-    <link rel="stylesheet prefetch" href="https://ka-f.fontawesome.com/releases/v5.15.1/css/free.min.css"/>
+    <link rel="stylesheet prefetch" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link rel="stylesheet prefetch"
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap" />
+    <link rel="stylesheet prefetch"
+        href="https://ka-f.fontawesome.com/releases/v5.15.1/css/free-v4-font-face.min.css" />
+    <link rel="stylesheet prefetch" href="https://ka-f.fontawesome.com/releases/v5.15.1/css/free.min.css" />
 
     <link rel="stylesheet" href="~/app.css" asp-append-version="true" />
-    <link rel="icon" href="~/favicon.png"/>
+    <link rel="icon" href="~/favicon.png" />
 </head>
 
 <body>
-@await Html.PartialAsync("Header")
+    @await Html.PartialAsync("Header")
 
-<div class="container content-container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<footer class="footer">
-    <div class="container text-center">
-        <div class="small">
-            &copy;2021
-            <a href="https://fingerlakesrunners.org">Finger Lakes Runners Club</a>
-        </div>
-
-        <div class="small">
-            Developed and maintained by
-            <a href="https://ecoAPM.com">ecoAPM</a>
-        </div>
-
-        <div class="small">
-            <a href="https://github.com/FingerLakesRunnersClub/ChallengeDashboard">Source code</a>
-            licensed under the
-            <a href="https://github.com/FingerLakesRunnersClub/ChallengeDashboard/blob/main/LICENSE">GNU General Public License v3.0</a>
-        </div>
+    <div class="container content-container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
     </div>
-</footer>
 
-<script>
-    Vue.config.devtools = true;
-</script>
+    <footer class="footer">
+        <div class="container text-center">
+            <div class="small">
+                &copy;2021
+                <a href="https://fingerlakesrunners.org">Finger Lakes Runners Club</a>
+            </div>
+
+            <div class="small">
+                Developed and maintained by
+                <a href="https://ecoAPM.com">ecoAPM</a>
+            </div>
+
+            <div class="small">
+                <a href="https://github.com/FingerLakesRunnersClub/ChallengeDashboard">
+                    Source code
+                </a>
+                licensed under the
+                <a href="https://github.com/FingerLakesRunnersClub/ChallengeDashboard/blob/main/LICENSE">
+                    GNU General Public License v3.0
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-63008239-3"></script>
+    <script>
+        Vue.config.devtools = true;
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-63008239-3');
+    </script>
 </body>
 
 </html>
