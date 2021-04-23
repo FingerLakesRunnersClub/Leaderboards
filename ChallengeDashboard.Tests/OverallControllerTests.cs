@@ -52,7 +52,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var response = await controller.AgeGrade();
 
             //assert
-            var vm = (OverallResultsViewModel<double>) response.Model;
+            var vm = (OverallResultsViewModel<AgeGrade>) response.Model;
             Assert.Equal(LeaderboardData.Athlete1, vm.RankedResults.First().Result.Athlete);
         }
 

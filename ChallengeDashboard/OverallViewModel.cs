@@ -16,11 +16,11 @@ namespace FLRC.ChallengeDashboard
         public RankedList<double> MostMiles(Category category = null)
             => RankedList(_courses.SelectMany(c => c.MostMiles(category)).GroupBy(r => r.Result.Athlete), g => g.Sum(r => r.Value), g => g.Sum(r => r.Value), _ => 0);
 
-        public RankedList<double> AgeGrade(Category category = null)
-            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count(), g => (uint)g.Count());
+        public RankedList<AgeGrade> AgeGrade(Category category = null)
+            => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new AgeGrade(g.Average(r => r.AgeGrade.Value)), g => g.Count(), g => (uint)g.Count());
 
-        public RankedList<double> TeamMembers(byte ag)
-            => RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => g.Average(r => r.AgeGrade.Value), g => g.Count(), g => (uint)g.Count());
+        public RankedList<AgeGrade> TeamMembers(byte ag)
+            => RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => new AgeGrade(g.Average(r => r.AgeGrade.Value)), g => g.Count(), g => (uint)g.Count());
 
         public IEnumerable<TeamResults> TeamPoints()
             => _courses.SelectMany(c => c.TeamPoints())

@@ -6,43 +6,48 @@
     <small>(@Model.Athlete.AgeToday&nbsp;@Model.Athlete.Category?.Display)</small>
 </h2>
 
-<table class="table table-bordered table-sm text-center">
-    <thead>
-    <tr>
-        <th>
-            Team
-        </th>
-        @if (Model.Athlete.Category != null)
-        {
-            <th>
-                Overall Points
-            </th>
-        }
-        <th>
-            Total Miles
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td>
-            @Model.Athlete.Team.Display
-            (<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
-        </td>
-        @if (Model.Athlete.Category != null)
-        {
-            <td>
-                @Model.OverallPoints?.Value?.Display
-                (<a href="/Overall/Points/@Model.Athlete.Category.Display">@Model.OverallPoints?.Rank?.Display</a>)
-            </td>
-        }
-        <td>
-            @Model.OverallMiles?.Value.ToString("F1")
-            (<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div class="card card-highlighted mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-6">
+                Team
+            </dt>
+            <dd class="col-6">
+                @Model.Athlete.Team.Display
+                (<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
+            </dd>
+
+            @if (Model.Athlete.Category != null)
+            {
+                <dt class="col-6">
+                    Overall Points
+                </dt>
+                <dd class="col-6">
+                    @Model.OverallPoints?.Value?.Display
+                    (<a href="/Overall/Points/@Model.Athlete.Category.Display">@Model.OverallPoints?.Rank?.Display</a>)
+                </dd>
+            }
+
+            <dt class="col-6">
+                <span class="d-none d-sm-inline">Average</span>
+                <span class="d-sm-none">Avg</span>
+                Age Grade
+            </dt>
+            <dd class="col-6">
+                @Model.OverallAgeGrade?.Value?.Display
+                (<a href="/Overall/AgeGrade">@Model.OverallAgeGrade?.Rank?.Display</a>)
+            </dd>
+            
+            <dt class="col-6">
+                Total Miles
+            </dt>
+            <dd class="col-6">
+                @Model.OverallMiles?.Value.ToString("F1")
+                (<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
+            </dd>
+        </dl>
+    </div>
+</div>
 
 <div class="row">
     @foreach (var course in Model.Fastest.Where(r => r.Value != null))
@@ -51,7 +56,7 @@
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course.Key)
-                    <dl class="row mt-2 mb-0">
+                    <dl class="row mb-0">
                         <dt class="col-6">
                             Fastest Time
                         </dt>
