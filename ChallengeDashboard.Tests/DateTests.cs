@@ -9,7 +9,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanFormatDate()
         {
             //arrange
-            var date = new Date(new DateTimeOffset(new DateTime(2012, 3, 4, 5, 6, 7, DateTimeKind.Utc)));
+            var date = new Date(new DateTime(2012, 3, 4, 5, 6, 7, DateTimeKind.Utc));
             
             //act
             var display = date.Display;
@@ -22,7 +22,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanHandleDST()
         {
             //arrange
-            var date = new Date(new DateTimeOffset(new DateTime(2012, 3, 14, 5, 6, 7, DateTimeKind.Utc)));
+            var date = new Date(new DateTime(2012, 3, 14, 5, 6, 7, DateTimeKind.Utc));
             
             //act
             var display = date.Display;

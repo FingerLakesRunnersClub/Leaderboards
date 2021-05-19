@@ -2,9 +2,9 @@
 
 namespace FLRC.ChallengeDashboard
 {
-    public class Date : Formatted<DateTimeOffset>
+    public class Date : Formatted<DateTime>
     {
-        public Date(DateTimeOffset value) : base(value)
+        public Date(DateTime value) : base(value)
         {
         }
 
