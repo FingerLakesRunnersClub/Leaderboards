@@ -11,7 +11,7 @@ namespace FLRC.ChallengeDashboard
     {
         private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-        public static IEnumerable<Result> ParseCourse(JsonElement json)
+        public static IList<Result> ParseCourse(JsonElement json)
         {
             var id = json.GetProperty("RaceId").GetUInt32();
             var results = json.GetProperty("Racers");
@@ -45,14 +45,18 @@ namespace FLRC.ChallengeDashboard
             return digits;
         }
 
-        private static IEnumerable<Result> ParseResults(uint id, JsonElement results)
-            => results.EnumerateArray().Where(r => r.GetProperty("Finished").GetByte() == 1).Select(r => new Result
+        private static IList<Result> ParseResults(uint id, JsonElement results)
+            => results.EnumerateArray()
+            .Where(r => r.GetProperty("Finished").GetByte() == 1)
+            .Select(r => new Result
             {
                 CourseID = id,
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
                 Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
-            }).Where(r => r.Duration.Value >= MinimumDuration);
+            })
+            .Where(r => r.Duration.Value >= MinimumDuration)
+            .ToList();
 
         public static Time ParseDuration(double seconds)
             => new(TimeSpan.FromSeconds(Math.Ceiling(Math.Round(seconds, 1, MidpointRounding.ToZero))));

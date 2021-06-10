@@ -10,7 +10,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public static readonly Athlete Athlete3 = new() {Category = Category.M, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990")};
         public static readonly Athlete Athlete4 = new() {Category = Category.F, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990")};
 
-        public static readonly IEnumerable<Result> Results = new List<Result>
+        public static IList<Result> Results => new List<Result>
         {
             new() {Athlete = Athlete1, StartTime = new Date(DateTime.Parse("1/1/2020")), Duration = new Time(TimeSpan.Parse("2:34:56.7"))},
             new() {Athlete = Athlete1, StartTime = new Date(DateTime.Parse("1/3/2020")), Duration = new Time(TimeSpan.Parse("1:20:00.0"))},

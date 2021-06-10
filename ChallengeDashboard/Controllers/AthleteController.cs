@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -31,22 +32,26 @@ namespace FLRC.ChallengeDashboard.Controllers
             };
         }
 
-        private RankedList<Time> Rank(IEnumerable<Result> results, Course course)
+        private static RankedList<Time> Rank(IEnumerable<Result> results, Course course)
         {
             var ranks = new RankedList<Time>();
 
             var sorted = results.OrderBy(r => r.Duration.Value).ToList();
-            for (byte rank = 1; rank <= sorted.Count; rank++)
+            foreach(var result in sorted)
             {
-                var result = sorted[rank - 1];
+                var category = result.Athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category));
+                var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, course.Meters, result.Duration.Value);
+                var rank = ageGrade >= 100 ? 0
+                    : !ranks.Any() ? 1
+                    : ranks.Last().Rank.Value + 1;
                 ranks.Add(new Ranked<Time>
                 {
                     Rank = ranks.Any() && ranks.Last().Value == result.Duration
                         ? ranks.Last().Rank
-                        : new Rank(rank),
+                        : new Rank((ushort)rank),
                     Result = result,
                     Value = result.Duration,
-                    AgeGrade = new AgeGrade(AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(result.Athlete.Category?.Value ?? Category.M.Value ?? throw null, result.AgeOnDayOfRun, course.Meters, result.Duration.Value))
+                    AgeGrade = new AgeGrade(ageGrade)
                 });
             }
 
@@ -70,7 +75,8 @@ namespace FLRC.ChallengeDashboard.Controllers
                 OverallMiles = overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete.ID == id),
                 Fastest = courses.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
                 Average = courses.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.ID == id))
+                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.ID == id)),
+                All = courses.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.ID == id))
             };
         }
     }

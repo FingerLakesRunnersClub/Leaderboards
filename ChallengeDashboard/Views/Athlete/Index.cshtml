@@ -37,7 +37,7 @@
                 @Model.OverallAgeGrade?.Value?.Display
                 (<a href="/Overall/AgeGrade">@Model.OverallAgeGrade?.Rank?.Display</a>)
             </dd>
-            
+
             <dt class="col-6">
                 Total Miles
             </dt>
@@ -50,57 +50,68 @@
 </div>
 
 <div class="row">
-    @foreach (var course in Model.Fastest.Where(r => r.Value != null))
+    @foreach (var (course, _) in Model.All.Where(r => r.Value != null && r.Value.Any()))
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
-                    @await Html.PartialAsync("CourseInfo", course.Key)
-                    <dl class="row mb-0">
-                        <dt class="col-6">
-                            Fastest Time
-                        </dt>
-                        <dd class="col-6">
-                            @Model.Fastest[course.Key].Value.Display
-                            (<a href="/Course/@course.Key.ID/Fastest/@Model.Athlete.Category?.Value">@Model.Fastest[course.Key].Rank.Display</a>)
-                        </dd>
-                        <dt class="col-6">
-                            Points
-                        </dt>
-                        <dd class="col-6">
-                            @Model.Fastest[course.Key].Points.Display
-                        </dd>
-                        <dt class="col-6">
-                            Age Grade
-                        </dt>
-                        <dd class="col-6">
-                            @Model.Fastest[course.Key].AgeGrade.Display
-                        </dd>
-                        <dt class="col-6">
-                            Average (Top @course.Key.AverageThreshold(Model.Athlete.Category))
-                        </dt>
-                        <dd class="col-6">
-                            @if (Model.Average[course.Key] != null)
-                            {
-                                @Model.Average[course.Key].Value.Display
-                                @:(<a href="/Course/@course.Key.ID/BestAverage/@Model.Athlete.Category?.Value">@Model.Average[course.Key].Rank.Display</a>)
-                            }
-                            else
-                            {
-                                @:(not enough runs)
-                            }
-                        </dd>
-                        <dt class="col-6">
-                            # of Runs
-                        </dt>
-                        <dd class="col-6">
-                            @Model.Runs[course.Key].Value
-                            (<a href="/Course/@course.Key.ID/MostRuns">@Model.Runs[course.Key].Rank.Display</a>)
-                        </dd>
-                    </dl>
+                    @await Html.PartialAsync("CourseInfo", course)
+                    @if (Model.Fastest[course] == null)
+                    {
+                        <div class="alert alert-danger">
+                            There is an invalid result for this course.
+                            Please check the the <a href="/Invalid">Invalid Results</a> page,
+                            and correct any errors by using the timing app or contacting the Race Director.
+                        </div>
+                    }
+                    else
+                    {
+                        <dl class="row mb-0">
+                            <dt class="col-6">
+                                Fastest Time
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Fastest[course].Value.Display
+                                (<a href="/Course/@course.ID/Fastest/@Model.Athlete.Category?.Value">@Model.Fastest[course].Rank.Display</a>)
+                            </dd>
+                            <dt class="col-6">
+                                Points
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Fastest[course].Points.Display
+                            </dd>
+                            <dt class="col-6">
+                                Age Grade
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Fastest[course].AgeGrade.Display
+                            </dd>
+                            <dt class="col-6">
+                                Average (Top @course.AverageThreshold(Model.Athlete.Category))
+                            </dt>
+                            <dd class="col-6">
+                                @if (Model.Average[course] != null)
+                                {
+                                    @Model.Average[course].Value.Display
+                                    @:(<a href="/Course/@course.ID/BestAverage/@Model.Athlete.Category?.Value">@Model.Average[course].Rank.Display</a>)
+                                }
+                                else
+                                {
+                                    @:(not enough runs)
+                                }
+                            </dd>
+                            <dt class="col-6">
+                                # of Runs
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Runs[course].Value
+                                (<a href="/Course/@course.ID/MostRuns">@Model.Runs[course].Rank.Display</a>)
+                            </dd>
+                        </dl>
+                    }
                 </div>
                 <div class="card-footer">
-                    <a href="/Athlete/@Model.Athlete.ID/Course/@course.Key.ID">View All Runs</a>
+                    <a href="/Athlete/@Model.Athlete.ID/Course/@course.ID">View All Runs</a>
                 </div>
             </div>
         </div>

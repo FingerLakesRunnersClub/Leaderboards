@@ -1,0 +1,36 @@
+﻿@using FLRC.ChallengeDashboard
+@model InvalidViewModel
+
+<h2>@Model.Title</h2>
+
+<div class="card card-highlighted">
+    <div class="card-body">
+        @if (!Model.Results.Any()) {
+            <div class="alert alert-success">No invalid results found!</div>
+        }
+        @foreach (var (course, results) in Model.Results)
+        {
+            <h3>@course.Name</h3>
+            <table
+            class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
+                <thead>
+                    <tr>
+                        <th>Athlete</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var result in results)
+                    {
+                        <tr>
+                            <td>@result.Athlete.Name</td>
+                            <td>@result.StartTime.Display</td>
+                            <td>@result.Duration.Display</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

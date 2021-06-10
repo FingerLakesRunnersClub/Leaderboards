@@ -14,5 +14,6 @@ namespace FLRC.ChallengeDashboard
         public IDictionary<Course, Ranked<Time>> Fastest { get; init; }
         public IDictionary<Course, Ranked<Time>> Average { get; init; }
         public IDictionary<Course, Ranked<ushort>> Runs { get; init; }
+        public Dictionary<Course, IEnumerable<Result>> All { get; init; }
     }
 }

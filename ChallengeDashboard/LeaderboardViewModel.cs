@@ -15,10 +15,11 @@ namespace FLRC.ChallengeDashboard
 
         public LeaderboardViewModel(IEnumerable<Course> courses, LeaderboardResultType type)
         {
-            
-            _courses = courses;
+            var courseList = courses.ToList();
+            _courses = courseList;
             _filter = GetFilter(type);
-            CourseNames = courses.ToDictionary(c => c.ID, c => c.Name);LeaderboardResultType = type;
+            CourseNames = courseList.ToDictionary(c => c.ID, c => c.Name);
+            LeaderboardResultType = type;
         }
 
         public IEnumerable<LeaderboardTable> OverallResults

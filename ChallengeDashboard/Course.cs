@@ -19,9 +19,9 @@ namespace FLRC.ChallengeDashboard
         public DateTime LastUpdated { get; set; }
         public int LastHash { get; set; }
 
-        private IEnumerable<Result> _results;
+        private IList<Result> _results;
 
-        public IEnumerable<Result> Results
+        public IList<Result> Results
         {
             get => _results;
             set
@@ -85,7 +85,7 @@ namespace FLRC.ChallengeDashboard
                 return _mostRunsCache[key];
 
             return _mostRunsCache[key] =
-                RankDescending(category, rs => true, r => r.Average(), r => (ushort) r.Count());
+                RankDescending(category, _ => true, r => r.Average(), r => (ushort) r.Count());
         }
 
         private readonly IDictionary<string, RankedList<double>> _mostMilesCache =
@@ -97,11 +97,11 @@ namespace FLRC.ChallengeDashboard
             if (_mostMilesCache.ContainsKey(key))
                 return _mostMilesCache[key];
 
-            return _mostMilesCache[key] = RankDescending(category, rs => true, r => r.Average(),
+            return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(),
                 r => r.Count() * Meters / MetersPerMile);
         }
 
-        private IEnumerable<GroupedResult> GroupedResults(Category category = null)
+        public IEnumerable<GroupedResult> GroupedResults(Category category = null)
             => Results.Where(r => category == null || (r.Athlete.Category == category))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
@@ -135,7 +135,7 @@ namespace FLRC.ChallengeDashboard
                         .Take(10)
                         .Select(rs =>
                             AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
-                                rs.First().Athlete.Category?.Value ?? Category.M.Value ?? throw null,
+                                rs.First().Athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category)),
                                 rs.First().AgeOnDayOfRun,
                                 Meters,
                                 rs.Min(r => r.Duration.Value)))
@@ -175,23 +175,34 @@ namespace FLRC.ChallengeDashboard
             var ranks = new RankedList<T>();
 
             var list = sorted.ThenBy(rs => getResult(rs).Duration).ToList();
-            for (ushort rank = 1; rank <= list.Count; rank++)
+            foreach(var results in list)
             {
-                var results = list[rank - 1];
                 var athlete = results.Key;
+                var category = athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category));
+
                 var result = getResult(results);
+                var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, Meters, result.Duration.Value);
+
+                if (ageGrade >= 100)
+                    continue;
+
+                var firstPlace = !ranks.Any();
                 var value = getValue(results);
+                var rank = !firstPlace && ranks.Last().Value.Equals(value)
+                    ? ranks.Last().Rank
+                    : new Rank((ushort)(firstPlace ? 1 : ranks.Last().Rank.Value + 1));
+                
                 ranks.Add(new Ranked<T>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
+                    Rank = rank,
                     Result = result,
                     Value = value,
                     Count = (uint) results.Count(),
-                    BehindLeader = rank == 1 ? new Time(TimeSpan.Zero) : result.Behind(ranks.First().Result),
-                    Points = new Points(rank == 1
+                    BehindLeader = firstPlace ? new Time(TimeSpan.Zero) : result.Behind(ranks.First().Result),
+                    Points = new Points(firstPlace
                         ? 100
                         : ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
-                    AgeGrade = new AgeGrade(AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(athlete.Category?.Value ?? Category.M.Value ?? throw null, result.AgeOnDayOfRun, Meters, result.Duration.Value))
+                    AgeGrade = new AgeGrade(ageGrade)
                 });
             }
 
