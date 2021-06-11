@@ -3,7 +3,7 @@
 
 <h2>@Model.Title</h2>
 
-<div class="card card-highlighted">
+<div class="card card-highlighted mb-4">
     <div class="card-body">
         <table class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
             <thead>
@@ -33,11 +33,10 @@
             </tr>
             </thead>
             <tbody>
-            @foreach (var course in Model.Courses)
+            @foreach (var (key, stats) in Model.Courses)
             {
-                var stats = course.Value;
                 <tr>
-                    <td>@course.Key.Name</td>
+                    <td>@key.Name</td>
 
                     <td>@stats.Participants[string.Empty]</td>
                     <td>@stats.Participants[Category.F.Display]</td>
@@ -76,6 +75,66 @@
                 <th>@Model.Total.Average[Category.M.Display].ToString("F1")</th>
             </tr>
             </tbody>
+        </table>
+    </div>
+</div>
+
+<h3>History</h3>
+
+<div class="card card-highlighted">
+    <div class="card-body">
+        <table class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
+            <thead>
+            <tr>
+                <th rowspan="2">Week</th>
+                <th colspan="3">Participants</th>
+                <th colspan="3">Total Runs</th>
+                <th colspan="3">Total Miles</th>
+                <th colspan="3">Average Runs</th>
+            </tr>
+            <tr>
+                <th>All</th>
+                <th>F</th>
+                <th>M</th>
+
+                <th>All</th>
+                <th>F</th>
+                <th>M</th>
+
+                <th>All</th>
+                <th>F</th>
+                <th>M</th>
+
+                <th>All</th>
+                <th>F</th>
+                <th>M</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var (startDate, stats) in Model.History.OrderByDescending(w => w.Key))
+            {
+                <tr>
+                    <td>
+                        @startDate.ToString("M/d/yy")–@startDate.AddDays(6).ToString("M/d/yy")
+                    </td>
+
+                    <td>@stats.Participants[string.Empty]</td>
+                    <td>@stats.Participants[Category.F.Display]</td>
+                    <td>@stats.Participants[Category.M.Display]</td>
+
+                    <td>@stats.Runs[string.Empty]</td>
+                    <td>@stats.Runs[Category.F.Display]</td>
+                    <td>@stats.Runs[Category.M.Display]</td>
+
+                    <td>@stats.Miles[string.Empty].ToString("F1")</td>
+                    <td>@stats.Miles[Category.F.Display].ToString("F1")</td>
+                    <td>@stats.Miles[Category.M.Display].ToString("F1")</td>
+
+                    <td>@stats.Average[string.Empty].ToString("F1")</td>
+                    <td>@stats.Average[Category.F.Display].ToString("F1")</td>
+                    <td>@stats.Average[Category.M.Display].ToString("F1")</td>
+                </tr>
+            }
         </table>
     </div>
 </div>

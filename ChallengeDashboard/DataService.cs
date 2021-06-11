@@ -28,13 +28,14 @@ namespace FLRC.ChallengeDashboard
             foreach (var course in _courses.Values)
                 course.Meters = DataParser.ParseDistance(course.Distance);
 
+            CourseNames = _courses.ToDictionary(c => c.Key, c => c.Value.Name);
+            CourseDistances = _courses.ToDictionary(c => c.Key, c => c.Value.Meters);
             Links = configuration.GetSection("Links").GetChildren()
                 .ToDictionary(c => c.Key, c => c.Value);
         }
 
-        public IDictionary<uint, string> CourseNames
-            => _courses.ToDictionary(c => c.Key, c => c.Value.Name);
-
+        public IDictionary<uint, string> CourseNames { get; }
+        public IDictionary<uint, double> CourseDistances { get; }
         public IDictionary<string, string> Links { get; }
 
         private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
