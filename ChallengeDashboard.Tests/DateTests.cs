@@ -30,5 +30,27 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal("3/14/2012 1:06am", display);
         }
+
+        [Theory]
+        [InlineData("6/4/21", "5/29/21")]
+        [InlineData("6/5/21", "6/5/21")]
+        [InlineData("6/6/21", "6/5/21")]
+        [InlineData("6/7/21", "6/5/21")]
+        [InlineData("6/8/21", "6/5/21")]
+        [InlineData("6/9/21", "6/5/21")]
+        [InlineData("6/10/21", "6/5/21")]
+        [InlineData("6/11/21", "6/5/21")]
+        [InlineData("6/12/21", "6/12/21")]
+        public void CanGetWeekFromDay(string day, string expectedWeek)
+        {
+            //arrange
+            var date = new Date(DateTime.Parse(day));
+            
+            //act
+            var week = date.Week;
+            
+            //assert
+            Assert.Equal(DateTime.Parse(expectedWeek), week);
+        }
     }
 }
