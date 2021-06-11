@@ -30,7 +30,7 @@ namespace FLRC.ChallengeDashboard.Controllers
                 Links = _dataService.Links,
                 Results = (await _dataService.GetAllResults())
                     .SelectMany(c => c.Results)
-                    .Where(r => filter == null || r.StartTime.Value.Date >= filter)
+                    .Where(r => filter == null || r.StartTime.Value.Date > filter)
                     .OrderByDescending(r => r.StartTime.Value)
                     .GroupBy(grouping)
             };
