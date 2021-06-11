@@ -15,7 +15,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var display = date.Display;
             
             //assert
-            Assert.Equal("3/4/2012 12:06am", display);
+            Assert.Equal("3/4/12 12:06am", display);
         }
         
         [Fact]
@@ -28,7 +28,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var display = date.Display;
             
             //assert
-            Assert.Equal("3/14/2012 1:06am", display);
+            Assert.Equal("3/14/12 1:06am", display);
         }
 
         [Theory]

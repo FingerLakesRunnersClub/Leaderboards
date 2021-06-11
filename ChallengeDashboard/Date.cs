@@ -8,7 +8,7 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Value.ToLocalTime().ToString("M/d/yyyy h:mmtt").ToLower();
+        public override string Display => Value.ToLocalTime().ToString("M/d/yy h:mmtt").ToLower();
 
         public DateTime Week => new DateTime(Value.Year, 1, 1).AddDays(Math.Floor((Value.DayOfYear - 2) / 7.0) * 7 + 1);
     }
