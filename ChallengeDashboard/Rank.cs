@@ -2,7 +2,7 @@
 
 namespace FLRC.ChallengeDashboard
 {
-    public class Rank : Formatted<ushort>, IComparable<Rank>
+    public record Rank : Formatted<ushort>, IComparable<Rank>
     {
         public Rank(ushort value) : base(value)
         {

@@ -2,7 +2,7 @@ using System;
 
 namespace FLRC.ChallengeDashboard
 {
-    public class Category : Formatted<FLRC.AgeGradeCalculator.Category?>, IEquatable<Category>
+    public record Category : Formatted<FLRC.AgeGradeCalculator.Category?>
     {
         public static Category F => new (AgeGradeCalculator.Category.F);
         public static Category M => new (AgeGradeCalculator.Category.M);
@@ -12,7 +12,5 @@ namespace FLRC.ChallengeDashboard
         }
 
         public override string Display => Value?.ToString();
-
-        public bool Equals(Category other) => Value.Equals(other?.Value);
     }
 }

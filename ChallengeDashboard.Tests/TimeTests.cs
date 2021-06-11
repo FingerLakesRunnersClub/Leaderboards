@@ -64,27 +64,12 @@ namespace FLRC.ChallengeDashboard.Tests
         {
             //arrange
             var t1 = new Time(new TimeSpan(1, 2, 3));
-            var t2 = new Time(new TimeSpan(1, 2, 3));
 
             //act
-            var equal = t1.Equals(t2);
-            
-            //assert
-            Assert.True(equal);
-        }
-
-        [Fact]
-        public void CanEquateToObject()
-        {
-            //arrange
-            var t1 = new Time(new TimeSpan(1, 2, 3));
             var t2 = new Time(new TimeSpan(1, 2, 3));
-
-            //act
-            var equal = t1.Equals((object)t2);
             
             //assert
-            Assert.True(equal);
+            Assert.Equal(t1, t2);
         }
 
         [Fact]

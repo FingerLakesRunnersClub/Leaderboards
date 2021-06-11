@@ -1,6 +1,6 @@
 namespace FLRC.ChallengeDashboard
 {
-    public class Team : Formatted<byte>
+    public record Team : Formatted<byte>
     {
         public Team(byte value) : base(value)
         {

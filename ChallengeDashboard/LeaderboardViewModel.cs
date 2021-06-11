@@ -160,9 +160,9 @@ namespace FLRC.ChallengeDashboard
             switch (type)
             {
                 case LeaderboardResultType.F:
-                    return t => t.Category?.Equals(Category.F) ?? t.ResultType?.Value != ResultType.Team;
+                    return t => t.Category == Category.F || t.ResultType?.Value != ResultType.Team;
                 case LeaderboardResultType.M:
-                    return t => t.Category?.Equals(Category.M) ?? t.ResultType?.Value != ResultType.Team;
+                    return t => t.Category == Category.M || t.ResultType?.Value != ResultType.Team;
                 default:
                     return t => t.ResultType?.Value == ResultType.Team;
             }

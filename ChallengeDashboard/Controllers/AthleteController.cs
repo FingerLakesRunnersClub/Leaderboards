@@ -41,7 +41,7 @@ namespace FLRC.ChallengeDashboard.Controllers
                 var result = sorted[rank - 1];
                 ranks.Add(new Ranked<Time>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value.Equals(result.Duration)
+                    Rank = ranks.Any() && ranks.Last().Value == result.Duration
                         ? ranks.Last().Rank
                         : new Rank(rank),
                     Result = result,

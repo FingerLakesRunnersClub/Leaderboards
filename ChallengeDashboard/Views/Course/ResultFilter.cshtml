@@ -7,8 +7,7 @@
         ? "secondary"
         : "light";
 
-    string style(Category category) => (Model.Category == null && category == null)
-                                       || (Model.Category?.Equals(category) ?? false)
+    string style(Category category) => Model.Category == null && category == null || Model.Category == category
         ? "secondary"
         : "light";
 }

@@ -2,7 +2,7 @@
 
 namespace FLRC.ChallengeDashboard
 {
-    public class Points : Formatted<double>, IComparable<Points>
+    public record Points : Formatted<double>, IComparable<Points>
     {
         public Points(double value) : base(value)
         {

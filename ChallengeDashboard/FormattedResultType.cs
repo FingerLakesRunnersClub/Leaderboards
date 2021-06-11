@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace FLRC.ChallengeDashboard
 {
-    public class FormattedResultType : Formatted<ResultType>
+    public record FormattedResultType : Formatted<ResultType>
     {
         public FormattedResultType(ResultType value) : base(value)
         {

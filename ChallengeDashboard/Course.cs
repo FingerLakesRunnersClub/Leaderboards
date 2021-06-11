@@ -102,7 +102,7 @@ namespace FLRC.ChallengeDashboard
         }
 
         private IEnumerable<GroupedResult> GroupedResults(Category category = null)
-            => Results.Where(r => category == null || (r.Athlete.Category?.Equals(category) ?? false))
+            => Results.Where(r => category == null || (r.Athlete.Category == category))
                 .GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
 
         private readonly IDictionary<string, ushort> _thresholdCache = new ConcurrentDictionary<string, ushort>();
@@ -147,14 +147,14 @@ namespace FLRC.ChallengeDashboard
             var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
             for (var x = 0; x < fastestTeams.Length; x++)
                 fastestTeams[x].AgeGradePoints =
-                    x > 0 && fastestTeams[x].AverageAgeGrade.Equals(fastestTeams[x - 1].AverageAgeGrade)
+                    x > 0 && fastestTeams[x].AverageAgeGrade == fastestTeams[x - 1].AverageAgeGrade
                         ? fastestTeams[x - 1].AgeGradePoints
                         : (byte) (x + 1);
 
             var mostRunTeams = teamResults.OrderByDescending(t => t.TotalRuns).ToArray();
             for (var x = 0; x < mostRunTeams.Length; x++)
                 mostRunTeams[x].MostRunsPoints =
-                    x > 0 && mostRunTeams[x].TotalRuns.Equals(mostRunTeams[x - 1].TotalRuns)
+                    x > 0 && mostRunTeams[x].TotalRuns == mostRunTeams[x - 1].TotalRuns
                         ? mostRunTeams[x - 1].MostRunsPoints
                         : (byte) (x + 1);
 
@@ -209,14 +209,14 @@ namespace FLRC.ChallengeDashboard
             Runs = new Dictionary<string, int>
             {
                 {string.Empty, Results.Count()},
-                {Category.F.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.F))},
-                {Category.M.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.M))}
+                {Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F)},
+                {Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M)}
             },
             Miles = new Dictionary<string, double>
             {
                 {string.Empty, Results.Count() * Meters / MetersPerMile },
-                {Category.F.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.F)) * Meters / MetersPerMile },
-                {Category.M.Display, Results.Count(r => r.Athlete.Category != null && r.Athlete.Category.Equals(Category.M)) * Meters / MetersPerMile }
+                {Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Meters / MetersPerMile },
+                {Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Meters / MetersPerMile }
             },
             Average = new Dictionary<string, double>
             {
