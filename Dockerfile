@@ -1,6 +1,5 @@
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS builder
-ENV COMPlus_EnableDiagnostics=0
-
+ENV TZ=America/New_York
 WORKDIR /app
 
 COPY . ./
