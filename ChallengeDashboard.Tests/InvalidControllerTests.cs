@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
@@ -40,12 +41,13 @@ namespace FLRC.ChallengeDashboard.Tests
                 StartTime = new Date(new DateTime(2021, 7, 1)),
                 Duration = new Time(TimeSpan.FromMinutes(5))
             };
+            var results = CourseData.Results.ToList();
+            results.Add(badResult);
             var course = new Course
             {
                 Meters = 10000,
-                Results = CourseData.Results
+                Results = results
             };
-            course.Results.Add(badResult);
             dataService.GetAllResults().Returns(new[] {course});
             var controller = new InvalidController(dataService);
 

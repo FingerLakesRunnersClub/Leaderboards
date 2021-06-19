@@ -19,9 +19,9 @@ namespace FLRC.ChallengeDashboard
         public DateTime LastUpdated { get; set; }
         public int LastHash { get; set; }
 
-        private IList<Result> _results;
+        private IEnumerable<Result> _results;
 
-        public IList<Result> Results
+        public IEnumerable<Result> Results
         {
             get => _results;
             set

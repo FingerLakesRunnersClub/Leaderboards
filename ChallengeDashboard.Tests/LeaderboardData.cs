@@ -5,11 +5,11 @@ namespace FLRC.ChallengeDashboard.Tests
 {
     public static class LeaderboardData
     {
-        public static Athlete Athlete1 = new Athlete { ID = 123, Name = "A1", Age = 20, Category = Category.M };
-        public static Athlete Athlete2 = new Athlete { ID = 234, Name = "A2", Age = 30, Category = Category.M };
-        public static Athlete Athlete3 = new Athlete { ID = 345, Name = "A3", Age = 20, Category = Category.F };
-        public static Athlete Athlete4 = new Athlete { ID = 456, Name = "A4", Age = 30, Category = Category.F };
-        public static IList<Course> Courses = new List<Course>
+        public static readonly Athlete Athlete1 = new Athlete { ID = 123, Name = "A1", Age = 20, Category = Category.M };
+        public static readonly Athlete Athlete2 = new Athlete { ID = 234, Name = "A2", Age = 30, Category = Category.M };
+        public static readonly Athlete Athlete3 = new Athlete { ID = 345, Name = "A3", Age = 20, Category = Category.F };
+        public static readonly Athlete Athlete4 = new Athlete { ID = 456, Name = "A4", Age = 30, Category = Category.F };
+        public static readonly IEnumerable<Course> Courses = new List<Course>
         {
             new Course
             {
