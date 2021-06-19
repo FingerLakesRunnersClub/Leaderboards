@@ -39,7 +39,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             var sorted = results.OrderBy(r => r.Duration.Value).ToList();
             foreach(var result in sorted)
             {
-                var category = result.Athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category));
+                var category = result.Athlete.Category?.Value ?? Category.M.Value;
                 var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, course.Meters, result.Duration.Value);
                 var rank = ageGrade >= 100 ? 0
                     : !ranks.Any() ? 1

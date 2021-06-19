@@ -49,7 +49,7 @@ namespace FLRC.ChallengeDashboard
 
         public RankedList<Time> Fastest(Category category = null, byte? ag = null)
         {
-            var key = category?.Value?.ToString() ?? "X";
+            var key = category?.Display ?? "X";
             if (ag == null && _fastestCache.ContainsKey(key))
                 return _fastestCache[key];
 
@@ -67,7 +67,7 @@ namespace FLRC.ChallengeDashboard
 
         public RankedList<Time> BestAverage(Category category = null)
         {
-            var key = category?.Value?.ToString() ?? "X";
+            var key = category?.Display ?? "X";
             if (_averageCache.ContainsKey(key))
                 return _averageCache[key];
 
@@ -80,7 +80,7 @@ namespace FLRC.ChallengeDashboard
 
         public RankedList<ushort> MostRuns(Category category = null)
         {
-            var key = category?.Value?.ToString() ?? "X";
+            var key = category?.Display ?? "X";
             if (_mostRunsCache.ContainsKey(key))
                 return _mostRunsCache[key];
 
@@ -93,7 +93,7 @@ namespace FLRC.ChallengeDashboard
 
         public RankedList<double> MostMiles(Category category = null)
         {
-            var key = category?.Value?.ToString() ?? "X";
+            var key = category?.Display ?? "X";
             if (_mostMilesCache.ContainsKey(key))
                 return _mostMilesCache[key];
 
@@ -109,7 +109,7 @@ namespace FLRC.ChallengeDashboard
 
         public ushort AverageThreshold(Category category = null)
         {
-            var key = category?.Value?.ToString() ?? "X";
+            var key = category?.Display ?? "X";
             if (_thresholdCache.ContainsKey(key))
                 return _thresholdCache[key];
 
@@ -135,7 +135,7 @@ namespace FLRC.ChallengeDashboard
                         .Take(10)
                         .Select(rs =>
                             AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
-                                rs.First().Athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category)),
+                                rs.First().Athlete.Category?.Value ?? Category.M.Value,
                                 rs.First().AgeOnDayOfRun,
                                 Meters,
                                 rs.Min(r => r.Duration.Value)))
@@ -178,7 +178,7 @@ namespace FLRC.ChallengeDashboard
             foreach(var results in list)
             {
                 var athlete = results.Key;
-                var category = athlete.Category?.Value ?? Category.M.Value ?? throw new ArgumentException(nameof(Category));
+                var category = athlete.Category?.Value ?? Category.M.Value;
 
                 var result = getResult(results);
                 var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, Meters, result.Duration.Value);

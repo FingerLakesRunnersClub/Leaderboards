@@ -7,8 +7,7 @@ namespace FLRC.ChallengeDashboard.Tests
         [Theory]
         [InlineData(AgeGradeCalculator.Category.F, "F")]
         [InlineData(AgeGradeCalculator.Category.M, "M")]
-        [InlineData(null, null)]
-        public void CanDisplayCategory(AgeGradeCalculator.Category? cat, string expected)
+        public void CanDisplayCategory(AgeGradeCalculator.Category cat, string expected)
         {
             //arrange
             var category = new Category(cat);
