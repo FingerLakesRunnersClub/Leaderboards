@@ -12,7 +12,7 @@ namespace FLRC.ChallengeDashboard
 
         public readonly IDictionary<ActivityLogType, string> LogTypes = new Dictionary<ActivityLogType, string>
         {
-            {ActivityLogType.Recent, ""},
+            {ActivityLogType.Recent, string.Empty},
             {ActivityLogType.Archive, "All"},
         };
     }

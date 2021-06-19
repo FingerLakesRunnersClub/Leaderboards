@@ -61,14 +61,14 @@
 
 <script>
     function hideDropdowns() {
-        document.querySelectorAll('.dropdown-menu').forEach(e => e.style = "");
+        document.querySelectorAll('.dropdown-menu').forEach(e => e.style = '');
     }
     
     function toggleDropdown(element, event) {
         const menu = element.parentElement.querySelector('.dropdown-menu');
         const show = menu.style.length === 0;
         hideDropdowns();
-        menu.style = show ? "display: block;" : "";
+        menu.style = show ? 'display: block;' : '';
         event.stopPropagation();
         return false;
     }

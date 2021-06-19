@@ -9,6 +9,6 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Regex.Replace(Enum.GetName(Value) ?? "", "([a-z])([A-Z])", "$1 $2");
+        public override string Display => Regex.Replace(Enum.GetName(Value) ?? string.Empty, "([a-z])([A-Z])", "$1 $2");
     }
 }

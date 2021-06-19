@@ -8,7 +8,7 @@ namespace FLRC.ChallengeDashboard
         {
         }
 
-        public override string Display => Value > 0 ? Value.ToString("F2") + "%" : string.Empty;
+        public override string Display => Value > 0 ? $"{Value:F2}%" : string.Empty;
 
         public int CompareTo(AgeGrade other) => Value.CompareTo(other.Value);
     }
