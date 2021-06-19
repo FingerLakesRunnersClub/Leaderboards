@@ -2,13 +2,7 @@
 @using FLRC.ChallengeDashboard
 @model AthleteCourseResultsViewModel
 
-<a class="btn btn-light btn-sm float-right" href="/Athlete/Index/@Model.Athlete.ID">
-    Athlete Page <i class="fas fa-arrow-right"></i>
-</a>
-<h2>
-    @Model.Athlete.Name
-    <small>(@Model.Athlete.AgeToday&nbsp;@Model.Athlete.Category?.Display)</small>
-</h2>
+@await Html.PartialAsync("AthleteHeader", Model.Athlete)
 
 <div class="card-highlighted card mb-3">
     <div class="card-header">
