@@ -75,98 +75,98 @@ namespace FLRC.ChallengeDashboard
             }
         }
 
-        public IDictionary<Course, IEnumerable<LeaderboardTable>> CourseResults => _courses.ToDictionary(c => c, c =>
-            new List<LeaderboardTable>
+        public IDictionary<Course, IEnumerable<LeaderboardTable>> CourseResults
+            => _courses.ToDictionary(c => c, c => LeaderboardTables(c).Where(_filter));
+
+        private static List<LeaderboardTable> LeaderboardTables(Course course)
+            => new()
             {
-                new()
+                new LeaderboardTable
                 {
                     Title = "Fastest (F)",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.Fastest),
                     Category = Category.F,
-                    Link = $"/Course/{c.ID}/{ResultType.Fastest}/F",
-                    Rows = c.Fastest(Category.F).Take(3)
+                    Link = $"/Course/{course.ID}/{ResultType.Fastest}/F",
+                    Rows = course.Fastest(Category.F).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
                     Title = "Fastest (M)",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.Fastest),
                     Category = Category.M,
-                    Link = $"/Course/{c.ID}/{ResultType.Fastest}/M",
-                    Rows = c.Fastest(Category.M).Take(3)
-                            .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Link = $"/Course/{course.ID}/{ResultType.Fastest}/M",
+                    Rows = course.Fastest(Category.M).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
                     Title = "Best Average (F)",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.BestAverage),
                     Category = Category.F,
-                    Link = $"/Course/{c.ID}/{ResultType.BestAverage}/F",
-                    Rows = c.BestAverage(Category.F).Take(3)
-                    .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
+                    Link = $"/Course/{course.ID}/{ResultType.BestAverage}/F",
+                    Rows = course.BestAverage(Category.F).Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
                     Title = "Best Average (M)",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.BestAverage),
                     Category = Category.M,
-                    Link = $"/Course/{c.ID}/{ResultType.BestAverage}/M",
-                    Rows = c.BestAverage(Category.M).Take(3)
+                    Link = $"/Course/{course.ID}/{ResultType.BestAverage}/M",
+                    Rows = course.BestAverage(Category.M).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
                 new LeaderboardTable
                 {
                     Title = "Most Runs",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.MostRuns),
-                    Link = $"/Course/{c.ID}/{ResultType.MostRuns}",
-                    Rows = c.MostRuns().Take(3)
-                      .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString()})
+                    Link = $"/Course/{course.ID}/{ResultType.MostRuns}",
+                    Rows = course.MostRuns().Take(3)
+                        .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString()})
                 },
                 new LeaderboardTable
                 {
                     Title = "Age Grade",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.Team),
-                    Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3)
+                    Link = $"/Course/{course.ID}/{ResultType.Team}",
+                    Rows = course.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3)
                         .Select(r => new LeaderboardRow { Rank = new Rank(r.AgeGradePoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.AverageAgeGrade.Display })
                 },
                 new LeaderboardTable
                 {
                     Title = "Most Runs",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.Team),
-                    Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3)
+                    Link = $"/Course/{course.ID}/{ResultType.Team}",
+                    Rows = course.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3)
                         .Select(r => new LeaderboardRow { Rank = new Rank(r.MostRunsPoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.TotalRuns.ToString() })
                 },
                 new LeaderboardTable
                 {
                     Title = "Total Points",
-                    Course = c,
+                    Course = course,
                     ResultType = new FormattedResultType(ResultType.Team),
-                    Link = $"/Course/{c.ID}/{ResultType.Team}",
-                    Rows = c.TeamPoints().Take(3)
+                    Link = $"/Course/{course.ID}/{ResultType.Team}",
+                    Rows = course.TeamPoints().Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.TotalPoints.ToString() })
                 }
-            }.Where(_filter));
+            };
 
         private static Func<LeaderboardTable, bool> GetFilter(LeaderboardResultType type)
         {
-            switch (type)
+            return type switch
             {
-                case LeaderboardResultType.F:
-                    return t => t.Category == Category.F || t.ResultType?.Value != ResultType.Team;
-                case LeaderboardResultType.M:
-                    return t => t.Category == Category.M || t.ResultType?.Value != ResultType.Team;
-                default:
-                    return t => t.ResultType?.Value == ResultType.Team;
-            }
+                LeaderboardResultType.F => t => t.Category == Category.F || t.Category == null && t.ResultType?.Value != ResultType.Team,
+                LeaderboardResultType.M => t => t.Category == Category.M || t.Category == null && t.ResultType?.Value != ResultType.Team,
+                _ => t => t.ResultType?.Value == ResultType.Team
+            };
         }
     }
 }
