@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
@@ -77,6 +78,31 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             var vm = (AthleteCourseResultsViewModel) response.Model;
             Assert.NotEmpty(vm.Results);
+        }
+
+        [Fact]
+        public async Task CanFindSimilarAthletes()
+        {
+            //arrange
+            var course = new Course {Results = CourseData.Results};
+            var dataService = Substitute.For<IDataService>();
+            dataService.GetAthlete(123).Returns(CourseData.Athlete1);
+            dataService.GetAthlete(234).Returns(CourseData.Athlete2);
+            dataService.GetAthlete(345).Returns(CourseData.Athlete3);
+            dataService.GetAthlete(456).Returns(CourseData.Athlete4);
+            dataService.GetAllResults().Returns(new[] {course});
+
+            var controller = new AthleteController(dataService);
+
+            //act
+            var result = await controller.Similar(123);
+
+            //assert
+            var vm = (SimilarAthletesViewModel) result.Model;
+            var match = vm.Matches.Single();
+            Assert.Equal(CourseData.Athlete1, vm.Athlete);
+            Assert.Equal(CourseData.Athlete4, match.Athlete);
+            Assert.Equal("87%", match.Similarity.Display);
         }
     }
 }

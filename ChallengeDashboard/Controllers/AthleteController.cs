@@ -16,17 +16,94 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public async Task<ViewResult> Course(uint id, uint other) => View(await GetResults(id, other));
 
+        public async Task<ViewResult> Similar(uint id) => View(await GetSimilarAthletes(id));
+
+        private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
+        {
+            var my = await GetAthlete(id);
+            var matches = await SimilarAthletes(my);
+
+            return new SimilarAthletesViewModel
+            {
+                CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
+                Athlete = my.Athlete,
+                Matches = Rank(matches)
+            };
+        }
+
+        private async Task<IEnumerable<SimilarAthlete>> SimilarAthletes(AthleteSummaryViewModel my)
+        {
+            var myTotalResults = my.Fastest.Count(r => r.Value != null) + my.Average.Count(r => r.Value != null);
+            var allResults = (await _dataService.GetAllResults()).ToList();
+
+            var fastMatches = allResults.ToDictionary(c => c, c => c.Fastest().Where(r => my.Fastest[c] != null && r.Result.Athlete != my.Athlete && IsMatch(my.Fastest[c], r)));
+            var avgMatches = allResults.ToDictionary(c => c, c => c.BestAverage().Where(r => my.Average[c] != null && r.Result.Athlete != my.Athlete && IsMatch(my.Average[c], r)));
+
+            var athletes = fastMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete))
+                .Union(avgMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete)))
+                .Distinct();
+
+            var matches = new List<SimilarAthlete>();
+            foreach (var athlete in athletes)
+            {
+                var their = await GetAthlete(athlete.ID);
+                
+                var fastestToCompare = my.Fastest.Where(r => r.Value != null && their.Fastest[r.Key] != null).ToList();
+                var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToList();
+                var totalMatches = fastestToCompare.Count + avgToCompare.Count;
+                
+                var fastestDiffTotal = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? PercentDifference(r.Value, their.Fastest[r.Key]) : 0) / totalMatches;
+                var avgDiffTotal = avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? PercentDifference(r.Value, their.Average[r.Key]) : 0) / totalMatches;
+                
+                var score = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - AbsolutePercentDifference(r.Value, their.Fastest[r.Key]) / 2 : 0)
+                    + avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - AbsolutePercentDifference(r.Value, their.Average[r.Key]) / 2 : 0);
+
+                matches.Add(new SimilarAthlete
+                {
+                    Athlete = athlete,
+                    Similarity = new Percent(score  / totalMatches),
+                    Confidence = new Percent(100.0 * totalMatches / myTotalResults),
+                    FastestPercent = fastestToCompare.Any()
+                        ? new SpeedComparison(fastestDiffTotal)
+                        : null,
+                    AveragePercent = avgToCompare.Any()
+                        ? new SpeedComparison(avgDiffTotal)
+                        : null
+                });                
+            }
+
+            return matches;
+        }
+
+        private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
+        {
+            var ordered = matches.OrderByDescending(r => r.Similarity.Value + r.Similarity.Value * r.Confidence.Value / 2).ToArray();
+            for (var x = 0; x < ordered.Length; x++)
+                ordered[x].Rank = new Rank((ushort)(x + 1));
+            return ordered;
+        }
+
+        private static double PercentDifference(Ranked<Time> mine, Ranked<Time> theirs)
+            => 100 * (theirs.Result.Duration.Value.TotalSeconds - mine.Result.Duration.Value.TotalSeconds) / mine.Result.Duration.Value.TotalSeconds;
+
+        private static double AbsolutePercentDifference(Ranked<Time> mine, Ranked<Time> theirs)
+            => Math.Abs(PercentDifference(mine, theirs));
+
+        private const byte percentThreshold = 5;
+        private static bool IsMatch(Ranked<Time> mine, Ranked<Time> theirs)
+            => AbsolutePercentDifference(mine, theirs) <= percentThreshold;
+
         private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID)
         {
             var course = await _dataService.GetResults(courseID);
             var results = course.Results.Where(r => r.Athlete.ID == id).ToList();
-            var athlete = results.First().Athlete;
 
             return new AthleteCourseResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Athlete = athlete,
+                Athlete = results.First().Athlete,
                 Course = course,
                 Results = Rank(results, course)
             };
