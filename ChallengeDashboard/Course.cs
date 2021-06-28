@@ -19,6 +19,8 @@ namespace FLRC.ChallengeDashboard
         public DateTime LastUpdated { get; set; }
         public int LastHash { get; set; }
 
+        public double Miles => Meters / MetersPerMile;
+
         private IEnumerable<Result> _results;
 
         public IEnumerable<Result> Results
@@ -98,7 +100,7 @@ namespace FLRC.ChallengeDashboard
                 return _mostMilesCache[key];
 
             return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(),
-                r => r.Count() * Meters / MetersPerMile);
+                r => r.Count() * Miles);
         }
 
         public IEnumerable<GroupedResult> GroupedResults(Category category = null)
@@ -225,9 +227,9 @@ namespace FLRC.ChallengeDashboard
             },
             Miles = new Dictionary<string, double>
             {
-                {string.Empty, Results.Count() * Meters / MetersPerMile },
-                {Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Meters / MetersPerMile },
-                {Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Meters / MetersPerMile }
+                {string.Empty, Results.Count() * Miles },
+                {Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Miles },
+                {Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Miles }
             },
             Average = new Dictionary<string, double>
             {

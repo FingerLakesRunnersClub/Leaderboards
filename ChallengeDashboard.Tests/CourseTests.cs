@@ -7,6 +7,19 @@ namespace FLRC.ChallengeDashboard.Tests
     public class CourseTests
     {
         [Fact]
+        public void CanGetMilesForCourse()
+        {
+            //arrange
+            var course = new Course {Meters = 3 * Course.MetersPerMile};
+            
+            //act
+            var miles = course.Miles;
+            
+            //assert
+            Assert.Equal(3, miles);
+        }
+        
+        [Fact]
         public void CanGetFastestResults()
         {
             //arrange
