@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -53,11 +52,11 @@ namespace FLRC.ChallengeDashboard.Controllers
                 var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToList();
                 var totalMatches = fastestToCompare.Count + avgToCompare.Count;
                 
-                var fastestDiffTotal = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? PercentDifference(r.Value, their.Fastest[r.Key]) : 0) / totalMatches;
-                var avgDiffTotal = avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? PercentDifference(r.Value, their.Average[r.Key]) : 0) / totalMatches;
+                var fastestDiffTotal = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0) / totalMatches;
+                var avgDiffTotal = avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0) / totalMatches;
                 
-                var score = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - AbsolutePercentDifference(r.Value, their.Fastest[r.Key]) / 2 : 0)
-                    + avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - AbsolutePercentDifference(r.Value, their.Average[r.Key]) / 2 : 0);
+                var score = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Fastest[r.Key].Value) / 2 : 0)
+                    + avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Average[r.Key].Value) / 2 : 0);
 
                 matches.Add(new SimilarAthlete
                 {
@@ -84,15 +83,9 @@ namespace FLRC.ChallengeDashboard.Controllers
             return ordered;
         }
 
-        private static double PercentDifference(Ranked<Time> mine, Ranked<Time> theirs)
-            => 100 * (theirs.Result.Duration.Value.TotalSeconds - mine.Result.Duration.Value.TotalSeconds) / mine.Result.Duration.Value.TotalSeconds;
-
-        private static double AbsolutePercentDifference(Ranked<Time> mine, Ranked<Time> theirs)
-            => Math.Abs(PercentDifference(mine, theirs));
-
         private const byte percentThreshold = 5;
         private static bool IsMatch(Ranked<Time> mine, Ranked<Time> theirs)
-            => AbsolutePercentDifference(mine, theirs) <= percentThreshold;
+            => Time.AbsolutePercentDifference(mine.Value, theirs.Value) <= percentThreshold;
 
         private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID)
         {

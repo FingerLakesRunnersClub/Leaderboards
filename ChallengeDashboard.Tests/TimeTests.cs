@@ -86,5 +86,61 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal(h1, h2);
         }
+
+        [Fact]
+        public void CanGetPercentDifferenceBetweenTimes()
+        {
+            //arrange
+            var t1 = new Time(TimeSpan.FromSeconds(2));
+            var t2 = new Time(TimeSpan.FromSeconds(5));
+            
+            //act
+            var difference = Time.PercentDifference(t1, t2);
+            
+            //assert
+            Assert.Equal(150, difference);
+        }
+
+        [Fact]
+        public void CanGetNegativePercentDifference()
+        {
+            //arrange
+            var t1 = new Time(TimeSpan.FromSeconds(4));
+            var t2 = new Time(TimeSpan.FromSeconds(3));
+            
+            //act
+            var difference = Time.PercentDifference(t1, t2);
+            
+            //assert
+            Assert.Equal(-25, difference);
+        }
+
+        [Fact]
+        public void CanGetAbsolutePercentDifferenceBetweenTimes()
+        {
+            //arrange
+            var t1 = new Time(TimeSpan.FromSeconds(2));
+            var t2 = new Time(TimeSpan.FromSeconds(3));
+            
+            //act
+            var difference = Time.AbsolutePercentDifference(t1, t2);
+            
+            //assert
+            Assert.Equal(50, difference);
+        }
+
+        [Fact]
+        public void CanGetAbsolutePercentDifferenceFromNegative()
+        {
+            //arrange
+            var t1 = new Time(TimeSpan.FromSeconds(4));
+            var t2 = new Time(TimeSpan.FromSeconds(3));
+            
+            //act
+            var difference = Time.AbsolutePercentDifference(t1, t2);
+            
+            //assert
+            Assert.Equal(25, difference);
+        }
     }
 }
