@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-
-namespace FLRC.ChallengeDashboard
-{
-}
 
 namespace FLRC.ChallengeDashboard.Controllers
 {
