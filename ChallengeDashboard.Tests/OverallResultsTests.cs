@@ -1,9 +1,9 @@
-﻿using System.Linq;
+using System.Linq;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
 {
-    public class OverallViewModelTests
+    public class OverallResultsTests
     {
         [Fact]
         public void CanGetMostPoints()
