@@ -31,46 +31,49 @@ namespace FLRC.ChallengeDashboard.Controllers
                 Links = _dataService.Links,
                 Courses = courseStats,
                 History = history,
-                Total = new Statistics
+                Total = GetTotals(athletes, courseStats)
+            };
+        }
+
+        private static Statistics GetTotals(IReadOnlyCollection<Athlete> athletes, IDictionary<Course, Statistics> courseStats)
+            => new()
+            {
+                Participants = new Dictionary<string, int>
                 {
-                    Participants = new Dictionary<string, int>
+                    {string.Empty, athletes.Count},
+                    {Category.F.Display, athletes.Count(a => a.Category == Category.F)},
+                    {Category.M.Display, athletes.Count(a => a.Category == Category.M)}
+                },
+                Runs = new Dictionary<string, int>
+                {
+                    {string.Empty, courseStats.Sum(stats => stats.Value.Runs[string.Empty])},
+                    {Category.F.Display, courseStats.Sum(stats => stats.Value.Runs[Category.F.Display])},
+                    {Category.M.Display, courseStats.Sum(stats => stats.Value.Runs[Category.M.Display])}
+                },
+                Miles = new Dictionary<string, double>
+                {
+                    {string.Empty, courseStats.Sum(stats => stats.Value.Miles[string.Empty])},
+                    {Category.F.Display, courseStats.Sum(stats => stats.Value.Miles[Category.F.Display])},
+                    {Category.M.Display, courseStats.Sum(stats => stats.Value.Miles[Category.M.Display])}
+                },
+                Average = new Dictionary<string, double>
+                {
                     {
-                        {string.Empty, athletes.Count},
-                        {Category.F.Display, athletes.Count(a => a.Category == Category.F)},
-                        {Category.M.Display, athletes.Count(a => a.Category == Category.M)}
+                        string.Empty,
+                        (double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count
                     },
-                    Runs = new Dictionary<string, int>
                     {
-                        {string.Empty, courseStats.Sum(stats => stats.Value.Runs[string.Empty])},
-                        {Category.F.Display, courseStats.Sum(stats => stats.Value.Runs[Category.F.Display])},
-                        {Category.M.Display, courseStats.Sum(stats => stats.Value.Runs[Category.M.Display])}
+                        Category.F.Display,
+                        (double) courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) /
+                        athletes.Count(a => a.Category == Category.F)
                     },
-                    Miles = new Dictionary<string, double>
                     {
-                        {string.Empty, courseStats.Sum(stats => stats.Value.Miles[string.Empty])},
-                        {Category.F.Display, courseStats.Sum(stats => stats.Value.Miles[Category.F.Display])},
-                        {Category.M.Display, courseStats.Sum(stats => stats.Value.Miles[Category.M.Display])}
-                    },
-                    Average = new Dictionary<string, double>
-                    {
-                        {
-                            string.Empty,
-                            (double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count
-                        },
-                        {
-                            Category.F.Display,
-                            (double) courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) /
-                            athletes.Count(a => a.Category == Category.F)
-                        },
-                        {
-                            Category.M.Display,
-                            (double) courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) /
-                            athletes.Count(a => a.Category == Category.M)
-                        }
+                        Category.M.Display,
+                        (double) courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) /
+                        athletes.Count(a => a.Category == Category.M)
                     }
                 }
             };
-        }
 
         private Statistics weeklyStatistics(IEnumerable<Result> results)
         {
