@@ -108,9 +108,8 @@ namespace FLRC.ChallengeDashboard
 
         public async Task<IEnumerable<Course>> GetAllResults()
         {
-            var tasks = _courses.Select(c => GetResults(c.Key)).ToArray();
-            await Task.WhenAll(tasks);
-            return tasks.Select(t => t.GetAwaiter().GetResult());
+            var tasks = _courses.Select(async c => await GetResults(c.Key));
+            return await Task.WhenAll(tasks);
         }
     }
 }
