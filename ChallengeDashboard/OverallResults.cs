@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace FLRC.ChallengeDashboard
 {
-    public class OverallViewModel
+    public class OverallResults
     {
         private readonly IEnumerable<Course> _courses;
 
-        public OverallViewModel(IEnumerable<Course> courses) => _courses = courses;
+        public OverallResults(IEnumerable<Course> courses) => _courses = courses;
 
         public RankedList<Points> MostPoints(Category category = null)
             => RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value), _ => 0);

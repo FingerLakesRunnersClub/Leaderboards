@@ -26,7 +26,7 @@ namespace FLRC.ChallengeDashboard
         {
             get
             {
-                var vm = new OverallViewModel(_courses);
+                var vm = new OverallResults(_courses);
                 return new List<LeaderboardTable>
                 {
                     new LeaderboardTable

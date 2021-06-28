@@ -9,7 +9,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetMostPoints()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.MostPoints();
@@ -22,7 +22,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetMostPointsForCategory()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.MostPoints(Category.F);
@@ -35,7 +35,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetMostMiles()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.MostMiles();
@@ -48,7 +48,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetMostMilesForCategory()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.MostMiles(Category.F);
@@ -61,7 +61,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetBestAverageAgeGrade()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.AgeGrade();
@@ -74,7 +74,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetBestAverageAgeGradeForCategory()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.AgeGrade(Category.F);
@@ -87,7 +87,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetTeamPoints()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var mostPoints = vm.TeamPoints();
@@ -100,7 +100,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetTeamMembers()
         {
             //arrange
-            var vm = new OverallViewModel(LeaderboardData.Courses);
+            var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
             var members = vm.TeamMembers(2);

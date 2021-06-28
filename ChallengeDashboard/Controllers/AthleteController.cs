@@ -139,7 +139,7 @@ namespace FLRC.ChallengeDashboard.Controllers
         {
             var athlete = await _dataService.GetAthlete(id);
             var courses = (await _dataService.GetAllResults()).ToList();
-            var overallViewModel = new OverallViewModel(courses);
+            var overallViewModel = new OverallResults(courses);
 
             return new AthleteSummaryViewModel
             {

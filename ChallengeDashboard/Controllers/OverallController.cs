@@ -26,29 +26,29 @@ namespace FLRC.ChallengeDashboard.Controllers
         public async Task<ViewResult> Team()
             => View(await GetTeamResults("Team Points", vm => vm.TeamPoints()));
 
-        private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallViewModel, RankedList<T>> results)
+        private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallResults, RankedList<T>> results)
         {
             var allResults = await _dataService.GetAllResults();
-            var overallViewModel = new OverallViewModel(allResults);
+            var overall = new OverallResults(allResults);
             return new OverallResultsViewModel<T>
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
                 ResultType = title,
-                RankedResults = results(overallViewModel)
+                RankedResults = results(overall)
             };
         }
         
-        private async Task<OverallTeamResultsViewModel> GetTeamResults(string title, Func<OverallViewModel, IEnumerable<TeamResults>> results)
+        private async Task<OverallTeamResultsViewModel> GetTeamResults(string title, Func<OverallResults, IEnumerable<TeamResults>> results)
         {
             var allResults = await _dataService.GetAllResults();
-            var overallViewModel = new OverallViewModel(allResults);
+            var overall = new OverallResults(allResults);
             return new OverallTeamResultsViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
                 ResultType = title,
-                Results = results(overallViewModel)
+                Results = results(overall)
             };
         }
     }

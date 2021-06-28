@@ -16,20 +16,20 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         private async Task<TeamMembersViewModel> GetMembers(Team team)
         {
-            var vm = new OverallViewModel(await _dataService.GetAllResults());
+            var overall = new OverallResults(await _dataService.GetAllResults());
             return new TeamMembersViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
                 Team = team,
-                RankedResults = vm.TeamMembers(team.Value)
+                RankedResults = overall.TeamMembers(team.Value)
             };
         }
 
         private async Task<TeamSummaryViewModel> GetTeam(Team team)
         {
             var courses = (await _dataService.GetAllResults()).ToList();
-            var overall = new OverallViewModel(courses);
+            var overall = new OverallResults(courses);
 
             return new TeamSummaryViewModel
             {
