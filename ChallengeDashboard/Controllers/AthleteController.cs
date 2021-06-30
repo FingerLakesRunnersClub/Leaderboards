@@ -17,27 +17,18 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public async Task<ViewResult> Similar(uint id) => View(await GetSimilarAthletes(id));
 
-        private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
+        private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
         {
             var athlete = await _dataService.GetAthlete(id);
-            var results = (await _dataService.GetAllResults()).ToList();
-            var my = new AthleteSummary(athlete, results);
+            var courses = (await _dataService.GetAllResults()).ToList();
+            var summary = new AthleteSummary(athlete, courses);
 
-            return new SimilarAthletesViewModel
+            return new AthleteSummaryViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Athlete = my.Athlete,
-                Matches = Rank(my.SimilarAthletes)
+                Summary = summary
             };
-        }
-
-        private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
-        {
-            var ordered = matches.OrderByDescending(r => r.Score).ToArray();
-            for (var x = 0; x < ordered.Length; x++)
-                ordered[x].Rank = new Rank((ushort)(x + 1));
-            return ordered;
         }
 
         private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID)
@@ -81,18 +72,27 @@ namespace FLRC.ChallengeDashboard.Controllers
             return ranks;
         }
 
-        private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
+        private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
         {
             var athlete = await _dataService.GetAthlete(id);
-            var courses = (await _dataService.GetAllResults()).ToList();
-            var summary = new AthleteSummary(athlete, courses);
+            var results = (await _dataService.GetAllResults()).ToList();
+            var my = new AthleteSummary(athlete, results);
 
-            return new AthleteSummaryViewModel
+            return new SimilarAthletesViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Summary = summary
+                Athlete = my.Athlete,
+                Matches = Rank(my.SimilarAthletes)
             };
+        }
+        
+        private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
+        {
+            var ordered = matches.OrderByDescending(r => r.Score).ToArray();
+            for (var x = 0; x < ordered.Length; x++)
+                ordered[x].Rank = new Rank((ushort)(x + 1));
+            return ordered;
         }
     }
 }
