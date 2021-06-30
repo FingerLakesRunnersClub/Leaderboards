@@ -21,5 +21,13 @@ namespace FLRC.ChallengeDashboard.Tests
             new() {Athlete = Athlete4, StartTime = new Date(DateTime.Parse("1/8/2020")), Duration = new Time(TimeSpan.Parse("2:22:22.2"))},
             new() {Athlete = Athlete4, StartTime = new Date(DateTime.Parse("1/4/2020")), Duration = new Time(TimeSpan.Parse("2:00:00.0"))}
         };
+
+        public static IEnumerable<Result> SimilarResults => new List<Result>
+        {
+            new() {Athlete = Athlete1, Duration = new Time(TimeSpan.FromSeconds(100))},
+            new() {Athlete = Athlete2, Duration = new Time(TimeSpan.FromSeconds(105))},
+            new() {Athlete = Athlete3, Duration = new Time(TimeSpan.FromSeconds(110))},
+            new() {Athlete = Athlete4, Duration = new Time(TimeSpan.FromSeconds(96))}
+        };
     }
 }

@@ -84,13 +84,12 @@ namespace FLRC.ChallengeDashboard.Tests
         public async Task CanFindSimilarAthletes()
         {
             //arrange
-            var course = new Course {Results = CourseData.Results};
             var dataService = Substitute.For<IDataService>();
             dataService.GetAthlete(123).Returns(CourseData.Athlete1);
             dataService.GetAthlete(234).Returns(CourseData.Athlete2);
             dataService.GetAthlete(345).Returns(CourseData.Athlete3);
             dataService.GetAthlete(456).Returns(CourseData.Athlete4);
-            dataService.GetAllResults().Returns(new[] {course});
+            dataService.GetAllResults().Returns(new[] {new Course { Results = CourseData.SimilarResults }});
 
             var controller = new AthleteController(dataService);
 
@@ -99,10 +98,12 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (SimilarAthletesViewModel) result.Model;
-            var match = vm.Matches.Single();
+            var matches = vm.Matches.ToList();
             Assert.Equal(CourseData.Athlete1, vm.Athlete);
-            Assert.Equal(CourseData.Athlete4, match.Athlete);
-            Assert.Equal("73%", match.Similarity.Display);
+            Assert.Equal(CourseData.Athlete4, matches[0].Athlete);
+            Assert.Equal("96%", matches[0].Similarity.Display);
+            Assert.Equal(CourseData.Athlete2, matches[1].Athlete);
+            Assert.Equal("95%", matches[1].Similarity.Display);
         }
     }
 }
