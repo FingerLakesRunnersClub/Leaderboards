@@ -2,8 +2,8 @@
 @model AthleteSummaryViewModel
 
 <h2>
-    @Model.Athlete.Name
-    <small>(@Model.Athlete.AgeToday&nbsp;@Model.Athlete.Category?.Display)</small>
+    @Model.Summary.Athlete.Name
+    <small>(@Model.Summary.Athlete.AgeToday&nbsp;@Model.Summary.Athlete.Category?.Display)</small>
 </h2>
 
 <div class="card card-highlighted mb-3">
@@ -13,18 +13,18 @@
                 Team
             </dt>
             <dd class="col-6">
-                @Model.Athlete.Team.Display
-                (<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
+                @Model.Summary.Athlete.Team.Display
+                (<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
             </dd>
 
-            @if (Model.Athlete.Category != null)
+            @if (Model.Summary.Athlete.Category != null)
             {
                 <dt class="col-6">
                     Overall Points
                 </dt>
                 <dd class="col-6">
-                    @Model.OverallPoints?.Value?.Display
-                    (<a href="/Overall/Points/@Model.Athlete.Category.Display">@Model.OverallPoints?.Rank?.Display</a>)
+                    @Model.Summary.OverallPoints?.Value?.Display
+                    (<a href="/Overall/Points/@Model.Summary.Athlete.Category.Display">@Model.Summary.OverallPoints?.Rank?.Display</a>)
                 </dd>
             }
 
@@ -34,29 +34,29 @@
                 Age Grade
             </dt>
             <dd class="col-6">
-                @Model.OverallAgeGrade?.Value?.Display
-                (<a href="/Overall/AgeGrade">@Model.OverallAgeGrade?.Rank?.Display</a>)
+                @Model.Summary.OverallAgeGrade?.Value?.Display
+                (<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
             </dd>
 
             <dt class="col-6">
                 Total Miles
             </dt>
             <dd class="col-6">
-                @Model.OverallMiles?.Value.ToString("F1")
-                (<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
+                @Model.Summary.OverallMiles?.Value.ToString("F1")
+                (<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
             </dd>
         </dl>
     </div>
 </div>
 
 <div class="row">
-    @foreach (var (course, _) in Model.All.Where(r => r.Value != null && r.Value.Any()))
+    @foreach (var (course, _) in Model.Summary.All.Where(r => r.Value != null && r.Value.Any()))
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course)
-                    @if (Model.Fastest[course] == null)
+                    @if (Model.Summary.Fastest[course] == null)
                     {
                         <div class="alert alert-danger">
                             There is an invalid result for this course.
@@ -71,29 +71,29 @@
                                 Fastest Time
                             </dt>
                             <dd class="col-6">
-                                @Model.Fastest[course].Value.Display
-                                (<a href="/Course/@course.ID/Fastest/@Model.Athlete.Category?.Value">@Model.Fastest[course].Rank.Display</a>)
+                                @Model.Summary.Fastest[course].Value.Display
+                                (<a href="/Course/@course.ID/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank.Display</a>)
                             </dd>
                             <dt class="col-6">
                                 Points
                             </dt>
                             <dd class="col-6">
-                                @Model.Fastest[course].Points.Display
+                                @Model.Summary.Fastest[course].Points.Display
                             </dd>
                             <dt class="col-6">
                                 Age Grade
                             </dt>
                             <dd class="col-6">
-                                @Model.Fastest[course].AgeGrade.Display
+                                @Model.Summary.Fastest[course].AgeGrade.Display
                             </dd>
                             <dt class="col-6">
-                                Average (Top @course.AverageThreshold(Model.Athlete.Category))
+                                Average (Top @course.AverageThreshold(Model.Summary.Athlete.Category))
                             </dt>
                             <dd class="col-6">
-                                @if (Model.Average[course] != null)
+                                @if (Model.Summary.Average[course] != null)
                                 {
-                                    @Model.Average[course].Value.Display
-                                    @:(<a href="/Course/@course.ID/BestAverage/@Model.Athlete.Category?.Value">@Model.Average[course].Rank.Display</a>)
+                                    @Model.Summary.Average[course].Value.Display
+                                    @:(<a href="/Course/@course.ID/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
                                 }
                                 else
                                 {
@@ -104,14 +104,14 @@
                                 # of Runs
                             </dt>
                             <dd class="col-6">
-                                @Model.Runs[course].Value
-                                (<a href="/Course/@course.ID/MostRuns">@Model.Runs[course].Rank.Display</a>)
+                                @Model.Summary.Runs[course].Value
+                                (<a href="/Course/@course.ID/MostRuns">@Model.Summary.Runs[course].Rank.Display</a>)
                             </dd>
                         </dl>
                     }
                 </div>
                 <div class="card-footer">
-                    <a href="/Athlete/@Model.Athlete.ID/Course/@course.ID">View All Runs</a>
+                    <a href="/Athlete/@Model.Summary.Athlete.ID/Course/@course.ID">View All Runs</a>
                 </div>
             </div>
         </div>

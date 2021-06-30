@@ -1,3 +1,4 @@
+using System;
 using Xunit;
 
 namespace FLRC.ChallengeDashboard.Tests
@@ -8,7 +9,7 @@ namespace FLRC.ChallengeDashboard.Tests
         public void TitleIsAthleteName()
         {
             //arrange
-            var vm = new AthleteSummaryViewModel { Athlete = new Athlete { Name = "Steve Desmond" } };
+            var vm = new AthleteSummaryViewModel { Summary = new AthleteSummary(new Athlete { Name = "Steve Desmond" }, Array.Empty<Course>()) };
 
             //act
             var title = vm.Title;

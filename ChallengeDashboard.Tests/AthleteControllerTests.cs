@@ -42,13 +42,13 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             var vm = (AthleteSummaryViewModel) response.Model;
-            Assert.Equal((uint) 123, vm.Athlete.ID);
-            Assert.Equal(1, vm.Fastest[course].Rank.Value);
-            Assert.Equal(1, vm.Average[course].Rank.Value);
-            Assert.Equal(1, vm.Runs[course].Rank.Value);
-            Assert.Equal(1, vm.TeamResults.Rank.Value);
-            Assert.Equal(100, vm.OverallPoints.Value.Value);
-            Assert.Equal(10, vm.OverallMiles.Value);
+            Assert.Equal((uint) 123, vm.Summary.Athlete.ID);
+            Assert.Equal(1, vm.Summary.Fastest[course].Rank.Value);
+            Assert.Equal(1, vm.Summary.Average[course].Rank.Value);
+            Assert.Equal(1, vm.Summary.Runs[course].Rank.Value);
+            Assert.Equal(1, vm.Summary.TeamResults.Rank.Value);
+            Assert.Equal(100, vm.Summary.OverallPoints.Value.Value);
+            Assert.Equal(10, vm.Summary.OverallMiles.Value);
         }
 
         [Fact]

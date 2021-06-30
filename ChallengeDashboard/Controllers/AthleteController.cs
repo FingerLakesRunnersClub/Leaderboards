@@ -20,18 +20,18 @@ namespace FLRC.ChallengeDashboard.Controllers
         private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
         {
             var my = await GetAthlete(id);
-            var matches = await SimilarAthletes(my);
+            var matches = await SimilarAthletes(my.Summary);
 
             return new SimilarAthletesViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Athlete = my.Athlete,
+                Athlete = my.Summary.Athlete,
                 Matches = Rank(matches)
             };
         }
 
-        private async Task<IEnumerable<SimilarAthlete>> SimilarAthletes(AthleteSummaryViewModel my)
+        private async Task<IEnumerable<SimilarAthlete>> SimilarAthletes(AthleteSummary my)
         {
             var myTotalResults = my.Fastest.Count(r => r.Value != null) + my.Average.Count(r => r.Value != null);
             var allResults = (await _dataService.GetAllResults()).ToList();
@@ -46,7 +46,8 @@ namespace FLRC.ChallengeDashboard.Controllers
             var matches = new List<SimilarAthlete>();
             foreach (var athlete in athletes)
             {
-                var their = await GetAthlete(athlete.ID);
+                var them = await GetAthlete(athlete.ID);
+                var their = them.Summary;
                 
                 var fastestToCompare = my.Fastest.Where(r => r.Value != null && their.Fastest[r.Key] != null).ToList();
                 var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToList();
@@ -132,21 +133,13 @@ namespace FLRC.ChallengeDashboard.Controllers
         {
             var athlete = await _dataService.GetAthlete(id);
             var courses = (await _dataService.GetAllResults()).ToList();
-            var overallViewModel = new OverallResults(courses);
+            var summary = new AthleteSummary(athlete, courses);
 
             return new AthleteSummaryViewModel
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Athlete = athlete,
-                TeamResults = overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team),
-                OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id),
-                OverallAgeGrade = overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete.ID == id),
-                OverallMiles = overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete.ID == id),
-                Fastest = courses.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                Average = courses.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                Runs = courses.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.ID == id)),
-                All = courses.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.ID == id))
+                Summary = summary
             };
         }
     }
