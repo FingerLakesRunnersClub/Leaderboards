@@ -102,7 +102,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var match = vm.Matches.Single();
             Assert.Equal(CourseData.Athlete1, vm.Athlete);
             Assert.Equal(CourseData.Athlete4, match.Athlete);
-            Assert.Equal("87%", match.Similarity.Display);
+            Assert.Equal("73%", match.Similarity.Display);
         }
     }
 }

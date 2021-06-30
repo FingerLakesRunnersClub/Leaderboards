@@ -33,7 +33,6 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         private async Task<IEnumerable<SimilarAthlete>> SimilarAthletes(AthleteSummary my)
         {
-            var myTotalResults = my.Fastest.Count(r => r.Value != null) + my.Average.Count(r => r.Value != null);
             var allResults = (await _dataService.GetAllResults()).ToList();
 
             var fastMatches = allResults.ToDictionary(c => c, c => c.Fastest().Where(r => my.Fastest[c] != null && r.Result.Athlete != my.Athlete && IsMatch(my.Fastest[c], r)));
@@ -49,28 +48,7 @@ namespace FLRC.ChallengeDashboard.Controllers
                 var them = await GetAthlete(athlete.ID);
                 var their = them.Summary;
                 
-                var fastestToCompare = my.Fastest.Where(r => r.Value != null && their.Fastest[r.Key] != null).ToList();
-                var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToList();
-                var totalMatches = fastestToCompare.Count + avgToCompare.Count;
-                
-                var fastestDiffTotal = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0) / totalMatches;
-                var avgDiffTotal = avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0) / totalMatches;
-                
-                var score = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Fastest[r.Key].Value) / 2 : 0)
-                    + avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Average[r.Key].Value) / 2 : 0);
-
-                matches.Add(new SimilarAthlete
-                {
-                    Athlete = athlete,
-                    Similarity = new Percent(score  / totalMatches),
-                    Confidence = new Percent(100.0 * totalMatches / myTotalResults),
-                    FastestPercent = fastestToCompare.Any()
-                        ? new SpeedComparison(fastestDiffTotal)
-                        : null,
-                    AveragePercent = avgToCompare.Any()
-                        ? new SpeedComparison(avgDiffTotal)
-                        : null
-                });                
+                matches.Add(new SimilarAthlete(my, their));
             }
 
             return matches;
