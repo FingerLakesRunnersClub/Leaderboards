@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="row in sorted_rows" v-class="{ 'bg-warning': fields[0].value(row) == 0 }">
+            <tr v-for="row in sorted_rows" :class="{ 'bg-warning': fields[0].value(row) == 0 }" :style="row_style ? row_style(row) : null">
                 <td v-for="field in fields_to_show" :class="{'text-center': field.center}">
                     <a v-if="field.link" :href="field.link(row)">{{field.value(row)}}</a>
                     <span v-else>{{field.value(row)}}</span>

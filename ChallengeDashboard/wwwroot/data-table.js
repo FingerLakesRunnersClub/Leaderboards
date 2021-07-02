@@ -6,7 +6,8 @@ new Vue({
             field: null,
             descending: false
         },
-        rows: rows
+        rows: rows,
+        row_style: typeof(row_style) !== 'undefined' ? row_style : null
     },
     computed: {
         show_table: function () {
