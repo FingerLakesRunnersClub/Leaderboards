@@ -20,7 +20,7 @@ namespace FLRC.ChallengeDashboard.Tests
         }
         
         [Fact]
-        public void CanGetConfidence()
+        public void CanGetOverlap()
         {
             //arrange
             var course = new Course { Results = CourseData.Results };
@@ -31,7 +31,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var similar = new SimilarAthlete(my, their);
 
             //assert
-            Assert.Equal("50%", similar.Confidence.Display);
+            Assert.Equal("50%", similar.Overlap.Display);
         }
         
         [Fact]

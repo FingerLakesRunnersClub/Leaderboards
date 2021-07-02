@@ -32,7 +32,7 @@
                 { name: "Fastest Pace", center: true, value: r => r.FastestPercent ? r.FastestPercent.Display : '(no data)', sort: r => r.FastestPercent ? r.FastestPercent.Value : 100 },
                 { name: "Average Pace", center: true, value: r => r.AveragePercent ? r.AveragePercent.Display : '(no data)', sort: r => r.AveragePercent ? r.AveragePercent.Value : 100 },
                 { name: "Similarity", center: true, value: r => r.Similarity.Display, sort: r => r.Similarity.Value, descending: true },
-                { name: "Confidence", center: true, value: r => r.Confidence.Display, sort: r => r.Confidence.Value, descending: true }
+                { name: "Overlap", center: true, value: r => r.Overlap.Display, sort: r => r.Overlap.Value, descending: true }
             ];
 
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.Matches));

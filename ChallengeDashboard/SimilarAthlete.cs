@@ -9,7 +9,7 @@ namespace FLRC.ChallengeDashboard
         public Rank Rank { get; set; }
         public Athlete Athlete { get; }
         public Percent Similarity { get; }
-        public Percent Confidence { get; }
+        public Percent Overlap { get; }
         public SpeedComparison FastestPercent { get; }
         public SpeedComparison AveragePercent { get; }
         
@@ -29,11 +29,12 @@ namespace FLRC.ChallengeDashboard
 
             Athlete = their.Athlete;
             Similarity = new Percent(score / totalMatches);
-            Confidence = new Percent(100.0 * totalMatches / my.TotalResults);
+            Overlap = new Percent(100.0 * totalMatches / my.TotalResults);
             FastestPercent = fastestToCompare.Any() ? new SpeedComparison(fastestDiffTotal) : null;
             AveragePercent = avgToCompare.Any() ? new SpeedComparison(avgDiffTotal) : null;
-            
-            Score = Similarity.Value * (1 - weighting) + Similarity.Value * Confidence.Value / 100 * weighting;
+
+            var confidence = Similarity.Value * Overlap.Value / 100;
+            Score = Similarity.Value * (1 - weighting) + confidence * weighting;
         }
     }
 }
