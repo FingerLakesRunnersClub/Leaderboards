@@ -29,7 +29,7 @@ namespace FLRC.ChallengeDashboard
                 var vm = new OverallResults(_courses);
                 return new List<LeaderboardTable>
                 {
-                    new LeaderboardTable
+                    new()
                     {
                         Title = "Most Points (F)",
                         Link = "/Overall/Points/F",
@@ -38,7 +38,7 @@ namespace FLRC.ChallengeDashboard
                         Rows = vm.MostPoints(Category.F).Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
                     },
-                    new LeaderboardTable
+                    new()
                     {
                         Title = "Most Points (M)",
                         Link = "/Overall/Points/M",
@@ -47,7 +47,7 @@ namespace FLRC.ChallengeDashboard
                         Rows = vm.MostPoints(Category.M).Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                     },
-                    new LeaderboardTable
+                    new()
                     {
                         Title = "Age Grade",
                         Link = "/Overall/AgeGrade",
@@ -55,7 +55,7 @@ namespace FLRC.ChallengeDashboard
                         Rows = vm.AgeGrade().Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })
                     },
-                    new LeaderboardTable
+                    new()
                     {
                         Title = "Most Miles",
                         Link = "/Overall/Miles",
@@ -63,7 +63,7 @@ namespace FLRC.ChallengeDashboard
                         Rows = vm.MostMiles().Take(3)
                             .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1")})
                     },
-                    new LeaderboardTable
+                    new()
                     {
                         Title = "Top Teams",
                         Link = "/Overall/Team",
@@ -78,10 +78,10 @@ namespace FLRC.ChallengeDashboard
         public IDictionary<Course, IEnumerable<LeaderboardTable>> CourseResults
             => _courses.ToDictionary(c => c, c => LeaderboardTables(c).Where(_filter));
 
-        private static List<LeaderboardTable> LeaderboardTables(Course course)
-            => new()
+        private static IEnumerable<LeaderboardTable> LeaderboardTables(Course course)
+            => new List<LeaderboardTable>
             {
-                new LeaderboardTable
+                new()
                 {
                     Title = "Fastest (F)",
                     Course = course,
@@ -91,7 +91,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.Fastest(Category.F).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Fastest (M)",
                     Course = course,
@@ -101,7 +101,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.Fastest(Category.M).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Best Average (F)",
                     Course = course,
@@ -111,7 +111,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.BestAverage(Category.F).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Best Average (M)",
                     Course = course,
@@ -121,7 +121,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.BestAverage(Category.M).Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display})
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Most Runs",
                     Course = course,
@@ -130,7 +130,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.MostRuns().Take(3)
                         .Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString()})
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Age Grade",
                     Course = course,
@@ -139,7 +139,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3)
                         .Select(r => new LeaderboardRow { Rank = new Rank(r.AgeGradePoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.AverageAgeGrade.Display })
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Most Runs",
                     Course = course,
@@ -148,7 +148,7 @@ namespace FLRC.ChallengeDashboard
                     Rows = course.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3)
                         .Select(r => new LeaderboardRow { Rank = new Rank(r.MostRunsPoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.TotalRuns.ToString() })
                 },
-                new LeaderboardTable
+                new()
                 {
                     Title = "Total Points",
                     Course = course,
