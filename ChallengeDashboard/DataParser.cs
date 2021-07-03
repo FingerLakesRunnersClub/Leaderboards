@@ -87,5 +87,8 @@ namespace FLRC.ChallengeDashboard
                 : null;
 
         private static Date ParseStart(string value) => new Date(DateTime.Parse(value ?? string.Empty));
+
+        public static IDictionary<string, IEnumerable<uint>> ParseGroupMembers(JsonElement groups)
+            => groups.EnumerateObject().ToDictionary(o => o.Name, o => o.Value.EnumerateArray().Select(v => v.GetUInt32()));
     }
 }

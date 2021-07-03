@@ -134,5 +134,29 @@ namespace FLRC.ChallengeDashboard.Tests
             else
                 Assert.Null(category);
         }
+
+        [Fact]
+        public void CanParseGroupMembers()
+        {
+            //arrange
+            const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
+            var json = JsonDocument.Parse(data).RootElement;
+            
+            //act
+            var groups = DataParser.ParseGroupMembers(json);
+            
+            //assert
+            var names = groups.Keys.ToArray();
+            Assert.Equal("Test 1", names[0]);
+            Assert.Equal("Test 2", names[1]);
+            
+            var members1 = groups["Test 1"].ToArray();
+            Assert.Equal((uint)123, members1[0]);
+            Assert.Equal((uint)234, members1[1]);
+            
+            var members2 = groups["Test 2"].ToArray();
+            Assert.Equal((uint)234, members2[0]);
+            Assert.Equal((uint)345, members2[1]);
+        }
     }
 }
