@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Xunit;
@@ -10,23 +9,6 @@ namespace FLRC.ChallengeDashboard.Tests
 {
     public class DataAPITests
     {
-        private class MockHttpMessageHandler : HttpMessageHandler
-        {
-            private readonly string _data;
-
-            public MockHttpMessageHandler(string data)
-            {
-                _data = data;
-            }
-
-            protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-            {
-                var content = new StringContent(_data);
-                var message = new HttpResponseMessage { Content = content };
-                return Task.FromResult(message);
-            }
-        }
-
         [Fact]
         public async Task CanGetJSONFromResponse()
         {
