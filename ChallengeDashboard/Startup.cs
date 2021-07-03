@@ -17,6 +17,7 @@ namespace FLRC.ChallengeDashboard
             services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddSingleton<IDataAPI, DataAPI>();
+            services.AddSingleton<IGroupAPI, GroupAPI>();
             services.AddSingleton<IDataService, DataService>();
         }
 

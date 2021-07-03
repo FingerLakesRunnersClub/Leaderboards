@@ -14,5 +14,7 @@ namespace FLRC.ChallengeDashboard
         
         Task<Course> GetResults(uint id);
         Task<IEnumerable<Course>> GetAllResults();
+        
+        Task<IEnumerable<Athlete>> GetGroupMembers(string id);
     }
 }

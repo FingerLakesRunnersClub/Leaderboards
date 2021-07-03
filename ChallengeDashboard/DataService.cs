@@ -10,15 +10,19 @@ namespace FLRC.ChallengeDashboard
 {
     public class DataService : IDataService
     {
-        private readonly IDataAPI _api;
+        private readonly IDataAPI _dataAPI;
+        private readonly IGroupAPI _groupAPI;
         private readonly ILogger _logger;
         private readonly TimeSpan _cacheLength;
         private readonly IDictionary<uint, Course> _courses;
         private readonly uint _startListID;
 
-        public DataService(IDataAPI api, IConfiguration configuration, ILoggerFactory loggerFactory)
+        public DataService(IDataAPI dataAPI, IGroupAPI groupAPI, IConfiguration configuration,
+            ILoggerFactory loggerFactory)
         {
-            _api = api;
+            _dataAPI = dataAPI;
+            _groupAPI = groupAPI;
+
             _logger = loggerFactory.CreateLogger("DataService");
             _cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
 
@@ -60,7 +64,7 @@ namespace FLRC.ChallengeDashboard
             {
                 if (_athleteCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
                 {
-                    var json = await _api.GetResults(_startListID);
+                    var json = await _dataAPI.GetResults(_startListID);
                     foreach (var element in json.GetProperty("Racers").EnumerateArray())
                     {
                         var athlete = DataParser.ParseAthlete(element);
@@ -81,12 +85,12 @@ namespace FLRC.ChallengeDashboard
         public async Task<Course> GetResults(uint id)
         {
             var course = _courses[id];
-            
+
             try
             {
                 if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
                 {
-                    var json = await _api.GetResults(id);
+                    var json = await _dataAPI.GetResults(id);
                     var newHash = json.ToString()?.GetHashCode() ?? 0;
                     if (newHash != course.LastHash)
                     {
@@ -109,6 +113,39 @@ namespace FLRC.ChallengeDashboard
         {
             var tasks = _courses.Select(async c => await GetResults(c.Key));
             return await Task.WhenAll(tasks);
+        }
+
+        public async Task<IEnumerable<Athlete>> GetGroupMembers(string id)
+        {
+            try
+            {
+                var groups = await GetGroups();
+                return groups[id];
+            }
+            catch (Exception e)
+            {
+                _logger.LogWarning(e, $"Could not retrieve group members for {id}");
+                return new List<Athlete>();
+            }
+        }
+
+
+        private IDictionary<string, IEnumerable<Athlete>> _groups;
+        private DateTime _groupCacheTimestamp;
+
+        private async Task<IDictionary<string, IEnumerable<Athlete>>> GetGroups()
+        {
+            if (_groupCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
+            {
+                var athletes = await GetAthletes();
+                var groups = await _groupAPI.GetGroups();
+                var members = DataParser.ParseGroupMembers(groups);
+                _groups = members.ToDictionary(m => m.Key,
+                    m => m.Value.Select(v => athletes.ContainsKey(v) ? athletes[v] : null).Where(a => a != null));
+                _groupCacheTimestamp = DateTime.Now;
+            }
+
+            return _groups;
         }
     }
 }
