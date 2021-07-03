@@ -13,7 +13,7 @@ namespace FLRC.ChallengeDashboard
         public override string ResponsiveBreakpoint
             => ResultType switch
             {
-                "Most Miles" => "sm",
+                "Most Miles" => "md",
                 _ => "lg"
             };
     }

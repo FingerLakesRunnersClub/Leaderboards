@@ -24,9 +24,9 @@ namespace FLRC.ChallengeDashboard.Tests
         
 
         [Theory]
-        [InlineData(ResultType.Fastest, "lg")]
+        [InlineData(ResultType.Fastest, "xl")]
         [InlineData(ResultType.BestAverage, "lg")]
-        [InlineData(ResultType.MostRuns, "md")]
+        [InlineData(ResultType.MostRuns, "lg")]
         [InlineData(ResultType.Team, "xl")]
         public void ResponsiveBreakpointSet(ResultType resultType, string expected)
         {

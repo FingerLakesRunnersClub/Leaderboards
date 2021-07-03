@@ -16,9 +16,8 @@ namespace FLRC.ChallengeDashboard
         public override string ResponsiveBreakpoint
             => ResultType.Value switch
             {
-                ChallengeDashboard.ResultType.Fastest => "lg",
                 ChallengeDashboard.ResultType.BestAverage => "lg",
-                ChallengeDashboard.ResultType.MostRuns => "md",
+                ChallengeDashboard.ResultType.MostRuns => Category != null ? "md" : "lg",
                 _ => "xl"
             };
     }

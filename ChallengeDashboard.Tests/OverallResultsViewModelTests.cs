@@ -19,7 +19,7 @@ namespace FLRC.ChallengeDashboard.Tests
 
         [Theory]
         [InlineData("Top Teams", "lg")]
-        [InlineData("Most Miles", "sm")]
+        [InlineData("Most Miles", "md")]
         [InlineData("Most Points (F)", "lg")]
         [InlineData("Most Points (M)", "lg")]
         public void ResponsiveBreakpointSet(string resultType, string expected)

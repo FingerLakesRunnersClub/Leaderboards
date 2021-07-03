@@ -15,8 +15,8 @@
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
-                { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display },
-                { name: 'Courses Runs', center: true, value: r => r.Count, sort: r => -r.Count },
+                { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
+                { name: 'Courses Run', center: true, value: r => r.Count, sort: r => -r.Count },
                 { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
             ];
         

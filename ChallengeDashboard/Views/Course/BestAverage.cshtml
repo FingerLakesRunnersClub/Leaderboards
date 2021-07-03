@@ -15,6 +15,7 @@
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', center: false, value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+                { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0), show: @((Model.Category == null).ToString().ToLower()) },
                 { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}` },
                 { name: 'Average Time (Top @Model.Course.AverageThreshold(Model.Category))', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
                 { name: '# of Runs', center: true, value: r => r.Count }
