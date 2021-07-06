@@ -21,6 +21,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             {
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
+                ResultType = "Members",
                 Team = team,
                 RankedResults = overall.TeamMembers(team.Value)
             };

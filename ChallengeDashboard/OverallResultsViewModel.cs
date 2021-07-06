@@ -14,6 +14,7 @@ namespace FLRC.ChallengeDashboard
             => ResultType switch
             {
                 "Most Miles" => "md",
+                "Members" => "xl",
                 _ => "lg"
             };
     }

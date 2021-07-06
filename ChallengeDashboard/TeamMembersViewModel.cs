@@ -1,6 +1,6 @@
 namespace FLRC.ChallengeDashboard
 {
-    public class TeamMembersViewModel : OverallResultsViewModel<AgeGrade>
+    public class TeamMembersViewModel : OverallResultsViewModel<TeamMember>
     {
         public override string Title => $"Team {Team.Display} Members";
 
