@@ -97,7 +97,7 @@ namespace FLRC.ChallengeDashboard.Tests
         }
         
         [Fact]
-        public void CanGetTeamMembers()
+        public void CanFilterTeamMembers()
         {
             //arrange
             var vm = new OverallResults(LeaderboardData.Courses);
@@ -107,6 +107,19 @@ namespace FLRC.ChallengeDashboard.Tests
 
             //assert
             Assert.Equal("1–29", members.First().Result.Athlete.Team.Display);
+        }
+        
+        [Fact]
+        public void CanFilterGroupMembers()
+        {
+            //arrange
+            var vm = new OverallResults(LeaderboardData.Courses);
+            
+            //act
+            var members = vm.GroupMembers(new[] { LeaderboardData.Athlete2 });
+
+            //assert
+            Assert.Equal(LeaderboardData.Athlete2, members.Single().Result.Athlete);
         }
     }
 }
