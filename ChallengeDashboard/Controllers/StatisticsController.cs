@@ -102,15 +102,15 @@ namespace FLRC.ChallengeDashboard.Controllers
                 {
                     {
                         string.Empty,
-                        resultList.Sum(r => _dataService.CourseDistances[r.CourseID])
+                        resultList.Sum(r => r.Course.Miles)
                     },
                     {
                         Category.F.Display,
-                        fResults.Sum(r => _dataService.CourseDistances[r.CourseID])
+                        fResults.Sum(r => r.Course.Miles)
                     },
                     {
                         Category.M.Display,
-                        mResults.Sum(r => _dataService.CourseDistances[r.CourseID])
+                        mResults.Sum(r => r.Course.Miles)
                     },
                 },
                 Average = new Dictionary<string, double>

@@ -6,7 +6,6 @@ namespace FLRC.ChallengeDashboard
     public interface IDataService
     {
         IDictionary<uint, string> CourseNames { get; }
-        IDictionary<uint, double> CourseDistances { get; }
         IDictionary<string, string> Links { get; }
 
         Task<Athlete> GetAthlete(uint id);

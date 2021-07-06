@@ -11,13 +11,12 @@ namespace FLRC.ChallengeDashboard
     {
         private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-        public static IEnumerable<Result> ParseCourse(JsonElement json)
+        public static IEnumerable<Result> ParseCourse(Course course, JsonElement json)
         {
-            var id = json.GetProperty("RaceId").GetUInt32();
             var results = json.GetProperty("Racers");
 
             return results.GetArrayLength() > 0
-                ? ParseResults(id, results)
+                ? ParseResults(course, results)
                 : new List<Result>();
         }
 
@@ -45,12 +44,12 @@ namespace FLRC.ChallengeDashboard
             return digits;
         }
 
-        private static IEnumerable<Result> ParseResults(uint id, JsonElement results)
+        private static IEnumerable<Result> ParseResults(Course course, JsonElement results)
             => results.EnumerateArray()
             .Where(r => r.GetProperty("Finished").GetByte() == 1)
             .Select(r => new Result
             {
-                CourseID = id,
+                Course = course,
                 Athlete = ParseAthlete(r),
                 StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
                 Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())

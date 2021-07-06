@@ -6,7 +6,7 @@ namespace FLRC.ChallengeDashboard
     public class Result : IComparable<Result>
     {
         [JsonIgnore]
-        public uint CourseID { get; init; }
+        public Course Course { get; init; }
         
         public Athlete Athlete { get; init; }
         public Date StartTime { get; init; }
@@ -15,7 +15,7 @@ namespace FLRC.ChallengeDashboard
         public byte AgeOnDayOfRun => StartTime != null
             ? Athlete.AgeAsOf(StartTime.Value)
             : Athlete.Age;
-        
+
         public int CompareTo(Result other) => Duration.CompareTo(other.Duration);
 
         public Time Behind(Result other) => Duration.Subtract(other.Duration);

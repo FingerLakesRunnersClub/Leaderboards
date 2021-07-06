@@ -60,9 +60,10 @@ namespace FLRC.ChallengeDashboard.Tests
             //arrange
             var data = await File.ReadAllTextAsync("json/athlete.json");
             var json = JsonDocument.Parse(data).RootElement;
+            var course = new Course();
 
             //act
-            var results = DataParser.ParseCourse(json);
+            var results = DataParser.ParseCourse(course, json);
             var result = results.First();
 
             //assert
@@ -81,9 +82,10 @@ namespace FLRC.ChallengeDashboard.Tests
             //arrange
             var data = await File.ReadAllTextAsync("json/dnf.json");
             var json = JsonDocument.Parse(data).RootElement;
+            var course = new Course();
 
             //act
-            var results = DataParser.ParseCourse(json);
+            var results = DataParser.ParseCourse(course, json);
 
             //assert
             Assert.Empty(results);
@@ -95,9 +97,10 @@ namespace FLRC.ChallengeDashboard.Tests
             //arrange
             var data = await File.ReadAllTextAsync("json/false-start.json");
             var json = JsonDocument.Parse(data).RootElement;
+            var course = new Course();
 
             //act
-            var results = DataParser.ParseCourse(json);
+            var results = DataParser.ParseCourse(course, json);
 
             //assert
             Assert.Empty(results);
