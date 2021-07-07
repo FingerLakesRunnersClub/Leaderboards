@@ -6,6 +6,6 @@ namespace FLRC.ChallengeDashboard
 {
     public interface IGroupAPI
     {
-        Task<JsonElement> GetGroups();
+        Task<IDictionary<string, IEnumerable<uint>>> GetGroups();
     }
 }

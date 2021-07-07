@@ -136,8 +136,7 @@ namespace FLRC.ChallengeDashboard
             if (_groupCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
             {
                 var athletes = await GetAthletes();
-                var groups = await _groupAPI.GetGroups();
-                var members = DataParser.ParseGroupMembers(groups);
+                var members = await _groupAPI.GetGroups();
                 _groups = members.ToDictionary(m => m.Key,
                     m => m.Value.Select(v => athletes.ContainsKey(v) ? athletes[v] : null).Where(a => a != null));
                 _groupCacheTimestamp = DateTime.Now;

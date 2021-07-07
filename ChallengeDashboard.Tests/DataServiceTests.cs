@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -186,6 +187,13 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.True(logger.Called);
         }
 
+        private IDictionary<string, IEnumerable<uint>> groups
+            => new Dictionary<string, IEnumerable<uint>>
+            {
+                {"Test 1", new uint[] {123, 234}},
+                {"Test 2", new uint[] {234, 345}}
+            };
+
         [Fact]
         public async Task CanGetGroupMembers()
         {
@@ -194,9 +202,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
             dataAPI.GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
             var groupAPI = Substitute.For<IGroupAPI>();
-            const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
-            var groupJSON = JsonDocument.Parse(data).RootElement;
-            groupAPI.GetGroups().Returns(groupJSON);
+            groupAPI.GetGroups().Returns(groups);
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
             var loggerFactory = Substitute.For<ILoggerFactory>();
             var dataService = new DataService(dataAPI, groupAPI, config, loggerFactory);
@@ -216,9 +222,7 @@ namespace FLRC.ChallengeDashboard.Tests
             var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
             dataAPI.GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
             var groupAPI = Substitute.For<IGroupAPI>();
-            const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
-            var groupJSON = JsonDocument.Parse(data).RootElement;
-            groupAPI.GetGroups().Returns(groupJSON);
+            groupAPI.GetGroups().Returns(groups);
             var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
             var loggerFactory = Substitute.For<ILoggerFactory>();
             var dataService = new DataService(dataAPI, groupAPI, config, loggerFactory);

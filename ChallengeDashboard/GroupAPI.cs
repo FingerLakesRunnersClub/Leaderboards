@@ -17,11 +17,10 @@ namespace FLRC.ChallengeDashboard
             _url = configuration.GetValue<string>("GroupAPI");
         }
         
-        public async Task<JsonElement> GetGroups()
+        public async Task<IDictionary<string, IEnumerable<uint>>> GetGroups()
         {
             var response = await _httpClient.GetStreamAsync(_url);
-            var json = await JsonDocument.ParseAsync(response);
-            return json.RootElement;
+            return await JsonSerializer.DeserializeAsync<IDictionary<string, IEnumerable<uint>>>(response);
         }
     }
 }
