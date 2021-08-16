@@ -51,18 +51,18 @@ namespace FLRC.ChallengeDashboard.Controllers
             var ranks = new RankedList<Time>();
 
             var sorted = results.OrderBy(r => r.Duration.Value).ToList();
-            foreach(var result in sorted)
+            for (byte rank = 1; rank <= sorted.Count; rank++)
             {
+                var result = sorted[rank - 1];
                 var category = result.Athlete.Category?.Value ?? Category.M.Value;
                 var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, course.Meters, result.Duration.Value);
-                var rank = ageGrade >= 100 ? 0
-                    : !ranks.Any() ? 1
-                    : ranks.Last().Rank.Value + 1;
+
                 ranks.Add(new Ranked<Time>
                 {
-                    Rank = ranks.Any() && ranks.Last().Value == result.Duration
-                        ? ranks.Last().Rank
-                        : new Rank((ushort)rank),
+                    Rank = ageGrade >= 100 ? new Rank(0)
+                        : !ranks.Any(r => r.Rank.Value > 0) ? new Rank(1)
+                        : ranks.Any() && ranks.Last().Value == result.Duration ? ranks.Last().Rank
+                        : new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0))),
                     Result = result,
                     Value = result.Duration,
                     AgeGrade = new AgeGrade(ageGrade)

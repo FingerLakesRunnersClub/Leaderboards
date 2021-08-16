@@ -81,6 +81,59 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public async Task ResultsAreRankedCorrectly()
+        {
+            //arrange
+            var dataService = Substitute.For<IDataService>();
+            var course = new Course
+            {
+                ID = 123,
+                Meters = 10 * Course.MetersPerMile,
+                Results = new List<Result>
+                {
+                    new()
+                    {
+                        Athlete = new Athlete {ID = 123, Age = 35 },
+                        Duration = new Time(new TimeSpan(0, 2, 3))
+                    },
+                    new()
+                    {
+                        Athlete = new Athlete {ID = 123, Age = 35},
+                        Duration = new Time(new TimeSpan(1, 2, 3))
+                    },
+                    new()
+                    {
+                        Athlete = new Athlete {ID = 123, Age = 35},
+                        Duration = new Time(new TimeSpan(2, 3, 4))
+                    },
+                    new()
+                    {
+                        Athlete = new Athlete {ID = 123, Age = 35},
+                        Duration = new Time(new TimeSpan(0, 2, 3))
+                    },
+                    new()
+                    {
+                        Athlete = new Athlete {ID = 123, Age = 35},
+                        Duration = new Time(new TimeSpan(1, 2, 3))
+                    }
+                }
+            };
+            dataService.GetResults(123).Returns(course);
+            var controller = new AthleteController(dataService);
+
+            //act
+            var response = await controller.Course(123, 123);
+
+            //assert
+            var vm = (AthleteCourseResultsViewModel) response.Model;
+            Assert.Equal(0, vm.Results[0].Rank.Value);
+            Assert.Equal(0, vm.Results[1].Rank.Value);
+            Assert.Equal(1, vm.Results[2].Rank.Value);
+            Assert.Equal(1, vm.Results[3].Rank.Value);
+            Assert.Equal(3, vm.Results[4].Rank.Value);
+        }
+
+        [Fact]
         public async Task CanFindSimilarAthletes()
         {
             //arrange
