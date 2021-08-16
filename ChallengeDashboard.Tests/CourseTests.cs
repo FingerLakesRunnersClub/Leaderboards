@@ -10,15 +10,15 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetMilesForCourse()
         {
             //arrange
-            var course = new Course {Meters = 3 * Course.MetersPerMile};
-            
+            var course = new Course { Meters = 3 * Course.MetersPerMile };
+
             //act
             var miles = course.Miles;
-            
+
             //assert
             Assert.Equal(3, miles);
         }
-        
+
         [Fact]
         public void CanGetFastestResults()
         {
@@ -159,7 +159,7 @@ namespace FLRC.ChallengeDashboard.Tests
             Assert.Single(avg);
             Assert.Equal(CourseData.Athlete4, avg[0].Result.Athlete);
         }
-        
+
         [Fact]
         public void CanGetPointsForFastestTime()
         {
@@ -172,7 +172,7 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal(100, results.First().Points.Value);
         }
-        
+
         [Fact]
         public void CanGetPointsBasedOnFastestTime()
         {
@@ -190,24 +190,24 @@ namespace FLRC.ChallengeDashboard.Tests
         public void AverageAgeGradeBasedOnIndividualFastestTime()
         {
             //arrange
-            var course = new Course { Results = CourseData.Results, Meters = 10000};
+            var course = new Course { Results = CourseData.Results, Meters = 10000 };
 
             //act
             var results = course.TeamPoints();
 
             //assert
-            Assert.Equal("43.81%", results.First().AverageAgeGrade.Display); 
+            Assert.Equal("43.81%", results.First().AverageAgeGrade.Display);
         }
 
         [Fact]
         public void CanGetStatisticsForCourse()
         {
             //arrange
-            var course = new Course { Results = CourseData.Results, Meters = 10000};
+            var course = new Course { Results = CourseData.Results, Meters = 10000 };
 
             //act
             var stats = course.Statistics();
-            
+
             //assert
             Assert.Equal(4, stats.Participants[string.Empty]);
             Assert.Equal(8, stats.Runs[string.Empty]);
@@ -219,13 +219,36 @@ namespace FLRC.ChallengeDashboard.Tests
         public void CanGetResultsAsOfDate()
         {
             //arrange
-            var course = new Course { Results = CourseData.Results, Meters = 10000};
-            
+            var course = new Course { Results = CourseData.Results, Meters = 10000 };
+
             //act
             var results = course.ResultsAsOf(new DateTime(2020, 1, 5));
-            
+
             //assert
             Assert.Equal(5, results.Count());
+        }
+
+        [Fact]
+        public void RanksWithTiesSkipCorrectly()
+        {
+            //arrange
+            var courseResults = CourseData.Results.ToList();
+            courseResults.Add(new Result
+            {
+                Course = CourseData.Course,
+                Athlete = CourseData.Athlete1,
+                StartTime = new Date(DateTime.Parse("1/9/2020")),
+                Duration = new Time(TimeSpan.Parse("0:54:32.1"))
+            });
+            var course = new Course { Results = courseResults, Meters = 10000 };
+
+            //act
+            var results = course.Fastest();
+
+            //assert
+            Assert.Equal(1, results[0].Rank.Value);
+            Assert.Equal(1, results[1].Rank.Value);
+            Assert.Equal(3, results[2].Rank.Value);
         }
     }
 }

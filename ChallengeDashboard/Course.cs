@@ -177,8 +177,9 @@ namespace FLRC.ChallengeDashboard
             var ranks = new RankedList<T>();
 
             var list = sorted.ThenBy(rs => getResult(rs).Duration).ToList();
-            foreach(var results in list)
+            for (ushort rank = 1; rank <= list.Count; rank++)
             {
+                var results = list[rank - 1];
                 var athlete = results.Key;
                 var category = athlete.Category?.Value ?? Category.M.Value;
 
@@ -190,13 +191,12 @@ namespace FLRC.ChallengeDashboard
 
                 var firstPlace = !ranks.Any();
                 var value = getValue(results);
-                var rank = !firstPlace && ranks.Last().Value.Equals(value)
-                    ? ranks.Last().Rank
-                    : new Rank((ushort)(firstPlace ? 1 : ranks.Last().Rank.Value + 1));
                 
                 ranks.Add(new Ranked<T>
                 {
-                    Rank = rank,
+                    Rank = !firstPlace && ranks.Last().Value.Equals(value)
+                        ? ranks.Last().Rank
+                        : new Rank((ushort)(firstPlace ? 1 : rank)),
                     Result = result,
                     Value = value,
                     Count = (uint) results.Count(),
