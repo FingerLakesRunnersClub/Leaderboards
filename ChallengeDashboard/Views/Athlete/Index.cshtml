@@ -60,7 +60,7 @@
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
-                <div class="card-body">
+                <div class="card-body no-activity-log">
                     @await Html.PartialAsync("CourseInfo", course)
                     @if (Model.Summary.Fastest[course] == null)
                     {

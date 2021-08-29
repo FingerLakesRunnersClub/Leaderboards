@@ -89,6 +89,10 @@ footer a, footer a:hover, footer a:focus {
     border: 1px solid #dae0e5;
 }
 
+.no-activity-log .btn.activity-log {
+    display: none;
+}
+
 table {
     white-space: nowrap;
     background-color: white;
