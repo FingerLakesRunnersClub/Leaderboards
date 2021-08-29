@@ -10,7 +10,7 @@
         
         <script>
             const fields = [
-                { name: 'Name', center: false, value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
+                { name: 'Name', value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
                 { name: 'Age', center: true, value: r => r.AgeToday },
                 { name: 'Category', center: true, value: r => r.Category?.Display, sort: r => r.Category?.Value ?? 'X'.charCodeAt(0) },
                 { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}` },
