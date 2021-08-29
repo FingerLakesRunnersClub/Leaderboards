@@ -3,6 +3,8 @@
 
 @functions
 {
+    string breakpoint() => Model.Course == null ? "md" : "sm";
+
     string style(ActivityLogType type) => Model.Type == type
         ? "secondary"
         : "light";
@@ -14,7 +16,7 @@
     <div class="btn-group">
         @foreach (var type in Model.LogTypes)
         {
-            <a class="btn btn-sm btn-@style(type.Key)" href="/Log/@type.Value">@type.Key</a>
+            <a class="btn btn-sm btn-@style(type.Key)" href="/Log/@type.Value/@Model.Course?.ID">@type.Key</a>
         }
     </div>
 </section>
@@ -24,12 +26,15 @@
         @foreach (var group in Model.Results)
         {
             <h4>@group.Key</h4>
-            <table class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+            <table class="table table-bordered table-striped table-hover table-sm table-responsive-@breakpoint()">
                 <thead>
                 <tr>
                     <th>Date</th>
                     <th>Athlete</th>
-                    <th>Course</th>
+                    @if (Model.Course == null)
+                    {
+                        <th>Course</th>
+                    }
                     <th class="text-right">Time</th>
                 </tr>
                 </thead>
@@ -45,11 +50,14 @@
                                 @result.Athlete.Name
                             </a>
                         </td>
-                        <td>
-                            <a href="/Course/@result.Course.ID/Fastest">
-                                @result.Course.Name
-                            </a>
-                        </td>
+                        @if (Model.Course == null)
+                        {
+                            <td>
+                                <a href="/Course/@result.Course.ID/Fastest">
+                                    @result.Course.Name
+                                </a>
+                            </td>
+                        }
                         <td class="text-right">
                             @result.Duration.Display
                         </td>

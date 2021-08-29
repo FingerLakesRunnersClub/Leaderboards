@@ -16,24 +16,32 @@ namespace FLRC.ChallengeDashboard.Controllers
             _today = today ?? DateTime.Today;
         }
 
-        public async Task<ViewResult> Index()
-            => View(await GetActivityLog(ActivityLogType.Recent, r => getGroup(r.StartTime.Value.Date), _today.Subtract(TimeSpan.FromDays(7))));
+        public async Task<ViewResult> Index(uint? id = null)
+            => View(await GetActivityLog(id, ActivityLogType.Recent, r => getGroup(r.StartTime.Value.Date), _today.Subtract(TimeSpan.FromDays(7))));
 
-        public async Task<ViewResult> All()
-            => View("Index", await GetActivityLog(ActivityLogType.Archive, r => getMonth(r.StartTime.Value.Date)));
+        public async Task<ViewResult> All(uint? id = null)
+            => View("Index", await GetActivityLog(id, ActivityLogType.Archive, r => getMonth(r.StartTime.Value.Date)));
 
-        private async Task<ActivityLogViewModel> GetActivityLog(ActivityLogType type, Func<Result, string> grouping, DateTime? filter = null)
-            => new()
+        private async Task<ActivityLogViewModel> GetActivityLog(uint? id, ActivityLogType type, Func<Result, string> grouping, DateTime? filter = null)
+        {
+            var course = id != null ? await _dataService.GetResults(id.Value) : null;
+            var results = course == null
+                ? await _dataService.GetAllResults()
+                : new[] { course };
+            
+            return new ActivityLogViewModel
             {
                 Type = type,
                 CourseNames = _dataService.CourseNames,
                 Links = _dataService.Links,
-                Results = (await _dataService.GetAllResults())
+                Course = course,
+                Results = results
                     .SelectMany(c => c.Results)
                     .Where(r => filter == null || r.StartTime.Value.Date > filter)
                     .OrderByDescending(r => r.StartTime.Value)
                     .GroupBy(grouping)
             };
+        }
 
         private static string getGroup(DateTime date)
             => date == DateTime.Today ? "Today"
