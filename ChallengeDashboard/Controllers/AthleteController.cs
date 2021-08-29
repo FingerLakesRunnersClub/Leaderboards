@@ -15,6 +15,8 @@ namespace FLRC.ChallengeDashboard.Controllers
 
         public async Task<ViewResult> Course(uint id, uint other) => View(await GetResults(id, other));
 
+        public async Task<ViewResult> Log(uint id) => View(await GetLog(id));
+
         public async Task<ViewResult> Similar(uint id) => View(await GetSimilarAthletes(id));
 
         private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
@@ -42,11 +44,11 @@ namespace FLRC.ChallengeDashboard.Controllers
                 Links = _dataService.Links,
                 Athlete = results.First().Athlete,
                 Course = course,
-                Results = Rank(results, course)
+                Results = Rank(results)
             };
         }
 
-        private static RankedList<Time> Rank(IEnumerable<Result> results, Course course)
+        private static RankedList<Time> Rank(IEnumerable<Result> results)
         {
             var ranks = new RankedList<Time>();
 
@@ -55,7 +57,7 @@ namespace FLRC.ChallengeDashboard.Controllers
             {
                 var result = sorted[rank - 1];
                 var category = result.Athlete.Category?.Value ?? Category.M.Value;
-                var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, course.Meters, result.Duration.Value);
+                var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, result.Course.Meters, result.Duration.Value);
 
                 ranks.Add(new Ranked<Time>
                 {
@@ -70,6 +72,21 @@ namespace FLRC.ChallengeDashboard.Controllers
             }
 
             return ranks;
+        }
+
+        private async Task<AthleteLogViewModel> GetLog(uint id)
+        {
+            var athlete = await _dataService.GetAthlete(id);
+            var courses = await _dataService.GetAllResults();
+            var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete == athlete));
+
+            return new AthleteLogViewModel
+            {
+                CourseNames = _dataService.CourseNames,
+                Links = _dataService.Links,
+                Athlete = athlete,
+                Results = Rank(results)
+            };
         }
 
         private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)

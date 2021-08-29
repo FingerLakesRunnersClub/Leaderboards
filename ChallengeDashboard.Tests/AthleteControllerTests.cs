@@ -24,11 +24,13 @@ namespace FLRC.ChallengeDashboard.Tests
                     new Result
                     {
                         Athlete = athlete,
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(2, 4, 6))
                     },
                     new Result
                     {
                         Athlete = new Athlete {ID = 234, Category = Category.F},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(1, 2, 3))
                     }
                 }
@@ -52,28 +54,61 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public async Task CanGetAllResultsForActivityLog()
+        {
+            //arrange
+            var dataService = Substitute.For<IDataService>();
+            var athlete = new Athlete {ID = 123};
+            var course = new Course
+            {
+                ID = 234,
+                Meters = 10 * Course.MetersPerMile,
+                Results = new List<Result>
+                {
+                    new()
+                    {
+                        Athlete = athlete,
+                        Course = CourseData.Course,
+                        Duration = new Time(new TimeSpan(1, 2, 3))
+                    }
+                }
+            };
+            dataService.GetAthlete(123).Returns(athlete);
+            dataService.GetAllResults().Returns(new[] { course });
+            var controller = new AthleteController(dataService);
+
+            //act
+            var response = await controller.Log(123);
+
+            //assert
+            var vm = (AthleteLogViewModel) response.Model;
+            Assert.NotEmpty(vm.Results);
+        }
+
+        [Fact]
         public async Task CanGetAllResultsForCourse()
         {
             //arrange
             var dataService = Substitute.For<IDataService>();
             var course = new Course
             {
-                ID = 123,
+                ID = 234,
                 Meters = 10 * Course.MetersPerMile,
                 Results = new List<Result>
                 {
                     new Result
                     {
                         Athlete = new Athlete {ID = 123},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(1, 2, 3))
                     }
                 }
             };
-            dataService.GetResults(123).Returns(course);
+            dataService.GetResults(234).Returns(course);
             var controller = new AthleteController(dataService);
 
             //act
-            var response = await controller.Course(123, 123);
+            var response = await controller.Course(123, 234);
 
             //assert
             var vm = (AthleteCourseResultsViewModel) response.Model;
@@ -87,42 +122,47 @@ namespace FLRC.ChallengeDashboard.Tests
             var dataService = Substitute.For<IDataService>();
             var course = new Course
             {
-                ID = 123,
+                ID = 234,
                 Meters = 10 * Course.MetersPerMile,
                 Results = new List<Result>
                 {
                     new()
                     {
                         Athlete = new Athlete {ID = 123, Age = 35 },
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(0, 2, 3))
                     },
                     new()
                     {
                         Athlete = new Athlete {ID = 123, Age = 35},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(1, 2, 3))
                     },
                     new()
                     {
                         Athlete = new Athlete {ID = 123, Age = 35},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(2, 3, 4))
                     },
                     new()
                     {
                         Athlete = new Athlete {ID = 123, Age = 35},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(0, 2, 3))
                     },
                     new()
                     {
                         Athlete = new Athlete {ID = 123, Age = 35},
+                        Course = CourseData.Course,
                         Duration = new Time(new TimeSpan(1, 2, 3))
                     }
                 }
             };
-            dataService.GetResults(123).Returns(course);
+            dataService.GetResults(234).Returns(course);
             var controller = new AthleteController(dataService);
 
             //act
-            var response = await controller.Course(123, 123);
+            var response = await controller.Course(123, 234);
 
             //assert
             var vm = (AthleteCourseResultsViewModel) response.Model;

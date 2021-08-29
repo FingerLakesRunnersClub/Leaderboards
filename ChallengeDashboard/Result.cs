@@ -7,7 +7,9 @@ namespace FLRC.ChallengeDashboard
     {
         [JsonIgnore]
         public Course Course { get; init; }
-        
+        public uint? CourseID => Course?.ID;
+        public string CourseName => Course?.Name;
+
         public Athlete Athlete { get; init; }
         public Date StartTime { get; init; }
         public Time Duration { get; init; }

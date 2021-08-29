@@ -1,0 +1,26 @@
+﻿@using System.Text.Json
+@using FLRC.ChallengeDashboard
+@model AthleteLogViewModel
+
+@await Html.PartialAsync("AthleteHeader", Model.Athlete)
+
+<div class="card-highlighted card mb-3">
+    <div class="card-header">
+        Activity Log
+    </div>
+    <div class="card-body">
+        <script>
+            const fields = [
+                { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value, descending: true },
+                { name: 'Course', value: r => r.Result.CourseName, link: r => `/Course/${r.Result.CourseID}/Fastest/${r.Result.Athlete.Category?.Display ?? ''}` },
+                { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
+                { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
+            ];
+        
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+        </script>
+
+        @await Html.PartialAsync("DataTable")
+
+    </div>
+</div>
