@@ -46,8 +46,7 @@ namespace FLRC.ChallengeDashboard
             _teamCache = null;
         }
 
-        private readonly IDictionary<string, RankedList<Time>> _fastestCache =
-            new ConcurrentDictionary<string, RankedList<Time>>();
+        private readonly IDictionary<string, RankedList<Time>> _fastestCache = new ConcurrentDictionary<string, RankedList<Time>>();
 
         public RankedList<Time> Fastest(Category category = null, byte? ag = null)
         {
@@ -64,8 +63,7 @@ namespace FLRC.ChallengeDashboard
             return _fastestCache[key] = results;
         }
 
-        private readonly IDictionary<string, RankedList<Time>> _averageCache =
-            new ConcurrentDictionary<string, RankedList<Time>>();
+        private readonly IDictionary<string, RankedList<Time>> _averageCache = new ConcurrentDictionary<string, RankedList<Time>>();
 
         public RankedList<Time> BestAverage(Category category = null)
         {
@@ -77,8 +75,7 @@ namespace FLRC.ChallengeDashboard
                 rs => rs.Average(AverageThreshold(category)), rs => rs.Average(AverageThreshold(category)).Duration);
         }
 
-        private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache =
-            new ConcurrentDictionary<string, RankedList<ushort>>();
+        private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache = new ConcurrentDictionary<string, RankedList<ushort>>();
 
         public RankedList<ushort> MostRuns(Category category = null)
         {
@@ -86,12 +83,10 @@ namespace FLRC.ChallengeDashboard
             if (_mostRunsCache.ContainsKey(key))
                 return _mostRunsCache[key];
 
-            return _mostRunsCache[key] =
-                RankDescending(category, _ => true, r => r.Average(), r => (ushort) r.Count());
+            return _mostRunsCache[key] = RankDescending(category, _ => true, r => r.Average(), r => (ushort) r.Count());
         }
 
-        private readonly IDictionary<string, RankedList<double>> _mostMilesCache =
-            new ConcurrentDictionary<string, RankedList<double>>();
+        private readonly IDictionary<string, RankedList<double>> _mostMilesCache = new ConcurrentDictionary<string, RankedList<double>>();
 
         public RankedList<double> MostMiles(Category category = null)
         {
@@ -99,8 +94,7 @@ namespace FLRC.ChallengeDashboard
             if (_mostMilesCache.ContainsKey(key))
                 return _mostMilesCache[key];
 
-            return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(),
-                r => r.Count() * Miles);
+            return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => r.Count() * Miles);
         }
 
         public IEnumerable<GroupedResult> GroupedResults(Category category = null)
