@@ -31,12 +31,12 @@ namespace FLRC.ChallengeDashboard
                 .Select(g => new TeamResults
                 {
                     Team = g.Key,
-                    AgeGradePoints = (byte)(g.Sum(r => r.AgeGradePoints) + Athlete.Teams.Count * (10 - g.Count())),
-                    MostRunsPoints = (byte)(g.Sum(r => r.MostRunsPoints) + Athlete.Teams.Count * (10 - g.Count()))
+                    AgeGradePoints = (byte)(g.Sum(r => r.AgeGradePoints) + Athlete.Teams.Count * (_courses.Count() - g.Count())),
+                    MostRunsPoints = (byte)(g.Sum(r => r.MostRunsPoints) + Athlete.Teams.Count * (_courses.Count() - g.Count()))
                 })
                 .Rank();
 
-        private RankedList<T1> RankedList<T1,T2,T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
+        private static RankedList<T1> RankedList<T1,T2,T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
         {
             var ranks = new RankedList<T1>();
             var list = results.OrderByDescending(sort).ThenByDescending(getValue).ToList();
