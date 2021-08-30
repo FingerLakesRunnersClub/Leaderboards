@@ -42,6 +42,7 @@ namespace FLRC.ChallengeDashboard
             _averageCache.Clear();
             _mostRunsCache.Clear();
             _mostMilesCache.Clear();
+            _earliestCache.Clear();
             _thresholdCache.Clear();
             _teamCache = null;
         }
@@ -95,6 +96,17 @@ namespace FLRC.ChallengeDashboard
                 return _mostMilesCache[key];
 
             return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => r.Count() * Miles);
+        }
+
+        private readonly IDictionary<string, RankedList<Date>> _earliestCache = new ConcurrentDictionary<string, RankedList<Date>>();
+
+        public RankedList<Date> Earliest(Category category = null)
+        {
+            var key = category?.Display ?? "X";
+            if (_earliestCache.ContainsKey(key))
+                return _earliestCache[key];
+
+            return _earliestCache[key] = Rank(category, _ => true, g => g.OrderBy(r => r.StartTime).FirstOrDefault(), g => g.Min(r => r.StartTime));
         }
 
         public IEnumerable<GroupedResult> GroupedResults(Category category = null)

@@ -161,6 +161,38 @@ namespace FLRC.ChallengeDashboard.Tests
         }
 
         [Fact]
+        public void CanGetEarliestRun()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results };
+
+            //act
+            var earliest = course.Earliest().ToArray();
+
+            //assert
+            Assert.Equal(4, earliest.Length);
+            Assert.Equal(CourseData.Athlete1, earliest[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete3, earliest[1].Result.Athlete);
+            Assert.Equal(CourseData.Athlete4, earliest[2].Result.Athlete);
+            Assert.Equal(CourseData.Athlete2, earliest[3].Result.Athlete);
+        }
+
+        [Fact]
+        public void CanGetEarliestForCategory()
+        {
+            //arrange
+            var course = new Course { Results = CourseData.Results };
+
+            //act
+            var earliest = course.Earliest(Category.M).ToArray();
+
+            //assert
+            Assert.Equal(2, earliest.Length);
+            Assert.Equal(CourseData.Athlete1, earliest[0].Result.Athlete);
+            Assert.Equal(CourseData.Athlete3, earliest[1].Result.Athlete);
+        }
+
+        [Fact]
         public void CanGetPointsForFastestTime()
         {
             //arrange
