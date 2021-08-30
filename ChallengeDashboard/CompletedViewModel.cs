@@ -3,6 +3,6 @@
     public class CompletedViewModel : OverallResultsViewModel<Date>
     {
         public override string Title => "Completed";
-        public override string ResponsiveBreakpoint => "md";
+        public override string ResponsiveBreakpoint => "lg";
     }
 }
