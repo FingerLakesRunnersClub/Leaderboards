@@ -52,5 +52,19 @@ namespace FLRC.ChallengeDashboard.Tests
             //assert
             Assert.Equal(DateTime.Parse(expectedWeek), week);
         }
+
+        [Fact]
+        public void CanCompareDates()
+        {
+            //arrange
+            var d1 = new Date(DateTime.Parse("1/1/2000"));
+
+            //act
+            var d2 = new Date(DateTime.Parse("1/2/2000"));
+
+            //assert
+            Assert.Equal(-1, d1.CompareTo(d2));
+            Assert.Equal(1, d2.CompareTo(d1));
+        }
     }
 }
