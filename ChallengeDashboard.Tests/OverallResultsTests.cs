@@ -38,10 +38,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
-            var mostPoints = vm.MostMiles();
+            var mostMiles = vm.MostMiles();
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete2, mostPoints.First().Result.Athlete);
+            Assert.Equal(LeaderboardData.Athlete2, mostMiles.First().Result.Athlete);
         }
         
         [Fact]
@@ -51,10 +51,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
-            var mostPoints = vm.MostMiles(Category.F);
+            var mostMiles = vm.MostMiles(Category.F);
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete4, mostPoints.First().Result.Athlete);
+            Assert.Equal(LeaderboardData.Athlete4, mostMiles.First().Result.Athlete);
         }
         
         [Fact]
@@ -64,10 +64,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
-            var mostPoints = vm.AgeGrade();
+            var ageGrade = vm.AgeGrade();
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete1, mostPoints.First().Result.Athlete);
+            Assert.Equal(LeaderboardData.Athlete1, ageGrade.First().Result.Athlete);
         }
         
         [Fact]
@@ -77,10 +77,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
-            var mostPoints = vm.AgeGrade(Category.F);
+            var ageGrade = vm.AgeGrade(Category.F);
 
             //assert
-            Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Result.Athlete);
+            Assert.Equal(LeaderboardData.Athlete3, ageGrade.First().Result.Athlete);
         }
         
         [Fact]
@@ -90,10 +90,10 @@ namespace FLRC.ChallengeDashboard.Tests
             var vm = new OverallResults(LeaderboardData.Courses);
             
             //act
-            var mostPoints = vm.TeamPoints();
+            var teamPoints = vm.TeamPoints();
 
             //assert
-            Assert.Equal("1–29", mostPoints.First().Team.Display);
+            Assert.Equal("1–29", teamPoints.First().Team.Display);
         }
         
         [Fact]
