@@ -84,6 +84,32 @@ namespace FLRC.ChallengeDashboard.Tests
         }
         
         [Fact]
+        public void CanGetCompleted()
+        {
+            //arrange
+            var vm = new OverallResults(LeaderboardData.Courses);
+            
+            //act
+            var completed = vm.Completed();
+
+            //assert
+            Assert.Equal(LeaderboardData.Athlete4, completed.First().Result.Athlete);
+        }
+        
+        [Fact]
+        public void CanGetCompletedForCategory()
+        {
+            //arrange
+            var vm = new OverallResults(LeaderboardData.Courses);
+            
+            //act
+            var completed = vm.Completed(Category.M);
+
+            //assert
+            Assert.Equal(LeaderboardData.Athlete1, completed.First().Result.Athlete);
+        }
+        
+        [Fact]
         public void CanGetTeamPoints()
         {
             //arrange
