@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace FLRC.ChallengeDashboard
@@ -11,10 +12,10 @@ namespace FLRC.ChallengeDashboard
         public Course Course { get; init; }
         public IEnumerable<IGrouping<string, Result>> Results { get; init; }
 
-        public readonly IDictionary<ActivityLogType, string> LogTypes = new Dictionary<ActivityLogType, string>
+        public static readonly IImmutableDictionary<ActivityLogType, string> LogTypes = new Dictionary<ActivityLogType, string>
         {
             {ActivityLogType.Recent, "Index"},
             {ActivityLogType.Archive, "All"},
-        };
+        }.ToImmutableDictionary();
     }
 }

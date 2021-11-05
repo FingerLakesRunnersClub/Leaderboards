@@ -14,7 +14,7 @@
 
 <section class="mb-3">
     <div class="btn-group">
-        @foreach (var type in Model.LogTypes)
+        @foreach (var type in ActivityLogViewModel.LogTypes)
         {
             <a class="btn btn-sm btn-@style(type.Key)" href="/Log/@type.Value/@Model.Course?.ID">@type.Key</a>
         }

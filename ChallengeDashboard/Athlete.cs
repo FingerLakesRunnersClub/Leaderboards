@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text.Json.Serialization;
 
@@ -25,6 +26,6 @@ namespace FLRC.ChallengeDashboard
 
         public byte AgeToday => AgeAsOf(DateTime.Today);
 
-        public static readonly IDictionary<byte, Team> Teams = Enumerable.Range(2, 5).ToDictionary(t => (byte) t, t => new Team((byte) t));
+        public static readonly IImmutableDictionary<byte, Team> Teams = Enumerable.Range(2, 5).ToImmutableDictionary(t => (byte) t, t => new Team((byte) t));
     }
 }
