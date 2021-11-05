@@ -74,6 +74,14 @@ namespace FLRC.ChallengeDashboard.Controllers
             return ranks;
         }
 
+        private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
+        {
+            var ordered = matches.OrderByDescending(r => r.Score).ToArray();
+            for (var x = 0; x < ordered.Length; x++)
+                ordered[x].Rank = new Rank((ushort)(x + 1));
+            return ordered;
+        }
+
         private async Task<AthleteLogViewModel> GetLog(uint id)
         {
             var athlete = await _dataService.GetAthlete(id);
@@ -102,14 +110,6 @@ namespace FLRC.ChallengeDashboard.Controllers
                 Athlete = my.Athlete,
                 Matches = Rank(my.SimilarAthletes)
             };
-        }
-        
-        private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
-        {
-            var ordered = matches.OrderByDescending(r => r.Score).ToArray();
-            for (var x = 0; x < ordered.Length; x++)
-                ordered[x].Rank = new Rank((ushort)(x + 1));
-            return ordered;
         }
     }
 }
