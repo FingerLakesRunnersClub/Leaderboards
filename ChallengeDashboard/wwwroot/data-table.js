@@ -1,5 +1,4 @@
 new Vue({
-    el: 'app',
     data: {
         fields: fields,
         sort: {
@@ -36,4 +35,4 @@ new Vue({
             this.sort.object = object;
         }
     }
-});
+}).$mount('app');
