@@ -7,20 +7,20 @@
 
 <h2>Team @Model.Team.Display</h2>
 
-<table class="table table-bordered table-sm text-center">
+<table aria-label="Overall Results for Team @Model.Team.Display" class="table table-bordered table-sm text-center">
     <thead>
     <tr>
-        <th>
+        <th scope="col">
             Age Grade
             <br class="d-inline d-sm-none"/>
             Points
         </th>
-        <th>
+        <th scope="col">
             Most Runs
             <br class="d-inline d-sm-none"/>
             Points
         </th>
-        <th>
+        <th scope="col">
             Total
             <br class="d-inline d-sm-none"/>
             Points
@@ -50,20 +50,21 @@
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
                     @await Html.PartialAsync("CourseInfo", course.Key)
-                    <table class="table table-bordered table-sm text-center mt-2 mb-0">
+                    <table aria-label="Team @Model.Team.Display Course Results for @course.Key.Name"
+                           class="table table-bordered table-sm text-center mt-2 mb-0">
                         <thead>
                         <tr>
-                            <th>
+                            <th scope="col">
                                 Average
                                 <br class="d-inline d-sm-none"/>
                                 Age Grade
                             </th>
-                            <th>
+                            <th scope="col">
                                 Total
                                 <br class="d-inline d-sm-none"/>
                                 Runs
                             </th>
-                            <th>
+                            <th scope="col">
                                 Team
                                 <br class="d-inline d-sm-none"/>
                                 Points

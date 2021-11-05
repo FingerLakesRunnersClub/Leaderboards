@@ -11,13 +11,13 @@
         @foreach (var (course, results) in Model.Results)
         {
             <h3>@course.Name</h3>
-            <table
-            class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
+            <table aria-label="Invalid Results for @course.Name"
+                   class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
                 <thead>
                     <tr>
-                        <th>Athlete</th>
-                        <th>Date</th>
-                        <th>Time</th>
+                        <th scope="col">Athlete</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
                     </tr>
                 </thead>
                 <tbody>

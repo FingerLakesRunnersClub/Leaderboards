@@ -2,10 +2,10 @@
 @using FLRC.ChallengeDashboard
 @model LeaderboardTable
 
-    <table class="leaderboard table table-bordered table-striped table-sm mb-0">
+    <table aria-label="Leaderboard Table for @Model.Title" class="leaderboard table table-bordered table-striped table-sm mb-0">
         <thead>
         <tr>
-            <th colspan="3">
+            <th scope="colgroup" colspan="3">
                 <span class="d-flex justify-content-between">
                     <span>@Model.Title</span>
                     <a class="btn btn-light btn-xs" href="@Model.Link">

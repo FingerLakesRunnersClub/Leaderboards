@@ -5,31 +5,31 @@
 
 <div class="card card-highlighted mb-4">
     <div class="card-body">
-        <table class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
+        <table aria-label="Statistics Table" class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
             <thead>
             <tr>
-                <th rowspan="2">Course</th>
-                <th colspan="3">Participants</th>
-                <th colspan="3">Total Runs</th>
-                <th colspan="3">Total Miles</th>
-                <th colspan="3">Average Runs</th>
+                <th scope="col" rowspan="2">Course</th>
+                <th scope="colgroup" colspan="3">Participants</th>
+                <th scope="colgroup" colspan="3">Total Runs</th>
+                <th scope="colgroup" colspan="3">Total Miles</th>
+                <th scope="colgroup" colspan="3">Average Runs</th>
             </tr>
             <tr>
-                <th>All</th>
-                <th>F</th>
-                <th>M</th>
+                <th scope="col">All</th>
+                <th scope="col">F</th>
+                <th scope="col">M</th>
 
-                <th>All</th>
-                <th>F</th>
-                <th>M</th>
+                <th scope="col">All</th>
+                <th scope="col">F</th>
+                <th scope="col">M</th>
 
-                <th>All</th>
-                <th>F</th>
-                <th>M</th>
+                <th scope="col">All</th>
+                <th scope="col">F</th>
+                <th scope="col">M</th>
 
-                <th>All</th>
-                <th>F</th>
-                <th>M</th>
+                <th scope="col">All</th>
+                <th scope="col">F</th>
+                <th scope="col">M</th>
             </tr>
             </thead>
             <tbody>
@@ -56,23 +56,23 @@
                 </tr>
             }
             <tr>
-                <th>Total</th>
+                <th scope="row">Total</th>
 
-                <th>@Model.Total.Participants[string.Empty]</th>
-                <th>@Model.Total.Participants[Category.F.Display]</th>
-                <th>@Model.Total.Participants[Category.M.Display]</th>
+                <th scope="col">@Model.Total.Participants[string.Empty]</th>
+                <th scope="col">@Model.Total.Participants[Category.F.Display]</th>
+                <th scope="col">@Model.Total.Participants[Category.M.Display]</th>
 
-                <th>@Model.Total.Runs[string.Empty]</th>
-                <th>@Model.Total.Runs[Category.F.Display]</th>
-                <th>@Model.Total.Runs[Category.M.Display]</th>
+                <th scope="col">@Model.Total.Runs[string.Empty]</th>
+                <th scope="col">@Model.Total.Runs[Category.F.Display]</th>
+                <th scope="col">@Model.Total.Runs[Category.M.Display]</th>
 
-                <th>@Model.Total.Miles[string.Empty].ToString("F1")</th>
-                <th>@Model.Total.Miles[Category.F.Display].ToString("F1")</th>
-                <th>@Model.Total.Miles[Category.M.Display].ToString("F1")</th>
+                <th scope="col">@Model.Total.Miles[string.Empty].ToString("F1")</th>
+                <th scope="col">@Model.Total.Miles[Category.F.Display].ToString("F1")</th>
+                <th scope="col">@Model.Total.Miles[Category.M.Display].ToString("F1")</th>
 
-                <th>@Model.Total.Average[string.Empty].ToString("F1")</th>
-                <th>@Model.Total.Average[Category.F.Display].ToString("F1")</th>
-                <th>@Model.Total.Average[Category.M.Display].ToString("F1")</th>
+                <th scope="col">@Model.Total.Average[string.Empty].ToString("F1")</th>
+                <th scope="col">@Model.Total.Average[Category.F.Display].ToString("F1")</th>
+                <th scope="col">@Model.Total.Average[Category.M.Display].ToString("F1")</th>
             </tr>
             </tbody>
         </table>
