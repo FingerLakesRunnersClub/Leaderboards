@@ -11,7 +11,7 @@ Throughout 2021, the Finger Lakes Runners Club Challenge will open 10 race cours
 
 ## Requirements
 
-- [.NET SDK v5.0.100 or greater](https://dotnet.microsoft.com/download/dotnet/5.0)
+- [.NET SDK 6](https://dotnet.microsoft.com/download/dotnet/6.0)
 
 ## Installation
 
