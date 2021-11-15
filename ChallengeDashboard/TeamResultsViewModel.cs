@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public class CourseTeamResultsViewModel : CourseResultsViewModel
 {
-    public class CourseTeamResultsViewModel : CourseResultsViewModel
-    {
-        public IEnumerable<TeamResults> Results { get; init; }
-    }
+	public IEnumerable<TeamResults> Results { get; init; }
 }

@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public class OverallTeamResultsViewModel : OverallResultsViewModel
 {
-    public class OverallTeamResultsViewModel : OverallResultsViewModel
-    {
-        public IEnumerable<TeamResults> Results { get; init; }
-    }
+	public IEnumerable<TeamResults> Results { get; init; }
 }

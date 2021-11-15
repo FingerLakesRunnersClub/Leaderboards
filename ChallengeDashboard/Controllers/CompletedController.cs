@@ -1,27 +1,26 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FLRC.ChallengeDashboard.Controllers
+namespace FLRC.ChallengeDashboard.Controllers;
+
+public class CompletedController : Controller
 {
-    public class CompletedController : Controller
-    {
-        private readonly IDataService _dataService;
-        
-        public CompletedController(IDataService dataService) => _dataService = dataService;
+	private readonly IDataService _dataService;
 
-        public async Task<ViewResult> Index() => View(await GetCompleted());
+	public CompletedController(IDataService dataService) => _dataService = dataService;
 
-        private async Task<CompletedViewModel> GetCompleted()
-        {
-            var results = await _dataService.GetAllResults();
-            var overall = new OverallResults(results);
+	public async Task<ViewResult> Index() => View(await GetCompleted());
 
-            return new CompletedViewModel
-            {
-                CourseNames = _dataService.CourseNames,
-                Links = _dataService.Links,
-                RankedResults = overall.Completed()
-            };
-        }
-    }
+	private async Task<CompletedViewModel> GetCompleted()
+	{
+		var results = await _dataService.GetAllResults();
+		var overall = new OverallResults(results);
+
+		return new CompletedViewModel
+		{
+			CourseNames = _dataService.CourseNames,
+			Links = _dataService.Links,
+			RankedResults = overall.Completed()
+		};
+	}
 }

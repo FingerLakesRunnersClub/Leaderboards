@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public interface IGroupAPI
 {
-    public interface IGroupAPI
-    {
-        Task<IDictionary<string, IEnumerable<uint>>> GetGroups();
-    }
+	Task<IDictionary<string, IEnumerable<uint>>> GetGroups();
 }

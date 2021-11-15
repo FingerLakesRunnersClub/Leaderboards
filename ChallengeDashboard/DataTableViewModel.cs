@@ -1,7 +1,6 @@
-﻿namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public abstract class DataTableViewModel : ViewModel
 {
-    public abstract class DataTableViewModel : ViewModel
-    {
-        public abstract string ResponsiveBreakpoint { get; }
-    }
+	public abstract string ResponsiveBreakpoint { get; }
 }

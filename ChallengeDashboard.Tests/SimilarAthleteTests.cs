@@ -1,67 +1,66 @@
-﻿using Xunit;
+using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests;
+
+public class SimilarAthleteTests
 {
-    public class SimilarAthleteTests
-    {
-        [Fact]
-        public void CanGetSimilarity()
-        {
-            //arrange
-            var course = new Course { Results = CourseData.Results };
-            var my = new AthleteSummary(CourseData.Athlete1, new[] {course});
-            var their = new AthleteSummary(CourseData.Athlete2, new[] {course});
+	[Fact]
+	public void CanGetSimilarity()
+	{
+		//arrange
+		var course = new Course { Results = CourseData.Results };
+		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
+		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
-            //act
-            var similar = new SimilarAthlete(my, their);
+		//act
+		var similar = new SimilarAthlete(my, their);
 
-            //assert
-            Assert.Equal("68%", similar.Similarity.Display);
-        }
-        
-        [Fact]
-        public void CanGetOverlap()
-        {
-            //arrange
-            var course = new Course { Results = CourseData.Results };
-            var my = new AthleteSummary(CourseData.Athlete1, new[] {course});
-            var their = new AthleteSummary(CourseData.Athlete2, new[] {course});
+		//assert
+		Assert.Equal("68%", similar.Similarity.Display);
+	}
 
-            //act
-            var similar = new SimilarAthlete(my, their);
+	[Fact]
+	public void CanGetOverlap()
+	{
+		//arrange
+		var course = new Course { Results = CourseData.Results };
+		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
+		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
-            //assert
-            Assert.Equal("50%", similar.Overlap.Display);
-        }
-        
-        [Fact]
-        public void CanCalculateFastestPaceDifference()
-        {
-            //arrange
-            var course = new Course { Results = CourseData.Results };
-            var my = new AthleteSummary(CourseData.Athlete1, new[] {course});
-            var their = new AthleteSummary(CourseData.Athlete2, new[] {course});
+		//act
+		var similar = new SimilarAthlete(my, their);
 
-            //act
-            var similar = new SimilarAthlete(my, their);
+		//assert
+		Assert.Equal("50%", similar.Overlap.Display);
+	}
 
-            //assert
-            Assert.Equal("31.8% faster", similar.FastestPercent.Display);
-        }
-        
-        [Fact]
-        public void CanCalculateScoreForRanking()
-        {
-            //arrange
-            var course = new Course { Results = CourseData.Results };
-            var my = new AthleteSummary(CourseData.Athlete1, new[] {course});
-            var their = new AthleteSummary(CourseData.Athlete2, new[] {course});
+	[Fact]
+	public void CanCalculateFastestPaceDifference()
+	{
+		//arrange
+		var course = new Course { Results = CourseData.Results };
+		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
+		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
-            //act
-            var similar = new SimilarAthlete(my, their);
+		//act
+		var similar = new SimilarAthlete(my, their);
 
-            //assert
-            Assert.Equal((68.2 * 0.9) + (68.2 * 0.5 * 0.1), similar.Score, 1);
-        }
-    }
+		//assert
+		Assert.Equal("31.8% faster", similar.FastestPercent.Display);
+	}
+
+	[Fact]
+	public void CanCalculateScoreForRanking()
+	{
+		//arrange
+		var course = new Course { Results = CourseData.Results };
+		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
+		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
+
+		//act
+		var similar = new SimilarAthlete(my, their);
+
+		//assert
+		Assert.Equal((68.2 * 0.9) + (68.2 * 0.5 * 0.1), similar.Score, 1);
+	}
 }

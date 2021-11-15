@@ -1,33 +1,32 @@
 using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests;
+
+public class PercentTests
 {
-    public class PercentTests
-    {
-        [Fact]
-        public void CanGetDisplayedValueFromDecimal()
-        {
-            //arrange
-            var percent = new Percent(12.3);
+	[Fact]
+	public void CanGetDisplayedValueFromDecimal()
+	{
+		//arrange
+		var percent = new Percent(12.3);
 
-            //act
-            var display = percent.Display;
+		//act
+		var display = percent.Display;
 
-            //assert
-            Assert.Equal("12%", display);
-        }
+		//assert
+		Assert.Equal("12%", display);
+	}
 
-        [Fact]
-        public void DisplayedValueIsRounded()
-        {
-            //arrange
-            var percent = new Percent(76.51);
+	[Fact]
+	public void DisplayedValueIsRounded()
+	{
+		//arrange
+		var percent = new Percent(76.51);
 
-            //act
-            var display = percent.Display;
+		//act
+		var display = percent.Display;
 
-            //assert
-            Assert.Equal("77%", display);
-        }
-    }
+		//assert
+		Assert.Equal("77%", display);
+	}
 }

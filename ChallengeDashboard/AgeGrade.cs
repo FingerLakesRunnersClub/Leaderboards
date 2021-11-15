@@ -1,15 +1,14 @@
 using System;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public record AgeGrade : Formatted<double>, IComparable<AgeGrade>
 {
-    public record AgeGrade : Formatted<double>, IComparable<AgeGrade>
-    {
-        public AgeGrade(double value) : base(value)
-        {
-        }
+	public AgeGrade(double value) : base(value)
+	{
+	}
 
-        public override string Display => Value > 0 ? $"{Value:F2}%" : string.Empty;
+	public override string Display => Value > 0 ? $"{Value:F2}%" : string.Empty;
 
-        public int CompareTo(AgeGrade other) => Value.CompareTo(other.Value);
-    }
+	public int CompareTo(AgeGrade other) => Value.CompareTo(other.Value);
 }

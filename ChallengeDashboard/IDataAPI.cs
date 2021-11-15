@@ -1,10 +1,9 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public interface IDataAPI
 {
-    public interface IDataAPI
-    {
-        Task<JsonElement> GetResults(uint id);
-    }
+	Task<JsonElement> GetResults(uint id);
 }

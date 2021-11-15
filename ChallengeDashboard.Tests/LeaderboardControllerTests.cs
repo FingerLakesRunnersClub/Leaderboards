@@ -1,24 +1,23 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using FLRC.ChallengeDashboard.Controllers;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests;
+
+public class LeaderboardControllerTests
 {
-    public class LeaderboardControllerTests
-    {
-        [Fact]
-        public async Task CanGetAllCourses()
-        {
-            //arrange
-            var dataService = Substitute.For<IDataService>();
-            var controller = new LeaderboardController(dataService);
+	[Fact]
+	public async Task CanGetAllCourses()
+	{
+		//arrange
+		var dataService = Substitute.For<IDataService>();
+		var controller = new LeaderboardController(dataService);
 
-            //act
-            await controller.Index();
+		//act
+		await controller.Index();
 
-            //assert
-            await dataService.Received().GetAllResults();
-        }
-    }
+		//assert
+		await dataService.Received().GetAllResults();
+	}
 }

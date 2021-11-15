@@ -1,16 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public class RankedList<T> : List<Ranked<T>>
 {
-    public class RankedList<T> : List<Ranked<T>>
-    {
-        public RankedList()
-        {
-        }
-        
-        public RankedList(IEnumerable<Ranked<T>> list)
-        {
-            AddRange(list);
-        }
-    }
+	public RankedList()
+	{
+	}
+
+	public RankedList(IEnumerable<Ranked<T>> list)
+	{
+		AddRange(list);
+	}
 }

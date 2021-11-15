@@ -1,20 +1,19 @@
 using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests;
+
+public class FormattedResultTypeTests
 {
-    public class FormattedResultTypeTests
-    {
-        [Fact]
-        public void CanDisplayName()
-        {
-            //arrange
-            var type = new FormattedResultType(ResultType.BestAverage);
+	[Fact]
+	public void CanDisplayName()
+	{
+		//arrange
+		var type = new FormattedResultType(ResultType.BestAverage);
 
-            //act
-            var name = type.Display;
+		//act
+		var name = type.Display;
 
-            //assert
-            Assert.Equal("Best Average", name);
-        }
-    }
+		//assert
+		Assert.Equal("Best Average", name);
+	}
 }

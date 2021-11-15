@@ -1,9 +1,8 @@
-﻿namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public enum LeaderboardResultType
 {
-    public enum LeaderboardResultType
-    {
-        Team,
-        F,
-        M
-    }
+	Team,
+	F,
+	M
 }

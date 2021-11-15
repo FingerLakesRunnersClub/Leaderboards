@@ -1,10 +1,9 @@
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public enum ResultType
 {
-    public enum ResultType
-    {
-        Fastest,
-        BestAverage,
-        MostRuns,
-        Team
-    }
+	Fastest,
+	BestAverage,
+	MostRuns,
+	Team
 }

@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public class SimilarAthletesViewModel : DataTableViewModel
 {
-    public class SimilarAthletesViewModel : DataTableViewModel
-    {
-        public override string Title => "Similar Athletes";
-        public override string ResponsiveBreakpoint => "xl";
-        public Athlete Athlete { get; init; }
-        public IEnumerable<SimilarAthlete> Matches { get; init; }
-    }
+	public override string Title => "Similar Athletes";
+	public override string ResponsiveBreakpoint => "xl";
+	public Athlete Athlete { get; init; }
+	public IEnumerable<SimilarAthlete> Matches { get; init; }
 }

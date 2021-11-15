@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 
-namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public record Points : Formatted<double>, IComparable<Points>
 {
-    public record Points : Formatted<double>, IComparable<Points>
-    {
-        public Points(double value) : base(value)
-        {
-        }
+	public Points(double value) : base(value)
+	{
+	}
 
-        public override string Display => Value.ToString("F2");
+	public override string Display => Value.ToString("F2");
 
-        public int CompareTo(Points other) => Value.CompareTo(other.Value);
-    }
+	public int CompareTo(Points other) => Value.CompareTo(other.Value);
 }

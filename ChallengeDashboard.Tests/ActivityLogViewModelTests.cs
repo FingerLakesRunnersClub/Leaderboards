@@ -1,37 +1,36 @@
-﻿using Xunit;
+using Xunit;
 
-namespace FLRC.ChallengeDashboard.Tests
+namespace FLRC.ChallengeDashboard.Tests;
+
+public class ActivityLogViewModelTests
 {
-    public class ActivityLogViewModelTests
-    {
-        [Fact]
-        public void TitleIsSimplifiedForAllCourses()
-        {
-            //arrange
-            var vm = new ActivityLogViewModel();
-            
-            //act
-            var title = vm.Title;
-            
-            //assert
-            Assert.Equal("Activity Log", title);
-        }
+	[Fact]
+	public void TitleIsSimplifiedForAllCourses()
+	{
+		//arrange
+		var vm = new ActivityLogViewModel();
 
-        [Fact]
-        public void TitleContainsCourseNameWhenSet()
-        {
-            //arrange
-            var vm = new ActivityLogViewModel
-            {
-                Course = new Course { Name = "test course"}
-            };
+		//act
+		var title = vm.Title;
 
-            //act
-            var title = vm.Title;
-            
-            //assert
-            Assert.StartsWith("Activity Log", title);
-            Assert.EndsWith("test course", title);
-        }
-    }
+		//assert
+		Assert.Equal("Activity Log", title);
+	}
+
+	[Fact]
+	public void TitleContainsCourseNameWhenSet()
+	{
+		//arrange
+		var vm = new ActivityLogViewModel
+		{
+			Course = new Course { Name = "test course" }
+		};
+
+		//act
+		var title = vm.Title;
+
+		//assert
+		Assert.StartsWith("Activity Log", title);
+		Assert.EndsWith("test course", title);
+	}
 }

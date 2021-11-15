@@ -1,8 +1,7 @@
-﻿namespace FLRC.ChallengeDashboard
+namespace FLRC.ChallengeDashboard;
+
+public enum ActivityLogType
 {
-    public enum ActivityLogType
-    {
-        Recent,
-        Archive
-    }
+	Recent,
+	Archive
 }
