@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.ChallengeDashboard;
 
 public record SpeedComparison : Formatted<double>

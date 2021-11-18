@@ -2,6 +2,7 @@
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
         <RootNamespace>FLRC.ChallengeDashboard</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AgeGradeCalculator" Version="1.0.3"/>

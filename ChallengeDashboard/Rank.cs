@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.ChallengeDashboard;
 
 public record Rank : Formatted<ushort>, IComparable<Rank>

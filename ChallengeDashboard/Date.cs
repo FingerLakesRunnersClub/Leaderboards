@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.ChallengeDashboard;
 
 public record Date : Formatted<DateTime>, IComparable<Date>

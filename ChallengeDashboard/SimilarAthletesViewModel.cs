@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace FLRC.ChallengeDashboard;
 
 public class SimilarAthletesViewModel : DataTableViewModel

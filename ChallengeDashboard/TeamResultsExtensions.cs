@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace FLRC.ChallengeDashboard;
 
 public static class TeamResultsExtensions

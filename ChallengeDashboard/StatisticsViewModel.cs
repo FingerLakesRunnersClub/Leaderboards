@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace FLRC.ChallengeDashboard;
 
 public class StatisticsViewModel : ViewModel

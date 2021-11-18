@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace FLRC.ChallengeDashboard;
 
 public class SimilarAthlete

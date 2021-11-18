@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.ChallengeDashboard;
 
 public record Time : Formatted<TimeSpan>, IComparable<Time>
