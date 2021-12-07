@@ -6,6 +6,5 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AgeGradeCalculator" Version="1.0.3"/>
-        <PackageReference Include="SonarAnalyzer.CSharp" Version="8.32.0.39516" PrivateAssets="all"/>
     </ItemGroup>
 </Project>
