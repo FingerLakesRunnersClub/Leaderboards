@@ -50,7 +50,7 @@ public class AthleteController : Controller
 		var ranks = new RankedList<Time>();
 
 		var sorted = results.OrderBy(r => r.Duration.Value).ToList();
-		for (byte rank = 1; rank <= sorted.Count; rank++)
+		for (ushort rank = 1; rank <= sorted.Count; rank++)
 		{
 			var result = sorted[rank - 1];
 			var category = result.Athlete.Category?.Value ?? Category.M.Value;
