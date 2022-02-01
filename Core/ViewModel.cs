@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace FLRC.Leaderboards.Core;
 
 public abstract class ViewModel

@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.Leaderboards.Core;
 
 public record Time : Formatted<TimeSpan>, IComparable<Time>

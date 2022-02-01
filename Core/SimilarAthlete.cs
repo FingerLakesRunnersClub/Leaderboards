@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace FLRC.Leaderboards.Core;
 
 public class SimilarAthlete

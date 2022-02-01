@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace FLRC.Leaderboards.Core;
 
 public class StatisticsViewModel : ViewModel

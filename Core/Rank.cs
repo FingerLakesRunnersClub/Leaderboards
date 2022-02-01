@@ -1,5 +1,3 @@
-using System;
-
 namespace FLRC.Leaderboards.Core;
 
 public record Rank : Formatted<ushort>, IComparable<Rank>
