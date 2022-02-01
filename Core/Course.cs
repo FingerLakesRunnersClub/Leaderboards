@@ -18,7 +18,7 @@ public class Course
 
 	public double Miles => Meters / MetersPerMile;
 
-	private IEnumerable<Result> _results;
+	private IEnumerable<Result> _results = Array.Empty<Result>();
 
 	public IEnumerable<Result> Results
 	{
