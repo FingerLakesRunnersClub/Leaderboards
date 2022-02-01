@@ -1,0 +1,15 @@
+@using FLRC.Leaderboards.Core
+@model Course
+
+@switch (@Model.Type)
+{
+    case "Road":
+        <i aria-hidden="true" class="course-icon tp-35 fas fa-road" title="Road Course"></i>
+        break;
+    case "Trail":
+        <i aria-hidden="true" class="course-icon tp-35 fas fa-leaf" title="Trail Course"></i>
+        break;
+    case "Mixed":
+        <i aria-hidden="true" class="course-icon tp-35 fas fa-balance-scale" title="Mixed Course"></i>
+        break;
+}

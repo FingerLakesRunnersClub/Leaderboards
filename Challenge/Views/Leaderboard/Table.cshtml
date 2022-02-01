@@ -1,0 +1,45 @@
+﻿@using FLRC.Leaderboards.Core
+@model LeaderboardTable
+
+    <table aria-label="Leaderboard Table for @Model.Title" class="leaderboard table table-bordered table-striped table-sm mb-0">
+        <thead>
+        <tr>
+            <th scope="colgroup" colspan="3">
+                <span class="d-flex justify-content-between">
+                    <span>@Model.Title</span>
+                    <a class="btn btn-light btn-xs" href="@Model.Link">
+                        View All
+                        <i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
+                    </a>
+                </span>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        @if (!Model.Rows.Any())
+        {
+            <tr>
+                <td colspan="3" class="text-center text-info">(no results yet)</td>
+            </tr>
+        }
+        @foreach (var result in Model.Rows)
+        {
+            <tr>
+                <td class="text-center rank">
+                    @result.Rank.Value
+                </td>
+                <td>
+                    @if(result.Link != null)
+                    {
+                        <a href="@result.Link">@result.Name</a>
+                    }
+                    else
+                    {
+                        @result.Name
+                    }
+                </td>
+                <td class="text-center value">@result.Value</td>
+            </tr>
+        }
+        </tbody>
+    </table>

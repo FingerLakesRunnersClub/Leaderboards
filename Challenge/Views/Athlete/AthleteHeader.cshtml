@@ -1,0 +1,10 @@
+﻿@using FLRC.Leaderboards.Core
+@model Athlete
+
+<a class="btn btn-light btn-sm float-right" href="/Athlete/Index/@Model.ID">
+    Athlete Page <i aria-hidden="true" class="fas fa-arrow-right"></i>
+</a>
+<h2>
+    @Model.Name
+    <small>(@Model.AgeToday&nbsp;@Model.Category?.Display)</small>
+</h2>

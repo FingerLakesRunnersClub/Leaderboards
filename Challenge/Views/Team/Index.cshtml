@@ -1,0 +1,93 @@
+﻿@using FLRC.Leaderboards.Core
+@model TeamSummaryViewModel
+
+<a class="btn btn-light btn-sm float-right" href="/Team/Members/@Model.Team.Value">
+    Team Members <i aria-hidden="true" class="fas fa-arrow-right"></i>
+</a>
+
+<h2>Team @Model.Team.Display</h2>
+
+<table aria-label="Overall Results for Team @Model.Team.Display" class="table table-bordered table-sm text-center">
+    <thead>
+    <tr>
+        <th scope="col">
+            Age Grade
+            <br class="d-inline d-sm-none"/>
+            Points
+        </th>
+        <th scope="col">
+            Most Runs
+            <br class="d-inline d-sm-none"/>
+            Points
+        </th>
+        <th scope="col">
+            Total
+            <br class="d-inline d-sm-none"/>
+            Points
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>
+            @Model.Overall?.AgeGradePoints
+        </td>
+        <td>
+            @Model.Overall?.MostRunsPoints
+        </td>
+        <td>
+            @Model.Overall?.TotalPoints
+            (<a href="/Overall/Team">@Model.Overall?.Rank.Display</a>)
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="row">
+    @foreach (var course in Model.Courses.Where(r => r.Value != null))
+    {
+        <div class="col-12 col-lg-6">
+            <div class="card-highlighted card mb-3">
+                <div class="card-body">
+                    @await Html.PartialAsync("CourseInfo", course.Key)
+                    <table aria-label="Team @Model.Team.Display Course Results for @course.Key.Name"
+                           class="table table-bordered table-sm text-center mt-2 mb-0">
+                        <thead>
+                        <tr>
+                            <th scope="col">
+                                Average
+                                <br class="d-inline d-sm-none"/>
+                                Age Grade
+                            </th>
+                            <th scope="col">
+                                Total
+                                <br class="d-inline d-sm-none"/>
+                                Runs
+                            </th>
+                            <th scope="col">
+                                Team
+                                <br class="d-inline d-sm-none"/>
+                                Points
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>
+                                @course.Value.AverageAgeGrade.Display (@(new Rank(course.Value.AgeGradePoints).Display))
+                            </td>
+                            <td>
+                                @course.Value.TotalRuns (@(new Rank(course.Value.MostRunsPoints).Display))
+                            </td>
+                            <td>
+                                @course.Value.TotalPoints
+                                (<a href="/Course/@course.Key.ID/Team">@course.Value.Rank.Display</a>)
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>

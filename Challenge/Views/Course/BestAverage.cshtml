@@ -1,0 +1,30 @@
+﻿@using FLRC.Leaderboards.Core
+@using System.Text.Json
+@model CourseResultsViewModel<Time>
+
+<h2>Course Results</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Course)
+        @await Html.PartialAsync("ResultFilter")
+
+        <div class="alert alert-info">Only athletes who have run this course at least @Model.Course.AverageThreshold(Model.Category) times are displayed</div>
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
+                { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0), show: @((Model.Category == null).ToString().ToLower()) },
+                { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}` },
+                { name: 'Average Time (Top @Model.Course.AverageThreshold(Model.Category))', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
+                { name: '# of Runs', center: true, value: r => r.Count }
+            ];
+
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+        </script>
+
+        @await Html.PartialAsync("DataTable")
+
+    </div>
+</div>

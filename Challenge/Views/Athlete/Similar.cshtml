@@ -1,0 +1,47 @@
+﻿@using FLRC.Leaderboards.Core
+@using System.Text.Json
+@model SimilarAthletesViewModel
+
+@await Html.PartialAsync("AthleteHeader", Model.Athlete)
+
+<div class="card card-highlighted">
+    <div class="card-body">
+        <aside class="float-right">
+            <div class="input-group m-1">
+                <div class="input-group-prepend">
+                    <span class="input-group-text p-0 pl-2 pr-2" style="background-color: rgba(255, 240, 163, 0.25);">
+                        Faster
+                    </span>
+                </div>
+                <div class="input-group-append">
+                    <span class="input-group-text p-0 pl-2 pr-2" style="background-color: rgba(75, 158, 218, 0.25);">
+                        Slower
+                    </span>
+                </div>
+            </div>
+        </aside>
+
+        <h3 class="float-left">Similar Athletes</h3>
+
+        <script>
+            const fields = [
+                { name: "Rank", center: true, value: r => r.Rank.Value },
+                { name: "Name", value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
+                { name: "Age", center: true, value: r => r.Athlete.Age },
+                { name: "Category", center: true, value: r => r.Athlete.Category?.Display, sort: r => r.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
+                { name: "Fastest Pace", center: true, value: r => r.FastestPercent?.Display ?? '(no data)', sort: r => r.FastestPercent?.Value ?? 100 },
+                { name: "Average Pace", center: true, value: r => r.AveragePercent?.Display ?? '(no data)', sort: r => r.AveragePercent?.Value ?? 100 },
+                { name: "Similarity", center: true, value: r => r.Similarity.Display, sort: r => r.Similarity.Value, descending: true },
+                { name: "Overlap", center: true, value: r => r.Overlap.Display, sort: r => r.Overlap.Value, descending: true }
+            ];
+
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Matches));
+
+            const diffSum = r => r.FastestPercent.Value + (r.AveragePercent?.Value ?? 0);
+            const opacity = r => Math.abs(diffSum(r)) / 50;
+            const row_style = r => ({ 'background-color': diffSum(r) < 0 ? `rgba(255, 240, 163, ${opacity(r)})` : diffSum(r) > 0 ? `rgba(75, 158, 218, ${opacity(r)})` : null });
+        </script>
+
+        @await Html.PartialAsync("DataTable")
+    </div>
+</div>

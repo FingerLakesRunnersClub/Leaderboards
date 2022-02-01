@@ -1,0 +1,129 @@
+﻿@using FLRC.Leaderboards.Core
+@model AthleteSummaryViewModel
+
+<h2>
+    @Model.Summary.Athlete.Name
+    <small>(@Model.Summary.Athlete.AgeToday&nbsp;@Model.Summary.Athlete.Category?.Display)</small>
+</h2>
+
+<div class="card card-highlighted mb-3">
+    <div class="card-body">
+        <dl class="row mb-0">
+            <dt class="col-6">
+                Team
+            </dt>
+            <dd class="col-6">
+                @Model.Summary.Athlete.Team.Display
+                (<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
+            </dd>
+
+            @if (Model.Summary.Athlete.Category != null)
+            {
+                <dt class="col-6">
+                    Overall Points
+                </dt>
+                <dd class="col-6">
+                    @Model.Summary.OverallPoints?.Value?.Display
+                    (<a href="/Overall/Points/@Model.Summary.Athlete.Category.Display">@Model.Summary.OverallPoints?.Rank?.Display</a>)
+                </dd>
+            }
+
+            <dt class="col-6">
+                <span class="d-none d-sm-inline">Average</span>
+                <span class="d-sm-none">Avg</span>
+                Age Grade
+            </dt>
+            <dd class="col-6">
+                @Model.Summary.OverallAgeGrade?.Value?.Display
+                (<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
+            </dd>
+
+            <dt class="col-6">
+                Total Miles
+            </dt>
+            <dd class="col-6">
+                @Model.Summary.OverallMiles?.Value.ToString("F1")
+                (<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
+            </dd>
+        </dl>
+        <div class="text-center">
+            <a href="/Athlete/Log/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
+                Activity Log
+                <i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
+            </a>
+            <a href="/Athlete/Similar/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
+                Similar Athletes
+                <i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    @foreach (var (course, _) in Model.Summary.All.Where(r => r.Value != null && r.Value.Any()))
+    {
+        <div class="col-12 col-lg-6">
+            <div class="card-highlighted card mb-3">
+                <div class="card-body no-activity-log">
+                    @await Html.PartialAsync("CourseInfo", course)
+                    @if (Model.Summary.Fastest[course] == null)
+                    {
+                        <div class="alert alert-danger">
+                            There is an invalid result for this course.
+                            Please check the the <a href="/Invalid">Invalid Results</a> page,
+                            and correct any errors by using the timing app or contacting the Race Director.
+                        </div>
+                    }
+                    else
+                    {
+                        <dl class="row mb-0">
+                            <dt class="col-6">
+                                Fastest Time
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Summary.Fastest[course].Value.Display
+                                (<a href="/Course/@course.ID/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank.Display</a>)
+                            </dd>
+                            <dt class="col-6">
+                                Points
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Summary.Fastest[course].Points.Display
+                            </dd>
+                            <dt class="col-6">
+                                Age Grade
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Summary.Fastest[course].AgeGrade.Display
+                            </dd>
+                            <dt class="col-6">
+                                Average (Top @course.AverageThreshold(Model.Summary.Athlete.Category))
+                            </dt>
+                            <dd class="col-6">
+                                @if (Model.Summary.Average[course] != null)
+                                {
+                                    @Model.Summary.Average[course].Value.Display
+                                    @:(<a href="/Course/@course.ID/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
+                                }
+                                else
+                                {
+                                    @:(not enough runs)
+                                }
+                            </dd>
+                            <dt class="col-6">
+                                # of Runs
+                            </dt>
+                            <dd class="col-6">
+                                @Model.Summary.Runs[course].Value
+                                (<a href="/Course/@course.ID/MostRuns">@Model.Summary.Runs[course].Rank.Display</a>)
+                            </dd>
+                        </dl>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a href="/Athlete/@Model.Summary.Athlete.ID/Course/@course.ID">View All Runs</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

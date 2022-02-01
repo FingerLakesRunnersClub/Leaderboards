@@ -1,0 +1,57 @@
+﻿@using FLRC.Leaderboards.Core
+@model CourseResultsViewModel
+
+@functions
+{
+    string style(ResultType type) => Model.ResultType.Value == type
+        ? "secondary"
+        : "light";
+
+    string style(Category category) => Model.Category == null && category == null || Model.Category == category
+        ? "secondary"
+        : "light";
+}
+
+<form class="float-left">
+    <section class="mb-3">
+        <div class="btn-group">
+            @foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
+            {
+                <a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
+            }
+        </div>
+    </section>
+
+    @if (Model.ResultType.Value != ResultType.Team)
+    {
+        <section class="mb-4">
+            <div class="btn-group">
+                <a class="btn btn-sm btn-@style(null)" href="/Course/@Model.Course.ID/@Model.ResultType.Value">All</a>
+                <a class="btn btn-sm btn-@style(Category.F)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/F">F</a>
+                <a class="btn btn-sm btn-@style(Category.M)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/M">M</a>
+            </div>
+
+            @if (Model.ResultType.Value == ResultType.Fastest)
+            {
+                <div class="float-right">
+                    <select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
+                        <option value="">All Age Groups</option>
+                        @foreach (var team in Athlete.Teams)
+                        {
+                            <option value="@team.Key" @(ViewBag.AgeGroup == team.Key ? "selected" : String.Empty)>
+                                @team.Value.Display
+                            </option>
+                        }
+                    </select>
+                </div>
+            }
+        </section>
+    }
+</form>
+<div class="clearfix"></div>
+
+<script>
+    function goToAgeGroup(ag) {
+        location.href='/Course/@Model.Course.ID/@Model.ResultType.Value/@Model.Category?.Value' + (ag ? '?ag=' + ag : '');
+    }
+</script>

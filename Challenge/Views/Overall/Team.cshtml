@@ -1,0 +1,25 @@
+﻿@using FLRC.Leaderboards.Core
+@using System.Text.Json
+@model OverallTeamResultsViewModel
+
+<h2>Overall Leaders</h2>
+<div class="card card-highlighted">
+    <div class="card-body">
+        @await Html.PartialAsync("OverallFilter")
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}` },
+                { name: 'Age Grade Points', center: true, value: r => r.AgeGradePoints },
+                { name: 'Most Runs Points', center: true, value: r => r.MostRunsPoints },
+                { name: 'Total Points', center: true, value: r => r.TotalPoints },
+            ];
+
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+        </script>
+
+        @await Html.PartialAsync("DataTable")
+
+    </div>
+</div>
