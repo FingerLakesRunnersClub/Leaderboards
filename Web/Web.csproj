@@ -8,8 +8,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<FrameworkReference Include="Microsoft.AspNetCore.App"/>
-		<ProjectReference Include="../Core/Core.csproj"/>
-		<None Include="wwwroot/**" CopyToOutputDirectory="PreserveNewest"/>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+		<ProjectReference Include="../Core/Core.csproj" />
+		<None Include="wwwroot/**" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 </Project>
