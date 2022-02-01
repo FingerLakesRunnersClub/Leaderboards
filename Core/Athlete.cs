@@ -13,9 +13,11 @@ public class Athlete
 	public byte Age { get; init; }
 
 	[JsonIgnore]
-	public DateTime DateOfBirth { get; init; }
+	public DateTime? DateOfBirth { get; init; }
 
-	public byte AgeAsOf(DateTime date) => (byte)(date.Subtract(DateOfBirth).TotalDays / 365.2425);
+	public byte AgeAsOf(DateTime date) => DateOfBirth.HasValue
+		? (byte)(date.Subtract(DateOfBirth.Value).TotalDays / 365.2425)
+		: (byte)0;
 
 	public Team Team => Age < 20 ? Teams[2]
 		: Age >= 70 ? Teams[6]

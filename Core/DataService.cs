@@ -54,6 +54,14 @@ public class DataService : IDataService
 
 	public async Task<IDictionary<uint, Athlete>> GetAthletes()
 	{
+		if (_startListID == 0)
+		{
+			var results = await GetAllResults();
+			return results.SelectMany(c => c.Results.Select(r => r.Athlete))
+				.DistinctBy(a => a.ID)
+				.ToDictionary(a => a.ID, a => a);
+		}
+
 		try
 		{
 			if (_athleteCacheTimestamp < DateTime.Now.Subtract(_cacheLength))

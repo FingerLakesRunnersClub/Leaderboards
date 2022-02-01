@@ -42,7 +42,7 @@ public static class DataParser
 	}
 
 	private static IEnumerable<Result> ParseResults(Course course, JsonElement results)
-		=> Enumerable.Where<Result>(results.EnumerateArray()
+		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1)
 			.Select(r => new Result
 			{
@@ -50,7 +50,7 @@ public static class DataParser
 				Athlete = ParseAthlete(r),
 				StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
 				Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
-			}), r => r.Duration.Value >= MinimumDuration);
+			}).Where(r => r.Duration.Value >= MinimumDuration);
 
 	public static Time ParseDuration(double seconds)
 		=> new(TimeSpan.FromSeconds(Math.Ceiling(Math.Round(seconds, 1, MidpointRounding.ToZero))));
@@ -61,17 +61,22 @@ public static class DataParser
 	{
 		var id = result.GetProperty("UserId").GetUInt32();
 		if (id == 0)
-			id = result.GetProperty("RacerId").GetUInt32();
+		{
+			id = (uint?)result.GetProperty("Name").GetString()?.GetHashCode(StringComparison.InvariantCultureIgnoreCase) ?? 0;
+		}
 
 		if (!athletes.ContainsKey(id))
+		{
+			var hasDOB = DateTime.TryParse(result.GetProperty("Info1").GetString(), out var dob);
 			athletes.Add(id, new Athlete
 			{
 				ID = id,
 				Name = result.GetProperty("Name").GetString(),
 				Age = result.GetProperty("Age").GetByte(),
 				Category = ParseCategory(result.GetProperty("Gender").GetString()),
-				DateOfBirth = DateTime.Parse(result.GetProperty("Info1").GetString() ?? string.Empty)
+				DateOfBirth = hasDOB ? dob : null
 			});
+		}
 
 		return athletes[id];
 	}
@@ -81,5 +86,11 @@ public static class DataParser
 			? new Category(category)
 			: null;
 
-	private static Date ParseStart(string value) => new Date(DateTime.Parse(value ?? string.Empty));
+	private static Date ParseStart(string value)
+	{
+		var isDate = DateTime.TryParse(value, out var start);
+		return isDate
+			? new Date(start)
+			: null;
+	}
 }
