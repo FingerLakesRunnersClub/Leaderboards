@@ -1,6 +1,6 @@
 using FLRC.Leaderboards.Web;
 
-namespace FLRC.Leaderboards.Challenge;
+namespace FLRC.Leaderboards.TrailCircuit;
 
 public static class Program
 {
