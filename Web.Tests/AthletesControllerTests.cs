@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using FLRC.Leaderboards.Challenge.Controllers;
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Challenge.Tests;
+namespace FLRC.Leaderboards.Web;
 
 public class AthletesControllerTests
 {
