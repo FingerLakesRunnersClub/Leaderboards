@@ -1,6 +1,10 @@
 using FLRC.Leaderboards.Core;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace FLRC.Leaderboards.Challenge;
+namespace FLRC.Leaderboards.Web;
 
 public class Startup
 {
@@ -17,7 +21,7 @@ public class Startup
 		services.AddSingleton<IDataService, DataService>();
 	}
 
-	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+	public void Configure(IApplicationBuilder app, IHostEnvironment env)
 	{
 		if (env.IsDevelopment())
 			app.UseDeveloperExceptionPage();

@@ -1,7 +1,7 @@
 using FLRC.Leaderboards.Core;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FLRC.Leaderboards.Challenge.Controllers;
+namespace FLRC.Leaderboards.Web.Controllers;
 
 public class LogController : Controller
 {
