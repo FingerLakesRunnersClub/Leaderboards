@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-
 namespace FLRC.Leaderboards.Core;
 
 public static class TeamResultsExtensions
