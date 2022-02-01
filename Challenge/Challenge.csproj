@@ -4,8 +4,8 @@
 		<RootNamespace>FLRC.Leaderboards.Challenge</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="AgeGradeCalculator" Version="1.0.3"/>
-		<ProjectReference Include="../Core/Core.csproj"/>
+		<ProjectReference Include="../Web/Web.csproj" />
 	</ItemGroup>
 </Project>

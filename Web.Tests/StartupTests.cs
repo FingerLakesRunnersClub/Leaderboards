@@ -1,12 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Challenge.Tests;
+namespace FLRC.Leaderboards.Web;
 
 public class StartupTests
 {
@@ -41,7 +41,7 @@ public class StartupTests
 		var serviceProvider = services.BuildServiceProvider();
 		var app = new ApplicationBuilder(serviceProvider);
 
-		var env = Substitute.For<IWebHostEnvironment>();
+		var env = Substitute.For<IHostEnvironment>();
 
 		//act
 		startup.Configure(app, env);
