@@ -1,3 +1,7 @@
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Results;
+
 namespace FLRC.Leaderboards.Core.Tests;
 
 public static class CourseData

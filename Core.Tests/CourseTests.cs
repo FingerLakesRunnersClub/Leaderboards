@@ -1,3 +1,6 @@
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests;

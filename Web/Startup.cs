@@ -1,4 +1,6 @@
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
