@@ -1,7 +1,14 @@
 ﻿:root {
-	--primary-dark: #2e3595;
-	--primary-light: #4b9eda;
-	--secondary-dark: #ffd600;
-	--secondary-light: #fff0a3;
-	--background: #ecf7ff;
+	--primary-dark: #354612;
+	--primary: #485e19;
+	--primary-light: #8fa85b;
+	--secondary-dark: #D9CCAC;
+	--secondary: #E8E0CF;
+	--secondary-light: #F7F2E7;
+}
+
+.navbar-brand .logo {
+	background: #fffd;
+	border-radius: 50%;
+	border: 0.25rem solid var(--primary);
 }

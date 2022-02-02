@@ -1,5 +1,5 @@
 body {
-	background-color: var(--background);
+	background-color: var(--secondary-light);
 	font-family: "Roboto", sans-serif;
     display: flex;
     flex-direction: column;
@@ -11,7 +11,7 @@ html, body {
 
 h1, h2, h3 {
     font-family: 'Raleway', sans-serif;
-    color: var(--primary-dark);
+    color: var(--primary);
 }
 
 h2 .btn {
@@ -19,14 +19,18 @@ h2 .btn {
 }
 
 a {
+    color: var(--primary);
+}
+
+a:hover, a:focus {
     color: var(--primary-dark);
 }
 
 .navbar {
     min-height: 7.5rem;
-    border-bottom: 0.5rem solid var(--primary-dark);
+    border-bottom: 0.5rem solid var(--primary);
     background: var(--secondary-dark);
-    background: linear-gradient(0deg, var(--secondary-dark) 0%, var(--secondary-light) 30%, white 100%);
+    background: linear-gradient(0deg, var(--secondary-dark) 0%, var(--secondary) 30%, white 100%);
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 }
 
@@ -40,7 +44,6 @@ a {
     position: absolute;
     top: -4.6rem;
     left: 0;
-    transform: rotate(-12deg);
     filter: drop-shadow(0 0 0.5rem #999);
 }
 
@@ -49,8 +52,8 @@ a {
 }
 
 footer {
-    border-top: 0.5rem solid var(--primary-dark);
-    background-color: var(--primary-dark);
+    border-top: 0.5rem solid var(--primary);
+    background-color: var(--primary);
     color: white;
     padding: 1rem 1rem 2rem;
     box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
