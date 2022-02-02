@@ -102,7 +102,7 @@ public class CourseControllerTests
 		//arrange
 		var course = new Course
 		{
-			Meters = 10 * Course.MetersPerMile,
+			Meters = 10 * Distance.MetersPerMile,
 			Results = new List<Result>
 				{
 					new Result {Athlete = new Athlete {ID = 123, Age = 20}, Duration = new Time(TimeSpan.Parse("2:34"))},
