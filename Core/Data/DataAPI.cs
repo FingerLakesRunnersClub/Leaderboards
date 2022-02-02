@@ -1,22 +1,21 @@
 using System.Text.Json;
-using Microsoft.Extensions.Configuration;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class DataAPI : IDataAPI
+public class DataAPI<T> : IDataAPI where T : IDataSource
 {
 	private readonly HttpClient _httpClient;
-	private readonly string _baseURL;
+	public IDataSource Source { get; }
 
-	public DataAPI(HttpClient httpClient, IConfiguration configuration)
+	public DataAPI(HttpClient httpClient, T source)
 	{
 		_httpClient = httpClient;
-		_baseURL = configuration.GetValue<string>("API");
+		Source = source;
 	}
 
 	public async Task<JsonElement> GetResults(uint id)
 	{
-		var url = $"{_baseURL}/results?raceid={id}";
+		var url = Source.URL(id);
 		var response = await _httpClient.GetStreamAsync(url);
 		var json = await JsonDocument.ParseAsync(response);
 		return json.RootElement;

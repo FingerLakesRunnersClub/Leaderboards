@@ -15,6 +15,7 @@ public class Course
 	public uint ID { get; init; }
 	public string Name { get; init; }
 	public string Type { get; init; }
+	public string Source { get; init; }
 	public string Distance { get; init; }
 	public double Meters { get; set; }
 	public string URL { get; init; }

@@ -18,7 +18,7 @@ public class Athlete
 
 	public byte AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte)(date.Subtract(DateOfBirth.Value).TotalDays / 365.2425)
-		: (byte)0;
+		: Age;
 
 	public Team Team => Age < 20 ? Teams[2]
 		: Age >= 70 ? Teams[6]

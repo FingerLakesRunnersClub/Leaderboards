@@ -1,8 +1,6 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -10,17 +8,25 @@ namespace FLRC.Leaderboards.Web;
 
 public class Startup
 {
-	public IConfiguration Configuration { get; }
-
-	public Startup(IConfiguration configuration) => Configuration = configuration;
-
 	public void ConfigureServices(IServiceCollection services)
 	{
 		services.AddControllersWithViews();
 		services.AddHttpClient();
-		services.AddSingleton<IDataAPI, DataAPI>();
-		services.AddSingleton<IGroupAPI, GroupAPI>();
+
 		services.AddSingleton<IDataService, DataService>();
+		services.AddSingleton<IGroupAPI, GroupAPI>();
+
+		services.AddSingleton<UltraSignup>();
+		services.AddSingleton<WebScorer>();
+
+		services.AddSingleton<DataAPI<UltraSignup>>();
+		services.AddSingleton<DataAPI<WebScorer>>();
+
+		services.AddSingleton<IDictionary<string, IDataAPI>>(s => new Dictionary<string, IDataAPI>
+		{
+			{ nameof(UltraSignup), s.GetService<DataAPI<UltraSignup>>() },
+			{ nameof(WebScorer), s.GetService<DataAPI<WebScorer>>() }
+		});
 	}
 
 	public void Configure(IApplicationBuilder app, IHostEnvironment env)
