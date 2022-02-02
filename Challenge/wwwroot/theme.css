@@ -1,7 +1,12 @@
 ﻿:root {
-	--primary-dark: #2e3595;
+	--primary-dark: #0056b3;
+	--primary: #2e3595;
 	--primary-light: #4b9eda;
 	--secondary-dark: #ffd600;
-	--secondary-light: #fff0a3;
-	--background: #ecf7ff;
+	--secondary: #fff0a3;
+	--secondary-light: #ecf7ff;
+}
+
+.navbar-brand .logo {
+	transform: rotate(-12deg);
 }
