@@ -11,7 +11,7 @@ public class CourseTests
 	public void CanGetMilesForCourse()
 	{
 		//arrange
-		var course = new Course { Meters = 3 * Course.MetersPerMile };
+		var course = new Course { Meters = 3 * Distance.MetersPerMile };
 
 		//act
 		var miles = course.Miles;
@@ -88,7 +88,7 @@ public class CourseTests
 	public void CanGetMostMiles()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results, Meters = 2 * Course.MetersPerMile };
+		var course = new Course { Results = CourseData.Results, Meters = 2 * Distance.MetersPerMile };
 
 		//act
 		var most = course.MostMiles().ToArray();
@@ -244,7 +244,7 @@ public class CourseTests
 		//assert
 		Assert.Equal(4, stats.Participants[string.Empty]);
 		Assert.Equal(8, stats.Runs[string.Empty]);
-		Assert.Equal(8 * 10000 / Course.MetersPerMile, stats.Miles[string.Empty]);
+		Assert.Equal(8 * 10000 / Distance.MetersPerMile, stats.Miles[string.Empty]);
 		Assert.Equal(2, stats.Average[string.Empty]);
 	}
 

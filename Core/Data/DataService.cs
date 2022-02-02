@@ -28,7 +28,7 @@ public class DataService : IDataService
 		_courses = configuration.GetSection("Courses").GetChildren()
 			.ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
 		foreach (var course in _courses.Values)
-			course.Meters = DataParser.ParseDistance(course.Distance);
+			course.Meters = new Distance(course.Distance).Meters;
 
 		CourseNames = _courses.ToDictionary(c => c.Key, c => c.Value.Name);
 		Links = configuration.GetSection("Links").GetChildren().ToDictionary(c => c.Key, c => c.Value);

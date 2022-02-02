@@ -27,7 +27,7 @@ public class StatisticsControllerTests
 		var courseStats = vm.Courses[course];
 		Assert.Equal(4, courseStats.Participants[string.Empty]);
 		Assert.Equal(8, courseStats.Runs[string.Empty]);
-		Assert.Equal(8 * 10000 / Course.MetersPerMile, courseStats.Miles[string.Empty]);
+		Assert.Equal(8 * 10000 / Distance.MetersPerMile, courseStats.Miles[string.Empty]);
 		Assert.Equal(2, courseStats.Average[string.Empty]);
 
 		var weeklyStats = vm.History.ToArray();

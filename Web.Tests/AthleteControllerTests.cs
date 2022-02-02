@@ -20,7 +20,7 @@ public class AthleteControllerTests
 		var athlete = new Athlete { ID = 123, Category = Category.M };
 		var course = new Course
 		{
-			Meters = 10 * Course.MetersPerMile,
+			Meters = 10 * Distance.MetersPerMile,
 			Results = new List<Result>
 				{
 					new Result
@@ -64,7 +64,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Course.MetersPerMile,
+			Meters = 10 * Distance.MetersPerMile,
 			Results = new List<Result>
 				{
 					new()
@@ -95,7 +95,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Course.MetersPerMile,
+			Meters = 10 * Distance.MetersPerMile,
 			Results = new List<Result>
 				{
 					new Result
@@ -125,7 +125,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Course.MetersPerMile,
+			Meters = 10 * Distance.MetersPerMile,
 			Results = new List<Result>
 				{
 					new()

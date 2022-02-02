@@ -8,9 +8,13 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core;
 
+public class Race
+{
+
+}
+
 public class Course
 {
-	public const double MetersPerMile = 1609.344;
 
 	public uint ID { get; init; }
 	public string Name { get; init; }
@@ -23,7 +27,7 @@ public class Course
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
 
-	public double Miles => Meters / MetersPerMile;
+	public double Miles => Meters / Core.Distance.MetersPerMile;
 
 	private IEnumerable<Result> _results = Array.Empty<Result>();
 
