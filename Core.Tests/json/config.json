@@ -2,9 +2,10 @@
   "About": "https://example.com",
   "Courses": [
     {
+	  "Source": "WebScorer",
       "ID": 123,
       "Name": "Virgil Crest Ultramarathons",
-      "Distance": "50K" 
+      "Distance": "50K"
     }
   ]
 }

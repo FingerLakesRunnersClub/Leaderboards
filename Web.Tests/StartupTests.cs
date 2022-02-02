@@ -1,6 +1,5 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSubstitute;
@@ -14,9 +13,8 @@ public class StartupTests
 	public void CanConfigureServices()
 	{
 		//arrange
-		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var services = new ServiceCollection();
-		var startup = new Startup(config);
+		var startup = new Startup();
 
 		//act
 		startup.ConfigureServices(services);
@@ -34,8 +32,7 @@ public class StartupTests
 		services.AddSingleton<DiagnosticSource>(_ => diag);
 		services.AddSingleton(_ => diag);
 
-		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-		var startup = new Startup(config);
+		var startup = new Startup();
 		startup.ConfigureServices(services);
 
 		var serviceProvider = services.BuildServiceProvider();
