@@ -1,4 +1,9 @@
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;

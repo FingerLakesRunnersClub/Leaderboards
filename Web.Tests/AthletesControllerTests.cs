@@ -1,4 +1,6 @@
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;

@@ -1,4 +1,10 @@
 using System.Collections.Concurrent;
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Reports;
+using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core;
 
@@ -138,7 +144,7 @@ public class Course
 				Team = t.Key,
 				AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration))
 					.Take(10)
-					.Select<GroupedResult, double>(rs =>
+					.Select(rs =>
 						AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
 							rs.First().Athlete.Category?.Value ?? Category.M.Value,
 							rs.First().AgeOnDayOfRun,

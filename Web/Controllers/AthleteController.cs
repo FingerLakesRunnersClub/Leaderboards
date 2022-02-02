@@ -1,4 +1,9 @@
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
