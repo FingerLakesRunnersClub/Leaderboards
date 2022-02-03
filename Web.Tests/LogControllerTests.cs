@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core;
-using FLRC.Leaderboards.Core.ActivityLog;
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Races;
+using FLRC.Leaderboards.Core.Reports;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;

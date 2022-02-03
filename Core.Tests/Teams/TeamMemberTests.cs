@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;

@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Data;
 

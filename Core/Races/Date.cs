@@ -1,4 +1,4 @@
-namespace FLRC.Leaderboards.Core;
+namespace FLRC.Leaderboards.Core.Races;
 
 public record Date : Formatted<DateTime>, IComparable<Date>
 {

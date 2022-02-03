@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Leaders;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
@@ -24,7 +25,7 @@ public class LeaderboardViewModelTests
 	public void CanGetCourseNamesFromCourses()
 	{
 		//arrange
-		var courses = new List<Course> { new Course { Name = "Virgil Crest Ultramarathons" } };
+		var courses = new List<Course> { new Course { Race = new Race { Name = "Virgil Crest Ultramarathons" } } };
 		var vm = new LeaderboardViewModel(courses, LeaderboardResultType.Team);
 
 		//act

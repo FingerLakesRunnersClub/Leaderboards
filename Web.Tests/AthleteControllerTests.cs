@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Web.Controllers;

@@ -1,8 +1,8 @@
-@using FLRC.Leaderboards.Core
+@using FLRC.Leaderboards.Core.Races
 @model Course
 
 <div class="float-sm-right mb-1 d-flex justify-content-between">
-    <a class="course-info btn btn-sm btn-outline-dark mx-1" href="@Model.URL">
+    <a class="course-info btn btn-sm btn-outline-dark mx-1" href="@Model.Race.URL">
         <i aria-hidden="true" class="fas fa-info-circle tp-35"></i>
         Course Info
     </a>
@@ -12,9 +12,9 @@
     </a>
 </div>
 <h4 class="mb-0">
-    @await Html.PartialAsync("CourseIcon", @Model) @Model.Name
+    @await Html.PartialAsync("CourseIcon", @Model) @Model.Race.Name
 </h4>
 <div class="mb-3">
-    <span class="badge badge-pill badge-secondary">@Model.Type</span>
+    <span class="badge badge-pill badge-secondary">@Model.Race.Type</span>
     <span class="badge badge-pill badge-warning">@Model.Distance.Display</span>
 </div>

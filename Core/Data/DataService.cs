@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Groups;
+using FLRC.Leaderboards.Core.Races;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -12,7 +13,7 @@ public class DataService : IDataService
 	private readonly IGroupAPI _groupAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
-	private readonly IDictionary<uint, Course> _courses;
+	private readonly IDictionary<uint, Race> _races;
 	private readonly uint _startListID;
 
 	public DataService(IDictionary<string, IDataAPI> dataAPI, IGroupAPI groupAPI, IConfiguration configuration,
@@ -25,19 +26,28 @@ public class DataService : IDataService
 		_cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
 
 		_startListID = configuration.GetValue<uint>("StartListRaceID");
-		_courses = configuration.GetSection("Courses").GetChildren()
-			.ToDictionary(c => uint.Parse(c["ID"]), GetCourseFromConfig);
+		_races = configuration.GetSection("Races").GetChildren()
+			.ToDictionary(c => uint.Parse(c["ID"]), GetRace);
 
-		CourseNames = _courses.ToDictionary(c => c.Key, c => c.Value.Name);
+		CourseNames = _races.ToDictionary(c => c.Key, c => c.Value.Name);
 		Links = configuration.GetSection("Links").GetChildren().ToDictionary(c => c.Key, c => c.Value);
 	}
 
-	private static Course GetCourseFromConfig(IConfigurationSection section)
+	private static Race GetRace(IConfigurationSection section)
 	{
-		var course = section.Get<Course>();
-		course.Distance = new Distance(section["Distance"]);
-		return course;
+		var race = section.Get<Race>();
+		race.Courses = GetCourses(race, section);
+		return race;
 	}
+
+	private static IReadOnlyList<Course> GetCourses(Race race, IConfigurationSection section)
+		=> section.GetSection("Courses").GetChildren()
+			.Select(c => new Course
+			{
+				Race = race,
+				ID = uint.Parse(c.Value),
+				Distance = new Distance(c.Key == "Default" ? section["Distance"] : c.Key)
+			}).ToList();
 
 	public IDictionary<uint, string> CourseNames { get; }
 	public IDictionary<string, string> Links { get; }
@@ -92,17 +102,23 @@ public class DataService : IDataService
 
 	public async Task<Course> GetResults(uint id)
 	{
-		var course = _courses[id];
+		var courses = _races.SelectMany(r => r.Value.Courses).Where(c => c.ID == id).ToList();
+		var updates = courses.Select(UpdateCourse);
+		await Task.WhenAll(updates);
+		return courses.First();
+	}
 
+	private async Task UpdateCourse(Course course)
+	{
 		try
 		{
 			if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
 			{
-				var json = await _dataAPI[course.Source].GetResults(id);
+				var json = await _dataAPI[course.Race.Source].GetResults(course.ID);
 				var newHash = json.ToString().GetHashCode();
 				if (newHash != course.LastHash)
 				{
-					course.Results = _dataAPI[course.Source].Source.ParseCourse(course, json);
+					course.Results = _dataAPI[course.Race.Source].Source.ParseCourse(course, json);
 					course.LastHash = newHash;
 				}
 
@@ -113,13 +129,11 @@ public class DataService : IDataService
 		{
 			_logger.LogWarning(e, "Could not retrieve results");
 		}
-
-		return course;
 	}
 
 	public async Task<IEnumerable<Course>> GetAllResults()
 	{
-		var tasks = _courses.Select(async c => await GetResults(c.Key));
+		var tasks = _races.Select(async c => await GetResults(c.Key));
 		return await Task.WhenAll(tasks);
 	}
 

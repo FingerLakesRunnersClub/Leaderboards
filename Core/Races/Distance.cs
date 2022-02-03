@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace FLRC.Leaderboards.Core;
+namespace FLRC.Leaderboards.Core.Races;
 
 public record Distance : Formatted<string>
 {

@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Races;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;

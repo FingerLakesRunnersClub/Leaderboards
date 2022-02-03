@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Results;
@@ -10,7 +11,7 @@ public class CourseResultsViewModel<T> : CourseResultsViewModel
 
 public class CourseResultsViewModel : DataTableViewModel
 {
-	public override string Title => $"{ResultType.Display} — {Course.Name}";
+	public override string Title => $"{ResultType.Display} — {Course.Race.Name}";
 
 	public FormattedResultType ResultType { get; init; }
 	public Category Category { get; init; }

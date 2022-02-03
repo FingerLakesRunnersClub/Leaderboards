@@ -6,17 +6,13 @@ using FLRC.Leaderboards.Core.Reports;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;
 
-namespace FLRC.Leaderboards.Core;
+namespace FLRC.Leaderboards.Core.Races;
 
 public class Course
 {
-
+	public Race Race { get; init; }
 	public uint ID { get; init; }
-	public string Name { get; init; }
-	public string Type { get; init; }
-	public string Source { get; init; }
-	public Distance Distance { get; set; }
-	public string URL { get; init; }
+	public Distance Distance { get; init; }
 
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
