@@ -15,7 +15,7 @@ public class StatisticsControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var course = new Course { Results = CourseData.Results, Meters = 10000 };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		dataService.GetAllResults().Returns(new[] { course });
 		var controller = new StatisticsController(dataService);
 

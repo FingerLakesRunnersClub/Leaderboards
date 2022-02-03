@@ -19,7 +19,7 @@ public class InvalidControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course
 		{
-			Meters = 10000,
+			Distance = new Distance("10K"),
 			Results = CourseData.Results
 		};
 		dataService.GetAllResults().Returns(new[] { course });
@@ -48,7 +48,7 @@ public class InvalidControllerTests
 		results.Add(badResult);
 		var course = new Course
 		{
-			Meters = 10000,
+			Distance = new Distance("10K"),
 			Results = results
 		};
 		dataService.GetAllResults().Returns(new[] { course });

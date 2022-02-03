@@ -9,7 +9,7 @@ public class SimilarAthleteTests
 	public void CanGetSimilarity()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
 		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
@@ -24,7 +24,7 @@ public class SimilarAthleteTests
 	public void CanGetOverlap()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
 		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
@@ -39,7 +39,7 @@ public class SimilarAthleteTests
 	public void CanCalculateFastestPaceDifference()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
 		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 
@@ -54,7 +54,7 @@ public class SimilarAthleteTests
 	public void CanCalculateScoreForRanking()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var my = new AthleteSummary(CourseData.Athlete1, new[] { course });
 		var their = new AthleteSummary(CourseData.Athlete2, new[] { course });
 

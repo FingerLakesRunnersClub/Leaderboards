@@ -13,10 +13,10 @@ public static class LeaderboardData
 
 	public static readonly IEnumerable<Course> Courses = new List<Course>
 		{
-			new() {Meters = 10 * Distance.MetersPerMile, Results = Results}
+			new() {Distance = new Distance("10 miles"), Results = Results}
 		};
 
-	private static Course Course => new() { Meters = 10 * Distance.MetersPerMile };
+	private static Course Course => new() { Distance = new Distance("10 miles") };
 
 	private static IEnumerable<Result> Results
 		=> new List<Result>

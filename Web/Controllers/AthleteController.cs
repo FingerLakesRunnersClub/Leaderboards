@@ -60,7 +60,7 @@ public class AthleteController : Controller
 		{
 			var result = sorted[rank - 1];
 			var category = result.Athlete.Category?.Value ?? Category.M.Value;
-			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, result.Course.Meters, result.Duration.Value);
+			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, result.Course.Distance.Meters, result.Duration.Value);
 
 			ranks.Add(new Ranked<Time>
 			{

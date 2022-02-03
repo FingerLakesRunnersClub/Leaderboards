@@ -26,12 +26,17 @@ public class DataService : IDataService
 
 		_startListID = configuration.GetValue<uint>("StartListRaceID");
 		_courses = configuration.GetSection("Courses").GetChildren()
-			.ToDictionary(c => uint.Parse(c["ID"]), c => c.Get<Course>());
-		foreach (var course in _courses.Values)
-			course.Meters = new Distance(course.Distance).Meters;
+			.ToDictionary(c => uint.Parse(c["ID"]), GetCourseFromConfig);
 
 		CourseNames = _courses.ToDictionary(c => c.Key, c => c.Value.Name);
 		Links = configuration.GetSection("Links").GetChildren().ToDictionary(c => c.Key, c => c.Value);
+	}
+
+	private static Course GetCourseFromConfig(IConfigurationSection section)
+	{
+		var course = section.Get<Course>();
+		course.Distance = new Distance(section["Distance"]);
+		return course;
 	}
 
 	public IDictionary<uint, string> CourseNames { get; }

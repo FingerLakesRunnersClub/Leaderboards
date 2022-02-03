@@ -20,7 +20,7 @@ public class InvalidController : Controller
 		var invalid = results.ToDictionary(c => c,
 			c => c.GroupedResults()
 				.Select(g => g.OrderBy(r => r.Duration).First())
-				.Where(r => AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(r.Athlete.Category?.Value ?? Category.M.Value, r.Athlete.Age, c.Meters, r.Duration.Value) >= 100));
+				.Where(r => AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(r.Athlete.Category?.Value ?? Category.M.Value, r.Athlete.Age, c.Distance.Meters, r.Duration.Value) >= 100));
 
 		return new InvalidViewModel
 		{

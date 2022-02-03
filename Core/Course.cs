@@ -8,11 +8,6 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core;
 
-public class Race
-{
-
-}
-
 public class Course
 {
 
@@ -20,14 +15,11 @@ public class Course
 	public string Name { get; init; }
 	public string Type { get; init; }
 	public string Source { get; init; }
-	public string Distance { get; init; }
-	public double Meters { get; set; }
+	public Distance Distance { get; set; }
 	public string URL { get; init; }
 
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
-
-	public double Miles => Meters / Core.Distance.MetersPerMile;
 
 	private IEnumerable<Result> _results = Array.Empty<Result>();
 
@@ -103,7 +95,7 @@ public class Course
 		if (_mostMilesCache.ContainsKey(key))
 			return _mostMilesCache[key];
 
-		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => r.Count() * Miles);
+		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => r.Count() * Distance.Miles);
 	}
 
 	private readonly IDictionary<string, RankedList<Date>> _earliestCache = new ConcurrentDictionary<string, RankedList<Date>>();
@@ -153,7 +145,7 @@ public class Course
 						AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
 							rs.First().Athlete.Category?.Value ?? Category.M.Value,
 							rs.First().AgeOnDayOfRun,
-							Meters,
+							Distance.Meters,
 							rs.Min(r => r.Duration.Value)))
 					.Average()
 				),
@@ -198,7 +190,7 @@ public class Course
 			var category = athlete.Category?.Value ?? Category.M.Value;
 
 			var result = getResult(results);
-			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, Meters, result.Duration.Value);
+			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, Distance.Meters, result.Duration.Value);
 
 			if (ageGrade >= 100)
 				continue;
@@ -241,9 +233,9 @@ public class Course
 			},
 		Miles = new Dictionary<string, double>
 			{
-				{string.Empty, Results.Count() * Miles },
-				{Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Miles },
-				{Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Miles }
+				{string.Empty, Results.Count() * Distance.Miles },
+				{Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Distance.Miles },
+				{Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Distance.Miles }
 			},
 		Average = new Dictionary<string, double>
 			{

@@ -11,7 +11,7 @@ public static class CourseData
 	public static readonly Athlete Athlete3 = new() { ID = 345, Category = Category.M, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990") };
 	public static readonly Athlete Athlete4 = new() { ID = 456, Category = Category.F, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990") };
 
-	public static readonly Course Course = new() { Meters = 10000 };
+	public static readonly Course Course = new() { Distance = new Distance("10K") };
 
 	public static IEnumerable<Result> Results => new List<Result>
 		{

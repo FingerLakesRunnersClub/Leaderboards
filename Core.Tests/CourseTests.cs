@@ -8,23 +8,10 @@ namespace FLRC.Leaderboards.Core.Tests;
 public class CourseTests
 {
 	[Fact]
-	public void CanGetMilesForCourse()
-	{
-		//arrange
-		var course = new Course { Meters = 3 * Distance.MetersPerMile };
-
-		//act
-		var miles = course.Miles;
-
-		//assert
-		Assert.Equal(3, miles);
-	}
-
-	[Fact]
 	public void CanGetFastestResults()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var fastest = course.Fastest().ToArray();
@@ -41,7 +28,7 @@ public class CourseTests
 	public void CanGetFastestResultsForCategory()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var fastest = course.Fastest(Category.F).ToArray();
@@ -56,7 +43,7 @@ public class CourseTests
 	public void CanGetMostRuns()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var most = course.MostRuns().ToArray();
@@ -73,7 +60,7 @@ public class CourseTests
 	public void CanGetMostRunsForCategory()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var most = course.MostRuns(Category.M).ToArray();
@@ -88,7 +75,7 @@ public class CourseTests
 	public void CanGetMostMiles()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results, Meters = 2 * Distance.MetersPerMile };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("2 miles") };
 
 		//act
 		var most = course.MostMiles().ToArray();
@@ -105,7 +92,7 @@ public class CourseTests
 	public void CanGetMostMilesForCategory()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var most = course.MostMiles(Category.M).ToArray();
@@ -120,7 +107,7 @@ public class CourseTests
 	public void CanGetBestAverage()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var avg = course.BestAverage().ToArray();
@@ -136,7 +123,7 @@ public class CourseTests
 	public void CanGetBestAverageForCategory()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var avg = course.BestAverage(Category.M).ToArray();
@@ -151,7 +138,7 @@ public class CourseTests
 	public void BestAverageDropsAthletesBelowThreshold()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var avg = course.BestAverage(Category.F).ToArray();
@@ -165,7 +152,7 @@ public class CourseTests
 	public void CanGetEarliestRun()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var earliest = course.Earliest().ToArray();
@@ -182,7 +169,7 @@ public class CourseTests
 	public void CanGetEarliestForCategory()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var earliest = course.Earliest(Category.M).ToArray();
@@ -197,7 +184,7 @@ public class CourseTests
 	public void CanGetPointsForFastestTime()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var results = course.Fastest();
@@ -210,7 +197,7 @@ public class CourseTests
 	public void CanGetPointsBasedOnFastestTime()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var results = course.Fastest(Category.M);
@@ -223,7 +210,7 @@ public class CourseTests
 	public void AverageAgeGradeBasedOnIndividualFastestTime()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results, Meters = 10000 };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var results = course.TeamPoints();
@@ -236,7 +223,7 @@ public class CourseTests
 	public void CanGetStatisticsForCourse()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results, Meters = 10000 };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var stats = course.Statistics();
@@ -252,7 +239,7 @@ public class CourseTests
 	public void CanGetResultsAsOfDate()
 	{
 		//arrange
-		var course = new Course { Results = CourseData.Results, Meters = 10000 };
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
 		var results = course.ResultsAsOf(new DateTime(2020, 1, 5));
@@ -273,7 +260,7 @@ public class CourseTests
 			StartTime = new Date(DateTime.Parse("1/9/2020")),
 			Duration = new Time(TimeSpan.Parse("0:54:32.1"))
 		});
-		var course = new Course { Results = courseResults, Meters = 10000 };
+		var course = new Course { Results = courseResults, Distance = new Distance("10K") };
 
 		//act
 		var results = course.Fastest();
