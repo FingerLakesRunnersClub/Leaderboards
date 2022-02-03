@@ -104,15 +104,15 @@ public class StatisticsController : Controller
 				{
 					{
 						string.Empty,
-						resultList.Sum(r => r.Course.Miles)
+						resultList.Sum(r => r.Course.Distance.Miles)
 					},
 					{
 						Category.F.Display,
-						fResults.Sum(r => r.Course.Miles)
+						fResults.Sum(r => r.Course.Distance.Miles)
 					},
 					{
 						Category.M.Display,
-						mResults.Sum(r => r.Course.Miles)
+						mResults.Sum(r => r.Course.Distance.Miles)
 					},
 				},
 			Average = new Dictionary<string, double>

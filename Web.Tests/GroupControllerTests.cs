@@ -20,7 +20,7 @@ public class GroupControllerTests
 				CourseData.Athlete1,
 				CourseData.Athlete3
 			});
-		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.Results } });
+		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.Results, Distance = new Distance("10K")} });
 		var controller = new GroupController(dataService);
 
 		//act
@@ -28,6 +28,6 @@ public class GroupControllerTests
 
 		//assert
 		var vm = (GroupResultsViewModel)result.Model;
-		Assert.Equal(2, vm.RankedResults.Count);
+		Assert.Equal(2, vm!.RankedResults.Count);
 	}
 }

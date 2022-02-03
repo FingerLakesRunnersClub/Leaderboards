@@ -31,12 +31,15 @@ public class CourseControllerTests
 	public async Task CanGetFastestResults()
 	{
 		//arrange
-		var course = Substitute.For<Course>();
-		course.Results = new List<Result>
+		var course = new Course
+		{
+			Distance = new Distance("10K"),
+			Results = new List<Result>
 			{
-				new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
-			};
+				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+			}
+		};
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
@@ -47,19 +50,22 @@ public class CourseControllerTests
 		var response = await controller.Fastest(123);
 
 		//assert
-		Assert.Equal((uint)234, ((CourseResultsViewModel<Time>)(response.Model)).RankedResults.First().Result.Athlete.ID);
+		Assert.Equal((uint) 234, ((CourseResultsViewModel<Time>) response.Model!).RankedResults.First().Result.Athlete.ID);
 	}
 
 	[Fact]
 	public async Task CanGetBestAverageResults()
 	{
 		//arrange
-		var course = Substitute.For<Course>();
-		course.Results = new List<Result>
+		var course = new Course
+		{
+			Distance = new Distance("10K"),
+			Results = new List<Result>
 			{
-				new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
-			};
+				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+			}
+		};
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
@@ -70,19 +76,22 @@ public class CourseControllerTests
 		var response = await controller.BestAverage(123);
 
 		//assert
-		Assert.Equal((uint)234, ((CourseResultsViewModel<Time>)(response.Model)).RankedResults.First().Result.Athlete.ID);
+		Assert.Equal((uint) 234, ((CourseResultsViewModel<Time>) response.Model!).RankedResults.First().Result.Athlete.ID);
 	}
 
 	[Fact]
 	public async Task CanGetMostRuns()
 	{
 		//arrange
-		var course = Substitute.For<Course>();
-		course.Results = new List<Result>
+		var course = new Course
+		{
+			Distance = new Distance("10K"),
+			Results = new List<Result>
 			{
-				new Result { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
-			};
+				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+			}
+		};
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
@@ -93,7 +102,7 @@ public class CourseControllerTests
 		var response = await controller.MostRuns(123);
 
 		//assert
-		Assert.Equal((uint)234, ((CourseResultsViewModel<ushort>)(response.Model)).RankedResults.First().Result.Athlete.ID);
+		Assert.Equal((uint) 234, ((CourseResultsViewModel<ushort>) response.Model!).RankedResults.First().Result.Athlete.ID);
 	}
 
 	[Fact]
@@ -102,13 +111,13 @@ public class CourseControllerTests
 		//arrange
 		var course = new Course
 		{
-			Meters = 10 * Distance.MetersPerMile,
+			Distance = new Distance("10 miles"),
 			Results = new List<Result>
-				{
-					new Result {Athlete = new Athlete {ID = 123, Age = 20}, Duration = new Time(TimeSpan.Parse("2:34"))},
-					new Result {Athlete = new Athlete {ID = 123, Age = 20}, Duration = new Time(TimeSpan.Parse("2:35"))},
-					new Result {Athlete = new Athlete {ID = 234, Age = 30}, Duration = new Time(TimeSpan.Parse("1:23"))},
-				}
+			{
+				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, Duration = new Time(TimeSpan.Parse("2:34")) },
+				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, Duration = new Time(TimeSpan.Parse("2:35")) },
+				new Result { Athlete = new Athlete { ID = 234, Age = 30 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+			}
 		};
 
 		var dataService = Substitute.For<IDataService>();
@@ -120,8 +129,8 @@ public class CourseControllerTests
 		var response = await controller.Team(123);
 
 		//assert
-		var vm = (CourseTeamResultsViewModel)response.Model;
-		var results = vm.Results.ToList();
+		var vm = (CourseTeamResultsViewModel) response.Model;
+		var results = vm!.Results.ToList();
 		var team2 = results.First(r => r.Team == Athlete.Teams[2]);
 		var team3 = results.First(r => r.Team == Athlete.Teams[3]);
 		Assert.Equal(1, team3.AgeGradePoints);

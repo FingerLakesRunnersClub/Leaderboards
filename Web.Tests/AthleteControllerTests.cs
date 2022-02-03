@@ -20,7 +20,7 @@ public class AthleteControllerTests
 		var athlete = new Athlete { ID = 123, Category = Category.M };
 		var course = new Course
 		{
-			Meters = 10 * Distance.MetersPerMile,
+			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 				{
 					new Result
@@ -64,7 +64,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Distance.MetersPerMile,
+			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 				{
 					new()
@@ -95,7 +95,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Distance.MetersPerMile,
+			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 				{
 					new Result
@@ -125,7 +125,7 @@ public class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
-			Meters = 10 * Distance.MetersPerMile,
+			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 				{
 					new()
@@ -184,7 +184,7 @@ public class AthleteControllerTests
 		dataService.GetAthlete(234).Returns(CourseData.Athlete2);
 		dataService.GetAthlete(345).Returns(CourseData.Athlete3);
 		dataService.GetAthlete(456).Returns(CourseData.Athlete4);
-		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.SimilarResults } });
+		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") } });
 
 		var controller = new AthleteController(dataService);
 
@@ -193,7 +193,7 @@ public class AthleteControllerTests
 
 		//assert
 		var vm = (SimilarAthletesViewModel)result.Model;
-		var matches = vm.Matches.ToList();
+		var matches = vm!.Matches.ToList();
 		Assert.Equal(CourseData.Athlete1, vm.Athlete);
 		Assert.Equal(CourseData.Athlete4, matches[0].Athlete);
 		Assert.Equal("96%", matches[0].Similarity.Display);

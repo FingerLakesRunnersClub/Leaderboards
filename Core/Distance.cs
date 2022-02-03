@@ -7,6 +7,8 @@ public record Distance : Formatted<string>
 	public const double MetersPerMile = 1609.344;
 	public double Meters { get; }
 
+	public double Miles => Meters / MetersPerMile;
+
 	public Distance(string value) : base(value)
 		=> Meters = ParseDistance(value);
 

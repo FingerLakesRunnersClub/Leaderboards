@@ -14,10 +14,7 @@ public class CompletedControllerTests
 	public async Task CanGetListOfAthletes()
 	{
 		//arrange
-		var course = new Course
-		{
-			Results = CourseData.Results
-		};
+		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(new[] { course });
 
@@ -28,6 +25,6 @@ public class CompletedControllerTests
 
 		//assert
 		var vm = (CompletedViewModel)response.Model;
-		Assert.Equal(4, vm.RankedResults.Count);
+		Assert.Equal(4, vm!.RankedResults.Count);
 	}
 }

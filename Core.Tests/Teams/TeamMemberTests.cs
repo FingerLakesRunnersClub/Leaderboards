@@ -14,8 +14,8 @@ public class TeamMemberTests
 		//arrange
 		var results = new List<Ranked<Time>>
 			{
-				new() { Count = 1, AgeGrade = new AgeGrade(90), Result = new Result { Course = new Course { Meters = 3 * Distance.MetersPerMile }}},
-				new() { Count = 2, AgeGrade = new AgeGrade(80), Result = new Result { Course = new Course { Meters = 4 * Distance.MetersPerMile }}},
+				new() { Count = 1, AgeGrade = new AgeGrade(90), Result = new Result { Course = new Course { Distance = new Distance("3 miles") }}},
+				new() { Count = 2, AgeGrade = new AgeGrade(80), Result = new Result { Course = new Course { Distance = new Distance("4 miles") }}},
 			};
 
 		//act

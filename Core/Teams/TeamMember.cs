@@ -13,7 +13,7 @@ public class TeamMember : IComparable<TeamMember>
 	{
 		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade.Value));
 		Runs = (ushort)results.Sum(r => r.Count);
-		Miles = Math.Round(results.Sum(r => r.Count * r.Result.Course.Miles), 1);
+		Miles = Math.Round(results.Sum(r => r.Count * r.Result.Course.Distance.Miles), 1);
 	}
 
 	public int CompareTo(TeamMember other) => AgeGrade.CompareTo(other.AgeGrade);

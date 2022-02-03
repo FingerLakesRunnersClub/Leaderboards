@@ -11,9 +11,9 @@ public class AthleteSummaryTests
 	public void CanGetTotalNumberOfResults()
 	{
 		//arrange
-		var course1 = new Course { Results = CourseData.Results };
-		var course2 = new Course { Results = CourseData.Results };
-		var course3 = new Course { Results = CourseData.Results };
+		var course1 = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
+		var course2 = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
+		var course3 = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var results = new[] { course1, course2, course3 };
 
 		//act
@@ -27,7 +27,7 @@ public class AthleteSummaryTests
 	public void SimilarAthletesSelectsOnlyCloseTimes()
 	{
 		//arrange
-		var results = new[] { new Course { Results = CourseData.SimilarResults } };
+		var results = new[] { new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") } };
 		var summary = new AthleteSummary(CourseData.Athlete1, results);
 
 		//act
@@ -45,6 +45,7 @@ public class AthleteSummaryTests
 		//arrange
 		var course = new Course
 		{
+			Distance = new Distance("400m"),
 			Results = new[]
 			{
 					new Result { Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(100))},

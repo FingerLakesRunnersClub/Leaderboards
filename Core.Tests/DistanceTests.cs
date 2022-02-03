@@ -19,4 +19,17 @@ public class DistanceTests
 		//assert
 		Assert.Equal(expected, actual.Meters);
 	}
+
+	[Fact]
+	public void CanGetMiles()
+	{
+		//arrange
+		var distance = new Distance("3 miles");
+
+		//act
+		var miles = distance.Miles;
+
+		//assert
+		Assert.Equal(3, miles);
+	}
 }
