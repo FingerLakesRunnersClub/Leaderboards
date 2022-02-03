@@ -7,17 +7,16 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web;
 
-public class StartupTests
+public class AppTests
 {
 	[Fact]
 	public void CanConfigureServices()
 	{
 		//arrange
 		var services = new ServiceCollection();
-		var startup = new Startup();
 
 		//act
-		startup.ConfigureServices(services);
+		App.ConfigureServices(services);
 
 		//assert
 		Assert.NotEmpty(services);
@@ -32,8 +31,7 @@ public class StartupTests
 		services.AddSingleton<DiagnosticSource>(_ => diag);
 		services.AddSingleton(_ => diag);
 
-		var startup = new Startup();
-		startup.ConfigureServices(services);
+		App.ConfigureServices(services);
 
 		var serviceProvider = services.BuildServiceProvider();
 		var app = new ApplicationBuilder(serviceProvider);
@@ -41,7 +39,7 @@ public class StartupTests
 		var env = Substitute.For<IHostEnvironment>();
 
 		//act
-		startup.Configure(app, env);
+		App.Configure(app, env);
 
 		//assert
 		Assert.NotEmpty(app.Properties);
