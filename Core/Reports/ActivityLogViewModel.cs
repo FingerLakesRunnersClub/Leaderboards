@@ -1,11 +1,12 @@
 using System.Collections.Immutable;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 
-namespace FLRC.Leaderboards.Core.ActivityLog;
+namespace FLRC.Leaderboards.Core.Reports;
 
 public class ActivityLogViewModel : ViewModel
 {
-	public override string Title => $"Activity Log" + (Course != null ? $" — {Course.Name}" : "");
+	public override string Title => $"Activity Log" + (Course != null ? $" — {Course.Race.Name}" : "");
 
 	public ActivityLogType Type { get; init; }
 	public Course Course { get; init; }

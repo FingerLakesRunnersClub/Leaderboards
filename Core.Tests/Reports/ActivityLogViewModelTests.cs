@@ -1,4 +1,5 @@
-using FLRC.Leaderboards.Core.ActivityLog;
+using FLRC.Leaderboards.Core.Races;
+using FLRC.Leaderboards.Core.Reports;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Reports;
@@ -22,10 +23,7 @@ public class ActivityLogViewModelTests
 	public void TitleContainsCourseNameWhenSet()
 	{
 		//arrange
-		var vm = new ActivityLogViewModel
-		{
-			Course = new Course { Name = "test course" }
-		};
+		var vm = new ActivityLogViewModel { Course = new Course { Race = new Race { Name = "test course" } } };
 
 		//act
 		var title = vm.Title;

@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Reports;

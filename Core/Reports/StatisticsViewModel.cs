@@ -1,3 +1,5 @@
+using FLRC.Leaderboards.Core.Races;
+
 namespace FLRC.Leaderboards.Core.Reports;
 
 public class StatisticsViewModel : ViewModel

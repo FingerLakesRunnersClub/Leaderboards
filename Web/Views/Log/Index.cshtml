@@ -1,4 +1,4 @@
-﻿@using FLRC.Leaderboards.Core.ActivityLog
+﻿@using FLRC.Leaderboards.Core.Reports
 @model ActivityLogViewModel
 
 @functions
@@ -54,7 +54,7 @@
                         {
                             <td>
                                 <a href="/Course/@result.Course.ID/Fastest">
-                                    @result.Course.Name
+                                    @result.Course.Race.Name
                                 </a>
                             </td>
                         }

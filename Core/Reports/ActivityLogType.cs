@@ -1,4 +1,4 @@
-namespace FLRC.Leaderboards.Core.ActivityLog;
+namespace FLRC.Leaderboards.Core.Reports;
 
 public enum ActivityLogType
 {

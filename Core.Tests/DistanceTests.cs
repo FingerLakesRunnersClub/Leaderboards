@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using FLRC.Leaderboards.Core.Races;
+using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests;
 

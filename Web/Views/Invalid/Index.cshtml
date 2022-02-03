@@ -10,8 +10,8 @@
         }
         @foreach (var (course, results) in Model.Results)
         {
-            <h3>@course.Name</h3>
-            <table aria-label="Invalid Results for @course.Name"
+            <h3>@course.Race.Name</h3>
+            <table aria-label="Invalid Results for @course.Race.Name"
                    class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
                 <thead>
                     <tr>

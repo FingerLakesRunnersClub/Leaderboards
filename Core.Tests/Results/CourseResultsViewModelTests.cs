@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
@@ -12,7 +13,7 @@ public class CourseResultsViewModelTests
 		var vm = new CourseResultsViewModel
 		{
 			ResultType = new FormattedResultType(ResultType.Fastest),
-			Course = new Course { Name = "Virgil Crest Ultramarathons" }
+			Course = new Course { Race = new Race { Name = "Virgil Crest Ultramarathons" } }
 		};
 
 		//act

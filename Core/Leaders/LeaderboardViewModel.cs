@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 
@@ -19,7 +20,7 @@ public class LeaderboardViewModel : ViewModel
 		var courseList = courses.ToList();
 		_courses = courseList;
 		_filter = GetFilter(type);
-		CourseNames = courseList.ToDictionary(c => c.ID, c => c.Name);
+		CourseNames = courseList.ToDictionary(c => c.ID, c => c.Race.Name);
 		LeaderboardResultType = type;
 	}
 

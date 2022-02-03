@@ -1,11 +1,14 @@
 {
   "About": "https://example.com",
-  "Courses": [
+  "Races": [
     {
 	  "Source": "WebScorer",
       "ID": 123,
       "Name": "Virgil Crest Ultramarathons",
-      "Distance": "50K"
+      "Distance": "50K",
+	  "Courses": {
+		"Default": 123
+	  }
     }
   ]
 }

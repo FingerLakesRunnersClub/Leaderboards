@@ -35,12 +35,12 @@
     <div class="card card-highlighted mb-3">
     <div class="card-header">
         @await Html.PartialAsync("CourseIcon", @results.Key)
-        @results.Key.Name
-        <a style="margin: 2px 5px 0px;" class="float-right" href="@results.Key.URL" title="Course Info" target="_blank">
+        @results.Key.Race.Name
+        <a style="margin: 2px 5px 0px;" class="float-right" href="@results.Key.Race.URL" title="Course Info" target="_blank">
             <i aria-hidden="true" class="fas fa-info-circle"></i>
         </a>
         <span class="float-right">
-            <span class="badge badge-pill badge-secondary">@results.Key.Type</span>
+            <span class="badge badge-pill badge-secondary">@results.Key.Race.Type</span>
             <span class="badge badge-pill badge-warning">@results.Key.Distance.Display</span>
         </span>
     </div>

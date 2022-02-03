@@ -1,3 +1,5 @@
+using FLRC.Leaderboards.Core.Races;
+
 namespace FLRC.Leaderboards.Core.Teams;
 
 public class TeamSummaryViewModel : ViewModel
