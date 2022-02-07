@@ -16,7 +16,7 @@ public class TeamControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var controller = new TeamController(dataService);
+		var controller = new TeamController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(3);
@@ -32,7 +32,7 @@ public class TeamControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService);
+		var controller = new TeamController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(3);
@@ -48,7 +48,7 @@ public class TeamControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService);
+		var controller = new TeamController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(3);
@@ -64,7 +64,7 @@ public class TeamControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService);
+		var controller = new TeamController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Members(3);

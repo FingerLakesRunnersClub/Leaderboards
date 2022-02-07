@@ -11,8 +11,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class StatisticsController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public StatisticsController(IDataService dataService) => _dataService = dataService;
+	public StatisticsController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index() => View(await GetStatistics());
 
@@ -30,8 +35,7 @@ public class StatisticsController : Controller
 
 		return new StatisticsViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Courses = courseStats,
 			History = history,
 			Total = GetTotals(athletes, courseStats)
@@ -43,38 +47,38 @@ public class StatisticsController : Controller
 		{
 			Participants = new Dictionary<string, int>
 			{
-					{string.Empty, athletes.Count},
-					{Category.F.Display, athletes.Count(a => a.Category == Category.F)},
-					{Category.M.Display, athletes.Count(a => a.Category == Category.M)}
+				{ string.Empty, athletes.Count },
+				{ Category.F.Display, athletes.Count(a => a.Category == Category.F) },
+				{ Category.M.Display, athletes.Count(a => a.Category == Category.M) }
 			},
 			Runs = new Dictionary<string, int>
 			{
-					{string.Empty, courseStats.Sum(stats => stats.Value.Runs[string.Empty])},
-					{Category.F.Display, courseStats.Sum(stats => stats.Value.Runs[Category.F.Display])},
-					{Category.M.Display, courseStats.Sum(stats => stats.Value.Runs[Category.M.Display])}
+				{ string.Empty, courseStats.Sum(stats => stats.Value.Runs[string.Empty]) },
+				{ Category.F.Display, courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) },
+				{ Category.M.Display, courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) }
 			},
 			Miles = new Dictionary<string, double>
 			{
-					{string.Empty, courseStats.Sum(stats => stats.Value.Miles[string.Empty])},
-					{Category.F.Display, courseStats.Sum(stats => stats.Value.Miles[Category.F.Display])},
-					{Category.M.Display, courseStats.Sum(stats => stats.Value.Miles[Category.M.Display])}
+				{ string.Empty, courseStats.Sum(stats => stats.Value.Miles[string.Empty]) },
+				{ Category.F.Display, courseStats.Sum(stats => stats.Value.Miles[Category.F.Display]) },
+				{ Category.M.Display, courseStats.Sum(stats => stats.Value.Miles[Category.M.Display]) }
 			},
 			Average = new Dictionary<string, double>
 			{
-					{
-						string.Empty,
-						(double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count
-					},
-					{
-						Category.F.Display,
-						(double) courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) /
-						athletes.Count(a => a.Category == Category.F)
-					},
-					{
-						Category.M.Display,
-						(double) courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) /
-						athletes.Count(a => a.Category == Category.M)
-					}
+				{
+					string.Empty,
+					(double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count
+				},
+				{
+					Category.F.Display,
+					(double) courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) /
+					athletes.Count(a => a.Category == Category.F)
+				},
+				{
+					Category.M.Display,
+					(double) courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) /
+					athletes.Count(a => a.Category == Category.M)
+				}
 			}
 		};
 
@@ -90,38 +94,38 @@ public class StatisticsController : Controller
 		return new Statistics
 		{
 			Participants = new Dictionary<string, int>
-				{
-					{string.Empty, athletes.Count},
-					{Category.F.Display, fAthletes.Count},
-					{Category.M.Display, mAthletes.Count}
-				},
+			{
+				{ string.Empty, athletes.Count },
+				{ Category.F.Display, fAthletes.Count },
+				{ Category.M.Display, mAthletes.Count }
+			},
 			Runs = new Dictionary<string, int>
-				{
-					{string.Empty, resultList.Count},
-					{Category.F.Display, fResults.Count},
-					{Category.M.Display, mResults.Count}
-				},
+			{
+				{ string.Empty, resultList.Count },
+				{ Category.F.Display, fResults.Count },
+				{ Category.M.Display, mResults.Count }
+			},
 			Miles = new Dictionary<string, double>
+			{
 				{
-					{
-						string.Empty,
-						resultList.Sum(r => r.Course.Distance.Miles)
-					},
-					{
-						Category.F.Display,
-						fResults.Sum(r => r.Course.Distance.Miles)
-					},
-					{
-						Category.M.Display,
-						mResults.Sum(r => r.Course.Distance.Miles)
-					},
+					string.Empty,
+					resultList.Sum(r => r.Course.Distance.Miles)
 				},
-			Average = new Dictionary<string, double>
 				{
-					{string.Empty, (double) resultList.Count / athletes.Count},
-					{Category.F.Display, (double) fResults.Count / fAthletes.Count},
-					{Category.M.Display, (double) mResults.Count / mAthletes.Count}
-				}
+					Category.F.Display,
+					fResults.Sum(r => r.Course.Distance.Miles)
+				},
+				{
+					Category.M.Display,
+					mResults.Sum(r => r.Course.Distance.Miles)
+				},
+			},
+			Average = new Dictionary<string, double>
+			{
+				{ string.Empty, (double) resultList.Count / athletes.Count },
+				{ Category.F.Display, (double) fResults.Count / fAthletes.Count },
+				{ Category.M.Display, (double) mResults.Count / mAthletes.Count }
+			}
 		};
 	}
 }

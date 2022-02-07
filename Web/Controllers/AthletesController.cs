@@ -8,16 +8,21 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class AthletesController : Controller
 {
 	private readonly IDataService _dataService;
-	public AthletesController(IDataService dataService) => _dataService = dataService;
+	private readonly Config _config;
+
+	public AthletesController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index() => View(await GetAthletes());
 
 	private async Task<AthletesViewModel> GetAthletes()
 	{
-		return new()
+		return new AthletesViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Athletes = await _dataService.GetAthletes()
 		};
 	}

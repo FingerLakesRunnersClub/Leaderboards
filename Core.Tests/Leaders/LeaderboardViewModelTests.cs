@@ -22,20 +22,6 @@ public class LeaderboardViewModelTests
 	}
 
 	[Fact]
-	public void CanGetCourseNamesFromCourses()
-	{
-		//arrange
-		var courses = new List<Course> { new Course { Race = new Race { Name = "Virgil Crest Ultramarathons" } } };
-		var vm = new LeaderboardViewModel(courses, LeaderboardResultType.Team);
-
-		//act
-		var names = vm.CourseNames;
-
-		//assert
-		Assert.Equal("Virgil Crest Ultramarathons", names.First().Value);
-	}
-
-	[Fact]
 	public void TeamResultsContainsAllTables()
 	{
 		//arrange

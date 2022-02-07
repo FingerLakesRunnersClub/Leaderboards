@@ -1,6 +1,8 @@
-﻿using FLRC.Leaderboards.Core.Data;
+﻿using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -38,9 +40,11 @@ public static class App
 
 		services.AddSingleton<IDictionary<string, IDataAPI>>(s => new Dictionary<string, IDataAPI>
 		{
-			{ nameof(UltraSignup), s.GetService<DataAPI<UltraSignup>>() },
-			{ nameof(WebScorer), s.GetService<DataAPI<WebScorer>>() }
+			{ nameof(UltraSignup), s.GetRequiredService<DataAPI<UltraSignup>>() },
+			{ nameof(WebScorer), s.GetRequiredService<DataAPI<WebScorer>>() }
 		});
+
+		services.AddSingleton(s => new Config(s.GetRequiredService<IConfiguration>()));
 	}
 
 	public static void Configure(IApplicationBuilder app, IHostEnvironment env)

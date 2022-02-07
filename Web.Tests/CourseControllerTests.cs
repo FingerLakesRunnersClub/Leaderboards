@@ -1,10 +1,10 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;
+using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;
@@ -19,7 +19,7 @@ public class CourseControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(new Course { Results = new List<Result>() });
-		var controller = new CourseController(dataService);
+		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
 		await controller.Fastest(123);
@@ -45,7 +45,7 @@ public class CourseControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
-		var controller = new CourseController(dataService);
+		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Fastest(123);
@@ -71,7 +71,7 @@ public class CourseControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
-		var controller = new CourseController(dataService);
+		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.BestAverage(123);
@@ -97,7 +97,7 @@ public class CourseControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
-		var controller = new CourseController(dataService);
+		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.MostRuns(123);
@@ -124,7 +124,7 @@ public class CourseControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>()).Returns(course);
 
-		var controller = new CourseController(dataService);
+		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Team(123);

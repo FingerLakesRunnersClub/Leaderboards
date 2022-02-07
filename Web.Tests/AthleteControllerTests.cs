@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
@@ -23,31 +22,31 @@ public class AthleteControllerTests
 		{
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
+			{
+				new Result
 				{
-					new Result
-					{
-						Athlete = athlete,
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(2, 4, 6))
-					},
-					new Result
-					{
-						Athlete = new Athlete {ID = 234, Category = Category.F},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(1, 2, 3))
-					}
+					Athlete = athlete,
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(2, 4, 6))
+				},
+				new Result
+				{
+					Athlete = new Athlete { ID = 234, Category = Category.F },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
+			}
 		};
 		dataService.GetAthlete(123).Returns(athlete);
 		dataService.GetAllResults().Returns(new List<Course> { course });
-		var controller = new AthleteController(dataService);
+		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(123);
 
 		//assert
-		var vm = (AthleteSummaryViewModel)response.Model;
-		Assert.Equal((uint)123, vm.Summary.Athlete.ID);
+		var vm = (AthleteSummaryViewModel) response.Model;
+		Assert.Equal((uint) 123, vm!.Summary.Athlete.ID);
 		Assert.Equal(1, vm.Summary.Fastest[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.Average[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.Runs[course].Rank.Value);
@@ -67,25 +66,25 @@ public class AthleteControllerTests
 			ID = 234,
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
+			{
+				new()
 				{
-					new()
-					{
-						Athlete = athlete,
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(1, 2, 3))
-					}
+					Athlete = athlete,
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
+			}
 		};
 		dataService.GetAthlete(123).Returns(athlete);
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new AthleteController(dataService);
+		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Log(123);
 
 		//assert
-		var vm = (AthleteLogViewModel)response.Model;
-		Assert.NotEmpty(vm.Results);
+		var vm = (AthleteLogViewModel) response.Model;
+		Assert.NotEmpty(vm!.Results);
 	}
 
 	[Fact]
@@ -98,24 +97,24 @@ public class AthleteControllerTests
 			ID = 234,
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
+			{
+				new Result
 				{
-					new Result
-					{
-						Athlete = new Athlete {ID = 123},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(1, 2, 3))
-					}
+					Athlete = new Athlete { ID = 123 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
+			}
 		};
 		dataService.GetResults(234).Returns(course);
-		var controller = new AthleteController(dataService);
+		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Course(123, 234);
 
 		//assert
-		var vm = (AthleteCourseResultsViewModel)response.Model;
-		Assert.NotEmpty(vm.Results);
+		var vm = (AthleteCourseResultsViewModel) response.Model;
+		Assert.NotEmpty(vm!.Results);
 	}
 
 	[Fact]
@@ -128,48 +127,48 @@ public class AthleteControllerTests
 			ID = 234,
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
+			{
+				new()
 				{
-					new()
-					{
-						Athlete = new Athlete {ID = 123, Age = 35 },
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(0, 2, 3))
-					},
-					new()
-					{
-						Athlete = new Athlete {ID = 123, Age = 35},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(1, 2, 3))
-					},
-					new()
-					{
-						Athlete = new Athlete {ID = 123, Age = 35},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(2, 3, 4))
-					},
-					new()
-					{
-						Athlete = new Athlete {ID = 123, Age = 35},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(0, 2, 3))
-					},
-					new()
-					{
-						Athlete = new Athlete {ID = 123, Age = 35},
-						Course = CourseData.Course,
-						Duration = new Time(new TimeSpan(1, 2, 3))
-					}
+					Athlete = new Athlete { ID = 123, Age = 35 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(0, 2, 3))
+				},
+				new()
+				{
+					Athlete = new Athlete { ID = 123, Age = 35 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(1, 2, 3))
+				},
+				new()
+				{
+					Athlete = new Athlete { ID = 123, Age = 35 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(2, 3, 4))
+				},
+				new()
+				{
+					Athlete = new Athlete { ID = 123, Age = 35 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(0, 2, 3))
+				},
+				new()
+				{
+					Athlete = new Athlete { ID = 123, Age = 35 },
+					Course = CourseData.Course,
+					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
+			}
 		};
 		dataService.GetResults(234).Returns(course);
-		var controller = new AthleteController(dataService);
+		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Course(123, 234);
 
 		//assert
-		var vm = (AthleteCourseResultsViewModel)response.Model;
-		Assert.Equal(0, vm.Results[0].Rank.Value);
+		var vm = (AthleteCourseResultsViewModel) response.Model;
+		Assert.Equal(0, vm!.Results[0].Rank.Value);
 		Assert.Equal(0, vm.Results[1].Rank.Value);
 		Assert.Equal(1, vm.Results[2].Rank.Value);
 		Assert.Equal(1, vm.Results[3].Rank.Value);
@@ -187,13 +186,13 @@ public class AthleteControllerTests
 		dataService.GetAthlete(456).Returns(CourseData.Athlete4);
 		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") } });
 
-		var controller = new AthleteController(dataService);
+		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
 		var result = await controller.Similar(123);
 
 		//assert
-		var vm = (SimilarAthletesViewModel)result.Model;
+		var vm = (SimilarAthletesViewModel) result.Model;
 		var matches = vm!.Matches.ToList();
 		Assert.Equal(CourseData.Athlete1, vm.Athlete);
 		Assert.Equal(CourseData.Athlete4, matches[0].Athlete);

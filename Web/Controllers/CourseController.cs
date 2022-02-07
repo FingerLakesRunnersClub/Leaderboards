@@ -12,8 +12,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class CourseController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public CourseController(IDataService dataService) => _dataService = dataService;
+	public CourseController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Fastest(uint id, string other = null, byte? ag = null)
 	{
@@ -42,8 +47,7 @@ public class CourseController : Controller
 		var course = await _dataService.GetResults(courseID);
 		return new CourseTeamResultsViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = new FormattedResultType(ResultType.Team),
 			Course = course,
 			Results = course.TeamPoints(),
@@ -55,8 +59,7 @@ public class CourseController : Controller
 		var course = await _dataService.GetResults(courseID);
 		return new CourseResultsViewModel<T>
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = new FormattedResultType(resultType),
 			Category = category,
 			Course = course,

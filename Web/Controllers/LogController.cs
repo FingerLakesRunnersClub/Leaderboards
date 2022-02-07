@@ -9,11 +9,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class LogController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 	private readonly DateTime _today;
 
-	public LogController(IDataService dataService, DateTime? today = null)
+	public LogController(IDataService dataService, Config config, DateTime? today = null)
 	{
 		_dataService = dataService;
+		_config = config;
 		_today = today ?? DateTime.Today;
 	}
 
@@ -32,9 +34,8 @@ public class LogController : Controller
 
 		return new ActivityLogViewModel
 		{
+			Config = _config,
 			Type = type,
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
 			Course = course,
 			Results = results
 				.SelectMany(c => c.Results)

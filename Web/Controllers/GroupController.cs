@@ -9,8 +9,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class GroupController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public GroupController(IDataService dataService) => _dataService = dataService;
+	public GroupController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index(string id) => View(await GetGroupResults(id));
 
@@ -22,8 +27,7 @@ public class GroupController : Controller
 
 		return new GroupResultsViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = "Members",
 			Name = id,
 			RankedResults = overall.GroupMembers(group)
