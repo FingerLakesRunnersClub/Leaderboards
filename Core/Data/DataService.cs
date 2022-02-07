@@ -28,9 +28,6 @@ public class DataService : IDataService
 		_startListID = configuration.GetValue<uint>("StartListRaceID");
 		_races = configuration.GetSection("Races").GetChildren()
 			.ToDictionary(c => uint.Parse(c["ID"]), GetRace);
-
-		CourseNames = _races.ToDictionary(c => c.Key, c => c.Value.Name);
-		Links = configuration.GetSection("Links").GetChildren().ToDictionary(c => c.Key, c => c.Value);
 	}
 
 	private static Race GetRace(IConfigurationSection section)
@@ -48,9 +45,6 @@ public class DataService : IDataService
 				ID = uint.Parse(c.Value),
 				Distance = new Distance(c.Key == "Default" ? section["Distance"] : c.Key)
 			}).ToList();
-
-	public IDictionary<uint, string> CourseNames { get; }
-	public IDictionary<string, string> Links { get; }
 
 	private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
 	private DateTime _athleteCacheTimestamp;

@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
@@ -9,8 +10,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class OverallController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public OverallController(IDataService dataService) => _dataService = dataService;
+	public OverallController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Points(string id)
 	{
@@ -33,8 +39,7 @@ public class OverallController : Controller
 		var overall = new OverallResults(allResults);
 		return new OverallResultsViewModel<T>
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = title,
 			RankedResults = results(overall)
 		};
@@ -46,8 +51,7 @@ public class OverallController : Controller
 		var overall = new OverallResults(allResults);
 		return new OverallTeamResultsViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = title,
 			Results = results(overall)
 		};

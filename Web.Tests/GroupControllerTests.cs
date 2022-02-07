@@ -22,7 +22,7 @@ public class GroupControllerTests
 				CourseData.Athlete3
 			});
 		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.Results, Distance = new Distance("10K")} });
-		var controller = new GroupController(dataService);
+		var controller = new GroupController(dataService, TestHelpers.Config);
 
 		//act
 		var result = await controller.Index("Test");

@@ -1,5 +1,5 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;
@@ -13,7 +13,7 @@ public class LeaderboardControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var controller = new LeaderboardController(dataService);
+		var controller = new LeaderboardController(dataService, TestHelpers.Config);
 
 		//act
 		await controller.Index();

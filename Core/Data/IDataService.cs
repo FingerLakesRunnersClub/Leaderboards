@@ -5,9 +5,6 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public interface IDataService
 {
-	IDictionary<uint, string> CourseNames { get; }
-	IDictionary<string, string> Links { get; }
-
 	Task<Athlete> GetAthlete(uint id);
 	Task<IDictionary<uint, Athlete>> GetAthletes();
 

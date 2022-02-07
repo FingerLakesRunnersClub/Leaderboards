@@ -24,7 +24,7 @@ public class InvalidControllerTests
 			Results = CourseData.Results
 		};
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new InvalidController(dataService);
+		var controller = new InvalidController(dataService, TestHelpers.Config);
 
 		//act
 		var result = await controller.Index();
@@ -53,7 +53,7 @@ public class InvalidControllerTests
 			Results = results
 		};
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new InvalidController(dataService);
+		var controller = new InvalidController(dataService, TestHelpers.Config);
 
 		//act
 		var result = await controller.Index();

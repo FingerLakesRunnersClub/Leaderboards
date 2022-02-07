@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Reports;
@@ -18,14 +17,14 @@ public class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new LogController(dataService, new DateTime(2020, 1, 8));
+		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act
 		var response = await controller.Index();
 
 		//assert
-		var vm = (ActivityLogViewModel)response.Model;
-		var results = vm.Results.SelectMany(g => g).ToArray();
+		var vm = (ActivityLogViewModel) response.Model;
+		var results = vm!.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
 		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
 		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);
@@ -43,14 +42,14 @@ public class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new LogController(dataService, new DateTime(2020, 1, 8));
+		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act
 		var response = await controller.All();
 
 		//assert
-		var vm = (ActivityLogViewModel)response.Model;
-		var results = vm.Results.SelectMany(g => g).ToArray();
+		var vm = (ActivityLogViewModel) response.Model;
+		var results = vm!.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
 		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);
 		Assert.Equal(new DateTime(2020, 1, 6), results[2].StartTime.Value);
@@ -68,14 +67,14 @@ public class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
 		dataService.GetResults(123).Returns(course);
-		var controller = new LogController(dataService, new DateTime(2020, 1, 8));
+		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act
 		var response = await controller.Index(123);
 
 		//assert
-		var vm = (ActivityLogViewModel)response.Model;
-		var results = vm.Results.SelectMany(g => g).ToArray();
+		var vm = (ActivityLogViewModel) response.Model;
+		var results = vm!.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
 		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
 		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);

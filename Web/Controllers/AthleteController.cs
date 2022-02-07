@@ -11,8 +11,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class AthleteController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public AthleteController(IDataService dataService) => _dataService = dataService;
+	public AthleteController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
 
@@ -30,8 +35,7 @@ public class AthleteController : Controller
 
 		return new AthleteSummaryViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Summary = summary
 		};
 	}
@@ -43,8 +47,7 @@ public class AthleteController : Controller
 
 		return new AthleteCourseResultsViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Athlete = results.First().Athlete,
 			Course = course,
 			Results = Rank(results)
@@ -93,8 +96,7 @@ public class AthleteController : Controller
 
 		return new AthleteLogViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Athlete = athlete,
 			Results = Rank(results)
 		};
@@ -108,8 +110,7 @@ public class AthleteController : Controller
 
 		return new SimilarAthletesViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Athlete = my.Athlete,
 			Matches = Rank(my.SimilarAthletes)
 		};

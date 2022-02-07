@@ -12,23 +12,6 @@ namespace FLRC.Leaderboards.Core.Tests.Data;
 public class DataServiceTests
 {
 	[Fact]
-	public void CanGetCourseNames()
-	{
-		//arrange
-		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		var groupAPI = Substitute.For<IGroupAPI>();
-		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(dataAPI, groupAPI, config, loggerFactory);
-
-		//act
-		var courseNames = dataService.CourseNames;
-
-		//assert
-		Assert.Equal("Virgil Crest Ultramarathons", courseNames.First().Value);
-	}
-
-	[Fact]
 	public async Task CanParseResultsFromAPI()
 	{
 		//arrange

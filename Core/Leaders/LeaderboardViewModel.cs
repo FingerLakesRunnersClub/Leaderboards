@@ -20,7 +20,6 @@ public class LeaderboardViewModel : ViewModel
 		var courseList = courses.ToList();
 		_courses = courseList;
 		_filter = GetFilter(type);
-		CourseNames = courseList.ToDictionary(c => c.ID, c => c.Race.Name);
 		LeaderboardResultType = type;
 	}
 

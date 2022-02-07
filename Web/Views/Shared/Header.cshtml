@@ -36,7 +36,7 @@
                         Races
                     </a>
                     <ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
-                        @foreach (var course in Model.CourseNames)
+                        @foreach (var course in Model.Config.CourseNames)
                         {
                             <li class="dropdown-item">
                                 <a href="/Course/@course.Key/Fastest">@course.Value</a>
@@ -49,7 +49,7 @@
                         About
                     </a>
                     <ul id="about" class="dropdown-menu" onclick="event.stopPropagation();">
-                        @foreach (var link in Model.Links)
+                        @foreach (var link in Model.Config.Links)
                         {
                             <li class="dropdown-item">
                                 <a href="@link.Value">@link.Key</a>

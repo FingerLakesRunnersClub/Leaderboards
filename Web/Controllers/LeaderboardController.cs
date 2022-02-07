@@ -8,8 +8,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class LeaderboardController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public LeaderboardController(IDataService dataService) => _dataService = dataService;
+	public LeaderboardController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index(string id = null)
 	{
@@ -23,7 +28,7 @@ public class LeaderboardController : Controller
 		var results = await _dataService.GetAllResults();
 		return new LeaderboardViewModel(results, type)
 		{
-			Links = _dataService.Links
+			Config = _config
 		};
 	}
 }

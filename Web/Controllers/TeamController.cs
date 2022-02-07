@@ -10,8 +10,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class TeamController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public TeamController(IDataService dataService) => _dataService = dataService;
+	public TeamController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index(byte id) => View(await GetTeam(Athlete.Teams[id]));
 
@@ -22,8 +27,7 @@ public class TeamController : Controller
 		var overall = new OverallResults(await _dataService.GetAllResults());
 		return new TeamMembersViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			ResultType = "Members",
 			Team = team,
 			RankedResults = overall.TeamMembers(team.Value)
@@ -37,8 +41,7 @@ public class TeamController : Controller
 
 		return new TeamSummaryViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Team = team,
 			Overall = overall.TeamPoints().FirstOrDefault(r => r.Team == team),
 			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().FirstOrDefault(r => r.Team == team))

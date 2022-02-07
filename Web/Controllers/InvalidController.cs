@@ -9,8 +9,13 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class InvalidController : Controller
 {
 	private readonly IDataService _dataService;
+	private readonly Config _config;
 
-	public InvalidController(IDataService dataService) => _dataService = dataService;
+	public InvalidController(IDataService dataService, Config config)
+	{
+		_dataService = dataService;
+		_config = config;
+	}
 
 	public async Task<ViewResult> Index() => View(await GetResults());
 
@@ -24,8 +29,7 @@ public class InvalidController : Controller
 
 		return new InvalidViewModel
 		{
-			CourseNames = _dataService.CourseNames,
-			Links = _dataService.Links,
+			Config = _config,
 			Results = invalid.Where(r => r.Value.Any()).ToDictionary(r => r.Key, r => r.Value)
 		};
 	}

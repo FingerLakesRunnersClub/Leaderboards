@@ -19,7 +19,7 @@ public class CompletedControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(new[] { course });
 
-		var controller = new CompletedController(dataService);
+		var controller = new CompletedController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index();
