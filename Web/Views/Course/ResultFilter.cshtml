@@ -32,7 +32,7 @@
 			{
 				foreach (var course in Model.Course.Race.Courses)
 				{
-					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@Model.Course.ID-@course.Distance.Display/Fastest/@Model.Category?.Value">@course.Distance.Display</a>
+					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Category?.Value">@course.Distance.Display</a>
 				}
 			}
 		</div>
@@ -40,11 +40,13 @@
 
 	@if (Model.ResultType.Value != ResultType.Team)
 	{
+		var distance = Model.Config.Features.MultiDistance ? Model.Course.Distance.Display : "";
+		var resultsURL = $"/Course/{Model.Course.ID}/{distance}/{Model.ResultType.Value}".Replace("//", "/");
 		<section class="mb-4">
 			<div class="btn-group">
-				<a class="btn btn-sm btn-@style((Category)null)" href="/Course/@Model.Course.ID/@Model.ResultType.Value">All</a>
-				<a class="btn btn-sm btn-@style(Category.F)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/F">F</a>
-				<a class="btn btn-sm btn-@style(Category.M)" href="/Course/@Model.Course.ID/@Model.ResultType.Value/M">M</a>
+				<a class="btn btn-sm btn-@style((Category)null)" href="@resultsURL">All</a>
+				<a class="btn btn-sm btn-@style(Category.F)" href="@resultsURL/F">F</a>
+				<a class="btn btn-sm btn-@style(Category.M)" href="@resultsURL/M">M</a>
 			</div>
 
 			@if (Model.ResultType.Value == ResultType.Fastest)

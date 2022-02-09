@@ -27,7 +27,7 @@ public class LogController : Controller
 
 	private async Task<ActivityLogViewModel> GetActivityLog(uint? id, ActivityLogType type, Func<Result, string> grouping, DateTime? filter = null)
 	{
-		var course = id != null ? await _dataService.GetResults(id.Value) : null;
+		var course = id != null ? await _dataService.GetResults(id.Value, null) : null;
 		var results = course == null
 			? await _dataService.GetAllResults()
 			: new[] { course };

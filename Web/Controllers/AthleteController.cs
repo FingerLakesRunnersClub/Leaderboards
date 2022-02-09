@@ -21,7 +21,7 @@ public class AthleteController : Controller
 
 	public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
 
-	public async Task<ViewResult> Course(uint id, uint other) => View(await GetResults(id, other));
+	public async Task<ViewResult> Course(uint id, uint courseID, string distance) => View(await GetResults(id, courseID, distance));
 
 	public async Task<ViewResult> Log(uint id) => View(await GetLog(id));
 
@@ -40,9 +40,9 @@ public class AthleteController : Controller
 		};
 	}
 
-	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID)
+	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID, string distance)
 	{
-		var course = await _dataService.GetResults(courseID);
+		var course = await _dataService.GetResults(courseID, distance);
 		var results = course.Results.Where(r => r.Athlete.ID == id).ToList();
 
 		return new AthleteCourseResultsViewModel
@@ -92,7 +92,7 @@ public class AthleteController : Controller
 	{
 		var athlete = await _dataService.GetAthlete(id);
 		var courses = await _dataService.GetAllResults();
-		var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete == athlete));
+		var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete.ID == athlete.ID));
 
 		return new AthleteLogViewModel
 		{

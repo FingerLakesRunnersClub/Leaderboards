@@ -194,7 +194,7 @@ public class Course
 			var firstPlace = !ranks.Any();
 			var value = getValue(results);
 
-			ranks.Add(new Ranked<T>
+			var rankedResult = new Ranked<T>
 			{
 				Rank = !firstPlace && ranks.Last().Value.Equals(value)
 					? ranks.Last().Rank
@@ -207,7 +207,9 @@ public class Course
 					? 100
 					: ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
 				AgeGrade = new AgeGrade(ageGrade)
-			});
+			};
+
+			ranks.Add(rankedResult);
 		}
 
 		return new RankedList<T>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToList());

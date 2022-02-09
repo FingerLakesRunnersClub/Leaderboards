@@ -18,14 +18,14 @@ public class CourseControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>()).Returns(new Course { Results = new List<Result>() });
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(new Course { Results = new List<Result>() });
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
-		await controller.Fastest(123);
+		await controller.Fastest(123, null);
 
 		//assert
-		await dataService.Received().GetResults(123);
+		await dataService.Received().GetResults(123, null);
 	}
 
 	[Fact]
@@ -43,12 +43,12 @@ public class CourseControllerTests
 		};
 
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>()).Returns(course);
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
 
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.Fastest(123);
+		var response = await controller.Fastest(123, null);
 
 		//assert
 		Assert.Equal((uint) 234, ((CourseResultsViewModel<Time>) response.Model!).RankedResults.First().Result.Athlete.ID);
@@ -69,12 +69,12 @@ public class CourseControllerTests
 		};
 
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>()).Returns(course);
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
 
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.BestAverage(123);
+		var response = await controller.BestAverage(123, null);
 
 		//assert
 		Assert.Equal((uint) 234, ((CourseResultsViewModel<Time>) response.Model!).RankedResults.First().Result.Athlete.ID);
@@ -95,12 +95,12 @@ public class CourseControllerTests
 		};
 
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>()).Returns(course);
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
 
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.MostRuns(123);
+		var response = await controller.MostRuns(123, null);
 
 		//assert
 		Assert.Equal((uint) 234, ((CourseResultsViewModel<ushort>) response.Model!).RankedResults.First().Result.Athlete.ID);
@@ -122,12 +122,12 @@ public class CourseControllerTests
 		};
 
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>()).Returns(course);
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
 
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.Team(123);
+		var response = await controller.Team(123, null);
 
 		//assert
 		var vm = (CourseTeamResultsViewModel) response.Model;

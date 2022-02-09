@@ -2,12 +2,15 @@
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public record Distance : Formatted<string>
+public record Distance : Formatted<string>, IComparable<Distance>
 {
+	public const string DefaultKey = "Default";
 	public const double MetersPerMile = 1609.344;
+	private const double MarathonMeters = 42_195;
 	public double Meters { get; }
 
 	public double Miles => Meters / MetersPerMile;
+
 
 	public Distance(string value) : base(value)
 		=> Meters = ParseDistance(value);
@@ -16,6 +19,11 @@ public record Distance : Formatted<string>
 
 	private static double ParseDistance(string value)
 	{
+		if (value.ToLowerInvariant().Contains("marathon"))
+			return value.ToLowerInvariant().Contains("half")
+				? MarathonMeters / 2
+				: MarathonMeters;
+
 		var split = Regex.Match(value, @"([\d\.]+)(.*)").Groups;
 		if (split.Count < 2)
 			return 0;
@@ -37,4 +45,7 @@ public record Distance : Formatted<string>
 
 		return digits;
 	}
+
+	public int CompareTo(Distance other)
+		=> Meters.CompareTo(other.Meters);
 }

@@ -12,8 +12,7 @@ public class DataAPITests
 		var data = await File.ReadAllTextAsync("json/empty.json");
 		var http = new MockHttpMessageHandler(data);
 		var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
-		var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
-		var api = new DataAPI<WebScorer>(new HttpClient(http), new WebScorer());
+		var api = new DataAPI<WebScorer>(new HttpClient(http), new WebScorer(TestHelpers.Config));
 
 		//act
 		var json = await api.GetResults(123);

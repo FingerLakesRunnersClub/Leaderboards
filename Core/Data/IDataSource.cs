@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 
@@ -9,4 +10,5 @@ public interface IDataSource
 	public string Name { get; }
 	public string URL(uint courseID);
 	IEnumerable<Result> ParseCourse(Course course, JsonElement json);
+	Athlete ParseAthlete(JsonElement element);
 }

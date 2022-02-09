@@ -26,15 +26,15 @@ public class AthleteSummary
 	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results)
 	{
 		Athlete = athlete;
-		Fastest = results.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete == athlete));
-		Average = results.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete == athlete));
-		Runs = results.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete == athlete));
-		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete == athlete));
+		Fastest = results.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
+		Average = results.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
+		Runs = results.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
+		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.Equals(athlete)));
 
 		var overallViewModel = new OverallResults(results);
-		OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete == athlete);
-		OverallAgeGrade = overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete == athlete);
-		OverallMiles = overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete == athlete);
+		OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		OverallAgeGrade = overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		OverallMiles = overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
 		TeamResults = overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team);
 
 		TotalResults = Fastest.Count(r => r.Value != null) + Average.Count(r => r.Value != null);
@@ -45,8 +45,8 @@ public class AthleteSummary
 	{
 		get
 		{
-			var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && r.Result.Athlete != Athlete && IsMatch(Fastest[c], r)));
-			var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && r.Result.Athlete != Athlete && IsMatch(Average[c], r)));
+			var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Fastest[c], r)));
+			var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Average[c], r)));
 
 			var athletes = fastMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete))
 				.Union(avgMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete)))

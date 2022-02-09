@@ -37,14 +37,16 @@ public class DataService : IDataService
 		return race;
 	}
 
-	private static IReadOnlyList<Course> GetCourses(Race race, IConfigurationSection section)
+	private static IReadOnlyCollection<Course> GetCourses(Race race, IConfiguration section)
 		=> section.GetSection("Courses").GetChildren()
 			.Select(c => new Course
 			{
 				Race = race,
 				ID = uint.Parse(c.Value),
-				Distance = new Distance(c.Key == "Default" ? section["Distance"] : c.Key)
-			}).ToList();
+				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section["Distance"] : c.Key)
+			})
+			.OrderBy(c => c.Distance)
+			.ToList();
 
 	private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
 	private DateTime _athleteCacheTimestamp;
@@ -65,22 +67,17 @@ public class DataService : IDataService
 
 	public async Task<IDictionary<uint, Athlete>> GetAthletes()
 	{
-		if (_startListID == 0)
-		{
-			var results = await GetAllResults();
-			return results.SelectMany(c => c.Results.Select(r => r.Athlete))
-				.DistinctBy(a => a.ID)
-				.ToDictionary(a => a.ID, a => a);
-		}
-
 		try
 		{
 			if (_athleteCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
 			{
-				var json = await _dataAPI[nameof(WebScorer)].GetResults(_startListID);
-				foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(WebScorer.ParseAthlete))
+				if (_startListID == 0)
 				{
-					_athletes[athlete.ID] = athlete;
+					await CacheAthletesFromResults();
+				}
+				else
+				{
+					await CacheAthletesFromStartList();
 				}
 
 				_athleteCacheTimestamp = DateTime.Now;
@@ -94,16 +91,37 @@ public class DataService : IDataService
 		return _athletes;
 	}
 
-	public async Task<Course> GetResults(uint id)
+	private async Task CacheAthletesFromStartList()
 	{
-		var courses = _races.SelectMany(r => r.Value.Courses).Where(c => c.ID == id).ToList();
-		var updates = courses.Select(UpdateCourse);
-		await Task.WhenAll(updates);
-		return courses.First();
+		var json = await _dataAPI[nameof(WebScorer)].GetResults(_startListID);
+		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_dataAPI[nameof(WebScorer)].Source.ParseAthlete))
+		{
+			CacheAthlete(athlete);
+		}
 	}
 
-	private async Task UpdateCourse(Course course)
+	private async Task CacheAthletesFromResults()
 	{
+		var results = await GetAllResults();
+		var athletes = results.SelectMany(c => c.Results.Select(r => r.Athlete)).DistinctBy(a => a.ID);
+		foreach (var athlete in athletes)
+		{
+			CacheAthlete(athlete);
+		}
+	}
+
+	private void CacheAthlete(Athlete athlete)
+	{
+		if (!_athletes.ContainsKey(athlete.ID))
+		{
+			_athletes.Add(athlete.ID, athlete);
+		}
+	}
+
+	public async Task<Course> GetResults(uint id, string distance = null)
+	{
+		var course = _races.SelectMany(r => r.Value.Courses).First(c => c.ID == id && (distance == null || c.Distance.Display == distance));
+
 		try
 		{
 			if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
@@ -123,11 +141,13 @@ public class DataService : IDataService
 		{
 			_logger.LogWarning(e, "Could not retrieve results");
 		}
+
+		return course;
 	}
 
 	public async Task<IEnumerable<Course>> GetAllResults()
 	{
-		var tasks = _races.Select(async c => await GetResults(c.Key));
+		var tasks = _races.SelectMany(r => r.Value.Courses.Select(c => GetResults(c.ID, c.Distance.Display)));
 		return await Task.WhenAll(tasks);
 	}
 

@@ -66,7 +66,7 @@ public class LogControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
-		dataService.GetResults(123).Returns(course);
+		dataService.GetResults(123, null).Returns(course);
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act

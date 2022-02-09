@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Concurrent;
+using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
@@ -8,10 +9,14 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class UltraSignup : IDataSource
 {
+	private readonly Config _config;
 	public string Name => nameof(UltraSignup);
 
 	public string URL(uint courseID)
 		=> $"https://ultrasignup.com/service/events.svc/results/{courseID}/1/json";
+
+	public UltraSignup(Config config)
+		=> _config = config;
 
 	public IEnumerable<Result> ParseCourse(Course course, JsonElement json)
 	{
@@ -21,6 +26,7 @@ public class UltraSignup : IDataSource
 			{
 				Course = course,
 				Athlete = ParseAthlete(j),
+				StartTime = new Date(course.Race.Date),
 				Duration = ParseDuration(j.GetProperty("time").GetString())
 			});
 	}
@@ -28,15 +34,24 @@ public class UltraSignup : IDataSource
 	private static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));
 
-	private static Athlete ParseAthlete(JsonElement element)
+	private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
+
+	public Athlete ParseAthlete(JsonElement element)
 	{
 		var name = element.GetProperty("firstname").GetString() + " " + element.GetProperty("lastname").GetString();
-		return new Athlete
+		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
+
+		if (!athletes.ContainsKey(id))
 		{
-			ID = (uint) name.GetHashCode(),
-			Name = name,
-			Category = DataParser.ParseCategory(element.GetProperty("gender").GetString()),
-			Age = element.GetProperty("age").GetByte()
-		};
+			athletes.Add(id, new Athlete
+			{
+				ID = id,
+				Name = name,
+				Category = DataParser.ParseCategory(element.GetProperty("gender").GetString()),
+				Age = element.GetProperty("age").GetByte()
+			});
+		}
+
+		return athletes[id];
 	}
 }

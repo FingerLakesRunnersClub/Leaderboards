@@ -15,7 +15,7 @@ public class WebScorerTests
 		var data = await File.ReadAllTextAsync("json/athlete.json");
 		var json = JsonDocument.Parse(data).RootElement;
 		var course = new Course();
-		var source = new WebScorer();
+		var source = new WebScorer(TestHelpers.Config);
 
 		//act
 		var results = source.ParseCourse(course, json);
@@ -38,7 +38,7 @@ public class WebScorerTests
 		var data = await File.ReadAllTextAsync("json/dnf.json");
 		var json = JsonDocument.Parse(data).RootElement;
 		var course = new Course();
-		var source = new WebScorer();
+		var source = new WebScorer(TestHelpers.Config);
 
 		//act
 		var results = source.ParseCourse(course, json);
@@ -54,7 +54,7 @@ public class WebScorerTests
 		var data = await File.ReadAllTextAsync("json/false-start.json");
 		var json = JsonDocument.Parse(data).RootElement;
 		var course = new Course();
-		var source = new WebScorer();
+		var source = new WebScorer(TestHelpers.Config);
 
 		//act
 		var results = source.ParseCourse(course, json);
@@ -70,9 +70,10 @@ public class WebScorerTests
 		var data = await File.ReadAllTextAsync("json/athlete.json");
 		var json = JsonDocument.Parse(data).RootElement;
 		var element = json.GetProperty("Racers").EnumerateArray().First();
+		var source = new WebScorer(TestHelpers.Config);
 
 		//act
-		var athlete = WebScorer.ParseAthlete(element);
+		var athlete = source.ParseAthlete(element);
 
 		//assert
 		Assert.Equal((ushort)234, athlete.ID);

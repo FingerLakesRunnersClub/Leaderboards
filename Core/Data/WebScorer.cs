@@ -9,10 +9,14 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class WebScorer : IDataSource
 {
+	private readonly Config _config;
 	public string Name => nameof(WebScorer);
 
 	public string URL(uint courseID)
 		=> $"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}";
+
+	public WebScorer(Config config)
+		=> _config = config;
 
 	public IEnumerable<Result> ParseCourse(Course course, JsonElement json)
 	{
@@ -25,9 +29,13 @@ public class WebScorer : IDataSource
 
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-	private static IEnumerable<Result> ParseResults(Course course, JsonElement results)
+	private IEnumerable<Result> ParseResults(Course course, JsonElement results)
 		=> results.EnumerateArray()
-			.Where(r => r.GetProperty("Finished").GetByte() == 1)
+			.Where(r => r.GetProperty("Finished").GetByte() == 1
+			            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
+							|| r.GetProperty("Distance").GetString() == Distance.DefaultKey
+			                || r.GetProperty("Distance").GetString() == course.Distance.Display)
+			)
 			.Select(r => new Result
 			{
 				Course = course,
@@ -38,23 +46,22 @@ public class WebScorer : IDataSource
 
 	private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 
-	public static Athlete ParseAthlete(JsonElement result)
+	public Athlete ParseAthlete(JsonElement element)
 	{
-		var id = result.GetProperty("UserId").GetUInt32();
-		if (id == 0)
-		{
-			id = (uint?)result.GetProperty("Name").GetString()?.GetHashCode(StringComparison.InvariantCultureIgnoreCase) ?? 0;
-		}
+		var id = (_config.Features.GenerateAthleteID
+			         ? element.GetProperty("Name").GetString()?.GetID()
+			         : null)
+		         ?? element.GetProperty("UserId").GetUInt32();
 
 		if (!athletes.ContainsKey(id))
 		{
-			var hasDOB = DateTime.TryParse(result.GetProperty("Info1").GetString(), out var dob);
+			var hasDOB = DateTime.TryParse(element.GetProperty("Info1").GetString(), out var dob);
 			athletes.Add(id, new Athlete
 			{
 				ID = id,
-				Name = result.GetProperty("Name").GetString(),
-				Age = result.GetProperty("Age").GetByte(),
-				Category = DataParser.ParseCategory(result.GetProperty("Gender").GetString()),
+				Name = element.GetProperty("Name").GetString(),
+				Age = element.GetProperty("Age").GetByte(),
+				Category = DataParser.ParseCategory(element.GetProperty("Gender").GetString()),
 				DateOfBirth = hasDOB ? dob : null
 			});
 		}

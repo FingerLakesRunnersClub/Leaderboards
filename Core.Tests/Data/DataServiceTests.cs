@@ -16,7 +16,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
@@ -36,7 +36,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
@@ -96,7 +96,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
@@ -116,7 +116,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
@@ -183,7 +183,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
@@ -204,7 +204,7 @@ public class DataServiceTests
 	{
 		//arrange
 		var dataAPI = Substitute.For<IDictionary<string,IDataAPI>>();
-		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer());
+		dataAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		dataAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();

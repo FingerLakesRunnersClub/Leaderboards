@@ -106,11 +106,11 @@ public class AthleteControllerTests
 				}
 			}
 		};
-		dataService.GetResults(234).Returns(course);
+		dataService.GetResults(234, null).Returns(course);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.Course(123, 234);
+		var response = await controller.Course(123, 234, null);
 
 		//assert
 		var vm = (AthleteCourseResultsViewModel) response.Model;
@@ -160,11 +160,11 @@ public class AthleteControllerTests
 				}
 			}
 		};
-		dataService.GetResults(234).Returns(course);
+		dataService.GetResults(234, null).Returns(course);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.Course(123, 234);
+		var response = await controller.Course(123, 234, null);
 
 		//assert
 		var vm = (AthleteCourseResultsViewModel) response.Model;
