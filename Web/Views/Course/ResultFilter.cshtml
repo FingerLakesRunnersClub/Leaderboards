@@ -19,8 +19,8 @@
 }
 
 <form class="float-left">
-	<section class="mb-3">
-		<div class="btn-group">
+	<section class="mb-3 mt-2">
+		<div class="btn-group d-flex">
 			@if (Model.Config.Features.MultiAttempt)
 			{
 				foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
@@ -28,7 +28,7 @@
 					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
 				}
 			}
-			else if (Model.Config.Features.MultiDistance)
+			else if (Model.Course.Race.Courses.Count > 1)
 			{
 				foreach (var course in Model.Course.Race.Courses)
 				{
@@ -40,7 +40,7 @@
 
 	@if (Model.ResultType.Value != ResultType.Team)
 	{
-		var distance = Model.Config.Features.MultiDistance ? Model.Course.Distance.Display : "";
+		var distance = Model.Course.Race.Courses.Count > 1 ? Model.Course.Distance.Display : "";
 		var resultsURL = $"/Course/{Model.Course.ID}/{distance}/{Model.ResultType.Value}".Replace("//", "/");
 		<section class="mb-4">
 			<div class="btn-group">
@@ -51,7 +51,7 @@
 
 			@if (Model.ResultType.Value == ResultType.Fastest)
 			{
-				<div class="float-right">
+				<div class="float-right ml-5">
 					<select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
 						<option value="">All Age Groups</option>
 						@foreach (var team in Athlete.Teams)

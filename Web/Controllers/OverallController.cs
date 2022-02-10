@@ -21,17 +21,23 @@ public class OverallController : Controller
 	public async Task<ViewResult> Points(string id)
 	{
 		var category = DataParser.ParseCategory(id);
-		return View(await GetResults($"Most Points ({id})", vm => vm.MostPoints(category)));
+		return View(await GetResults(_config.Competitions[$"Points/{id}"], vm => vm.MostPoints(category)));
+	}
+
+	public async Task<ViewResult> PointsTop3(string id)
+	{
+		var category = DataParser.ParseCategory(id);
+		return View("Points", await GetResults(_config.Competitions[$"PointsTop3/{id}"], vm => vm.MostPoints(3, category)));
 	}
 
 	public async Task<ViewResult> Miles()
-		=> View(await GetResults("Most Miles", vm => vm.MostMiles()));
+		=> View(await GetResults(_config.Competitions["Miles"], vm => vm.MostMiles()));
 
 	public async Task<ViewResult> AgeGrade()
-		=> View(await GetResults("Age Grade", vm => vm.AgeGrade()));
+		=> View(await GetResults(_config.Competitions["AgeGrade"], vm => vm.AgeGrade()));
 
 	public async Task<ViewResult> Team()
-		=> View(await GetTeamResults("Team Points", vm => vm.TeamPoints()));
+		=> View(await GetTeamResults(_config.Competitions["Team"], vm => vm.TeamPoints()));
 
 	private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallResults, RankedList<T>> results)
 	{

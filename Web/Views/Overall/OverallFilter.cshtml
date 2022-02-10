@@ -3,15 +3,14 @@
 
 @functions
 {
-    string style(string type) => Model.ResultType == type
-        ? "secondary"
-        : "light";
+	string style(string type) => Model.ResultType == type
+		? "secondary"
+		: "light";
 }
 
 <div class="btn-group mb-3">
-    <a class="btn btn-sm btn-@style("Most Points (F)")" href="/Overall/Points/F">Most Points (F)</a>
-    <a class="btn btn-sm btn-@style("Most Points (M)")" href="/Overall/Points/M">Most Points (M)</a>
-    <a class="btn btn-sm btn-@style("Age Grade")" href="/Overall/AgeGrade">Age Grade</a>
-    <a class="btn btn-sm btn-@style("Most Miles")" href="/Overall/Miles">Most Miles</a>
-    <a class="btn btn-sm btn-@style("Team Points")" href="/Overall/Team">Team Points</a>
+	@foreach (var key in Model.Config.Competitions.Keys)
+	{
+		<a class="btn btn-sm btn-@style(Model.Config.Competitions[key])" href="/Overall/@key">@Model.Config.Competitions[key]</a>
+	}
 </div>

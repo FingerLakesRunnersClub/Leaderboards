@@ -16,13 +16,13 @@
         </tr>
         </thead>
         <tbody>
-        @if (!Model.Rows.Any())
+        @if (!Model.Rows.Value.Any())
         {
             <tr>
                 <td colspan="3" class="text-center text-secondary">(no results yet)</td>
             </tr>
         }
-        @foreach (var result in Model.Rows)
+        @foreach (var result in Model.Rows.Value)
         {
             <tr>
                 <td class="text-center rank">

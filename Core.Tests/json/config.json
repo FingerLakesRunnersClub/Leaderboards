@@ -1,14 +1,33 @@
 {
-  "About": "https://example.com",
+  "Features": {
+	"MultiAttempt": true
+  },
+  "Competitions": {
+	"1": {
+	  "Points/F": "Most Points (F)"
+	},
+	"2": {
+	  "Points/M": "Most Points (M)"
+	},
+	"3": {
+	  "AgeGrade": "Age Grade"
+	},
+	"4": {
+	  "Miles": "Most Miles"
+	},
+	"5": {
+	  "Team": "Top Teams"
+	}
+  },
   "Races": [
-    {
+	{
 	  "Source": "WebScorer",
-      "ID": 123,
-      "Name": "Virgil Crest Ultramarathons",
-      "Distance": "50K",
+	  "ID": 123,
+	  "Name": "Virgil Crest Ultramarathons",
+	  "Distance": "50K",
 	  "Courses": {
 		"Default": 123
 	  }
-    }
+	}
   ]
 }

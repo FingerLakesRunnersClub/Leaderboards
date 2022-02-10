@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Overall;
@@ -20,7 +21,7 @@ public class OverallControllerTests
 		var controller = new OverallController(dataService, TestHelpers.Config);
 
 		//act
-		var response = await controller.Points(string.Empty);
+		var response = await controller.Points(Category.M.Display);
 
 		//assert
 		var vm = (OverallResultsViewModel<Points>) response.Model;
