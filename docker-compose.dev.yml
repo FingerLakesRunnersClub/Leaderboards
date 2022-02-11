@@ -1,8 +1,13 @@
 version: '3'
 
 services:
-  dashboard:
+  challenge:
     build:
       dockerfile: Dockerfile.dev
     volumes:
     - ".:/app"
+  trail-circuit:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ".:/app"

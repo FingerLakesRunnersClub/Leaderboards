@@ -1,13 +1,13 @@
-# 2021 FLRC Challenge Dashboard
+# FLRC Leaderboards
 
-[![CI](https://github.com/FingerLakesRunnersClub/ChallengeDashboard/actions/workflows/CI.yml/badge.svg)](https://github.com/FingerLakesRunnersClub/ChallengeDashboard/actions/workflows/CI.yml)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_ChallengeDashboard&metric=coverage)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_ChallengeDashboard)
+[![CI](https://github.com/FingerLakesRunnersClub/Leaderboards/actions/workflows/CI.yml/badge.svg)](https://github.com/FingerLakesRunnersClub/Leaderboards/actions/workflows/CI.yml)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=coverage)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
 
-[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_ChallengeDashboard&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_ChallengeDashboard)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_ChallengeDashboard&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_ChallengeDashboard)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_ChallengeDashboard&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_ChallengeDashboard)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
 
-Throughout 2021, the Finger Lakes Runners Club Challenge will open 10 race courses to local runners to test their mettle against one another and as part of 10-year age-group-based teams, all while staying safe from the coronavirus. Awards and bragging rights won’t just go to the swift, but also to the consistent, the persistent, and the clever.
+This repository contains the code for the various leaderboard apps that the Finger Lakes Runners Club uses.
 
 ## Requirements
 
@@ -19,12 +19,16 @@ Throughout 2021, the Finger Lakes Runners Club Challenge will open 10 race cours
 
 ## Usage
 
-- Run `dotnet watch --project ChallengeDashboard run` to start the server
+- Run `dotnet watch --project Challenge run` to start the Challenge server
+  - or `dotnet watch --project TrailCircuit run` to start the Trail Circuit server
+
 - Browse to `http://localhost:5000`
 - Run `dotnet test` to run tests before committing/pushing
 
 ### Via Docker Compose
 
-- Run `./dcd up` (where `dcd` is short for Docker Compose Dev, a simple Bash script that translates Docker Compose commands to always use the `dev` config file)
-- Browse to `http://localhost:5000`
+- Run `./dcd up` to start both apps simultaneously
+- Browse to `http://localhost:5001` for the Challenge, or `http://localhost:5002` for the Trail Circuit
 - Run `docker-compose exec dashboard dotnet test` to run tests before committing/pushing
+
+(`dcd` stands for Docker Compose Dev, and is simple Bash script that translates Docker Compose commands to always use the `dev` config file)

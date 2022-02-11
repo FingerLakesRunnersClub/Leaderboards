@@ -1,9 +1,21 @@
 version: '3'
 
 services:
-  dashboard:
+  challenge:
     build:
       context: .
+      args:
+        app: "Challenge"
+        file: "Challenge.dll"
     ports:
-    - "5000:80"
+      - "5001:80"
+    restart: always
+  trail-circuit:
+    build:
+      context: .
+      args:
+        app: "TrailCircuit"
+        file: "TrailCircuit.dll"
+    ports:
+      - "5002:80"
     restart: always

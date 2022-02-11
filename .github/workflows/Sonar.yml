@@ -28,7 +28,7 @@ jobs:
       run: dotnet restore
 
     - name: Start Sonar Analysis
-      run: dotnet-sonarscanner begin /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /o:"fingerlakesrunnersclub" /k:"FingerLakesRunnersClub_ChallengeDashboard" /d:sonar.cs.vstest.reportsPaths="*.Tests/TestResults/**/results.trx" /d:sonar.cs.opencover.reportsPaths="*.Tests/TestResults/**/coverage.opencover.xml"
+      run: dotnet-sonarscanner begin /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /o:"fingerlakesrunnersclub" /k:"FingerLakesRunnersClub_Leaderboards" /d:sonar.cs.vstest.reportsPaths="*.Tests/TestResults/**/results.trx" /d:sonar.cs.opencover.reportsPaths="*.Tests/TestResults/**/coverage.opencover.xml"
 
     - name: Build
       run: dotnet build --no-restore
