@@ -17,7 +17,7 @@
 <h4 class="mb-0">
 	@await Html.PartialAsync("CourseIcon", Model.Course) @Model.Course.Race.Name
 </h4>
-@if (Model.Course.Race.Courses.Count == 1)
+@if (Model.Config.Features.ShowBadges)
 {
 	<div class="mb-2">
 		<span class="badge badge-pill badge-secondary">@Model.Course.Race.Type</span>

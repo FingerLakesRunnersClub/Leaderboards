@@ -11,7 +11,7 @@ public class CourseResultsViewModel<T> : CourseResultsViewModel
 
 public class CourseResultsViewModel : DataTableViewModel
 {
-	public override string Title => $"{ResultType.Display} — {Course.Race.Name}";
+	public override string Title => $"{ResultType.Display} — {Course.Name}";
 
 	public FormattedResultType ResultType { get; init; }
 	public Category Category { get; init; }

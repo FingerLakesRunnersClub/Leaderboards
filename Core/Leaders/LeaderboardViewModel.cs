@@ -23,8 +23,6 @@ public class LeaderboardViewModel : ViewModel
 		LeaderboardResultType = type;
 	}
 
-	public bool ShowBadges => _courses.All(c => c.Race.Courses.Count == 1);
-
 	private LeaderboardTable OverallTable(string id, ResultType type, Category category, Func<IEnumerable<LeaderboardRow>> rows)
 		=> Config.Competitions.ContainsKey(id)
 			? new LeaderboardTable
@@ -60,7 +58,7 @@ public class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })),
 
 				OverallTable("Miles", ResultType.MostRuns, null, () => vm.MostMiles().Take(3)
-					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString("F1") })),
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })),
 
 				OverallTable("Team", ResultType.Team, null, () => vm.TeamPoints().Take(3)
 					.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Link = $"/Team/Index/{t.Team.Value}", Value = t.TotalPoints.ToString() }))

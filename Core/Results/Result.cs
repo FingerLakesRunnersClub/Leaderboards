@@ -10,7 +10,7 @@ public class Result : IComparable<Result>
 	[JsonIgnore]
 	public Course Course { get; init; }
 	public uint? CourseID => Course?.Race.ID;
-	public string CourseName => Course?.Race.Name;
+	public string CourseName => Course?.Name;
 
 	public Athlete Athlete { get; init; }
 	public Date StartTime { get; init; }

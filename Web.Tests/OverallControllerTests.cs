@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using FLRC.Leaderboards.Web.Controllers;
@@ -40,7 +41,7 @@ public class OverallControllerTests
 		var response = await controller.Miles();
 
 		//assert
-		var vm = (OverallResultsViewModel<double>) response.Model;
+		var vm = (OverallResultsViewModel<Miles>) response.Model;
 		Assert.Equal(LeaderboardData.Athlete2, vm!.RankedResults.First().Result.Athlete);
 	}
 

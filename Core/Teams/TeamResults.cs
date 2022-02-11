@@ -3,9 +3,9 @@ using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Teams;
 
-public class TeamResults
+public class TeamResults : Ranked<TeamPoints>
 {
-	public Rank Rank { get; set; }
+	public new Rank Rank { get; set; }
 	public Team Team { get; init; }
 
 	public AgeGrade AverageAgeGrade { get; init; }

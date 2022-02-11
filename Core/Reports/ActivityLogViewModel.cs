@@ -6,7 +6,7 @@ namespace FLRC.Leaderboards.Core.Reports;
 
 public class ActivityLogViewModel : ViewModel
 {
-	public override string Title => $"Activity Log" + (Course != null ? $" — {Course.Race.Name}" : "");
+	public override string Title => $"Activity Log" + (Course != null ? $" — {Course.Name}" : string.Empty);
 
 	public ActivityLogType Type { get; init; }
 	public Course Course { get; init; }

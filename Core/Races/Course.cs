@@ -12,6 +12,7 @@ public class Course
 {
 	public Race Race { get; init; }
 	public uint ID { get; init; }
+	public string Name => Race.Name + (Race.Courses?.Count > 1 ? $" ({Distance.Display})" : string.Empty);
 	public Distance Distance { get; init; }
 
 	public DateTime LastUpdated { get; set; }
@@ -83,15 +84,15 @@ public class Course
 		return _mostRunsCache[key] = RankDescending(category, _ => true, r => r.Average(), r => (ushort)r.Count());
 	}
 
-	private readonly IDictionary<string, RankedList<double>> _mostMilesCache = new ConcurrentDictionary<string, RankedList<double>>();
+	private readonly IDictionary<string, RankedList<Miles>> _mostMilesCache = new ConcurrentDictionary<string, RankedList<Miles>>();
 
-	public RankedList<double> MostMiles(Category category = null)
+	public RankedList<Miles> MostMiles(Category category = null)
 	{
 		var key = category?.Display ?? "X";
 		if (_mostMilesCache.ContainsKey(key))
 			return _mostMilesCache[key];
 
-		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => r.Count() * Distance.Miles);
+		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => new Miles(r.Count() * Distance.Miles));
 	}
 
 	private readonly IDictionary<string, RankedList<Date>> _earliestCache = new ConcurrentDictionary<string, RankedList<Date>>();

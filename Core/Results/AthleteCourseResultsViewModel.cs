@@ -5,7 +5,7 @@ namespace FLRC.Leaderboards.Core.Results;
 
 public class AthleteCourseResultsViewModel : CourseResultsViewModel<Time>
 {
-	public override string Title => $"{Athlete.Name} — {Course.Race.Name}";
+	public override string Title => $"{Athlete.Name} — {Course.Name}";
 	public Athlete Athlete { get; init; }
 
 	public override string ResponsiveBreakpoint => "sm";

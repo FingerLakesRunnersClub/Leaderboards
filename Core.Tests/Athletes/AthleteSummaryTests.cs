@@ -18,7 +18,7 @@ public class AthleteSummaryTests
 		var results = new[] { course1, course2, course3 };
 
 		//act
-		var summary = new AthleteSummary(CourseData.Athlete1, results);
+		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
 
 		//assert
 		Assert.Equal(6, summary.TotalResults);
@@ -29,7 +29,7 @@ public class AthleteSummaryTests
 	{
 		//arrange
 		var results = new[] { new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") } };
-		var summary = new AthleteSummary(CourseData.Athlete1, results);
+		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
 
 		//act
 		var similar = summary.SimilarAthletes.ToList();
@@ -61,7 +61,7 @@ public class AthleteSummaryTests
 				}
 		};
 		var results = new[] { course };
-		var summary = new AthleteSummary(CourseData.Athlete1, results);
+		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
 
 		//act
 		var similar = summary.SimilarAthletes.ToList();

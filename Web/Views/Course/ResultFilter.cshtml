@@ -40,7 +40,7 @@
 
 	@if (Model.ResultType.Value != ResultType.Team)
 	{
-		var distance = Model.Course.Race.Courses.Count > 1 ? Model.Course.Distance.Display : "";
+		var distance = Model.Course.Race.Courses.Count > 1 ? Model.Course.Distance.Display : string.Empty;
 		var resultsURL = $"/Course/{Model.Course.ID}/{distance}/{Model.ResultType.Value}".Replace("//", "/");
 		<section class="mb-4">
 			<div class="btn-group">

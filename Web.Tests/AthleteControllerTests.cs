@@ -52,7 +52,7 @@ public class AthleteControllerTests
 		Assert.Equal(1, vm.Summary.Runs[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.TeamResults.Rank.Value);
 		Assert.Equal(100, vm.Summary.OverallPoints.Value.Value);
-		Assert.Equal(10, vm.Summary.OverallMiles.Value);
+		Assert.Equal(10, vm.Summary.OverallMiles.Value.Value);
 	}
 
 	[Fact]

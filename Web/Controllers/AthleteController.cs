@@ -31,7 +31,7 @@ public class AthleteController : Controller
 	{
 		var athlete = await _dataService.GetAthlete(id);
 		var courses = (await _dataService.GetAllResults()).ToList();
-		var summary = new AthleteSummary(athlete, courses);
+		var summary = new AthleteSummary(athlete, courses, _config);
 
 		return new AthleteSummaryViewModel
 		{
@@ -106,7 +106,7 @@ public class AthleteController : Controller
 	{
 		var athlete = await _dataService.GetAthlete(id);
 		var results = (await _dataService.GetAllResults()).ToList();
-		var my = new AthleteSummary(athlete, results);
+		var my = new AthleteSummary(athlete, results, _config);
 
 		return new SimilarAthletesViewModel
 		{
