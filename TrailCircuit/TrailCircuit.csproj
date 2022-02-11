@@ -4,9 +4,9 @@
 		<RootNamespace>FLRC.Leaderboards.TrailCircuit</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
-	
+
 	<ItemGroup>
 		<ProjectReference Include="../Web/Web.csproj" />
-		<None Include="wwwroot/**" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="wwwroot/**" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 </Project>

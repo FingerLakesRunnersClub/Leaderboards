@@ -10,6 +10,6 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<ProjectReference Include="../Core/Core.csproj" />
-		<None Include="wwwroot/**" CopyToOutputDirectory="PreserveNewest" />
+		<None Include="wwwroot/**" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 </Project>
