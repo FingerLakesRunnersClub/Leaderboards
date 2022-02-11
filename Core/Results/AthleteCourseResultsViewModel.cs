@@ -1,16 +1,12 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
-using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public class AthleteCourseResultsViewModel : DataTableViewModel
+public class AthleteCourseResultsViewModel : CourseResultsViewModel<Time>
 {
 	public override string Title => $"{Athlete.Name} — {Course.Race.Name}";
 	public Athlete Athlete { get; init; }
-	public Course Course { get; init; }
-	public RankedList<Time> Results { get; init; }
 
 	public override string ResponsiveBreakpoint => "sm";
 }

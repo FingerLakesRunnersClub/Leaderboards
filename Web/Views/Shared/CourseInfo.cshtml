@@ -1,23 +1,26 @@
-@using FLRC.Leaderboards.Core.Races
-@model Course
+@using FLRC.Leaderboards.Core.Results
+@model CourseResultsViewModel
 
 <div class="float-sm-right mb-1 d-flex justify-content-between">
-	<a class="course-info btn btn-sm btn-outline-dark mx-1" href="@Model.Race.URL">
+	<a class="course-info btn btn-sm btn-outline-dark mx-1" href="@Model.Course.Race.URL">
 		<i aria-hidden="true" class="fas fa-info-circle tp-35"></i>
 		Course Info
 	</a>
-	<a class="activity-log btn btn-sm btn-outline-dark mx-1" href="/Log/Index/@Model.ID">
-		Activity Log
-		<i aria-hidden="true" class="fas fa-arrow-right tp-35"></i>
-	</a>
+	@if (Model.Config.Features.MultiAttempt)
+	{
+		<a class="activity-log btn btn-sm btn-outline-dark mx-1" href="/Log/Index/@Model.Course.ID">
+			Activity Log
+			<i aria-hidden="true" class="fas fa-arrow-right tp-35"></i>
+		</a>
+	}
 </div>
 <h4 class="mb-0">
-	@await Html.PartialAsync("CourseIcon", @Model) @Model.Race.Name
+	@await Html.PartialAsync("CourseIcon", Model.Course) @Model.Course.Race.Name
 </h4>
-@if (Model.Race.Courses.Count == 1)
+@if (Model.Course.Race.Courses.Count == 1)
 {
 	<div class="mb-2">
-		<span class="badge badge-pill badge-secondary">@Model.Race.Type</span>
-		<span class="badge badge-pill badge-warning">@Model.Distance.Display</span>
+		<span class="badge badge-pill badge-secondary">@Model.Course.Race.Type</span>
+		<span class="badge badge-pill badge-warning">@Model.Course.Distance.Display</span>
 	</div>
 }

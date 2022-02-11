@@ -50,7 +50,7 @@ public class AthleteController : Controller
 			Config = _config,
 			Athlete = results.First().Athlete,
 			Course = course,
-			Results = Rank(results)
+			RankedResults = Rank(results)
 		};
 	}
 

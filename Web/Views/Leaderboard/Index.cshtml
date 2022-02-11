@@ -41,14 +41,17 @@
 	<div class="card card-highlighted mb-3">
 		<div class="card-header">
 			@await Html.PartialAsync("CourseIcon", course)
-			@course.Race.Name
+			@course.Race.Name @(course.Race.Courses.Count > 1 ? $"({course.Distance.Display})" : "")
 			<a style="margin: 2px 5px 0px;" class="float-right" href="@course.Race.URL " title="Course Info" target="_blank">
 				<i aria-hidden="true" class="fas fa-info-circle"></i>
 			</a>
-			<span class="float-right">
-				<span class="badge badge-pill badge-secondary">@course.Race.Type </span>
-				<span class="badge badge-pill badge-warning">@course.Distance.Display </span>
-			</span>
+			@if (Model.ShowBadges)
+			{
+				<span class="float-right">
+					<span class="badge badge-pill badge-secondary">@course.Race.Type </span>
+					<span class="badge badge-pill badge-warning">@course.Distance.Display </span>
+				</span>
+			}
 		</div>
 		<div class="card-body">
 			<div class="row">

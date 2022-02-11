@@ -114,7 +114,7 @@ public class AthleteControllerTests
 
 		//assert
 		var vm = (AthleteCourseResultsViewModel) response.Model;
-		Assert.NotEmpty(vm!.Results);
+		Assert.NotEmpty(vm!.RankedResults);
 	}
 
 	[Fact]
@@ -168,11 +168,11 @@ public class AthleteControllerTests
 
 		//assert
 		var vm = (AthleteCourseResultsViewModel) response.Model;
-		Assert.Equal(0, vm!.Results[0].Rank.Value);
-		Assert.Equal(0, vm.Results[1].Rank.Value);
-		Assert.Equal(1, vm.Results[2].Rank.Value);
-		Assert.Equal(1, vm.Results[3].Rank.Value);
-		Assert.Equal(3, vm.Results[4].Rank.Value);
+		Assert.Equal(0, vm!.RankedResults[0].Rank.Value);
+		Assert.Equal(0, vm.RankedResults[1].Rank.Value);
+		Assert.Equal(1, vm.RankedResults[2].Rank.Value);
+		Assert.Equal(1, vm.RankedResults[3].Rank.Value);
+		Assert.Equal(3, vm.RankedResults[4].Rank.Value);
 	}
 
 	[Fact]

@@ -23,6 +23,8 @@ public class LeaderboardViewModel : ViewModel
 		LeaderboardResultType = type;
 	}
 
+	public bool ShowBadges => _courses.All(c => c.Race.Courses.Count == 1);
+
 	private LeaderboardTable OverallTable(string id, ResultType type, Category category, Func<IEnumerable<LeaderboardRow>> rows)
 		=> Config.Competitions.ContainsKey(id)
 			? new LeaderboardTable
@@ -80,7 +82,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Category = Category.F,
-				Link = $"/Course/{course.ID}/{ResultType.Fastest}/F",
+				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/F",
 				Rows = new Lazy<IEnumerable<LeaderboardRow>>(() => course.Fastest(Category.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display }))
 			},
@@ -90,7 +92,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Category = Category.M,
-				Link = $"/Course/{course.ID}/{ResultType.Fastest}/M",
+				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/M",
 				Rows = new Lazy<IEnumerable<LeaderboardRow>>(() => course.Fastest(Category.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display }))
 			},

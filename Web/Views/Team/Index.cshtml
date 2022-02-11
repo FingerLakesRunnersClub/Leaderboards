@@ -1,4 +1,5 @@
 ﻿@using FLRC.Leaderboards.Core.Ranking
+@using FLRC.Leaderboards.Core.Results
 @using FLRC.Leaderboards.Core.Teams
 @model TeamSummaryViewModel
 
@@ -45,13 +46,13 @@
 </table>
 
 <div class="row">
-    @foreach (var course in Model.Courses.Where(r => r.Value != null))
+    @foreach (var (course, results) in Model.Courses.Where(r => r.Value != null))
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body">
-                    @await Html.PartialAsync("CourseInfo", course.Key)
-                    <table aria-label="Team @Model.Team.Display Course Results for @course.Key.Race.Name"
+	                @await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
+	                <table aria-label="Team @Model.Team.Display Course Results for @course.Race.Name"
                            class="table table-bordered table-sm text-center mt-2 mb-0">
                         <thead>
                         <tr>
@@ -75,14 +76,14 @@
                         <tbody>
                         <tr>
                             <td>
-                                @course.Value.AverageAgeGrade.Display (@(new Rank(course.Value.AgeGradePoints).Display))
+	                            @results.AverageAgeGrade.Display (@(new Rank(results.AgeGradePoints).Display))
                             </td>
                             <td>
-                                @course.Value.TotalRuns (@(new Rank(course.Value.MostRunsPoints).Display))
+	                            @results.TotalRuns (@(new Rank(results.MostRunsPoints).Display))
                             </td>
                             <td>
-                                @course.Value.TotalPoints
-                                (<a href="/Course/@course.Key.ID/Team">@course.Value.Rank.Display</a>)
+	                            @results.TotalPoints
+	                            (<a href="/Course/@course.ID/Team">@results.Rank.Display</a>)
                             </td>
                         </tr>
                         </tbody>
