@@ -1,14 +1,33 @@
 ﻿:root {
-	--primary-dark: #354612;
-	--primary: #485e19;
-	--primary-light: #8fa85b;
-	--secondary-dark: #D9CCAC;
-	--secondary: #E8E0CF;
-	--secondary-light: #F7F2E7;
+	--primary-dark: #26401E;
+	--primary: #2D4C24;
+	--primary-light: #35592A;
+	--secondary-dark: #E8E0CC;
+	--secondary: #F2ECDC;
+	--secondary-light: #FCF8ED;
 }
 
 .navbar-brand .logo {
+	max-width: min(9rem, 33vw);
 	background: #fffd;
 	border-radius: 50%;
 	border: 0.25rem solid var(--primary);
+}
+
+@media screen and (min-width: 576px){
+	.navbar-brand h1 {
+		position: absolute;
+		width: revert;
+		height: revert;
+		clip: revert;
+		margin: -2rem 10rem;
+	}
+}
+
+@media screen and (max-width: 992px){
+	.navbar-brand h1 {
+		width: 100%;
+		text-align: right;
+		margin: -4.5rem -3rem;
+	}
 }
