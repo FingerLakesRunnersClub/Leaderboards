@@ -17,12 +17,15 @@
 						Reports
 					</a>
 					<ul id="reports" class="dropdown-menu" onclick="event.stopPropagation();">
-						<li class="dropdown-item">
-							<a href="/Log">Activity Log</a>
-						</li>
-						<li class="dropdown-item">
-							<a href="/Completed">Completions</a>
-						</li>
+						@if (Model.Config.Features.MultiAttempt)
+						{
+							<li class="dropdown-item">
+								<a href="/Log">Activity Log</a>
+							</li>
+							<li class="dropdown-item">
+								<a href="/Completed">Completions</a>
+							</li>
+						}
 						<li class="dropdown-item">
 							<a href="/Athletes">Participants</a>
 						</li>
