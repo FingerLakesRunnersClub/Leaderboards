@@ -28,7 +28,7 @@
 					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
 				}
 			}
-			else if (Model.Course.Race.Courses.Count > 1)
+			else
 			{
 				foreach (var course in Model.Course.Race.Courses)
 				{
