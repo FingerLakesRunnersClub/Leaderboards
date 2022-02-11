@@ -1,11 +1,7 @@
 namespace FLRC.Leaderboards.Core.Metrics;
 
-public record Percent : Formatted<double>, IComparable<Percent>
+public record Percent(double Value) : Formatted<double>(Value), IComparable<Percent>
 {
-	public Percent(double value) : base(value)
-	{
-	}
-
 	public override string Display => $"{Value:F0}%";
 	public int CompareTo(Percent other) => Value.CompareTo(other.Value);
 }

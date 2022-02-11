@@ -1,11 +1,7 @@
 namespace FLRC.Leaderboards.Core.Metrics;
 
-public record Time : Formatted<TimeSpan>, IComparable<Time>
+public record Time(TimeSpan Value) : Formatted<TimeSpan>(Value), IComparable<Time>
 {
-	public Time(TimeSpan value) : base(value)
-	{
-	}
-
 	public override string Display => Value.ToString(Value.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss");
 
 	public Time Subtract(Time other) => new Time(Value - other.Value);

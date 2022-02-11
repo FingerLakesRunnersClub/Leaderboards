@@ -1,11 +1,7 @@
 namespace FLRC.Leaderboards.Core.Ranking;
 
-public record Rank : Formatted<ushort>, IComparable<Rank>
+public record Rank(ushort Value) : Formatted<ushort>(Value), IComparable<Rank>
 {
-	public Rank(ushort value) : base(value)
-	{
-	}
-
 	public override string Display =>
 		Value > 0
 			? (Value % 100) switch

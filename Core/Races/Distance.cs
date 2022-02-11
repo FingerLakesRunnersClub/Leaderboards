@@ -2,18 +2,15 @@
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public record Distance : Formatted<string>, IComparable<Distance>
+public record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
 {
 	public const string DefaultKey = "Default";
 	public const double MetersPerMile = 1609.344;
 	private const double MarathonMeters = 42_195;
-	public double Meters { get; }
 
+	public double Meters { get; } = ParseDistance(Value);
 	public double Miles => Meters / MetersPerMile;
 
-
-	public Distance(string value) : base(value)
-		=> Meters = ParseDistance(value);
 
 	public override string Display => Value;
 

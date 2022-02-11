@@ -1,12 +1,8 @@
 namespace FLRC.Leaderboards.Core.Races;
 
-public record Date : Formatted<DateTime>, IComparable<Date>
+public record Date(DateTime Value) : Formatted<DateTime>(Value), IComparable<Date>
 {
 	public static readonly DateTime CompetitionStart = new(2021, 1, 1);
-
-	public Date(DateTime value) : base(value)
-	{
-	}
 
 	public override string Display => Value.ToLocalTime().ToString("M/d/yy h:mmtt").ToLower();
 
