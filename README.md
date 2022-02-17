@@ -7,7 +7,9 @@
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
 
-This repository contains the code for the various leaderboard apps that the Finger Lakes Runners Club uses.
+This repository contains the code for the various leaderboard apps that the Finger Lakes Runners Club uses:
+- [FLRC Challenge](https://challenge.fingerlakesrunners.org) ([2021 results](https://2021.challenge.fingerlakesrunners.org))
+- [FLRC Trail Circuit](https://trailcircuit.fingerlakesrunners.org) ([2021 results](https://2021.trailcircuit.fingerlakesrunners.org))
 
 ## Requirements
 

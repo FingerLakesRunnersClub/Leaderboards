@@ -1,5 +1,4 @@
-﻿using System.Collections.Specialized;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace FLRC.Leaderboards.Core;
 
@@ -15,8 +14,12 @@ public record Config
 	{
 		App = config.GetValue<string>("App");
 		CourseNames = config.GetSection("Races").GetChildren().ToDictionary(c => c.GetValue<uint>("ID"), c => c.GetValue<string>("Name"));
-		Links = config.GetSection("Links").GetChildren().ToDictionary(c => c.Key, c => c.Value);
+		Links = GetArray(config.GetSection("Links"));
 		Features = new FeatureSet(config.GetSection("Features"));
-		Competitions = config.GetSection("Competitions").GetChildren().SelectMany(c => c.GetChildren()).ToDictionary(c => c.Key, c => c.Value);
+		Competitions = GetArray(config.GetSection("Competitions"));
 	}
+
+	private static IDictionary<string, string> GetArray(IConfiguration section)
+		=> section.GetChildren().SelectMany(c => c.GetChildren())
+			.ToDictionary(c => c.Key, c => c.Value);
 }
