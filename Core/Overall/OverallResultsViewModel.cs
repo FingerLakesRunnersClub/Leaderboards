@@ -12,8 +12,6 @@ public class OverallResultsViewModel : DataTableViewModel
 	public override string Title => ResultType;
 	public string ResultType { get; init; }
 
-	public IDictionary<string, string> Competitions { get; init; }
-
 	public override string ResponsiveBreakpoint
 		=> ResultType switch
 		{

@@ -67,6 +67,7 @@ public class AthleteController : Controller
 
 			ranks.Add(new Ranked<Time>
 			{
+				All = ranks,
 				Rank = ageGrade >= 100 ? new Rank(0)
 					: !ranks.Any(r => r.Rank.Value > 0) ? new Rank(1)
 					: ranks.Any() && ranks.Last().Value == result.Duration ? ranks.Last().Rank

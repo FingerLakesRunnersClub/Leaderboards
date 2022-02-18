@@ -43,11 +43,13 @@ public class OverallController : Controller
 	{
 		var allResults = await _dataService.GetAllResults();
 		var overall = new OverallResults(allResults);
+		var rankedResults = results(overall);
+
 		return new OverallResultsViewModel<T>
 		{
 			Config = _config,
 			ResultType = title,
-			RankedResults = results(overall)
+			RankedResults = rankedResults
 		};
 	}
 

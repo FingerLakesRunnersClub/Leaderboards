@@ -197,6 +197,7 @@ public class Course
 
 			var rankedResult = new Ranked<T>
 			{
+				All = ranks,
 				Rank = !firstPlace && ranks.Last().Value.Equals(value)
 					? ranks.Last().Rank
 					: new Rank((ushort)(firstPlace ? 1 : rank)),
