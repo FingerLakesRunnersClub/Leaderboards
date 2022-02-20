@@ -33,7 +33,7 @@
 		}
 	</div>
 }
-@foreach (var (course, competitions) in Model.CourseResults)
+@foreach (var (course, competitions) in Model.CourseResults.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
 {
 	var tables = competitions.ToList();
 	var width = 12 / tables.Count;
@@ -42,7 +42,7 @@
 		<div class="card-header">
 			@await Html.PartialAsync("CourseIcon", course)
 			@course.Name
-			<a style="margin: 2px 5px 0px;" class="float-right" href="@course.Race.URL " title="Course Info" target="_blank">
+			<a style="margin: 2px 5px 0;" class="float-right" href="@course.Race.URL " title="Course Info" target="_blank">
 				<i aria-hidden="true" class="fas fa-info-circle"></i>
 			</a>
 			@if (Model.Config.Features.ShowBadges)

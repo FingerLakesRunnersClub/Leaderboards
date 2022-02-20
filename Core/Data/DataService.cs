@@ -27,7 +27,7 @@ public class DataService : IDataService
 
 		_startListID = configuration.GetValue<uint>("StartListRaceID");
 		_races = configuration.GetSection("Races").GetChildren()
-			.ToDictionary(c => uint.Parse(c["ID"]), GetRace);
+			.ToDictionary(c => c.GetValue<uint>("ID"), GetRace);
 	}
 
 	private static Race GetRace(IConfigurationSection section)
@@ -43,7 +43,7 @@ public class DataService : IDataService
 			{
 				Race = race,
 				ID = uint.Parse(c.Value),
-				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section["Distance"] : c.Key)
+				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section.GetValue<string>("Distance") : c.Key)
 			})
 			.OrderBy(c => c.Distance)
 			.ToList();
@@ -120,7 +120,9 @@ public class DataService : IDataService
 
 	public async Task<Course> GetResults(uint id, string distance = null)
 	{
-		var course = _races.SelectMany(r => r.Value.Courses).First(c => c.ID == id && (distance == null || c.Distance.Display == distance));
+		var course = _races.SelectMany(r => r.Value.Courses).First(c => (c.ID == id || c.Race.ID == id) && (distance == null || c.Distance.Display == distance));
+		if (course.ID == 0)
+			return course;
 
 		try
 		{
