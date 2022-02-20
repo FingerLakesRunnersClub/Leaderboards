@@ -11,6 +11,7 @@ public class Result : IComparable<Result>
 	public Course Course { get; init; }
 	public uint? CourseID => Course?.Race.ID;
 	public string CourseName => Course?.Name;
+	public string CourseDistance => Course?.Distance.Display;
 
 	public Athlete Athlete { get; init; }
 	public Date StartTime { get; init; }

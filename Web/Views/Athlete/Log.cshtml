@@ -12,7 +12,7 @@
         <script>
             const fields = [
                 { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value, descending: true },
-                { name: 'Course', value: r => r.Result.CourseName, link: r => `/Course/${r.Result.CourseID}/Fastest/${r.Result.Athlete.Category?.Display ?? ''}` },
+                { name: 'Course', value: r => r.Result.CourseName, link: r => `/Course/${r.Result.CourseID}/${r.Result.CourseDistance}/Fastest/${r.Result.Athlete.Category?.Display ?? ''}` },
                 { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
                 { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
             ];
