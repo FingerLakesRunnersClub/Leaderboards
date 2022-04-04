@@ -50,7 +50,7 @@
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
-                <div class="card-body">
+                <div class="card-body no-activity-log">
 	                @await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
 	                <table aria-label="Team @Model.Team.Display Course Results for @course.Name"
                            class="table table-bordered table-sm text-center mt-2 mb-0">
@@ -89,6 +89,12 @@
                         </tbody>
                     </table>
                 </div>
+				@if (Model.Config.Features.MultiAttempt)
+				{
+					<div class="card-footer">
+						<a href="/Log/Index/@course.ID">Course Activity Log</a>
+					</div>
+				}
             </div>
         </div>
     }
