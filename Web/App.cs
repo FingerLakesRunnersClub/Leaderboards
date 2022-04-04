@@ -58,9 +58,9 @@ public static class App
 		app.UseEndpoints(endpoints =>
 		{
 			endpoints.MapControllerRoute("Leaderboard", "{controller=Leaderboard}/{action=Index}/{id?}");
+			endpoints.MapControllerRoute("Athlete", "{controller}/{id}/{action}/{courseID}/{distance?}");
 			endpoints.MapControllerRoute("MultiCourseRaces", "{controller}/{id}/{distance}/{action}/{category?}");
 			endpoints.MapControllerRoute("SingleCourseRaces", "{controller}/{id}/{action}/{category?}");
-			endpoints.MapControllerRoute("Athlete", "{controller}/{id}/{action}/{courseID}/{distance?}");
 			endpoints.MapControllerRoute("Default", "{controller}/{id}/{action}");
 		});
 	}
