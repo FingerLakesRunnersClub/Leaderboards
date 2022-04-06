@@ -2,12 +2,12 @@ using System.Text.Json;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class DataAPI<T> : IDataAPI where T : IDataSource
+public class ResultsAPI<T> : IResultsAPI where T : IDataSource
 {
 	private readonly HttpClient _httpClient;
 	public IDataSource Source { get; }
 
-	public DataAPI(HttpClient httpClient, T source)
+	public ResultsAPI(HttpClient httpClient, T source)
 	{
 		_httpClient = httpClient;
 		Source = source;

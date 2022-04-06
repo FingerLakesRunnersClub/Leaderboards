@@ -1,10 +1,9 @@
 using FLRC.Leaderboards.Core.Data;
-using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class DataAPITests
+public class ResultsAPITests
 {
 	[Fact]
 	public async Task CanGetJSONFromResponse()
@@ -12,7 +11,7 @@ public class DataAPITests
 		var data = await File.ReadAllTextAsync("json/empty.json");
 		var http = new MockHttpMessageHandler(data);
 		var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
-		var api = new DataAPI<WebScorer>(new HttpClient(http), new WebScorer(TestHelpers.Config));
+		var api = new ResultsAPI<WebScorer>(new HttpClient(http), new WebScorer(TestHelpers.Config));
 
 		//act
 		var json = await api.GetResults(123);

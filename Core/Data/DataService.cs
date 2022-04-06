@@ -9,17 +9,17 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class DataService : IDataService
 {
-	private readonly IDictionary<string, IDataAPI> _dataAPI;
+	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
 	private readonly IGroupAPI _groupAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
 	private readonly IDictionary<uint, Race> _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IDataAPI> dataAPI, IGroupAPI groupAPI, IConfiguration configuration,
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IGroupAPI groupAPI, IConfiguration configuration,
 		ILoggerFactory loggerFactory)
 	{
-		_dataAPI = dataAPI;
+		_resultsAPI = resultsAPI;
 		_groupAPI = groupAPI;
 
 		_logger = loggerFactory.CreateLogger("DataService");
@@ -93,8 +93,8 @@ public class DataService : IDataService
 
 	private async Task CacheAthletesFromStartList()
 	{
-		var json = await _dataAPI[nameof(WebScorer)].GetResults(_startListID);
-		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_dataAPI[nameof(WebScorer)].Source.ParseAthlete))
+		var json = await _resultsAPI[nameof(WebScorer)].GetResults(_startListID);
+		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_resultsAPI[nameof(WebScorer)].Source.ParseAthlete))
 		{
 			CacheAthlete(athlete);
 		}
@@ -128,11 +128,11 @@ public class DataService : IDataService
 		{
 			if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
 			{
-				var json = await _dataAPI[course.Race.Source].GetResults(course.ID);
+				var json = await _resultsAPI[course.Race.Source].GetResults(course.ID);
 				var newHash = json.ToString().GetHashCode();
 				if (newHash != course.LastHash)
 				{
-					course.Results = _dataAPI[course.Race.Source].Source.ParseCourse(course, json);
+					course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, json);
 					course.LastHash = newHash;
 				}
 

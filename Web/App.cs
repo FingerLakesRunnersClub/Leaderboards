@@ -35,13 +35,13 @@ public static class App
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();
 
-		services.AddSingleton<DataAPI<UltraSignup>>();
-		services.AddSingleton<DataAPI<WebScorer>>();
+		services.AddSingleton<ResultsAPI<UltraSignup>>();
+		services.AddSingleton<ResultsAPI<WebScorer>>();
 
-		services.AddSingleton<IDictionary<string, IDataAPI>>(s => new Dictionary<string, IDataAPI>
+		services.AddSingleton<IDictionary<string, IResultsAPI>>(s => new Dictionary<string, IResultsAPI>
 		{
-			{ nameof(UltraSignup), s.GetRequiredService<DataAPI<UltraSignup>>() },
-			{ nameof(WebScorer), s.GetRequiredService<DataAPI<WebScorer>>() }
+			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
+			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
 
 		services.AddSingleton(s => new Config(s.GetRequiredService<IConfiguration>()));
