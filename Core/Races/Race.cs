@@ -1,4 +1,6 @@
-﻿namespace FLRC.Leaderboards.Core.Races;
+﻿using FLRC.Leaderboards.Core.Community;
+
+namespace FLRC.Leaderboards.Core.Races;
 
 public class Race
 {
@@ -8,5 +10,10 @@ public class Race
 	public DateTime Date { get; set; }
 	public string Source { get; init; }
 	public string URL { get; init; }
+
+	public ushort CommunityID { get; init; }
+	public IReadOnlyCollection<Post> CommunityPosts { get; set; }
+	public int CommunityHash { get; set; }
+
 	public IReadOnlyCollection<Course> Courses { get; set; }
 }

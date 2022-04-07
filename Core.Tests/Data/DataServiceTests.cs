@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.Extensions.Configuration;
@@ -15,14 +16,15 @@ public class DataServiceTests
 	public async Task CanParseResultsFromAPI()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var course = await dataService.GetResults(123);
@@ -35,14 +37,15 @@ public class DataServiceTests
 	public async Task CanGetAllResults()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var allResults = await dataService.GetAllResults();
@@ -55,13 +58,16 @@ public class DataServiceTests
 	public async Task ResultsFromAPIAreCached()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		communityAPI.GetPosts(Arg.Any<ushort>()).Returns(JsonDocument.Parse("[]").RootElement);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		await dataService.GetResults(123);
@@ -72,17 +78,49 @@ public class DataServiceTests
 	}
 
 	[Fact]
+	public async Task ResultsIncludeCommunityPoints()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
+		var resultsJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(resultsJSON.RootElement);
+		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var posts = new List<Post>
+		{
+			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Narrative" },
+			new() { Name = "Other Athlete", Date = new DateTime(2011, 9, 24), Content = "## Local Business" },
+			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 25), Content = "## Local Business" },
+		};
+		communityAPI.ParsePosts(Arg.Any<JsonElement>()).Returns(posts);
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
+
+		//act
+		var course = await dataService.GetResults(123);
+
+		//assert
+		var result = course.Results.Single();
+		Assert.False(result.CommunityPoints[PointType.GroupRun]);
+		Assert.True(result.CommunityPoints[PointType.Narrative]);
+		Assert.False(result.CommunityPoints[PointType.LocalBusiness]);
+	}
+
+	[Fact]
 	public async Task ResultsAPIExceptionsAreLogged()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Throws(new Exception());
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		await dataService.GetResults(123);
@@ -95,14 +133,15 @@ public class DataServiceTests
 	public async Task CanParseAthleteFromAPI()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var athlete = await dataService.GetAthlete(234);
@@ -115,14 +154,15 @@ public class DataServiceTests
 	public async Task CanGetAllAthletes()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var athletes = await dataService.GetAthletes();
@@ -135,13 +175,14 @@ public class DataServiceTests
 	public async Task AthletesFromAPIAreCached()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		var json = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		await dataService.GetAthlete(234);
@@ -155,14 +196,15 @@ public class DataServiceTests
 	public async Task AthleteAPIExceptionsAreLogged()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Throws(new Exception());
 		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		await dataService.GetAthlete(234);
@@ -174,23 +216,24 @@ public class DataServiceTests
 	private IDictionary<string, IReadOnlyCollection<uint>> groups
 		=> new Dictionary<string, IReadOnlyCollection<uint>>
 		{
-				{"Test 1", new uint[] {123, 234}},
-				{"Test 2", new uint[] {234, 345}}
+			{ "Test 1", new uint[] { 123, 234 } },
+			{ "Test 2", new uint[] { 234, 345 } }
 		};
 
 	[Fact]
 	public async Task CanGetGroupMembers()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
 		groupAPI.GetGroups().Returns(groups);
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var members = await dataService.GetGroupMembers("Test 1");
@@ -203,15 +246,16 @@ public class DataServiceTests
 	public async Task GroupMembersAreCached()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
 		groupAPI.GetGroups().Returns(groups);
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		var members1 = await dataService.GetGroupMembers("Test 1");
@@ -227,14 +271,15 @@ public class DataServiceTests
 	public async Task GroupMemberExceptionsAreLogged()
 	{
 		//arrange
-		var resultsAPI = Substitute.For<IDictionary<string,IResultsAPI>>();
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		var groupAPI = Substitute.For<IGroupAPI>();
 		groupAPI.GetGroups().Throws(new Exception());
+		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
-		var dataService = new DataService(resultsAPI, groupAPI, config, loggerFactory);
+		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
 		await dataService.GetGroupMembers("Test 1");

@@ -1,7 +1,9 @@
 using System.Collections.Concurrent;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Groups;
 using FLRC.Leaderboards.Core.Races;
+using FLRC.Leaderboards.Core.Results;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -11,16 +13,17 @@ public class DataService : IDataService
 {
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
 	private readonly IGroupAPI _groupAPI;
+	private readonly ICommunityAPI _communityAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
 	private readonly IDictionary<uint, Race> _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IGroupAPI groupAPI, IConfiguration configuration,
-		ILoggerFactory loggerFactory)
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IGroupAPI groupAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
 	{
 		_resultsAPI = resultsAPI;
 		_groupAPI = groupAPI;
+		_communityAPI = communityAPI;
 
 		_logger = loggerFactory.CreateLogger("DataService");
 		_cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
@@ -128,12 +131,25 @@ public class DataService : IDataService
 		{
 			if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
 			{
-				var json = await _resultsAPI[course.Race.Source].GetResults(course.ID);
-				var newHash = json.ToString().GetHashCode();
-				if (newHash != course.LastHash)
+				var getPosts = _communityAPI.GetPosts(course.Race.CommunityID);
+
+				var results = await _resultsAPI[course.Race.Source].GetResults(course.ID);
+				var resultsHash = results.ToString().GetHashCode();
+
+				if (resultsHash != course.LastHash)
 				{
-					course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, json);
-					course.LastHash = newHash;
+					course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results);
+					course.LastHash = resultsHash;
+				}
+
+				var posts = await getPosts;
+				course.Race.CommunityPosts = _communityAPI.ParsePosts(posts);
+				var communityHash = posts.ToString().GetHashCode();
+
+				if (resultsHash != course.LastHash || communityHash != course.Race.CommunityHash)
+				{
+					UpdateCommunityPoints(course.Results, course.Race.CommunityPosts);
+					course.Race.CommunityHash = communityHash;
 				}
 
 				course.LastUpdated = DateTime.Now;
@@ -145,6 +161,16 @@ public class DataService : IDataService
 		}
 
 		return course;
+	}
+
+	private static void UpdateCommunityPoints(IEnumerable<Result> results, IReadOnlyCollection<Post> posts)
+	{
+		foreach (var result in results)
+		{
+			result.CommunityPoints[PointType.GroupRun] = result.IsGroupRun() && !result.HasCommunityPointToday(PointType.GroupRun);
+			result.CommunityPoints[PointType.Narrative] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.Narrative);
+			result.CommunityPoints[PointType.LocalBusiness] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.LocalBusiness);
+		}
 	}
 
 	public async Task<IReadOnlyCollection<Course>> GetAllResults()
@@ -166,7 +192,6 @@ public class DataService : IDataService
 			return new List<Athlete>();
 		}
 	}
-
 
 	private IDictionary<string, Athlete[]> _groups;
 	private DateTime _groupCacheTimestamp;
