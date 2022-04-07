@@ -38,4 +38,7 @@ public class Result : IComparable<Result>
 
 	public bool IsGroupRun()
 		=> Course.Results.Any(r => !r.Athlete.Equals(Athlete) && r.StartTime.Value.Subtract(StartTime.Value).Duration() < GroupRunStartTimeLimit);
+
+	public bool HasCommunityPointToday(PointType type)
+		=> Course.Results.Any(r => r != this && r.Athlete.Equals(Athlete) && r.StartTime.Value.Date == StartTime.Value.Date && r.CommunityPoints[type]);
 }

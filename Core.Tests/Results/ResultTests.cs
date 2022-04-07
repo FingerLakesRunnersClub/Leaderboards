@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
@@ -71,14 +72,14 @@ public class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
 			Duration = new Time(new TimeSpan(1, 2, 3))
 		};
 		var r2 = new Result
 		{
 			Athlete = CourseData.Athlete2,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 38, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
 		results.AddRange(new[] { r1, r2 });
@@ -104,14 +105,14 @@ public class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
 			Duration = new Time(new TimeSpan(1, 2, 3))
 		};
 		var r2 = new Result
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 36, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 36, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
 		results.AddRange(new[] { r1, r2 });
@@ -136,7 +137,7 @@ public class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course1,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
 			Duration = new Time(new TimeSpan(1, 2, 3))
 		};
 		results1.AddRange(new[] { r1 });
@@ -150,7 +151,7 @@ public class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course2,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 36, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 36, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
 		results2.AddRange(new[] { r2 });
@@ -176,14 +177,14 @@ public class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
 			Duration = new Time(new TimeSpan(1, 2, 3))
 		};
 		var r2 = new Result
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 4, 38, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
 		results.AddRange(new[] { r1, r2 });
@@ -193,5 +194,149 @@ public class ResultTests
 
 		//assert
 		Assert.False(isGroupRun);
+	}
+
+	[Fact]
+	public void HasCommunityPointWhenRunBySameAthleteOnSameDayHasSamePoint()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+		};
+
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
+			CommunityPoints =
+			{
+				[PointType.GroupRun] = true
+			}
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+
+		//assert
+		Assert.True(hasPoint);
+	}
+
+	[Fact]
+	public void DoesNotHaveCommunityPointWhenRunBySameAthleteOnDifferentDayHasSamePoint()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+		};
+
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 6, 16, 38, 0)),
+			CommunityPoints =
+			{
+				[PointType.GroupRun] = true
+			}
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+
+		//assert
+		Assert.False(hasPoint);
+	}
+
+	[Fact]
+	public void DoesNotHaveCommunityPointWhenRunByDifferentAthleteOnSameDayHasSamePoint()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+		};
+
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete2,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
+			CommunityPoints =
+			{
+				[PointType.GroupRun] = true
+			}
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+
+		//assert
+		Assert.False(hasPoint);
+	}
+
+	[Fact]
+	public void DoesNotHaveCommunityPointWhenRunBySameAthleteOnSameDayHasDifferentPoint()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+		};
+
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete2,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
+			CommunityPoints =
+			{
+				[PointType.GroupRun] = true
+			}
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var hasPoint = r1.HasCommunityPointToday(PointType.Narrative);
+
+		//assert
+		Assert.False(hasPoint);
 	}
 }
