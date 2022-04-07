@@ -33,4 +33,13 @@ public class DiscourseAPI : ICommunityAPI
 		var json = await JsonDocument.ParseAsync(response);
 		return json.RootElement.GetProperty("post_stream").GetProperty("posts");
 	}
+
+	public IReadOnlyCollection<Post> ParsePosts(JsonElement json)
+		=> json.EnumerateArray()
+			.Select(p => new Post
+			{
+				Name = p.GetProperty("name").GetString(),
+				Date = p.GetProperty("created_at").GetDateTime(),
+				Content = p.GetProperty("raw").GetString()
+			}).ToArray();
 }
