@@ -2,12 +2,12 @@
 
 namespace FLRC.Leaderboards.Core.Config;
 
-public record AppConfig
+public record AppConfig : IConfig
 {
 	public string App { get; }
 	public IDictionary<uint, string> CourseNames { get; }
 	public IDictionary<string, string> Links { get; }
-	public FeatureSet Features { get; }
+	public IFeatureSet Features { get; }
 	public IDictionary<string, string> Competitions { get; }
 
 	public AppConfig(IConfiguration config)

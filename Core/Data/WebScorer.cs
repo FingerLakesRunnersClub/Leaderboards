@@ -10,13 +10,13 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class WebScorer : IDataSource
 {
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 	public string Name => nameof(WebScorer);
 
 	public string URL(uint courseID)
 		=> $"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}";
 
-	public WebScorer(AppConfig config)
+	public WebScorer(IConfig config)
 		=> _config = config;
 
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)

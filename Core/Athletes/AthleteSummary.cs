@@ -32,10 +32,10 @@ public class AthleteSummary
 
 	public int TotalResults { get; }
 	private readonly IReadOnlyCollection<Course> _results;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 
 
-	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results, AppConfig config)
+	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results, IConfig config)
 	{
 		_results = results;
 		_config = config;

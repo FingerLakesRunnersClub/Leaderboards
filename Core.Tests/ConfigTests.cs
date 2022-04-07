@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
-using Xunit;
+﻿using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests;
 

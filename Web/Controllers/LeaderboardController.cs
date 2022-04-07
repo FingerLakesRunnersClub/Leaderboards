@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Leaders;
@@ -9,9 +8,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class LeaderboardController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 
-	public LeaderboardController(IDataService dataService, AppConfig config)
+	public LeaderboardController(IDataService dataService, IConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

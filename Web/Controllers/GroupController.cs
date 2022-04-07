@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
@@ -10,9 +9,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class GroupController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 
-	public GroupController(IDataService dataService, AppConfig config)
+	public GroupController(IDataService dataService, IConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

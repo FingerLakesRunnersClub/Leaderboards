@@ -1,5 +1,4 @@
-﻿using FLRC.Leaderboards.Core;
-using FLRC.Leaderboards.Core.Config;
+﻿using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
@@ -30,6 +29,8 @@ public static class App
 		services.AddControllersWithViews();
 		services.AddHttpClient();
 
+		services.AddSingleton<IConfig>(s => new AppConfig(s.GetRequiredService<IConfiguration>()));
+
 		services.AddSingleton<IDataService, DataService>();
 		services.AddSingleton<IGroupAPI, GroupAPI>();
 
@@ -44,8 +45,6 @@ public static class App
 			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
-
-		services.AddSingleton(s => new AppConfig(s.GetRequiredService<IConfiguration>()));
 	}
 
 	public static void Configure(IApplicationBuilder app, IHostEnvironment env)

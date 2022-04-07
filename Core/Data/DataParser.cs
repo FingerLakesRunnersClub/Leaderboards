@@ -1,6 +1,4 @@
-using System.Text.RegularExpressions;
 using FLRC.Leaderboards.Core.Athletes;
-using FLRC.Leaderboards.Core.Metrics;
 
 namespace FLRC.Leaderboards.Core.Data;
 

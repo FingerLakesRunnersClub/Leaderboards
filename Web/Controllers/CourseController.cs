@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
@@ -13,9 +12,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class CourseController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 
-	public CourseController(IDataService dataService, AppConfig config)
+	public CourseController(IDataService dataService, IConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

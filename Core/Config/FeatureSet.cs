@@ -2,7 +2,7 @@
 
 namespace FLRC.Leaderboards.Core.Config;
 
-public record FeatureSet
+public record FeatureSet : IFeatureSet
 {
 	public bool GenerateAthleteID { get; }
 	public bool MultiAttempt { get; }

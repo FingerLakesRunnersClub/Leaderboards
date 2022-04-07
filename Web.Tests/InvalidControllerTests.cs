@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;

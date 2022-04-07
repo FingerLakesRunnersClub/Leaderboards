@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
@@ -10,9 +9,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class CompletedController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 
-	public CompletedController(IDataService dataService, AppConfig config)
+	public CompletedController(IDataService dataService, IConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

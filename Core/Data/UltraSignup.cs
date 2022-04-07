@@ -10,13 +10,13 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class UltraSignup : IDataSource
 {
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 	public string Name => nameof(UltraSignup);
 
 	public string URL(uint courseID)
 		=> $"https://ultrasignup.com/service/events.svc/results/{courseID}/1/json";
 
-	public UltraSignup(AppConfig config)
+	public UltraSignup(IConfig config)
 		=> _config = config;
 
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)

@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Reports;
@@ -10,10 +9,10 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class LogController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly AppConfig _config;
+	private readonly IConfig _config;
 	private readonly DateTime _today;
 
-	public LogController(IDataService dataService, AppConfig config, DateTime? today = null)
+	public LogController(IDataService dataService, IConfig config, DateTime? today = null)
 	{
 		_dataService = dataService;
 		_config = config;
