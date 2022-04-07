@@ -63,7 +63,7 @@ public class WebScorer : IDataSource
 				ID = id,
 				Name = element.GetProperty("Name").GetString(),
 				Age = element.GetProperty("Age").GetByte(),
-				Category = DataParser.ParseCategory(element.GetProperty("Gender").GetString()),
+				Category = Category.Parse(element.GetProperty("Gender").GetString()),
 				DateOfBirth = hasDOB ? dob : null
 			});
 		}

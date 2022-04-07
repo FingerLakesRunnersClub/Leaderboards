@@ -24,19 +24,19 @@ public class CourseController : Controller
 	{
 		if (ag != null)
 			ViewBag.AgeGroup = ag;
-		var cat = DataParser.ParseCategory(category);
+		var cat = Category.Parse(category);
 		return View(await GetResults(id, distance, ResultType.Fastest, cat, c => c.Fastest(cat, ag)));
 	}
 
 	public async Task<ViewResult> MostRuns(uint id, string distance, string category = null)
 	{
-		var cat = DataParser.ParseCategory(category);
+		var cat = Category.Parse(category);
 		return View(await GetResults(id, distance, ResultType.MostRuns, cat, c => c.MostRuns(cat)));
 	}
 
 	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null)
 	{
-		var cat = DataParser.ParseCategory(category);
+		var cat = Category.Parse(category);
 		return View(await GetResults(id, distance, ResultType.BestAverage, cat, c => c.BestAverage(cat)));
 	}
 

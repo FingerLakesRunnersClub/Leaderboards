@@ -47,4 +47,20 @@ public class CategoryTests
 		//assert
 		Assert.Equal(f1, f2);
 	}
+
+	[Theory]
+	[InlineData("F", AgeGradeCalculator.Category.F)]
+	[InlineData("M", AgeGradeCalculator.Category.M)]
+	[InlineData("X", null)]
+	public void CanParseCategory(string cat, AgeGradeCalculator.Category? expected)
+	{
+		//act
+		var category = Category.Parse(cat);
+
+		//assert
+		if (expected != null)
+			Assert.Equal(expected, category.Value);
+		else
+			Assert.Null(category);
+	}
 }

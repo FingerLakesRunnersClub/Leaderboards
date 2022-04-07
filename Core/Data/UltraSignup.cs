@@ -48,7 +48,7 @@ public class UltraSignup : IDataSource
 			{
 				ID = id,
 				Name = name,
-				Category = DataParser.ParseCategory(element.GetProperty("gender").GetString()),
+				Category = Category.Parse(element.GetProperty("gender").GetString()),
 				Age = element.GetProperty("age").GetByte()
 			});
 		}
