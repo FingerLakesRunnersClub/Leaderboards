@@ -56,4 +56,142 @@ public class ResultTests
 		//assert
 		Assert.Equal(new Time(new TimeSpan(3, 4, 5)), behind);
 	}
+
+	[Fact]
+	public void IsGroupRunWhenSomeoneElseStartsWithinLimit()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			Duration = new Time(new TimeSpan(1, 2, 3))
+		};
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete2,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 38, 0)),
+			Duration = new Time(new TimeSpan(4, 6, 8))
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var isGroupRun = r1.IsGroupRun();
+
+		//assert
+		Assert.True(isGroupRun);
+	}
+
+	[Fact]
+	public void IsNotGroupRunWhenNotWithinThreshold()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			Duration = new Time(new TimeSpan(1, 2, 3))
+		};
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 36, 0)),
+			Duration = new Time(new TimeSpan(4, 6, 8))
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var isGroupRun = r1.IsGroupRun();
+
+		//assert
+		Assert.False(isGroupRun);
+	}
+
+	[Fact]
+	public void IsNotGroupRunWhenDifferentCourse()
+	{
+		//arrange
+		var results1 = new List<Result>();
+		var course1 = new Course
+		{
+			Results = results1
+		};
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course1,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			Duration = new Time(new TimeSpan(1, 2, 3))
+		};
+		results1.AddRange(new[] { r1 });
+
+		var results2 = new List<Result>();
+		var course2 = new Course
+		{
+			Results = results2
+		};
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course2,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 36, 0)),
+			Duration = new Time(new TimeSpan(4, 6, 8))
+		};
+		results2.AddRange(new[] { r2 });
+
+		//act
+		var isGroupRun = r1.IsGroupRun();
+
+		//assert
+		Assert.False(isGroupRun);
+	}
+
+	[Fact]
+	public void IsNotGroupRunWhenSameAthlete()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course
+		{
+			Results = results
+		};
+
+		var r1 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 42, 0)),
+			Duration = new Time(new TimeSpan(1, 2, 3))
+		};
+		var r2 = new Result
+		{
+			Athlete = CourseData.Athlete1,
+			Course = course,
+			StartTime = new Date(new DateTime(2022, 4, 7, 4, 38, 0)),
+			Duration = new Time(new TimeSpan(4, 6, 8))
+		};
+		results.AddRange(new[] { r1, r2 });
+
+		//act
+		var isGroupRun = r1.IsGroupRun();
+
+		//assert
+		Assert.False(isGroupRun);
+	}
 }
