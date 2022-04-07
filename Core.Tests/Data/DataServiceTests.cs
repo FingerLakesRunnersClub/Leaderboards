@@ -171,8 +171,8 @@ public class DataServiceTests
 		Assert.True(logger.Called);
 	}
 
-	private IDictionary<string, IEnumerable<uint>> groups
-		=> new Dictionary<string, IEnumerable<uint>>
+	private IDictionary<string, IReadOnlyCollection<uint>> groups
+		=> new Dictionary<string, IReadOnlyCollection<uint>>
 		{
 				{"Test 1", new uint[] {123, 234}},
 				{"Test 2", new uint[] {234, 345}}

@@ -18,7 +18,7 @@ public class UltraSignup : IDataSource
 	public UltraSignup(Config config)
 		=> _config = config;
 
-	public IEnumerable<Result> ParseCourse(Course course, JsonElement json)
+	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)
 	{
 		return json.EnumerateArray()
 			.Where(r => r.GetProperty("status").GetByte() == 1)
@@ -28,7 +28,7 @@ public class UltraSignup : IDataSource
 				Athlete = ParseAthlete(j),
 				StartTime = new Date(course.Race.Date),
 				Duration = ParseDuration(j.GetProperty("time").GetString())
-			});
+			}).ToArray();
 	}
 
 	private static Time ParseDuration(string milliseconds)

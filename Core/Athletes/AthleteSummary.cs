@@ -20,9 +20,9 @@ public class AthleteSummary
 	public IDictionary<Course, Ranked<Time>> Fastest { get; }
 	public IDictionary<Course, Ranked<Time>> Average { get; }
 	public IDictionary<Course, Ranked<ushort>> Runs { get; }
-	public Dictionary<Course, IEnumerable<Result>> All { get; }
+	public Dictionary<Course, Result[]> All { get; }
 
-	public IEnumerable<AthleteOverallRow> Competitions { get; }
+	public IReadOnlyCollection<AthleteOverallRow> Competitions { get; }
 
 	public Ranked<Points> OverallPoints { get; }
 	public Ranked<AgeGrade> OverallAgeGrade { get; }
@@ -43,19 +43,20 @@ public class AthleteSummary
 		Fastest = results.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
 		Average = results.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
 		Runs = results.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
-		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.Equals(athlete)));
+		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.Equals(athlete)).ToArray());
 
 		var overallViewModel = new OverallResults(results);
-		Competitions = new List<AthleteOverallRow>
-		{
-			OverallRow("Points/F", Category.F, athlete, () => overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("Points/M", Category.M, athlete, () => overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("PointsTop3/F", Category.F, athlete, () => overallViewModel.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("PointsTop3/M", Category.M, athlete, () => overallViewModel.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("AgeGrade", null, athlete, () => overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("Miles", null, athlete, () => overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-			OverallRow("Team", null, athlete, () => overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team))
-		}.Where(c => c?.Value != null);
+		Competitions = new[]
+			{
+				OverallRow("Points/F", Category.F, athlete, () => overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Points/M", Category.M, athlete, () => overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("PointsTop3/F", Category.F, athlete, () => overallViewModel.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("PointsTop3/M", Category.M, athlete, () => overallViewModel.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("AgeGrade", null, athlete, () => overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Miles", null, athlete, () => overallViewModel.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Team", null, athlete, () => overallViewModel.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team))
+			}.Where(c => c?.Value != null)
+			.ToArray();
 
 		OverallPoints = overallViewModel.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
 		OverallAgeGrade = overallViewModel.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
@@ -80,7 +81,7 @@ public class AthleteSummary
 		};
 	}
 
-	public IEnumerable<SimilarAthlete> SimilarAthletes
+	public IReadOnlyCollection<SimilarAthlete> SimilarAthletes
 	{
 		get
 		{
@@ -95,7 +96,8 @@ public class AthleteSummary
 			return athletes.Select(their => new SimilarAthlete(this, their))
 				.Where(m => Math.Abs(m.FastestPercent.Value) < 10
 				            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
-				            && m.Similarity.Value >= 80);
+				            && m.Similarity.Value >= 80)
+				.ToArray();
 		}
 	}
 

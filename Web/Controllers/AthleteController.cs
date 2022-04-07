@@ -54,7 +54,7 @@ public class AthleteController : Controller
 		};
 	}
 
-	private static RankedList<Time> Rank(IEnumerable<Result> results)
+	private static RankedList<Time> Rank(IReadOnlyCollection<Result> results)
 	{
 		var ranks = new RankedList<Time>();
 
@@ -81,7 +81,7 @@ public class AthleteController : Controller
 		return ranks;
 	}
 
-	private static IEnumerable<SimilarAthlete> Rank(IEnumerable<SimilarAthlete> matches)
+	private static IReadOnlyCollection<SimilarAthlete> Rank(IReadOnlyCollection<SimilarAthlete> matches)
 	{
 		var ordered = matches.OrderByDescending(r => r.Score).ToArray();
 		for (var x = 0; x < ordered.Length; x++)
@@ -93,7 +93,7 @@ public class AthleteController : Controller
 	{
 		var athlete = await _dataService.GetAthlete(id);
 		var courses = await _dataService.GetAllResults();
-		var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete.ID == athlete.ID));
+		var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete.ID == athlete.ID)).ToArray();
 
 		return new AthleteLogViewModel
 		{

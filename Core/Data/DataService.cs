@@ -147,13 +147,13 @@ public class DataService : IDataService
 		return course;
 	}
 
-	public async Task<IEnumerable<Course>> GetAllResults()
+	public async Task<IReadOnlyCollection<Course>> GetAllResults()
 	{
 		var tasks = _races.SelectMany(r => r.Value.Courses.Select(c => GetResults(c.ID, c.Distance.Display)));
 		return await Task.WhenAll(tasks);
 	}
 
-	public async Task<IEnumerable<Athlete>> GetGroupMembers(string id)
+	public async Task<IReadOnlyCollection<Athlete>> GetGroupMembers(string id)
 	{
 		try
 		{
@@ -168,17 +168,17 @@ public class DataService : IDataService
 	}
 
 
-	private IDictionary<string, IEnumerable<Athlete>> _groups;
+	private IDictionary<string, Athlete[]> _groups;
 	private DateTime _groupCacheTimestamp;
 
-	private async Task<IDictionary<string, IEnumerable<Athlete>>> GetGroups()
+	private async Task<IDictionary<string, Athlete[]>> GetGroups()
 	{
 		if (_groupCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
 		{
 			var athletes = await GetAthletes();
 			var members = await _groupAPI.GetGroups();
 			_groups = members.ToDictionary(m => m.Key,
-				m => m.Value.Select(v => athletes.ContainsKey(v) ? athletes[v] : null).Where(a => a != null));
+				m => m.Value.Select(v => athletes.ContainsKey(v) ? athletes[v] : null).Where(a => a != null).ToArray());
 			_groupCacheTimestamp = DateTime.Now;
 		}
 

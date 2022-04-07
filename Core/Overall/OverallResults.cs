@@ -9,9 +9,9 @@ namespace FLRC.Leaderboards.Core.Overall;
 
 public class OverallResults
 {
-	private readonly IEnumerable<Course> _courses;
+	private readonly IReadOnlyCollection<Course> _courses;
 
-	public OverallResults(IEnumerable<Course> courses) => _courses = courses;
+	public OverallResults(IReadOnlyCollection<Course> courses) => _courses = courses;
 
 	public RankedList<Points> MostPoints(Category category = null)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(category)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
@@ -31,10 +31,10 @@ public class OverallResults
 	public RankedList<TeamMember> TeamMembers(byte ag)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => new TeamMember(g.ToList()), g => g.Count(), g => (uint) g.Count());
 
-	public RankedList<TeamMember> GroupMembers(IEnumerable<Athlete> athletes)
+	public RankedList<TeamMember> GroupMembers(IReadOnlyCollection<Athlete> athletes)
 		=> RankedList(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).GroupBy(r => r.Result.Athlete), g => new TeamMember(g.ToList()), g => g.Count(), g => (uint) g.Count());
 
-	public IEnumerable<TeamResults> TeamPoints()
+	public IReadOnlyCollection<TeamResults> TeamPoints()
 		=> _courses.SelectMany(c => c.TeamPoints())
 			.GroupBy(r => r.Team)
 			.Select(g => new TeamResults

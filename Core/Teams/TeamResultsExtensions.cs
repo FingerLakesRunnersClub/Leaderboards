@@ -4,7 +4,7 @@ namespace FLRC.Leaderboards.Core.Teams;
 
 public static class TeamResultsExtensions
 {
-	public static IEnumerable<TeamResults> Rank(this IEnumerable<TeamResults> teamResults)
+	public static IReadOnlyCollection<TeamResults> Rank(this IEnumerable<TeamResults> teamResults)
 	{
 		var topTeams = teamResults.OrderBy(t => t.TotalPoints).ToArray();
 		for (var x = 0; x < topTeams.Length; x++)

@@ -9,6 +9,6 @@ public interface IDataSource
 {
 	public string Name { get; }
 	public string URL(uint courseID);
-	IEnumerable<Result> ParseCourse(Course course, JsonElement json);
+	IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json);
 	Athlete ParseAthlete(JsonElement element);
 }

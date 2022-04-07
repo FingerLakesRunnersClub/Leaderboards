@@ -4,5 +4,5 @@ namespace FLRC.Leaderboards.Core.Overall;
 
 public class OverallTeamResultsViewModel : OverallResultsViewModel
 {
-	public IEnumerable<TeamResults> Results { get; init; }
+	public IReadOnlyCollection<TeamResults> Results { get; init; }
 }

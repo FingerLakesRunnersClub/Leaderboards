@@ -18,9 +18,9 @@ public class Course
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
 
-	private IEnumerable<Result> _results = Array.Empty<Result>();
+	private IReadOnlyCollection<Result> _results = Array.Empty<Result>();
 
-	public IEnumerable<Result> Results
+	public IReadOnlyCollection<Result> Results
 	{
 		get => _results;
 		set
@@ -30,8 +30,8 @@ public class Course
 		}
 	}
 
-	public IEnumerable<Result> ResultsAsOf(DateTime date)
-		=> Results.Where(r => r.StartTime.Value <= date);
+	public IReadOnlyCollection<Result> ResultsAsOf(DateTime date)
+		=> Results.Where(r => r.StartTime.Value <= date).ToArray();
 
 	private void resetCaches()
 	{
@@ -106,9 +106,10 @@ public class Course
 		return _earliestCache[key] = Rank(category, _ => true, g => g.OrderBy(r => r.StartTime).FirstOrDefault(), g => g.Min(r => r.StartTime));
 	}
 
-	public IEnumerable<GroupedResult> GroupedResults(Category category = null)
+	public IReadOnlyCollection<GroupedResult> GroupedResults(Category category = null)
 		=> Results.Where(r => category == null || (r.Athlete.Category == category))
-			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g));
+			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
+			.ToArray();
 
 	private readonly IDictionary<string, ushort> _thresholdCache = new ConcurrentDictionary<string, ushort>();
 
@@ -124,9 +125,9 @@ public class Course
 			: (ushort)0;
 	}
 
-	private IEnumerable<TeamResults> _teamCache;
+	private IReadOnlyCollection<TeamResults> _teamCache;
 
-	public IEnumerable<TeamResults> TeamPoints()
+	public IReadOnlyCollection<TeamResults> TeamPoints()
 	{
 		if (_teamCache != null)
 			return _teamCache;

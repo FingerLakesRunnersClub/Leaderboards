@@ -18,7 +18,7 @@ public class WebScorer : IDataSource
 	public WebScorer(Config config)
 		=> _config = config;
 
-	public IEnumerable<Result> ParseCourse(Course course, JsonElement json)
+	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)
 	{
 		var results = json.GetProperty("Racers");
 
@@ -29,7 +29,7 @@ public class WebScorer : IDataSource
 
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-	private IEnumerable<Result> ParseResults(Course course, JsonElement results)
+	private IReadOnlyCollection<Result> ParseResults(Course course, JsonElement results)
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
 			            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
@@ -42,7 +42,8 @@ public class WebScorer : IDataSource
 				Athlete = ParseAthlete(r),
 				StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
 				Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
-			}).Where(r => r.Duration.Value >= MinimumDuration);
+			}).Where(r => r.Duration.Value >= MinimumDuration)
+			.ToArray();
 
 	private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 

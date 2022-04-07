@@ -9,7 +9,7 @@ public interface IDataService
 	Task<IDictionary<uint, Athlete>> GetAthletes();
 
 	Task<Course> GetResults(uint id, string distance);
-	Task<IEnumerable<Course>> GetAllResults();
+	Task<IReadOnlyCollection<Course>> GetAllResults();
 
-	Task<IEnumerable<Athlete>> GetGroupMembers(string id);
+	Task<IReadOnlyCollection<Athlete>> GetGroupMembers(string id);
 }

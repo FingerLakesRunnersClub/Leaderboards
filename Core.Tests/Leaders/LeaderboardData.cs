@@ -12,14 +12,14 @@ public static class LeaderboardData
 	public static readonly Athlete Athlete3 = new() { ID = 345, Name = "A3", Age = 20, DateOfBirth = new DateTime(2000, 1, 1), Category = Category.F };
 	public static readonly Athlete Athlete4 = new() { ID = 456, Name = "A4", Age = 30, DateOfBirth = new DateTime(1990, 1, 1), Category = Category.F };
 
-	public static readonly IEnumerable<Course> Courses = new List<Course>
+	public static readonly IReadOnlyCollection<Course> Courses = new List<Course>
 	{
 		new() { Race = new Race { Name = "Test" }, Distance = new Distance("10 miles"), Results = Results }
 	};
 
 	private static Course Course => new() { Distance = new Distance("10 miles") };
 
-	private static IEnumerable<Result> Results
+	private static IReadOnlyCollection<Result> Results
 		=> new List<Result>
 		{
 			new() { Course = Course, Athlete = Athlete1, StartTime = new Date(DateTime.Parse("1/2/2020")), Duration = new Time(new TimeSpan(1, 2, 3)) },

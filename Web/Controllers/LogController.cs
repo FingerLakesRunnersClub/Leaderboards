@@ -42,6 +42,7 @@ public class LogController : Controller
 				.Where(r => filter == null || r.StartTime.Value.Date > filter)
 				.OrderByDescending(r => r.StartTime.Value)
 				.GroupBy(grouping)
+				.ToArray()
 		};
 	}
 

@@ -11,5 +11,5 @@ public class LeaderboardTable
 	public Course Course { get; init; }
 	public FormattedResultType ResultType { get; init; }
 	public Category Category { get; init; }
-	public Lazy<IEnumerable<LeaderboardRow>> Rows { get; init; }
+	public Lazy<IReadOnlyCollection<LeaderboardRow>> Rows { get; init; }
 }

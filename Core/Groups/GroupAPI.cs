@@ -14,9 +14,9 @@ public class GroupAPI : IGroupAPI
 		_url = configuration.GetValue<string>("GroupAPI");
 	}
 
-	public async Task<IDictionary<string, IEnumerable<uint>>> GetGroups()
+	public async Task<IDictionary<string, IReadOnlyCollection<uint>>> GetGroups()
 	{
 		var response = await _httpClient.GetStreamAsync(_url);
-		return await JsonSerializer.DeserializeAsync<IDictionary<string, IEnumerable<uint>>>(response);
+		return await JsonSerializer.DeserializeAsync<IDictionary<string, IReadOnlyCollection<uint>>>(response);
 	}
 }

@@ -53,7 +53,7 @@ public class OverallController : Controller
 		};
 	}
 
-	private async Task<OverallTeamResultsViewModel> GetTeamResults(string title, Func<OverallResults, IEnumerable<TeamResults>> results)
+	private async Task<OverallTeamResultsViewModel> GetTeamResults(string title, Func<OverallResults, IReadOnlyCollection<TeamResults>> results)
 	{
 		var allResults = await _dataService.GetAllResults();
 		var overall = new OverallResults(allResults);

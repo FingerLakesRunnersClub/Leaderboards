@@ -14,7 +14,7 @@ public static class CourseData
 
 	public static readonly Course Course = new() { Distance = new Distance("10K") };
 
-	public static IEnumerable<Result> Results => new List<Result>
+	public static IReadOnlyCollection<Result> Results => new List<Result>
 		{
 			new() {Course = Course, Athlete = Athlete1, StartTime = new Date(DateTime.Parse("1/1/2020")), Duration = new Time(TimeSpan.Parse("2:34:56.7"))},
 			new() {Course = Course, Athlete = Athlete1, StartTime = new Date(DateTime.Parse("1/3/2020")), Duration = new Time(TimeSpan.Parse("1:20:00.0"))},
@@ -26,7 +26,7 @@ public static class CourseData
 			new() {Course = Course, Athlete = Athlete4, StartTime = new Date(DateTime.Parse("1/4/2020")), Duration = new Time(TimeSpan.Parse("2:00:00.0"))}
 		};
 
-	public static IEnumerable<Result> SimilarResults => new List<Result>
+	public static IReadOnlyCollection<Result> SimilarResults => new List<Result>
 		{
 			new() {Course = Course, Athlete = Athlete1, Duration = new Time(TimeSpan.FromSeconds(100))},
 			new() {Course = Course, Athlete = Athlete2, Duration = new Time(TimeSpan.FromSeconds(105))},
