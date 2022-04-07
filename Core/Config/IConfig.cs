@@ -7,4 +7,6 @@ public interface IConfig
 	IDictionary<string, string> Links { get; }
 	IFeatureSet Features { get; }
 	IDictionary<string, string> Competitions { get; }
+	string CommunityURL { get; }
+	string CommunityKey { get; }
 }

@@ -1,4 +1,5 @@
-﻿using FLRC.Leaderboards.Core.Config;
+﻿using FLRC.Leaderboards.Core.Community;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +34,7 @@ public static class App
 
 		services.AddSingleton<IDataService, DataService>();
 		services.AddSingleton<IGroupAPI, GroupAPI>();
+		services.AddSingleton<ICommunityAPI, DiscourseAPI>();
 
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();

@@ -10,6 +10,9 @@ public record AppConfig : IConfig
 	public IFeatureSet Features { get; }
 	public IDictionary<string, string> Competitions { get; }
 
+	public string CommunityURL { get; }
+	public string CommunityKey { get; }
+
 	public AppConfig(IConfiguration config)
 	{
 		App = config.GetValue<string>("App");
@@ -17,6 +20,8 @@ public record AppConfig : IConfig
 		Links = GetArray(config.GetSection("Links"));
 		Features = new FeatureSet(config.GetSection("Features"));
 		Competitions = GetArray(config.GetSection("Competitions"));
+		CommunityURL = config.GetValue<string>("CommunityURL");
+		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
 	}
 
 	private static IDictionary<string, string> GetArray(IConfiguration section)

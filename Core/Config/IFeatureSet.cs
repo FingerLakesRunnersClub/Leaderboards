@@ -6,4 +6,5 @@ public interface IFeatureSet
 	bool MultiAttempt { get; }
 	bool AgeGroupTeams { get; }
 	bool ShowBadges { get; }
+	bool CommunityPoints { get; }
 }
