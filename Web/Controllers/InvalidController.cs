@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Reports;
 using Microsoft.AspNetCore.Mvc;
@@ -9,9 +10,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class InvalidController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
-	public InvalidController(IDataService dataService, Config config)
+	public InvalidController(IDataService dataService, AppConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

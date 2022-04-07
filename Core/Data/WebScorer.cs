@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
@@ -9,13 +10,13 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class WebScorer : IDataSource
 {
-	private readonly Config _config;
+	private readonly AppConfig _config;
 	public string Name => nameof(WebScorer);
 
 	public string URL(uint courseID)
 		=> $"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}";
 
-	public WebScorer(Config config)
+	public WebScorer(AppConfig config)
 		=> _config = config;
 
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)

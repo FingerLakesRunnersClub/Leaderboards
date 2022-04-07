@@ -1,4 +1,5 @@
 ﻿using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
@@ -44,7 +45,7 @@ public static class App
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
 
-		services.AddSingleton(s => new Config(s.GetRequiredService<IConfiguration>()));
+		services.AddSingleton(s => new AppConfig(s.GetRequiredService<IConfiguration>()));
 	}
 
 	public static void Configure(IApplicationBuilder app, IHostEnvironment env)

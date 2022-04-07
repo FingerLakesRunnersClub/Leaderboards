@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace FLRC.Leaderboards.Core;
+namespace FLRC.Leaderboards.Core.Config;
 
-public record Config
+public record AppConfig
 {
 	public string App { get; }
 	public IDictionary<uint, string> CourseNames { get; }
@@ -10,7 +10,7 @@ public record Config
 	public FeatureSet Features { get; }
 	public IDictionary<string, string> Competitions { get; }
 
-	public Config(IConfiguration config)
+	public AppConfig(IConfiguration config)
 	{
 		App = config.GetValue<string>("App");
 		CourseNames = config.GetSection("Races").GetChildren().ToDictionary(c => c.GetValue<uint>("ID"), c => c.GetValue<string>("Name"));

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Concurrent;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
@@ -9,13 +10,13 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public class UltraSignup : IDataSource
 {
-	private readonly Config _config;
+	private readonly AppConfig _config;
 	public string Name => nameof(UltraSignup);
 
 	public string URL(uint courseID)
 		=> $"https://ultrasignup.com/service/events.svc/results/{courseID}/1/json";
 
-	public UltraSignup(Config config)
+	public UltraSignup(AppConfig config)
 		=> _config = config;
 
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)

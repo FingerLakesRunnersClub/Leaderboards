@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Teams;
@@ -10,9 +11,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class TeamController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
-	public TeamController(IDataService dataService, Config config)
+	public TeamController(IDataService dataService, AppConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

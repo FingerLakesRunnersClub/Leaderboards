@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
@@ -12,9 +13,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class CourseController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
-	public CourseController(IDataService dataService, Config config)
+	public CourseController(IDataService dataService, AppConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

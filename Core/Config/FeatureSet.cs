@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace FLRC.Leaderboards.Core;
+namespace FLRC.Leaderboards.Core.Config;
 
 public record FeatureSet
 {

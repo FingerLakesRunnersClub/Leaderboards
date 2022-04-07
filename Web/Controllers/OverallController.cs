@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
@@ -10,9 +11,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class OverallController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
-	public OverallController(IDataService dataService, Config config)
+	public OverallController(IDataService dataService, AppConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

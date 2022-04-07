@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +9,9 @@ namespace FLRC.Leaderboards.Web.Controllers;
 public class AthletesController : Controller
 {
 	private readonly IDataService _dataService;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
-	public AthletesController(IDataService dataService, Config config)
+	public AthletesController(IDataService dataService, AppConfig config)
 	{
 		_dataService = dataService;
 		_config = config;

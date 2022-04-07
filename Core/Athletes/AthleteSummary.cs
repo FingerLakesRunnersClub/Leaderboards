@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Races;
@@ -31,10 +32,10 @@ public class AthleteSummary
 
 	public int TotalResults { get; }
 	private readonly IReadOnlyCollection<Course> _results;
-	private readonly Config _config;
+	private readonly AppConfig _config;
 
 
-	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results, Config config)
+	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results, AppConfig config)
 	{
 		_results = results;
 		_config = config;
