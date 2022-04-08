@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
@@ -27,13 +28,24 @@ public class AthleteControllerTests
 				{
 					Athlete = athlete,
 					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(2, 4, 6))
+					Duration = new Time(new TimeSpan(2, 4, 6)),
+					CommunityPoints =
+					{
+						[PointType.GroupRun] = true,
+						[PointType.Narrative] = true,
+						[PointType.LocalBusiness] = true
+					}
 				},
 				new Result
 				{
 					Athlete = new Athlete { ID = 234, Category = Category.F },
 					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(1, 2, 3))
+					Duration = new Time(new TimeSpan(1, 2, 3)),
+					CommunityPoints =
+					{
+						[PointType.GroupRun] = true,
+						[PointType.Narrative] = true
+					}
 				}
 			}
 		};
@@ -50,9 +62,11 @@ public class AthleteControllerTests
 		Assert.Equal(1, vm.Summary.Fastest[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.Average[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.Runs[course].Rank.Value);
+		Assert.Equal(1, vm.Summary.CommunityPoints[course].Rank.Value);
 		Assert.Equal(1, vm.Summary.TeamResults.Rank.Value);
 		Assert.Equal(100, vm.Summary.OverallPoints.Value.Value);
 		Assert.Equal(10, vm.Summary.OverallMiles.Value.Value);
+		Assert.Equal(3, vm.Summary.OverallCommunityPoints.Value.Value);
 	}
 
 	[Fact]

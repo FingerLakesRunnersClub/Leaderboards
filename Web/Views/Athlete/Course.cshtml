@@ -17,7 +17,7 @@
                 { name: 'Date', center: true, value: r => r.Result.StartTime.Display, sort: r => r.Result.StartTime.Value },
                 { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value },
                 { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
-                { name: 'Community', center: true, value: r => communityEmoji(r.Result.CommunityPoints), sort: r => Object.values(r.Result.CommunityPoints).filter().length, descending: true, show: @Model.Config.Features.CommunityPoints.ToString().ToLower() }
+                { name: 'Community', center: true, value: r => communityEmoji(r.Result.CommunityPoints), sort: r => Object.values(r.Result.CommunityPoints).filter(s => s).length, descending: true, show: @Model.Config.Features.CommunityPoints.ToString().ToLower() }
             ];
 
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));

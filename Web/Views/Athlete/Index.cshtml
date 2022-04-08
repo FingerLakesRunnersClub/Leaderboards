@@ -89,6 +89,15 @@
 									(<a href="/Course/@course.ID/MostRuns">@Model.Summary.Runs[course].Rank.Display</a>)
 								</dd>
 							}
+							@if (Model.Config.Features.CommunityPoints)
+							{
+								<dt class="col-6">
+									Community Points
+								</dt>
+								<dd class="col-6">
+									@Model.Summary.CommunityPoints[course].Value.Display
+								</dd>
+							}
 						</dl>
 					}
 				</div>

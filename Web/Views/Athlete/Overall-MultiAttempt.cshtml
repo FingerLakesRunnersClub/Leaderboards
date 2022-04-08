@@ -37,3 +37,14 @@
 	@Model.Summary.OverallMiles?.Value?.Display
 	(<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
 </dd>
+
+@if (Model.Config.Features.CommunityPoints)
+{
+	<dt class="col-6">
+		Community Points
+	</dt>
+	<dd class="col-6">
+		@Model.Summary.OverallCommunityPoints?.Value?.Display
+		(<a href="/Overall/Community">@Model.Summary.OverallCommunityPoints?.Rank?.Display</a>)
+	</dd>
+}
