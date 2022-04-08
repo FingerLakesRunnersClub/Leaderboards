@@ -14,7 +14,7 @@ public class DiscourseAPITests
 		//arrange
 		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]}}");
 		var config = Substitute.For<IConfig>();
-		config.Features.CommunityPoints.Returns(true);
+		config.Features.CommunityStars.Returns(true);
 		config.CommunityURL.Returns("https://example.com");
 		config.CommunityKey.Returns("abc123");
 		var api = new DiscourseAPI(new HttpClient(http), config);

@@ -61,7 +61,7 @@ public class OverallControllerTests
 	}
 
 	[Fact]
-	public async Task CanGetCommunityPoints()
+	public async Task CanGetCommunityStars()
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();

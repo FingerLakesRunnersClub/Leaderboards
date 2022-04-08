@@ -8,7 +8,7 @@ public record FeatureSet : IFeatureSet
 	public bool MultiAttempt { get; }
 	public bool AgeGroupTeams { get; }
 	public bool ShowBadges { get; }
-	public bool CommunityPoints { get; }
+	public bool CommunityStars { get; }
 
 	public FeatureSet(IConfiguration section)
 	{
@@ -16,6 +16,6 @@ public record FeatureSet : IFeatureSet
 		MultiAttempt = section.GetValue<bool>(nameof(MultiAttempt));
 		AgeGroupTeams = section.GetValue<bool>(nameof(AgeGroupTeams));
 		ShowBadges = section.GetValue<bool>(nameof(ShowBadges));
-		CommunityPoints = section.GetValue<bool>(nameof(CommunityPoints));
+		CommunityStars = section.GetValue<bool>(nameof(CommunityStars));
 	}
 }

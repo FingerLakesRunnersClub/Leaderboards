@@ -66,7 +66,7 @@ public class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("Community", ResultType.Community, null, () => vm.CommunityPoints().Take(3)
+				OverallTable("Community", ResultType.Community, null, () => vm.CommunityStars().Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray()),
 

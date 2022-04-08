@@ -9,7 +9,7 @@ public class DiscourseAPI : ICommunityAPI
 
 	public DiscourseAPI(HttpClient http, IConfig config)
 	{
-		if (!config.Features.CommunityPoints)
+		if (!config.Features.CommunityStars)
 		{
 			return;
 		}

@@ -218,15 +218,15 @@ public class ResultTests
 			Athlete = CourseData.Athlete1,
 			Course = course,
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
-			CommunityPoints =
+			CommunityStars =
 			{
-				[PointType.GroupRun] = true
+				[StarType.GroupRun] = true
 			}
 		};
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
 
 		//assert
 		Assert.True(hasPoint);
@@ -254,15 +254,15 @@ public class ResultTests
 			Athlete = CourseData.Athlete1,
 			Course = course,
 			StartTime = new Date(new DateTime(2022, 4, 6, 16, 38, 0)),
-			CommunityPoints =
+			CommunityStars =
 			{
-				[PointType.GroupRun] = true
+				[StarType.GroupRun] = true
 			}
 		};
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
 
 		//assert
 		Assert.False(hasPoint);
@@ -290,15 +290,15 @@ public class ResultTests
 			Athlete = CourseData.Athlete2,
 			Course = course,
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
-			CommunityPoints =
+			CommunityStars =
 			{
-				[PointType.GroupRun] = true
+				[StarType.GroupRun] = true
 			}
 		};
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(PointType.GroupRun);
+		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
 
 		//assert
 		Assert.False(hasPoint);
@@ -326,15 +326,15 @@ public class ResultTests
 			Athlete = CourseData.Athlete2,
 			Course = course,
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
-			CommunityPoints =
+			CommunityStars =
 			{
-				[PointType.GroupRun] = true
+				[StarType.GroupRun] = true
 			}
 		};
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(PointType.Story);
+		var hasPoint = r1.HasCommunityPointToday(StarType.Story);
 
 		//assert
 		Assert.False(hasPoint);

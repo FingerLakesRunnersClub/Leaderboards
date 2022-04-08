@@ -108,13 +108,13 @@ public class Course
 
 	private readonly IDictionary<string, RankedList<Points>> _communityCache = new ConcurrentDictionary<string, RankedList<Points>>();
 
-	public RankedList<Points> CommunityPoints(Category category = null)
+	public RankedList<Points> CommunityStars(Category category = null)
 	{
 		var key = category?.Display ?? "X";
 		if (_earliestCache.ContainsKey(key))
 			return _communityCache[key];
 
-		return _communityCache[key] = RankDescending(category, _ => true, g => g.Average(), g => new Points(g.Sum(r => r.CommunityPoints.Count(p => p.Value)), 0));
+		return _communityCache[key] = RankDescending(category, _ => true, g => g.Average(), g => new Points(g.Sum(r => r.CommunityStars.Count(p => p.Value)), 0));
 	}
 
 	public IReadOnlyCollection<GroupedResult> GroupedResults(Category category = null)

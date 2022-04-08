@@ -38,7 +38,7 @@ public class OverallController : Controller
 		=> View(await GetResults(_config.Competitions["AgeGrade"], overall => overall.AgeGrade()));
 
 	public async Task<ViewResult> Community()
-		=> View(await GetResults(_config.Competitions["Community"], overall => overall.CommunityPoints()));
+		=> View(await GetResults(_config.Competitions["Community"], overall => overall.CommunityStars()));
 
 	public async Task<ViewResult> Team()
 		=> View(await GetTeamResults(_config.Competitions["Team"], overall => overall.TeamPoints()));

@@ -86,26 +86,26 @@ public class OverallResultsTests
 	}
 
 	[Fact]
-	public void CanGetCommunityPoints()
+	public void CanGetCommunityStars()
 	{
 		//arrange
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var points = vm.CommunityPoints();
+		var points = vm.CommunityStars();
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete1, points.First().Result.Athlete);
 	}
 
 	[Fact]
-	public void CanGetCommunityPointsForCategory()
+	public void CanGetCommunityStarsForCategory()
 	{
 		//arrange
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var points = vm.CommunityPoints(Category.F);
+		var points = vm.CommunityStars(Category.F);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete3, points.First().Result.Athlete);

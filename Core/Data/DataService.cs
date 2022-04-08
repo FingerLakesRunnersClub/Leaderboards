@@ -148,7 +148,7 @@ public class DataService : IDataService
 
 				if (resultsHash != course.LastHash || communityHash != course.Race.CommunityHash)
 				{
-					UpdateCommunityPoints(course.Results, course.Race.CommunityPosts);
+					UpdateCommunityStars(course.Results, course.Race.CommunityPosts);
 					course.Race.CommunityHash = communityHash;
 				}
 
@@ -163,13 +163,13 @@ public class DataService : IDataService
 		return course;
 	}
 
-	private static void UpdateCommunityPoints(IEnumerable<Result> results, IReadOnlyCollection<Post> posts)
+	private static void UpdateCommunityStars(IEnumerable<Result> results, IReadOnlyCollection<Post> posts)
 	{
 		foreach (var result in results)
 		{
-			result.CommunityPoints[PointType.GroupRun] = result.IsGroupRun() && !result.HasCommunityPointToday(PointType.GroupRun);
-			result.CommunityPoints[PointType.Story] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.Story);
-			result.CommunityPoints[PointType.ShopLocal] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.ShopLocal);
+			result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityPointToday(StarType.GroupRun);
+			result.CommunityStars[StarType.Story] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(StarType.Story);
+			result.CommunityStars[StarType.ShopLocal] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(StarType.ShopLocal);
 		}
 	}
 

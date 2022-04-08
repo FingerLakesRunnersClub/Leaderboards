@@ -1,7 +1,7 @@
 {
   "Features": {
 	"MultiAttempt": true,
-	"CommunityPoints": true
+	"CommunityStars": true
   },
   "Competitions": [
 	{
@@ -14,7 +14,7 @@
 	  "AgeGrade": "Age Grade"
 	},
 	{
-	  "Community": "Community Points"
+	  "Community": "Community Stars"
 	},
 	{
 	  "Miles": "Most Miles"

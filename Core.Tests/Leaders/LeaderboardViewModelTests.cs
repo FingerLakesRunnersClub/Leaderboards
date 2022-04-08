@@ -94,7 +94,7 @@ public class LeaderboardViewModelTests
 		Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.Value.First().Name);
 		Assert.Equal("A1", results.First(r => r.Title == "Most Points (M)").Rows.Value.First().Name);
 		Assert.Equal("A2", results.First(r => r.Title == "Most Miles").Rows.Value.First().Name);
-		Assert.Equal("A1", results.First(r => r.Title == "Community Points").Rows.Value.First().Name);
+		Assert.Equal("A1", results.First(r => r.Title == "Community Stars").Rows.Value.First().Name);
 		Assert.Equal("1–29", results.First(r => r.Title == "Top Teams").Rows.Value.First().Name);
 	}
 }

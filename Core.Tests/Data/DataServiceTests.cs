@@ -78,7 +78,7 @@ public class DataServiceTests
 	}
 
 	[Fact]
-	public async Task ResultsIncludeCommunityPoints()
+	public async Task ResultsIncludeCommunityStars()
 	{
 		//arrange
 		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
@@ -103,9 +103,9 @@ public class DataServiceTests
 
 		//assert
 		var result = course.Results.Single();
-		Assert.False(result.CommunityPoints[PointType.GroupRun]);
-		Assert.True(result.CommunityPoints[PointType.Story]);
-		Assert.False(result.CommunityPoints[PointType.ShopLocal]);
+		Assert.False(result.CommunityStars[StarType.GroupRun]);
+		Assert.True(result.CommunityStars[StarType.Story]);
+		Assert.False(result.CommunityStars[StarType.ShopLocal]);
 	}
 
 	[Fact]

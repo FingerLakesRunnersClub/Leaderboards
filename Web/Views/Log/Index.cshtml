@@ -37,7 +37,7 @@
 						<th>Course</th>
 					}
 					<th class="text-right">Time</th>
-					@if (Model.Config.Features.CommunityPoints)
+					@if (Model.Config.Features.CommunityStars)
 					{
 						<th class="text-center">Community</th>
 					}
@@ -66,15 +66,15 @@
 						<td class="text-right">
 							@result.Duration.Display
 						</td>
-						@if (Model.Config.Features.CommunityPoints)
+						@if (Model.Config.Features.CommunityStars)
 						{
 							<td class="text-center">
-								@if (result.CommunityPoints != null)
+								@if (result.CommunityStars != null)
 								{
 									<span class="d-flex justify-content-center" style="cursor: default;">
-										<span title="Group Run" style="width: 2rem;">@(result.CommunityPoints[PointType.GroupRun] ? "🏃" : string.Empty)</span>
-										<span title="Story" style="width: 2rem;">@(result.CommunityPoints[PointType.Story] ? "📄" : string.Empty)</span>
-										<span title="Shop Local" style="width: 2rem;">@(result.CommunityPoints[PointType.ShopLocal] ? "🏙️" : string.Empty)</span>
+										<span title="Group Run" style="width: 2rem;">@(result.CommunityStars[StarType.GroupRun] ? "🏃" : string.Empty)</span>
+										<span title="Story" style="width: 2rem;">@(result.CommunityStars[StarType.Story] ? "📄" : string.Empty)</span>
+										<span title="Shop Local" style="width: 2rem;">@(result.CommunityStars[StarType.ShopLocal] ? "🏙️" : string.Empty)</span>
 									</span>
 								}
 							</td>

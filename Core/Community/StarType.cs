@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Community;
 
-public enum PointType
+public enum StarType
 {
 	GroupRun,
 	Story,
