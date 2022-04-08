@@ -14,7 +14,7 @@
 		<div class="row justify-content-center">
 			@foreach (var table in Model.OverallResults)
 			{
-				var width = table.Link.Contains("/Points/") ? "col-lg-6" : "col-lg-4";
+				var width = table.Link.Contains("/Points/") && Model.OverallResults.Count % 2 == 1 ? "col-lg-6" : "col-lg-4";
 				<div class="col-12 @width mb-3">
 					@await Html.PartialAsync("Table", table)
 				</div>
