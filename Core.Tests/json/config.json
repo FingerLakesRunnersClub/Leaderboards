@@ -1,24 +1,28 @@
 {
   "Features": {
-	"MultiAttempt": true
+	"MultiAttempt": true,
+	"CommunityPoints": true
   },
-  "Competitions": {
-	"1": {
+  "Competitions": [
+	{
 	  "Points/F": "Most Points (F)"
 	},
-	"2": {
+	{
 	  "Points/M": "Most Points (M)"
 	},
-	"3": {
+	{
 	  "AgeGrade": "Age Grade"
 	},
-	"4": {
+	{
+	  "Community": "Community Points"
+	},
+	{
 	  "Miles": "Most Miles"
 	},
-	"5": {
+	{
 	  "Team": "Top Teams"
 	}
-  },
+  ],
   "Races": [
 	{
 	  "Source": "WebScorer",

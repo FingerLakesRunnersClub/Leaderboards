@@ -37,7 +37,7 @@ public class LeaderboardViewModelTests
 		var result = results.First().Value.ToList();
 		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Age Grade").Rows.Value.First().Name);
 		Assert.Equal("30–39", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Most Runs").Rows.Value.First().Name);
-		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Total Points").Rows.Value.First().Name);
+		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Team Points").Rows.Value.First().Name);
 	}
 
 	[Fact]
@@ -94,6 +94,7 @@ public class LeaderboardViewModelTests
 		Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.Value.First().Name);
 		Assert.Equal("A1", results.First(r => r.Title == "Most Points (M)").Rows.Value.First().Name);
 		Assert.Equal("A2", results.First(r => r.Title == "Most Miles").Rows.Value.First().Name);
+		Assert.Equal("A1", results.First(r => r.Title == "Community Points").Rows.Value.First().Name);
 		Assert.Equal("1–29", results.First(r => r.Title == "Top Teams").Rows.Value.First().Name);
 	}
 }
