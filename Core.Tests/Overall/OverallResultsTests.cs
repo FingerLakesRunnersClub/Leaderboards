@@ -86,6 +86,32 @@ public class OverallResultsTests
 	}
 
 	[Fact]
+	public void CanGetCommunityPoints()
+	{
+		//arrange
+		var vm = new OverallResults(LeaderboardData.Courses);
+
+		//act
+		var points = vm.CommunityPoints();
+
+		//assert
+		Assert.Equal(LeaderboardData.Athlete1, points.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void CanGetCommunityPointsForCategory()
+	{
+		//arrange
+		var vm = new OverallResults(LeaderboardData.Courses);
+
+		//act
+		var points = vm.CommunityPoints(Category.F);
+
+		//assert
+		Assert.Equal(LeaderboardData.Athlete3, points.First().Result.Athlete);
+	}
+
+	[Fact]
 	public void CanGetCompleted()
 	{
 		//arrange
