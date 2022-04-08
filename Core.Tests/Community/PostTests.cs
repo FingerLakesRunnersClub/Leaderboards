@@ -41,6 +41,22 @@ public class PostTests
 	}
 
 	[Fact]
+	public void DoesNotHaveNarrativeWhenQuoted()
+	{
+		//arrange
+		var post = new Post
+		{
+			Content = "[quote] ## Narrative [/quote] lol"
+		};
+
+		//act
+		var hasNarrative = post.HasNarrative();
+
+		//assert
+		Assert.False(hasNarrative);
+	}
+
+	[Fact]
 	public void HasLocalBusinessWhenHeaderFound()
 	{
 		//arrange
@@ -63,6 +79,22 @@ public class PostTests
 		var post = new Post
 		{
 			Content = "# Local Business"
+		};
+
+		//act
+		var hasLocalBusiness = post.HasLocalBusiness();
+
+		//assert
+		Assert.False(hasLocalBusiness);
+	}
+
+	[Fact]
+	public void DoesNotHaveLocalBusinessWhenQuoted()
+	{
+		//arrange
+		var post = new Post
+		{
+			Content = "[quote] ## Local Business [/quote] yeah right"
 		};
 
 		//act
