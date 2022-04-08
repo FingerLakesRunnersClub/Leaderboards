@@ -32,8 +32,8 @@ public class AthleteControllerTests
 					CommunityPoints =
 					{
 						[PointType.GroupRun] = true,
-						[PointType.Narrative] = true,
-						[PointType.LocalBusiness] = true
+						[PointType.Story] = true,
+						[PointType.ShopLocal] = true
 					}
 				},
 				new Result
@@ -44,7 +44,7 @@ public class AthleteControllerTests
 					CommunityPoints =
 					{
 						[PointType.GroupRun] = true,
-						[PointType.Narrative] = true
+						[PointType.Story] = true
 					}
 				}
 			}

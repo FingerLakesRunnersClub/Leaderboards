@@ -168,8 +168,8 @@ public class DataService : IDataService
 		foreach (var result in results)
 		{
 			result.CommunityPoints[PointType.GroupRun] = result.IsGroupRun() && !result.HasCommunityPointToday(PointType.GroupRun);
-			result.CommunityPoints[PointType.Narrative] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.Narrative);
-			result.CommunityPoints[PointType.LocalBusiness] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.LocalBusiness);
+			result.CommunityPoints[PointType.Story] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.Story);
+			result.CommunityPoints[PointType.ShopLocal] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(PointType.ShopLocal);
 		}
 	}
 

@@ -1,7 +1,7 @@
 function communityEmoji(points) {
 	return (points.GroupRun ? '🏃' : ' ')
-		+  (points.Narrative ? '📄' : ' ')
-		+  (points.LocalBusiness ? '🏙️' : ' ');
+		+  (points.Story ? '📄' : ' ')
+		+  (points.ShopLocal ? '🏙️' : ' ');
 }
 
 new Vue({

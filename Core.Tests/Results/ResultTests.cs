@@ -334,7 +334,7 @@ public class ResultTests
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(PointType.Narrative);
+		var hasPoint = r1.HasCommunityPointToday(PointType.Story);
 
 		//assert
 		Assert.False(hasPoint);

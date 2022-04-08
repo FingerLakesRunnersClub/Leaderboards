@@ -22,8 +22,8 @@ public class Result : IComparable<Result>
 	public IDictionary<PointType, bool> CommunityPoints { get; } = new Dictionary<PointType, bool>
 		{
 			{ PointType.GroupRun, false },
-			{ PointType.Narrative, false },
-			{ PointType.LocalBusiness, false }
+			{ PointType.Story, false },
+			{ PointType.ShopLocal, false }
 		};
 
 	public byte AgeOnDayOfRun => StartTime != null

@@ -104,8 +104,8 @@ public class DataServiceTests
 		//assert
 		var result = course.Results.Single();
 		Assert.False(result.CommunityPoints[PointType.GroupRun]);
-		Assert.True(result.CommunityPoints[PointType.Narrative]);
-		Assert.False(result.CommunityPoints[PointType.LocalBusiness]);
+		Assert.True(result.CommunityPoints[PointType.Story]);
+		Assert.False(result.CommunityPoints[PointType.ShopLocal]);
 	}
 
 	[Fact]

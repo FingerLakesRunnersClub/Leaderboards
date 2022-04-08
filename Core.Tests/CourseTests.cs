@@ -190,8 +190,8 @@ public class CourseTests
 		var course = new Course { Results = results, Distance = new Distance("10K") };
 		results.AddRange(new[]
 		{
-			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true, [PointType.LocalBusiness] = true } },
-			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Story] = true, [PointType.ShopLocal] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
 		});
@@ -219,8 +219,8 @@ public class CourseTests
 		var course = new Course { Results = results, Distance = new Distance("10K") };
 		results.AddRange(new[]
 		{
-			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true, [PointType.LocalBusiness] = true } },
-			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Story] = true, [PointType.ShopLocal] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
 		});
