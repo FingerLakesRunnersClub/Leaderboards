@@ -1,3 +1,9 @@
+function communityEmoji(points) {
+	return (points.GroupRun ? '🏃' : ' ')
+		+  (points.Narrative ? '📄' : ' ')
+		+  (points.LocalBusiness ? '🏙️' : ' ');
+}
+
 new Vue({
     data: {
         fields: fields,
