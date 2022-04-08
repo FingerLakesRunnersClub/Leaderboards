@@ -72,7 +72,7 @@ public class OverallControllerTests
 		var response = await controller.Community();
 
 		//assert
-		var vm = (OverallResultsViewModel<Points>) response.Model;
+		var vm = (OverallResultsViewModel<Stars>) response.Model;
 		Assert.Equal(LeaderboardData.Athlete1, vm!.RankedResults.First().Result.Athlete);
 	}
 

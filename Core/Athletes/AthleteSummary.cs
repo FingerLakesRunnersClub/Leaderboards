@@ -14,7 +14,7 @@ public class AthleteSummary
 	public IDictionary<Course, Ranked<Time>> Fastest { get; }
 	public IDictionary<Course, Ranked<Time>> Average { get; }
 	public IDictionary<Course, Ranked<ushort>> Runs { get; }
-	public Dictionary<Course, Ranked<Points>> CommunityStars { get; }
+	public Dictionary<Course, Ranked<Stars>> CommunityStars { get; }
 	public Dictionary<Course, Result[]> All { get; }
 
 	public IReadOnlyCollection<AthleteOverallRow> Competitions { get; }
@@ -22,7 +22,7 @@ public class AthleteSummary
 	public Ranked<Points> OverallPoints { get; }
 	public Ranked<AgeGrade> OverallAgeGrade { get; }
 	public Ranked<Miles> OverallMiles { get; }
-	public Ranked<Points> OverallCommunityStars { get; }
+	public Ranked<Stars> OverallCommunityStars { get; }
 	public TeamResults TeamResults { get; }
 
 	public int TotalResults { get; }
