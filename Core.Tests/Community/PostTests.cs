@@ -14,7 +14,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "## Narrative"
+			Content = "## Story"
 		};
 
 		//act
@@ -30,7 +30,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "# Narrative"
+			Content = "# Story"
 		};
 
 		//act
@@ -46,7 +46,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "[quote] ## Narrative [/quote] lol"
+			Content = "[quote] ## Story [/quote] lol"
 		};
 
 		//act
@@ -62,7 +62,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "## Local Business"
+			Content = "## Shop Local"
 		};
 
 		//act
@@ -78,7 +78,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "# Local Business"
+			Content = "# Shop Local"
 		};
 
 		//act
@@ -94,7 +94,7 @@ public class PostTests
 		//arrange
 		var post = new Post
 		{
-			Content = "[quote] ## Local Business [/quote] yeah right"
+			Content = "[quote] ## Shop Local [/quote] yeah right"
 		};
 
 		//act

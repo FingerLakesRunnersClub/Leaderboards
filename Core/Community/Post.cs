@@ -13,10 +13,10 @@ public class Post
 		=> Name == result.Athlete.Name && Date.Date == result.StartTime.Value.Date;
 
 	public bool HasNarrative()
-		=> HasHeader("## Narrative");
+		=> HasHeader("## Story");
 
 	public bool HasLocalBusiness()
-		=> HasHeader("## Local Business");
+		=> HasHeader("## Shop Local");
 
 	private bool HasHeader(string text)
 		=> Content.Contains(text) && NotQuoted(text);

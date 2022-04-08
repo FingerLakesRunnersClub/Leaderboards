@@ -89,9 +89,9 @@ public class DataServiceTests
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var posts = new List<Post>
 		{
-			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Narrative" },
-			new() { Name = "Other Athlete", Date = new DateTime(2011, 9, 24), Content = "## Local Business" },
-			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 25), Content = "## Local Business" },
+			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Story" },
+			new() { Name = "Other Athlete", Date = new DateTime(2011, 9, 24), Content = "## Shop Local" },
+			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 25), Content = "## Shop Local" },
 		};
 		communityAPI.ParsePosts(Arg.Any<JsonElement>()).Returns(posts);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
