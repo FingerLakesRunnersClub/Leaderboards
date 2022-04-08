@@ -8,7 +8,7 @@
 		: "light";
 }
 
-<div class="btn-group mb-3">
+<div class="btn-group flex-wrap mb-3">
 	@foreach (var key in Model.Config.Competitions.Keys)
 	{
 		<a class="btn btn-sm btn-@style(Model.Config.Competitions[key])" href="/Overall/@key">@Model.Config.Competitions[key]</a>

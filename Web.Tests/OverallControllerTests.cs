@@ -61,6 +61,22 @@ public class OverallControllerTests
 	}
 
 	[Fact]
+	public async Task CanGetCommunityPoints()
+	{
+		//arrange
+		var dataService = Substitute.For<IDataService>();
+		dataService.GetAllResults().Returns(LeaderboardData.Courses);
+		var controller = new OverallController(dataService, TestHelpers.Config);
+
+		//act
+		var response = await controller.Community();
+
+		//assert
+		var vm = (OverallResultsViewModel<Points>) response.Model;
+		Assert.Equal(LeaderboardData.Athlete1, vm!.RankedResults.First().Result.Athlete);
+	}
+
+	[Fact]
 	public async Task CanGetTeamPoints()
 	{
 		//arrange
