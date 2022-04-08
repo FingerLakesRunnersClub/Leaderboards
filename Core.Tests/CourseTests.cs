@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
@@ -15,10 +16,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var fastest = course.Fastest().ToArray();
+		var fastest = course.Fastest();
 
 		//assert
-		Assert.Equal(4, fastest.Length);
+		Assert.Equal(4, fastest.Count);
 		Assert.Equal(CourseData.Athlete2, fastest[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, fastest[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, fastest[2].Result.Athlete);
@@ -32,10 +33,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var fastest = course.Fastest(Category.F).ToArray();
+		var fastest = course.Fastest(Category.F);
 
 		//assert
-		Assert.Equal(2, fastest.Length);
+		Assert.Equal(2, fastest.Count);
 		Assert.Equal(CourseData.Athlete2, fastest[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete4, fastest[1].Result.Athlete);
 	}
@@ -47,10 +48,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var most = course.MostRuns().ToArray();
+		var most = course.MostRuns();
 
 		//assert
-		Assert.Equal(4, most.Length);
+		Assert.Equal(4, most.Count);
 		Assert.Equal(CourseData.Athlete4, most[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, most[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, most[2].Result.Athlete);
@@ -64,10 +65,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var most = course.MostRuns(Category.M).ToArray();
+		var most = course.MostRuns(Category.M);
 
 		//assert
-		Assert.Equal(2, most.Length);
+		Assert.Equal(2, most.Count);
 		Assert.Equal(CourseData.Athlete3, most[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, most[1].Result.Athlete);
 	}
@@ -79,10 +80,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("2 miles") };
 
 		//act
-		var most = course.MostMiles().ToArray();
+		var most = course.MostMiles();
 
 		//assert
-		Assert.Equal(4, most.Length);
+		Assert.Equal(4, most.Count);
 		Assert.Equal(CourseData.Athlete4, most[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, most[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, most[2].Result.Athlete);
@@ -96,10 +97,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var most = course.MostMiles(Category.M).ToArray();
+		var most = course.MostMiles(Category.M);
 
 		//assert
-		Assert.Equal(2, most.Length);
+		Assert.Equal(2, most.Count);
 		Assert.Equal(CourseData.Athlete3, most[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, most[1].Result.Athlete);
 	}
@@ -111,10 +112,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var avg = course.BestAverage().ToArray();
+		var avg = course.BestAverage();
 
 		//assert
-		Assert.Equal(3, avg.Length);
+		Assert.Equal(3, avg.Count);
 		Assert.Equal(CourseData.Athlete3, avg[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, avg[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete4, avg[2].Result.Athlete);
@@ -127,10 +128,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var avg = course.BestAverage(Category.M).ToArray();
+		var avg = course.BestAverage(Category.M);
 
 		//assert
-		Assert.Equal(2, avg.Length);
+		Assert.Equal(2, avg.Count);
 		Assert.Equal(CourseData.Athlete3, avg[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete1, avg[1].Result.Athlete);
 	}
@@ -142,7 +143,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var avg = course.BestAverage(Category.F).ToArray();
+		var avg = course.BestAverage(Category.F);
 
 		//assert
 		Assert.Single(avg);
@@ -156,10 +157,10 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var earliest = course.Earliest().ToArray();
+		var earliest = course.Earliest();
 
 		//assert
-		Assert.Equal(4, earliest.Length);
+		Assert.Equal(4, earliest.Count);
 		Assert.Equal(CourseData.Athlete1, earliest[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, earliest[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete4, earliest[2].Result.Athlete);
@@ -173,12 +174,66 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var earliest = course.Earliest(Category.M).ToArray();
+		var earliest = course.Earliest(Category.M);
 
 		//assert
-		Assert.Equal(2, earliest.Length);
+		Assert.Equal(2, earliest.Count);
 		Assert.Equal(CourseData.Athlete1, earliest[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, earliest[1].Result.Athlete);
+	}
+
+	[Fact]
+	public void CanGetCommunityPoints()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course { Results = results, Distance = new Distance("10K") };
+		results.AddRange(new[]
+		{
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true, [PointType.LocalBusiness] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
+		});
+
+		//act
+		var points = course.CommunityPoints();
+
+		//assert
+		Assert.Equal(4, points.Count);
+		Assert.Equal(3, points[0].Value.Value);
+		Assert.Equal(2, points[1].Value.Value);
+		Assert.Equal(1, points[2].Value.Value);
+		Assert.Equal(0, points[3].Value.Value);
+		Assert.Equal(CourseData.Athlete1, points[0].Result.Athlete);
+		Assert.Equal(CourseData.Athlete3, points[1].Result.Athlete);
+		Assert.Equal(CourseData.Athlete4, points[2].Result.Athlete);
+		Assert.Equal(CourseData.Athlete2, points[3].Result.Athlete);
+	}
+
+	[Fact]
+	public void CanGetCommunityPointsForCategory()
+	{
+		//arrange
+		var results = new List<Result>();
+		var course = new Course { Results = results, Distance = new Distance("10K") };
+		results.AddRange(new[]
+		{
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true, [PointType.LocalBusiness] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true, [PointType.Narrative] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityPoints = { [PointType.GroupRun] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
+		});
+
+		//act
+		var points = course.CommunityPoints(Category.M);
+
+		//assert
+		Assert.Equal(2, points.Count);
+		Assert.Equal(3, points[0].Value.Value);
+		Assert.Equal(2, points[1].Value.Value);
+		Assert.Equal(CourseData.Athlete1, points[0].Result.Athlete);
+		Assert.Equal(CourseData.Athlete3, points[1].Result.Athlete);
 	}
 
 	[Fact]
