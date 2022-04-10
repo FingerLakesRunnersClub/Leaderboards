@@ -24,7 +24,7 @@ public class DiscourseAPI : ICommunityAPI
 
 	public async Task<JsonElement> GetPosts(ushort id)
 	{
-		if (_http == null || id == 0)
+		if (_http == null)
 		{
 			return JsonDocument.Parse("[]").RootElement;
 		}

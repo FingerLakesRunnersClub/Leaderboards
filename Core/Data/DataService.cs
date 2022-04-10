@@ -3,7 +3,6 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Groups;
 using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Results;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
@@ -127,49 +126,67 @@ public class DataService : IDataService
 		if (course.ID == 0)
 			return course;
 
+		if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
+		{
+			await UpdateResults(course);
+			await UpdateCommunityPosts(course.Race);
+			SetCommunityStars(course);
+			course.LastUpdated = DateTime.Now;
+		}
+
+		return course;
+	}
+
+	private async Task UpdateResults(Course course)
+	{
 		try
 		{
-			if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
+			var results = await _resultsAPI[course.Race.Source].GetResults(course.ID);
+			var resultsHash = results.ToString().GetHashCode();
+
+			if (resultsHash != course.LastHash)
 			{
-				var getPosts = _communityAPI.GetPosts(course.Race.CommunityID);
-
-				var results = await _resultsAPI[course.Race.Source].GetResults(course.ID);
-				var resultsHash = results.ToString().GetHashCode();
-
-				if (resultsHash != course.LastHash)
-				{
-					course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results);
-					course.LastHash = resultsHash;
-				}
-
-				var posts = await getPosts;
-				course.Race.CommunityPosts = _communityAPI.ParsePosts(posts);
-				var communityHash = posts.ToString().GetHashCode();
-
-				if (resultsHash != course.LastHash || communityHash != course.Race.CommunityHash)
-				{
-					UpdateCommunityStars(course.Results, course.Race.CommunityPosts);
-					course.Race.CommunityHash = communityHash;
-				}
-
-				course.LastUpdated = DateTime.Now;
+				course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results);
+				course.LastHash = resultsHash;
 			}
 		}
 		catch (Exception e)
 		{
 			_logger.LogWarning(e, "Could not retrieve results");
 		}
-
-		return course;
 	}
 
-	private static void UpdateCommunityStars(IEnumerable<Result> results, IReadOnlyCollection<Post> posts)
+	private async Task UpdateCommunityPosts(Race race)
 	{
-		foreach (var result in results)
+		try
 		{
-			result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityPointToday(StarType.GroupRun);
-			result.CommunityStars[StarType.Story] = posts.Any(p => p.HasNarrative() && p.Matches(result)) && !result.HasCommunityPointToday(StarType.Story);
-			result.CommunityStars[StarType.ShopLocal] = posts.Any(p => p.HasLocalBusiness() && p.Matches(result)) && !result.HasCommunityPointToday(StarType.ShopLocal);
+			if (race.CommunityID == 0)
+			{
+				return;
+			}
+
+			var posts = await _communityAPI.GetPosts(race.CommunityID);
+			var communityHash = posts.ToString().GetHashCode();
+
+			if (communityHash != race.CommunityHash)
+			{
+				race.CommunityPosts = _communityAPI.ParsePosts(posts);
+				race.CommunityHash = communityHash;
+			}
+		}
+		catch (Exception e)
+		{
+			_logger.LogWarning(e, "Could not retrieve community posts");
+		}
+	}
+
+	private void SetCommunityStars(Course course)
+	{
+		foreach (var result in course.Results)
+		{
+				result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityStarToday(StarType.GroupRun);
+				result.CommunityStars[StarType.Story] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasNarrative()) && !result.HasCommunityStarToday(StarType.Story);
+				result.CommunityStars[StarType.ShopLocal] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasLocalBusiness()) && !result.HasCommunityStarToday(StarType.ShopLocal);
 		}
 	}
 

@@ -12,7 +12,7 @@ public class Race
 	public string URL { get; init; }
 
 	public ushort CommunityID { get; init; }
-	public IReadOnlyCollection<Post> CommunityPosts { get; set; }
+	public IReadOnlyCollection<Post> CommunityPosts { get; set; } = Array.Empty<Post>();
 	public int CommunityHash { get; set; }
 
 	public IReadOnlyCollection<Course> Courses { get; set; }

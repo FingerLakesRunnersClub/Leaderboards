@@ -31,7 +31,8 @@
 	  "Distance": "50K",
 	  "Courses": {
 		"Default": 123
-	  }
+	  },
+	  "CommunityID": 234
 	}
   ]
 }
