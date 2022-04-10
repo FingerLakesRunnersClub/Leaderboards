@@ -197,7 +197,7 @@ public class ResultTests
 	}
 
 	[Fact]
-	public void HasCommunityPointWhenRunBySameAthleteOnSameDayHasSamePoint()
+	public void HasCommunityStarWhenRunBySameAthleteOnSameDayHasSameStar()
 	{
 		//arrange
 		var results = new List<Result>();
@@ -226,14 +226,14 @@ public class ResultTests
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
+		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
 
 		//assert
 		Assert.True(hasPoint);
 	}
 
 	[Fact]
-	public void DoesNotHaveCommunityPointWhenRunBySameAthleteOnDifferentDayHasSamePoint()
+	public void DoesNotHaveCommunityStarWhenRunBySameAthleteOnDifferentDayHasSameStar()
 	{
 		//arrange
 		var results = new List<Result>();
@@ -262,14 +262,14 @@ public class ResultTests
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
+		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
 
 		//assert
 		Assert.False(hasPoint);
 	}
 
 	[Fact]
-	public void DoesNotHaveCommunityPointWhenRunByDifferentAthleteOnSameDayHasSamePoint()
+	public void DoesNotHaveCommunityStarWhenRunByDifferentAthleteOnSameDayHasSameStar()
 	{
 		//arrange
 		var results = new List<Result>();
@@ -298,14 +298,14 @@ public class ResultTests
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(StarType.GroupRun);
+		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
 
 		//assert
 		Assert.False(hasPoint);
 	}
 
 	[Fact]
-	public void DoesNotHaveCommunityPointWhenRunBySameAthleteOnSameDayHasDifferentPoint()
+	public void DoesNotHaveCommunityStarWhenRunBySameAthleteOnSameDayHasDifferentStar()
 	{
 		//arrange
 		var results = new List<Result>();
@@ -334,7 +334,7 @@ public class ResultTests
 		results.AddRange(new[] { r1, r2 });
 
 		//act
-		var hasPoint = r1.HasCommunityPointToday(StarType.Story);
+		var hasPoint = r1.HasCommunityStarToday(StarType.Story);
 
 		//assert
 		Assert.False(hasPoint);

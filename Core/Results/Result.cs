@@ -19,7 +19,8 @@ public class Result : IComparable<Result>
 	public Date StartTime { get; init; }
 	public Time Duration { get; init; }
 
-	public IDictionary<StarType, bool> CommunityStars { get; } = new Dictionary<StarType, bool>
+	public IDictionary<StarType, bool> CommunityStars { get; }
+		= new Dictionary<StarType, bool>
 		{
 			{ StarType.GroupRun, false },
 			{ StarType.Story, false },
@@ -39,6 +40,6 @@ public class Result : IComparable<Result>
 	public bool IsGroupRun()
 		=> Course.Results.Any(r => !r.Athlete.Equals(Athlete) && r.StartTime.Value.Subtract(StartTime.Value).Duration() < GroupRunStartTimeLimit);
 
-	public bool HasCommunityPointToday(StarType type)
+	public bool HasCommunityStarToday(StarType type)
 		=> Course.Results.Any(r => r != this && r.Athlete.Equals(Athlete) && r.StartTime.Value.Date == StartTime.Value.Date && r.CommunityStars[type]);
 }
