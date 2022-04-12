@@ -29,85 +29,83 @@
 			<h4>@group.Key</h4>
 			<table class="table table-bordered table-striped table-hover table-sm table-responsive-@breakpoint()">
 				<thead>
-					<tr>
-						<th>Date</th>
-						<th>Athlete</th>
-						@if (Model.Course == null)
-						{
-							<th>Course</th>
-						}
-						<th class="text-right">Time</th>
-						@if (Model.Config.Features.CommunityStars)
-						{
-							<th class="text-center">Community</th>
-						}
-					</tr>
+				<tr>
+					<th>Date</th>
+					<th>Athlete</th>
+					@if (Model.Course == null)
+					{
+						<th>Course</th>
+					}
+					<th class="text-right">Time</th>
+					@if (Model.Config.Features.CommunityStars)
+					{
+						<th class="text-center">Community</th>
+					}
+				</tr>
 				</thead>
 				<tbody>
-					@foreach (var result in group)
-					{
-						<tr>
+				@foreach (var result in group)
+				{
+					<tr>
+						<td>
+							@result.StartTime.Display
+						</td>
+						<td>
+							<a href="/Athlete/Index/@result.Athlete.ID">
+								@result.Athlete.Name
+							</a>
+						</td>
+						@if (Model.Course == null)
+						{
 							<td>
-								@result.StartTime.Display
-							</td>
-							<td>
-								<a href="/Athlete/Index/@result.Athlete.ID">
-									@result.Athlete.Name
+								<a href="/Course/@result.Course.ID/Fastest">
+									@result.Course.Name
 								</a>
 							</td>
-							@if (Model.Course == null)
-							{
-								<td>
-									<a href="/Course/@result.Course.ID/Fastest">
-										@result.Course.Name
-									</a>
-								</td>
-							}
-							<td class="text-right">
-								@result.Duration.Display
+						}
+						<td class="text-right">
+							@result.Duration.Display
+						</td>
+						@if (Model.Config.Features.CommunityStars)
+						{
+							<td class="text-center">
+								@if (result.CommunityStars != null)
+								{
+									<div class="community d-flex justify-content-center">
+										<span class="group">
+											@if (result.CommunityStars[StarType.GroupRun])
+											{
+												<span class="star" title="Group Run">
+													<i class="fa fa-running">️</i>
+													<i class="fa fa-running">️</i>
+													<i class="fa fa-star"></i>
+												</span>
+											}
+										</span>
+										<span class="group">
+											@if (result.CommunityStars[StarType.Story])
+											{
+												<span class="star" title="Story">
+													<i class="far fa-file-alt"></i>
+													<i class="fa fa-star"></i>
+												</span>
+											}
+										</span>
+										<span class="group">
+											@if (result.CommunityStars[StarType.ShopLocal])
+											{
+												<span class="star" title="Shop Local">
+													<i class="fa fa-shopping-basket"></i>
+													<i class="fa fa-star"></i>
+												</span>
+											}
+										</span>
+									</div>
+								}
 							</td>
-							@if (Model.Config.Features.CommunityStars)
-							{
-								<td class="text-center">
-									@if (result.CommunityStars != null)
-									{
-										<div class="community d-flex justify-content-center">
-											<span class="group">
-												@if (result.CommunityStars[StarType.GroupRun])
-												{
-													<span class="star" title="Group Run">
-														<i>🏃🏼‍♀️</i>
-														<i>🏃🏼</i>
-														<i>⭐</i>
-													</span>
-												}
-											</span>
-											<span class="group">
-												@if (result.CommunityStars[StarType.Story])
-												{
-													<span class="star" title="Story">
-														<i>🖼️</i>
-														<i>📝</i>
-														<i>⭐</i>
-													</span>
-												}
-											</span>
-											<span class="group">
-												@if (result.CommunityStars[StarType.ShopLocal])
-												{
-													<span class="star" title="Shop Local">
-														<i>🛍️</i>
-														<i>🍝</i>
-														<i>⭐</i>
-													</span>
-												}
-											</span>
-										</div>
-									}
-								</td>
-							}
-						</tr>
-					}
+						}
+					</tr>
+				}
 				</tbody>
 			</table>
 		}

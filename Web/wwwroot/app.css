@@ -146,25 +146,27 @@ dt {
 }
 
 .community .star {
-	background-color: rgba(0, 0, 0, 0.05);
-	border: 1px solid rgba(0, 0, 0, 0.1);
-	border-radius: 0.25rem;
-	padding: 0.125rem 0.25rem;
+	display: inline-block;
+	line-height: 1.1;
+	width: 100%;
 }
 
 .community .star i {
 	display: inline-block;
 	width: 1rem;
-	font-style: normal;
-	text-shadow: 0 0 0 black;
 }
 
 .community .star i+i {
-	margin-left: -0.75rem;
+	margin-left: -0.5rem;
 }
 
-.community .star i+i+i {
-	margin-left: -0.5rem;
+.community .star .fa-star {
+	color:  var(--secondary-dark);
+	text-shadow: 0 0 1px black;
+}
+
+.community .star .fa-running + .fa-running {
+	margin-left: -0.75rem;
 }
 
 @media (max-width: 575px) {
