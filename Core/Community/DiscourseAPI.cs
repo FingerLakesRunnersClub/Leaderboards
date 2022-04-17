@@ -39,7 +39,7 @@ public class DiscourseAPI : ICommunityAPI
 			.Select(p => new Post
 			{
 				Name = p.GetProperty("name").GetString(),
-				Date = p.GetProperty("created_at").GetDateTime(),
+				Date = p.GetProperty("created_at").GetDateTime().ToLocalTime(),
 				Content = p.GetProperty("raw").GetString()
 			}).ToArray();
 }

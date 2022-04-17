@@ -49,7 +49,7 @@ public class DiscourseAPITests
 	{
 		//arrange
 		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]}}");
-		var json = JsonDocument.Parse(@"[{""name"":""User 123"", ""created_at"":""2022-04-07T16:51:23"",""raw"":""test 123""}]");
+		var json = JsonDocument.Parse(@"[{""name"":""User 123"", ""created_at"":""2022-04-07T06:51:23Z"",""raw"":""test 123""}]");
 		var config = Substitute.For<IConfig>();
 		var api = new DiscourseAPI(new HttpClient(http), config);
 
@@ -58,7 +58,25 @@ public class DiscourseAPITests
 
 		//act
 		Assert.Equal("User 123", posts.First().Name);
-		Assert.Equal(new DateTime(2022, 4, 7, 16, 51, 23), posts.First().Date);
+		Assert.Equal(new DateTime(2022, 4, 7), posts.First().Date.Date);
+		Assert.Equal("test 123", posts.First().Content);
+	}
+
+	[Fact]
+	public void ParsePostsConvertsTimeZone()
+	{
+		//arrange
+		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]}}");
+		var json = JsonDocument.Parse(@"[{""name"":""User 123"", ""created_at"":""2022-04-08T03:51:23Z"",""raw"":""test 123""}]");
+		var config = Substitute.For<IConfig>();
+		var api = new DiscourseAPI(new HttpClient(http), config);
+
+		//act
+		var posts = api.ParsePosts(json.RootElement);
+
+		//act
+		Assert.Equal("User 123", posts.First().Name);
+		Assert.Equal(new DateTime(2022, 4, 7), posts.First().Date.Date);
 		Assert.Equal("test 123", posts.First().Content);
 	}
 }
