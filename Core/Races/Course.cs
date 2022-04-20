@@ -69,8 +69,9 @@ public class Course
 		if (_averageCache.ContainsKey(key))
 			return _averageCache[key];
 
-		return _averageCache[key] = Rank(category, rs => rs.Count() >= AverageThreshold(category),
-			rs => rs.Average(AverageThreshold(category)), rs => rs.Average(AverageThreshold(category)).Duration);
+		var threshold = AverageThreshold(category);
+		return _averageCache[key] = Rank(category, rs => rs.Count() >= threshold,
+			rs => rs.Average(this, threshold), rs => rs.Average(this, threshold).Duration);
 	}
 
 	private readonly IDictionary<string, RankedList<ushort>> _mostRunsCache = new ConcurrentDictionary<string, RankedList<ushort>>();
@@ -81,7 +82,7 @@ public class Course
 		if (_mostRunsCache.ContainsKey(key))
 			return _mostRunsCache[key];
 
-		return _mostRunsCache[key] = RankDescending(category, _ => true, r => r.Average(), r => (ushort) r.Count());
+		return _mostRunsCache[key] = RankDescending(category, _ => true, r => r.Average(this), r => (ushort) r.Count());
 	}
 
 	private readonly IDictionary<string, RankedList<Miles>> _mostMilesCache = new ConcurrentDictionary<string, RankedList<Miles>>();
@@ -92,7 +93,7 @@ public class Course
 		if (_mostMilesCache.ContainsKey(key))
 			return _mostMilesCache[key];
 
-		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(), r => new Miles(r.Count() * Distance.Miles));
+		return _mostMilesCache[key] = RankDescending(category, _ => true, r => r.Average(this), r => new Miles(r.Count() * Distance.Miles));
 	}
 
 	private readonly IDictionary<string, RankedList<Date>> _earliestCache = new ConcurrentDictionary<string, RankedList<Date>>();
@@ -114,7 +115,7 @@ public class Course
 		if (_earliestCache.ContainsKey(key))
 			return _communityCache[key];
 
-		return _communityCache[key] = RankDescending(category, _ => true, g => g.Average(), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
+		return _communityCache[key] = RankDescending(category, _ => true, g => g.Average(this), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 	}
 
 	public IReadOnlyCollection<GroupedResult> GroupedResults(Category category = null)

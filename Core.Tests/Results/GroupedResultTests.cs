@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
@@ -13,18 +14,18 @@ public class GroupedResultTests
 		var athlete = new Athlete();
 
 		//arrange
-		var results = new List<Result>
-			{
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) },
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:30")) }
-			};
+		var results = new[]
+		{
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) },
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:30")) }
+		};
 
 		var groupedResult = new GroupedResult(results.GroupBy(r => r.Athlete).First());
 
 		//act
-		var avg = groupedResult.Average();
+		var avg = groupedResult.Average(new Course());
 
 		//assert
 		Assert.Equal(TimeSpan.Parse("1:15"), avg.Duration.Value);
@@ -36,17 +37,17 @@ public class GroupedResultTests
 		//arrange
 		var athlete = new Athlete();
 
-		var results = new List<Result>
-			{
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
-				new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) }
-			};
+		var results = new[]
+		{
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) }
+		};
 
 		var groupedResult = new GroupedResult(results.GroupBy(r => r.Athlete).First());
 
 		//act
-		var avg = groupedResult.Average(2);
+		var avg = groupedResult.Average(new Course(), 2);
 
 		//assert
 		Assert.Equal(TimeSpan.Parse("1:05"), avg.Duration.Value);
@@ -59,11 +60,11 @@ public class GroupedResultTests
 		var athlete1 = new Athlete { ID = 234 };
 		var athlete2 = new Athlete { ID = 123 };
 
-		var results = new List<Result>
-			{
-				new Result { Athlete = athlete1, Duration = new Time(TimeSpan.Parse("1:00")) },
-				new Result { Athlete = athlete2, Duration = new Time(TimeSpan.Parse("1:10")) }
-			};
+		var results = new[]
+		{
+			new Result { Athlete = athlete1, Duration = new Time(TimeSpan.Parse("1:00")) },
+			new Result { Athlete = athlete2, Duration = new Time(TimeSpan.Parse("1:10")) }
+		};
 
 		var groups = results.GroupBy(r => r.Athlete).ToArray();
 
