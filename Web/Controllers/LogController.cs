@@ -52,5 +52,5 @@ public class LogController : Controller
 			: "This Week";
 
 	private static string getMonth(DateTime date)
-		=> date.ToString("MMMM");
+		=> date.ToString("MMMM yyyy");
 }
