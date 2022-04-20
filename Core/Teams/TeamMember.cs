@@ -14,7 +14,7 @@ public record TeamMember : IComparable<TeamMember>
 	public ushort Runs { get; }
 	public Miles Miles { get; }
 
-	public Points Score => new(100 * Courses + AgeGrade.Value + Runs / 10.0 + Miles.Value / Distance.MilesPerMarathon);
+	public Points Score => new(50 * Courses + AgeGrade.Value + Runs / 50.0 + Miles.Value / Distance.MilesPerMarathon);
 
 	public TeamMember(IReadOnlyCollection<Ranked<Time>> results)
 	{
