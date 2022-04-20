@@ -135,8 +135,8 @@ dt {
     border-radius: 0.2rem;
 }
 
-.tp-35 {
-    opacity: 0.35;
+.btn i {
+    opacity: 0.5;
 }
 
 .community .group {
