@@ -20,12 +20,12 @@
 
 <form class="float-left">
 	<section class="mb-3 mt-2">
-		<div class="btn-group d-flex">
+		<div class="btn-group d-flex flex-wrap">
 			@if (Model.Config.Features.MultiAttempt)
 			{
 				foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
 				{
-					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@type.Value/@Model.Category?.Value">@type.Display</a>
+					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@Model.Course.Distance.Display/@type.Value/@Model.Category?.Value">@type.Display</a>
 				}
 			}
 			else
@@ -40,8 +40,7 @@
 
 	@if (Model.ResultType.Value != ResultType.Team)
 	{
-		var distance = Model.Course.Race.Courses.Count > 1 ? Model.Course.Distance.Display : string.Empty;
-		var resultsURL = $"/Course/{Model.Course.ID}/{distance}/{Model.ResultType.Value}".Replace("//", "/");
+		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.Distance.Display}/{Model.ResultType.Value}".Replace("//", "/");
 		<section class="mb-4">
 			<div class="btn-group">
 				<a class="btn btn-sm btn-@style((Category)null)" href="@resultsURL">All</a>
