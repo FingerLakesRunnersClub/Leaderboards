@@ -326,4 +326,30 @@ public class CourseTests
 		Assert.Equal(1, results[1].Rank.Value);
 		Assert.Equal(3, results[2].Rank.Value);
 	}
+
+	[Fact]
+	public void GroupedResultsFiltersByAgeGroup()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2019, 12, 31)), Duration = new Time(new TimeSpan(1, 2, 3)) },
+			new Result { Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2020, 1, 2)), Duration = new Time(new TimeSpan(2, 3, 4)) },
+			new Result { Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2019, 12, 31)), Duration = new Time(new TimeSpan(3, 2, 1)) },
+			new Result { Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2020, 1, 2)), Duration = new Time(new TimeSpan(4, 3, 2)) }
+		};
+		var course = new Course { Results = results };
+
+		//act
+		var m2 = course.GroupedResults(Category.M, 2);
+		var m3 = course.GroupedResults(Category.M, 3);
+		var f2 = course.GroupedResults(Category.F, 2);
+		var f3 = course.GroupedResults(Category.F, 3);
+
+		//assert
+		Assert.Equal(new TimeSpan(1, 2, 3), m2.First().First().Duration.Value);
+		Assert.Equal(new TimeSpan(2, 3, 4), m3.First().First().Duration.Value);
+		Assert.Equal(new TimeSpan(3, 2, 1), f2.First().First().Duration.Value);
+		Assert.Equal(new TimeSpan(4, 3, 2), f3.First().First().Duration.Value);
+	}
 }
