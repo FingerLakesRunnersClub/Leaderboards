@@ -23,7 +23,7 @@ public class AthleteSummary
 	public Ranked<AgeGrade> OverallAgeGrade { get; }
 	public Ranked<Miles> OverallMiles { get; }
 	public Ranked<Stars> OverallCommunityStars { get; }
-	public TeamResults TeamResults { get; }
+	public Ranked<TeamResults> TeamResults { get; }
 
 	public int TotalResults { get; }
 	private readonly IReadOnlyCollection<Course> _results;
@@ -52,7 +52,7 @@ public class AthleteSummary
 				OverallRow("AgeGrade", null, athlete, () => overall.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
 				OverallRow("Miles", null, athlete, () => overall.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
 				OverallRow("Community", null, athlete, () => overall.CommunityStars().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("Team", null, athlete, () => overall.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team))
+				OverallRow("Team", null, athlete, () => overall.TeamPoints().FirstOrDefault(r => r.Value.Team == athlete.Team))
 			}.Where(c => c?.Value != null)
 			.ToArray();
 
@@ -60,7 +60,7 @@ public class AthleteSummary
 		OverallAgeGrade = overall.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
 		OverallMiles = overall.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
 		OverallCommunityStars = overall.CommunityStars().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
-		TeamResults = overall.TeamPoints().FirstOrDefault(r => r.Team == athlete.Team);
+		TeamResults = overall.TeamPoints().FirstOrDefault(r => r.Value.Team == athlete.Team);
 
 		TotalResults = Fastest.Count(r => r.Value != null) + Average.Count(r => r.Value != null);
 	}

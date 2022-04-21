@@ -135,9 +135,9 @@ public class Course
 			: (ushort) 0;
 	}
 
-	private IReadOnlyCollection<TeamResults> _teamCache;
+	private RankedList<TeamResults> _teamCache;
 
-	public IReadOnlyCollection<TeamResults> TeamPoints()
+	public RankedList<TeamResults> TeamPoints()
 	{
 		if (_teamCache != null)
 			return _teamCache;
@@ -158,21 +158,19 @@ public class Course
 					.Average()
 				),
 				TotalRuns = (ushort) t.Sum(rs => rs.Count())
-			}).ToList();
+			}).ToArray();
 
 		var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
 		for (var x = 0; x < fastestTeams.Length; x++)
-			fastestTeams[x].AgeGradePoints =
-				x > 0 && fastestTeams[x].AverageAgeGrade == fastestTeams[x - 1].AverageAgeGrade
-					? fastestTeams[x - 1].AgeGradePoints
-					: (byte) (x + 1);
+			fastestTeams[x].AgeGradePoints = x > 0 && fastestTeams[x].AverageAgeGrade == fastestTeams[x - 1].AverageAgeGrade
+				? fastestTeams[x - 1].AgeGradePoints
+				: (byte) (x + 1);
 
 		var mostRunTeams = teamResults.OrderByDescending(t => t.TotalRuns).ToArray();
 		for (var x = 0; x < mostRunTeams.Length; x++)
-			mostRunTeams[x].MostRunsPoints =
-				x > 0 && mostRunTeams[x].TotalRuns == mostRunTeams[x - 1].TotalRuns
-					? mostRunTeams[x - 1].MostRunsPoints
-					: (byte) (x + 1);
+			mostRunTeams[x].MostRunsPoints = x > 0 && mostRunTeams[x].TotalRuns == mostRunTeams[x - 1].TotalRuns
+				? mostRunTeams[x - 1].MostRunsPoints
+				: (byte) (x + 1);
 
 		return _teamCache = teamResults.Rank();
 	}
@@ -183,8 +181,7 @@ public class Course
 	private RankedList<T> RankDescending<T>(Category category, byte? ag, Func<GroupedResult, bool> filter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
 		=> RankedList(GroupedResults(category, ag).Where(filter).OrderByDescending(sort), getResult, sort);
 
-	private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted,
-		Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
+	private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
 	{
 		var ranks = new RankedList<T>();
 

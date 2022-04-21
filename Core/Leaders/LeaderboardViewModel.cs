@@ -71,7 +71,7 @@ public class LeaderboardViewModel : ViewModel
 					.ToArray()),
 
 				OverallTable("Team", ResultType.Team, null, () => vm.TeamPoints().Take(3)
-					.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Team.Display, Link = $"/Team/Index/{t.Team.Value}", Value = t.TotalPoints.ToString() })
+					.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
 					.ToArray())
 			};
 
@@ -146,8 +146,8 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints().OrderByDescending(p => p.AverageAgeGrade).Take(3)
-					.Select(r => new LeaderboardRow { Rank = new Rank(r.AgeGradePoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.AverageAgeGrade.Display })
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints().OrderByDescending(p => p.Value.AverageAgeGrade).Take(3)
+					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 					.ToArray())
 			},
 			new()
@@ -156,8 +156,8 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints().OrderByDescending(p => p.TotalRuns).Take(3)
-					.Select(r => new LeaderboardRow { Rank = new Rank(r.MostRunsPoints), Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.TotalRuns.ToString() })
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints().OrderByDescending(p => p.Value.TotalRuns).Take(3)
+					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 					.ToArray())
 			},
 			new()
@@ -167,7 +167,7 @@ public class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints().Take(3)
-					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Team.Display, Link = $"/Team/Index/{r.Team.Value}", Value = r.TotalPoints.ToString() })
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 					.ToArray())
 			}
 		};

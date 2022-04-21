@@ -1,4 +1,5 @@
 ﻿using System.Text.RegularExpressions;
+using FLRC.Leaderboards.Core.Metrics;
 
 namespace FLRC.Leaderboards.Core.Races;
 
@@ -6,7 +7,8 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 {
 	public const string DefaultKey = "Default";
 	public const double MetersPerMile = 1609.344;
-	private const double MarathonMeters = 42_195;
+	public const double MetersPerMarathon = 42_195;
+	public const double MilesPerMarathon = MetersPerMarathon / MetersPerMile;
 
 	public double Meters { get; } = ParseDistance(Value);
 	public double Miles => Meters / MetersPerMile;
@@ -18,8 +20,8 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 	{
 		if (value.ToLowerInvariant().Contains("marathon"))
 			return value.ToLowerInvariant().Contains("half")
-				? MarathonMeters / 2
-				: MarathonMeters;
+				? MetersPerMarathon / 2
+				: MetersPerMarathon;
 
 		var split = Regex.Match(value, @"([\d\.]+)(.*)").Groups;
 		if (split.Count < 2)

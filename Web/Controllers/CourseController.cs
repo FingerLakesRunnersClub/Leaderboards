@@ -55,15 +55,15 @@ public class CourseController : Controller
 
 	public async Task<ViewResult> Team(uint id, string distance) => View(await GetTeamResults(id, distance));
 
-	private async Task<CourseTeamResultsViewModel> GetTeamResults(uint courseID, string distance)
+	private async Task<CourseResultsViewModel<TeamResults>> GetTeamResults(uint courseID, string distance)
 	{
 		var course = await _dataService.GetResults(courseID, distance);
-		return new CourseTeamResultsViewModel
+		return new CourseResultsViewModel<TeamResults>
 		{
 			Config = _config,
 			ResultType = new FormattedResultType(ResultType.Team),
 			Course = course,
-			Results = course.TeamPoints(),
+			RankedResults = course.TeamPoints(),
 		};
 	}
 

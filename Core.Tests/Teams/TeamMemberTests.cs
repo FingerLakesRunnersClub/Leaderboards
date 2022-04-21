@@ -24,7 +24,7 @@ public class TeamMemberTests
 
 		//assert
 		Assert.Equal(3, member.Runs);
-		Assert.Equal(11, member.Miles);
+		Assert.Equal(11, member.Miles.Value);
 		Assert.Equal(85, member.AgeGrade.Value);
 	}
 }

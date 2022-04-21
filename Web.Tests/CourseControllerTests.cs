@@ -131,16 +131,16 @@ public class CourseControllerTests
 		var response = await controller.Team(123, null);
 
 		//assert
-		var vm = (CourseTeamResultsViewModel) response.Model;
-		var results = vm!.Results.ToList();
-		var team2 = results.First(r => r.Team == Athlete.Teams[2]);
-		var team3 = results.First(r => r.Team == Athlete.Teams[3]);
-		Assert.Equal(1, team3.AgeGradePoints);
-		Assert.Equal(2, team2.AgeGradePoints);
-		Assert.Equal(1, team2.MostRunsPoints);
-		Assert.Equal(2, team3.MostRunsPoints);
-		Assert.Equal(3, team2.TotalPoints);
-		Assert.Equal(3, team3.TotalPoints);
+		var vm = (CourseResultsViewModel<TeamResults>) response.Model;
+		var results = vm!.RankedResults.ToList();
+		var team2 = results.First(r => r.Value.Team == Athlete.Teams[2]);
+		var team3 = results.First(r => r.Value.Team == Athlete.Teams[3]);
+		Assert.Equal(1, team3.Value.AgeGradePoints);
+		Assert.Equal(2, team2.Value.AgeGradePoints);
+		Assert.Equal(1, team2.Value.MostRunsPoints);
+		Assert.Equal(2, team3.Value.MostRunsPoints);
+		Assert.Equal(3, team2.Value.TotalPoints);
+		Assert.Equal(3, team3.Value.TotalPoints);
 	}
 
 	[Fact]

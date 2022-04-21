@@ -57,15 +57,15 @@ public class OverallController : Controller
 		};
 	}
 
-	private async Task<OverallTeamResultsViewModel> GetTeamResults(string title, Func<OverallResults, IReadOnlyCollection<TeamResults>> results)
+	private async Task<OverallResultsViewModel<TeamResults>> GetTeamResults(string title, Func<OverallResults, RankedList<TeamResults>> results)
 	{
 		var allResults = await _dataService.GetAllResults();
 		var overall = new OverallResults(allResults);
-		return new OverallTeamResultsViewModel
+		return new OverallResultsViewModel<TeamResults>
 		{
 			Config = _config,
 			ResultType = title,
-			Results = results(overall)
+			RankedResults = results(overall)
 		};
 	}
 }

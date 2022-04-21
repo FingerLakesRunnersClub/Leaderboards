@@ -22,7 +22,7 @@ public class TeamControllerTests
 
 		//assert
 		var vm = (TeamSummaryViewModel)response.Model;
-		Assert.Equal("30–39", vm.Team.Display);
+		Assert.Equal("30–39", vm!.Team.Display);
 	}
 
 	[Fact]
@@ -38,7 +38,7 @@ public class TeamControllerTests
 
 		//assert
 		var vm = (TeamSummaryViewModel)response.Model;
-		Assert.Equal(1, vm.Overall.Rank.Value);
+		Assert.Equal(1, vm!.Overall.Rank.Value);
 	}
 
 	[Fact]
@@ -54,7 +54,7 @@ public class TeamControllerTests
 
 		//assert
 		var vm = (TeamSummaryViewModel)response.Model;
-		Assert.Equal(1, vm.Courses.First().Value.Rank.Value);
+		Assert.Equal(1, vm!.Courses.First().Value.Rank.Value);
 	}
 
 	[Fact]
@@ -70,7 +70,7 @@ public class TeamControllerTests
 
 		//assert
 		var vm = (TeamMembersViewModel)response.Model;
-		Assert.Equal(2, vm.RankedResults.Count);
+		Assert.Equal(2, vm!.RankedResults.Count);
 		Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Result.Athlete);
 		Assert.Equal(LeaderboardData.Athlete4, vm.RankedResults.Skip(1).First().Result.Athlete);
 	}

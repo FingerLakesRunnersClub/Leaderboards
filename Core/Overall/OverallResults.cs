@@ -32,19 +32,45 @@ public class OverallResults
 		=> RankedList(_courses.SelectMany(c => c.Earliest(category)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _courses.Count), g => g.Max(r => r.Value), g => Date.CompetitionStart.Subtract(g.Max(r => r.Value)?.Value ?? Date.CompetitionStart), g => (uint) g.Count());
 
 	public RankedList<TeamMember> TeamMembers(byte ag)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(null, ag)).GroupBy(r => r.Result.Athlete), g => new TeamMember(g.ToList()), g => g.Count(), g => (uint) g.Count());
+		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => r.Result.Athlete.Team.Value == ag)).ToArray());
+
+	private static RankedList<TeamMember> RankTeam(IReadOnlyCollection<Ranked<Time>> results)
+	{
+		var ranked = results
+			.GroupBy(r => r.Result.Athlete)
+			.Select(g => new TeamMember(g.ToArray()) { Athlete = g.Key })
+			.OrderByDescending(m => m.Score)
+			.ToArray();
+
+		var ranks = new RankedList<TeamMember>();
+		for (byte rank = 1; rank <= ranked.Length; rank++)
+		{
+			var value = ranked[rank - 1];
+			ranks.Add(new Ranked<TeamMember>
+			{
+				All = ranks,
+				Rank = ranks.Any() && ranks.Last().Value.Score.Equals(value.Score) ? ranks.Last().Rank : new Rank(rank),
+				Result = new Result { Athlete = value.Athlete },
+				Count = value.Courses,
+				AgeGrade = value.AgeGrade,
+				Value = value
+			});
+		}
+
+		return ranks;
+	}
 
 	public RankedList<TeamMember> GroupMembers(IReadOnlyCollection<Athlete> athletes)
-		=> RankedList(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).GroupBy(r => r.Result.Athlete), g => new TeamMember(g.ToList()), g => g.Count(), g => (uint) g.Count());
+		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).ToArray());
 
-	public IReadOnlyCollection<TeamResults> TeamPoints()
+	public RankedList<TeamResults> TeamPoints()
 		=> _courses.SelectMany(c => c.TeamPoints())
-			.GroupBy(r => r.Team)
+			.GroupBy(r => r.Value.Team)
 			.Select(g => new TeamResults
 			{
 				Team = g.Key,
-				AgeGradePoints = (byte) (g.Sum(r => r.AgeGradePoints) + Athlete.Teams.Count * (_courses.Count() - g.Count())),
-				MostRunsPoints = (byte) (g.Sum(r => r.MostRunsPoints) + Athlete.Teams.Count * (_courses.Count() - g.Count()))
+				AgeGradePoints = (byte) (g.Sum(r => r.Value.AgeGradePoints) + Athlete.Teams.Count * (_courses.Count - g.Count())),
+				MostRunsPoints = (byte) (g.Sum(r => r.Value.MostRunsPoints) + Athlete.Teams.Count * (_courses.Count - g.Count()))
 			})
 			.Rank();
 

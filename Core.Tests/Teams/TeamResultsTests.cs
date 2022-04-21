@@ -21,4 +21,21 @@ public class TeamResultsTests
 		//assert
 		Assert.Equal(11, total);
 	}
+
+	[Fact]
+	public void DisplayedValueIsTotalPoints()
+	{
+		//arrange
+		var results = new TeamResults
+		{
+			AgeGradePoints = 5,
+			MostRunsPoints = 6
+		};
+
+		//act
+		var display = results.Display;
+
+		//assert
+		Assert.Equal("11", display);
+	}
 }

@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using FLRC.Leaderboards.Web.Controllers;
@@ -88,7 +89,7 @@ public class OverallControllerTests
 		var response = await controller.Team();
 
 		//assert
-		var vm = (OverallTeamResultsViewModel) response.Model;
-		Assert.Equal("1–29", vm!.Results.First().Team.Display);
+		var vm = (OverallResultsViewModel<TeamResults>) response.Model;
+		Assert.Equal("1–29", vm!.RankedResults.First().Value.Team.Display);
 	}
 }

@@ -147,7 +147,7 @@ public class OverallResultsTests
 		var teamPoints = vm.TeamPoints();
 
 		//assert
-		Assert.Equal("1–29", teamPoints.First().Team.Display);
+		Assert.Equal("1–29", teamPoints.First().Value.Team.Display);
 	}
 
 	[Fact]

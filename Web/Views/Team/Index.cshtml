@@ -32,13 +32,13 @@
     <tbody>
     <tr>
         <td>
-            @Model.Overall?.AgeGradePoints
+            @Model.Overall?.Value.AgeGradePoints
         </td>
         <td>
-            @Model.Overall?.MostRunsPoints
+            @Model.Overall?.Value.MostRunsPoints
         </td>
         <td>
-            @Model.Overall?.TotalPoints
+            @Model.Overall?.Value.TotalPoints
             (<a href="/Overall/Team">@Model.Overall?.Rank.Display</a>)
         </td>
     </tr>
@@ -76,13 +76,13 @@
                         <tbody>
                         <tr>
                             <td>
-	                            @results.AverageAgeGrade.Display (@(new Rank(results.AgeGradePoints).Display))
+	                            @results.Value.AverageAgeGrade.Display (@(new Rank(results.Value.AgeGradePoints).Display))
                             </td>
                             <td>
-	                            @results.TotalRuns (@(new Rank(results.MostRunsPoints).Display))
+	                            @results.Value.TotalRuns (@(new Rank(results.Value.MostRunsPoints).Display))
                             </td>
                             <td>
-	                            @results.TotalPoints
+	                            @results.Value.TotalPoints
 	                            (<a href="/Course/@course.ID/Team">@results.Rank.Display</a>)
                             </td>
                         </tr>

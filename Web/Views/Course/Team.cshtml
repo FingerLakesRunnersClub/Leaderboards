@@ -1,6 +1,7 @@
-﻿@using FLRC.Leaderboards.Core.Teams
+﻿@using FLRC.Leaderboards.Core.Results
+@using FLRC.Leaderboards.Core.Teams
 @using System.Text.Json
-@model CourseTeamResultsViewModel
+@model CourseResultsViewModel<TeamResults>
 
 <h2>Course Results</h2>
 <div class="card card-highlighted">
@@ -11,15 +12,15 @@
         <script>
     const fields = [
         { name: 'Rank', width: 1, center: true, value: r => r.Rank.Value },
-        { name: 'Team', width: 2, center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}`, show: @Model.Config.Features.AgeGroupTeams.ToString().ToLower() },
-        { name: 'Average Age Grade', width: 2, center: true, value: r => r.AverageAgeGrade.Display, sort: r => r.AverageAgeGrade.Value, descending: true },
-        { name: 'Age Grade Points', width: 2, center: true, value: r => r.AgeGradePoints },
-        { name: 'Total Runs', width: 2, center: true, value: r => r.TotalRuns },
-        { name: 'Most Runs Points', width: 2, center: true, value: r => r.MostRunsPoints },
-        { name: 'Total Points', width: 2, center: true, value: r => r.TotalPoints },
+        { name: 'Team', width: 2, center: true, value: r => r.Value.Team.Display, sort: r => r.Value.Team.Value, link: r => `/Team/Index/${r.Value.Team.Value}`, show: @Model.Config.Features.AgeGroupTeams.ToString().ToLower() },
+        { name: 'Average Age Grade', width: 2, center: true, value: r => r.Value.AverageAgeGrade.Display, sort: r => r.Value.AverageAgeGrade.Value, descending: true },
+        { name: 'Age Grade Points', width: 2, center: true, value: r => r.Value.AgeGradePoints },
+        { name: 'Total Runs', width: 2, center: true, value: r => r.Value.TotalRuns },
+        { name: 'Most Runs Points', width: 2, center: true, value: r => r.Value.MostRunsPoints },
+        { name: 'Total Points', width: 2, center: true, value: r => r.Value.TotalPoints },
     ];
 
-    const rows = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+    const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
 </script>
 
         @await Html.PartialAsync("DataTable")

@@ -43,8 +43,8 @@ public class TeamController : Controller
 		{
 			Config = _config,
 			Team = team,
-			Overall = overall.TeamPoints().FirstOrDefault(r => r.Team == team),
-			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().FirstOrDefault(r => r.Team == team))
+			Overall = overall.TeamPoints().FirstOrDefault(r => r.Value.Team == team),
+			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().FirstOrDefault(r => r.Value.Team == team))
 		};
 	}
 }

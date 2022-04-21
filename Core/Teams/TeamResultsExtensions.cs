@@ -4,14 +4,22 @@ namespace FLRC.Leaderboards.Core.Teams;
 
 public static class TeamResultsExtensions
 {
-	public static IReadOnlyCollection<TeamResults> Rank(this IEnumerable<TeamResults> teamResults)
+	public static RankedList<TeamResults> Rank(this IEnumerable<TeamResults> teamResults)
 	{
-		var topTeams = teamResults.OrderBy(t => t.TotalPoints).ToArray();
-		for (var x = 0; x < topTeams.Length; x++)
-			topTeams[x].Rank = x > 0 && topTeams[x].TotalPoints == topTeams[x - 1].TotalPoints
-				? topTeams[x - 1].Rank
-				: new Rank((ushort)(x + 1));
+		var ranks = new RankedList<TeamResults>();
+		var ranked = teamResults.OrderBy(t => t.TotalPoints).ToArray();
+		for (byte rank = 1; rank <= ranked.Length; rank++)
+		{
+			var value = ranked[rank - 1];
+			ranks.Add(new Ranked<TeamResults>
+			{
+				All = ranks,
+				Rank = ranks.Any() && ranks.Last().Value.TotalPoints.Equals(value.TotalPoints) ? ranks.Last().Rank : new Rank(rank),
+				AgeGrade = value.AverageAgeGrade,
+				Value = value
+			});
+		}
 
-		return topTeams;
+		return ranks;
 	}
 }
