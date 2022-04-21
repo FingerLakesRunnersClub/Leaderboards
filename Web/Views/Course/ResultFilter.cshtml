@@ -38,7 +38,7 @@
 		</div>
 	</section>
 
-	@if (Model.ResultType.Value != ResultType.Team)
+	@if (Model.ResultType.Value != ResultType.Team && Model.ResultType.Value != ResultType.Community)
 	{
 		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.Distance.Display}/{Model.ResultType.Value}".Replace("//", "/");
 		<section class="mb-4">
