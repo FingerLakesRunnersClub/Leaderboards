@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
@@ -140,5 +141,31 @@ public class CourseControllerTests
 		Assert.Equal(2, team3.MostRunsPoints);
 		Assert.Equal(3, team2.TotalPoints);
 		Assert.Equal(3, team3.TotalPoints);
+	}
+
+	[Fact]
+	public async Task CanGetCommunityStars()
+	{
+		//arrange
+		var course = new Course
+		{
+			Distance = new Distance("10K"),
+			Results = new List<Result>
+			{
+				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true }},
+				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.ShopLocal] = true }},
+			}
+		};
+
+		var dataService = Substitute.For<IDataService>();
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
+
+		var controller = new CourseController(dataService, TestHelpers.Config);
+
+		//act
+		var response = await controller.Community(123, null);
+
+		//assert
+		Assert.Equal((uint) 123, ((CourseResultsViewModel<Stars>) response.Model!).RankedResults.First().Result.Athlete.ID);
 	}
 }

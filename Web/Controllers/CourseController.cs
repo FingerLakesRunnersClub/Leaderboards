@@ -40,6 +40,19 @@ public class CourseController : Controller
 		return View(await GetResults(id, distance, ResultType.BestAverage, cat, c => c.BestAverage(cat)));
 	}
 
+	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string distance, ResultType resultType, Category category, Func<Course, RankedList<T>> results)
+	{
+		var course = await _dataService.GetResults(courseID, distance);
+		return new CourseResultsViewModel<T>
+		{
+			Config = _config,
+			ResultType = new FormattedResultType(resultType),
+			Category = category,
+			Course = course,
+			RankedResults = results(course),
+		};
+	}
+
 	public async Task<ViewResult> Team(uint id, string distance) => View(await GetTeamResults(id, distance));
 
 	private async Task<CourseTeamResultsViewModel> GetTeamResults(uint courseID, string distance)
@@ -54,16 +67,6 @@ public class CourseController : Controller
 		};
 	}
 
-	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string distance, ResultType resultType, Category category, Func<Course, RankedList<T>> results)
-	{
-		var course = await _dataService.GetResults(courseID, distance);
-		return new CourseResultsViewModel<T>
-		{
-			Config = _config,
-			ResultType = new FormattedResultType(resultType),
-			Category = category,
-			Course = course,
-			RankedResults = results(course),
-		};
-	}
+	public async Task<ViewResult> Community(uint id, string distance)
+		=> View(await GetResults(id, distance, ResultType.Community, null, c => c.CommunityStars()));
 }
