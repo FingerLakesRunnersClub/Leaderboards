@@ -1,0 +1,45 @@
+@using FLRC.Leaderboards.Core.Reports
+@model AwardsViewModel
+
+<h2>@Model.Title</h2>
+
+<div class="card card-highlighted mb-3">
+	<div class="card-body">
+		<table class="table table-bordered table-striped table-hover table-sm">
+			<thead>
+			<tr>
+				<th>Name</th>
+				<th class="text-right">Total</th>
+				<th>Award</th>
+				<th class="text-right">Score</th>
+			</tr>
+			</thead>
+			@foreach (var athlete in Model.Awards.OrderBy(a => a.Key.Name))
+			{
+				<tbody>
+				<tr>
+					<th rowspan="@(athlete.Value.Length + 1)">@athlete.Key.Name</th>
+					<th rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value)</th>
+				</tr>
+				@foreach (var award in athlete.Value)
+				{
+					<tr>
+						<td>@award.Name</td>
+						<td class="text-right">@award.Value</td>
+					</tr>
+				}
+				<tr class="bg-white">
+					<td colspan="4"></td>
+				</tr>
+				</tbody>
+			}
+			<tfoot>
+			<tr>
+				<th>Total</th>
+				<th class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value))</th>
+				<td colspan="2">Athletes: @Model.Awards.Count / Awards: @Model.Awards.Sum(a => a.Value.Length)</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
+</div>
