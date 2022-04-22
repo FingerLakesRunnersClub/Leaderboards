@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Web;
+namespace FLRC.Leaderboards.Web.Tests;
 
 public class AppTests
 {

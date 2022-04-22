@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net6.0</TargetFramework>
-		<RootNamespace>FLRC.Leaderboards.Web</RootNamespace>
+		<RootNamespace>FLRC.Leaderboards.Web.Tests</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
