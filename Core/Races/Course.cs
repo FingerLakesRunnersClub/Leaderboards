@@ -117,7 +117,7 @@ public class Course
 	}
 
 	public IReadOnlyCollection<GroupedResult> GroupedResults(Category category = null, byte? ag = null)
-		=> Results.Where(r => (category == null || r.Athlete.Category == category) && (ag == null || (r.AgeOnDayOfRun >= Athlete.Teams[ag.Value].MinAge && r.AgeOnDayOfRun <= Athlete.Teams[ag.Value].MaxAge)))
+		=> Results.Where(r => (category == null || r.Athlete.Category == category) && (ag == null || (r.AgeOnDayOfRun >= Athlete.Teams[ag.Value].MinAge && (Athlete.Teams[ag.Value].MaxAge == null || r.AgeOnDayOfRun <= Athlete.Teams[ag.Value].MaxAge))))
 			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
 			.ToArray();
 
