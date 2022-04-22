@@ -23,6 +23,23 @@
 	  "Team": "Top Teams"
 	}
   ],
+  "Awards": [
+	{
+	  "Overall": "5"
+	},
+	{
+	  "Top": "4"
+	},
+	{
+	  "Team": "3"
+	},
+	{
+	  "Course": "2"
+	},
+	{
+	  "Age Group": "1"
+	}
+  ],
   "Races": [
 	{
 	  "Source": "WebScorer",
