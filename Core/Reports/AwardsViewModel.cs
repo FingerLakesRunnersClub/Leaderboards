@@ -23,28 +23,29 @@ public class AwardsViewModel : ViewModel
 		var overall = new OverallResults(results);
 		var awards = new List<Award>();
 
-		awards.AddRange(Overall($"Overall Points ({Category.M.Display})", overall.MostPoints(Category.M), 5));
-		awards.AddRange(Overall($"Overall Points ({Category.F.Display})", overall.MostPoints(Category.F), 5));
-		awards.AddRange(Overall("Overall Miles", overall.MostMiles(), 10));
-		awards.AddRange(Overall("Overall Age Grade", overall.AgeGrade(), 10));
-		awards.AddRange(Overall("Overall Community", overall.CommunityStars(), 10));
+		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(Category.F), 5));
+		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(Category.M), 5));
+		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(), 10));
+		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(), 10));
+		awards.AddRange(Overall("Community", "Overall Community", overall.CommunityStars(), 10));
 		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints().First().Value.Team.Value)));
-		awards.AddRange(Course($"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Category.M))));
-		awards.AddRange(Course($"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Category.F))));
-		awards.AddRange(Course($"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Category.M))));
-		awards.AddRange(Course($"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Category.F))));
-		awards.AddRange(Course("Most Runs", results.SelectMany(c => c.MostRuns())));
-		awards.AddRange(AgeGroup(results, Category.M));
+		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Category.F))));
+		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Category.M))));
+		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Category.F))));
+		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Category.M))));
+		awards.AddRange(Course("MostRuns", "Most Runs", results.SelectMany(c => c.MostRuns())));
 		awards.AddRange(AgeGroup(results, Category.F));
+		awards.AddRange(AgeGroup(results, Category.M));
 
 		return awards.GroupBy(a => a.Athlete).ToDictionary(a => a.Key, a => a.ToArray());
 	}
 
-	private IReadOnlyCollection<Award> Overall<T>(string title, RankedList<T> results, byte top)
+	private IReadOnlyCollection<Award> Overall<T>(string type, string title, RankedList<T> results, byte top)
 		=> results.Where(r => r.Rank.Value <= top)
 			.Select(r => new Award
 			{
 				Name = $"{r.Rank.Display} {title}",
+				Link = $"/Overall/{type}",
 				Value = r.Rank.Value == 1 ? Config.Awards["Overall"] : Config.Awards["Top"],
 				Athlete = r.Result.Athlete
 			})
@@ -55,16 +56,18 @@ public class AwardsViewModel : ViewModel
 			.Select(r => new Award
 			{
 				Name = $"{r.Rank.Display} Top Team Member",
+				Link = $"/Team/Members/{r.Result.Athlete.Team.Value}",
 				Value = Config.Awards["Team"],
 				Athlete = r.Result.Athlete
 			})
 			.ToArray();
 
-	private IReadOnlyCollection<Award> Course<T>(string title, IEnumerable<Ranked<T>> results)
+	private IReadOnlyCollection<Award> Course<T>(string type, string title, IEnumerable<Ranked<T>> results)
 		=> results.Where(r => r.Rank.Value == 1)
 			.Select(r => new Award
 			{
 				Name = $"{r.Result.CourseName} {title}",
+				Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/{type}",
 				Value = Config.Awards["Course"],
 				Athlete = r.Result.Athlete
 			})
@@ -76,6 +79,7 @@ public class AwardsViewModel : ViewModel
 				.Select(r => new Award
 				{
 					Name = $"{r.Result.CourseName} {t.Value.Display} ({category.Display})",
+					Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/Fastest/{category.Display}?ag={t.Value.Value}",
 					Value = Config.Awards["Age Group"],
 					Athlete = r.Result.Athlete
 				})))

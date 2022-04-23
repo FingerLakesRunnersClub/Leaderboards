@@ -18,13 +18,21 @@
 			{
 				<tbody>
 				<tr>
-					<th rowspan="@(athlete.Value.Length + 1)">@athlete.Key.Name</th>
+					<th rowspan="@(athlete.Value.Length + 1)">
+						<a href="/Athlete/Index/@athlete.Key.ID">
+							@athlete.Key.Name
+						</a>
+					</th>
 					<th rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value)</th>
 				</tr>
 				@foreach (var award in athlete.Value)
 				{
 					<tr>
-						<td>@award.Name</td>
+						<td>
+							<a href="@award.Link">
+								@award.Name
+							</a>
+						</td>
 						<td class="text-right">@award.Value</td>
 					</tr>
 				}
