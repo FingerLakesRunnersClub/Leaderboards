@@ -33,7 +33,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var fastest = course.Fastest(Category.F);
+		var fastest = course.Fastest(Filter.F);
 
 		//assert
 		Assert.Equal(2, fastest.Count);
@@ -65,7 +65,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var most = course.MostRuns(Category.M);
+		var most = course.MostRuns(Filter.M);
 
 		//assert
 		Assert.Equal(2, most.Count);
@@ -97,7 +97,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var most = course.MostMiles(Category.M);
+		var most = course.MostMiles(Filter.M);
 
 		//assert
 		Assert.Equal(2, most.Count);
@@ -128,7 +128,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var avg = course.BestAverage(Category.M);
+		var avg = course.BestAverage(Filter.M);
 
 		//assert
 		Assert.Equal(2, avg.Count);
@@ -143,7 +143,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var avg = course.BestAverage(Category.F);
+		var avg = course.BestAverage(Filter.F);
 
 		//assert
 		Assert.Single(avg);
@@ -174,7 +174,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var earliest = course.Earliest(Category.M);
+		var earliest = course.Earliest(Filter.M);
 
 		//assert
 		Assert.Equal(2, earliest.Count);
@@ -226,7 +226,7 @@ public class CourseTests
 		});
 
 		//act
-		var points = course.CommunityStars(Category.M);
+		var points = course.CommunityStars(Filter.M);
 
 		//assert
 		Assert.Equal(2, points.Count);
@@ -256,7 +256,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var results = course.Fastest(Category.M);
+		var results = course.Fastest(Filter.M);
 
 		//assert
 		Assert.Equal(75, results.Skip(1).First().Points.Value);
@@ -341,10 +341,10 @@ public class CourseTests
 		var course = new Course { Results = results };
 
 		//act
-		var m2 = course.GroupedResults(Category.M, 2);
-		var m3 = course.GroupedResults(Category.M, 3);
-		var f2 = course.GroupedResults(Category.F, 2);
-		var f3 = course.GroupedResults(Category.F, 3);
+		var m2 = course.GroupedResults(new Filter(Category.M, Athlete.Teams[2]));
+		var m3 = course.GroupedResults(new Filter(Category.M, Athlete.Teams[3]));
+		var f2 = course.GroupedResults(new Filter(Category.F, Athlete.Teams[2]));
+		var f3 = course.GroupedResults(new Filter(Category.F, Athlete.Teams[3]));
 
 		//assert
 		Assert.Equal(new TimeSpan(1, 2, 3), m2.First().First().Duration.Value);

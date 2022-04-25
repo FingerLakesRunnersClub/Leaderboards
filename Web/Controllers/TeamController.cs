@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,7 +31,7 @@ public class TeamController : Controller
 			Config = _config,
 			ResultType = "Members",
 			Team = team,
-			RankedResults = overall.TeamMembers(team.Value)
+			RankedResults = overall.TeamMembers(team)
 		};
 	}
 

@@ -25,19 +25,19 @@ public class CourseController : Controller
 		if (ag != null)
 			ViewBag.AgeGroup = ag;
 		var cat = Category.Parse(category);
-		return View(await GetResults(id, distance, ResultType.Fastest, cat, c => c.Fastest(cat, ag)));
+		return View(await GetResults(id, distance, ResultType.Fastest, cat, c => c.Fastest(new Filter(cat, ag.HasValue ? Athlete.Teams[ag.Value] : null))));
 	}
 
 	public async Task<ViewResult> MostRuns(uint id, string distance, string category = null)
 	{
 		var cat = Category.Parse(category);
-		return View(await GetResults(id, distance, ResultType.MostRuns, cat, c => c.MostRuns(cat)));
+		return View(await GetResults(id, distance, ResultType.MostRuns, cat, c => c.MostRuns(new Filter(cat))));
 	}
 
 	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null)
 	{
 		var cat = Category.Parse(category);
-		return View(await GetResults(id, distance, ResultType.BestAverage, cat, c => c.BestAverage(cat)));
+		return View(await GetResults(id, distance, ResultType.BestAverage, cat, c => c.BestAverage(new Filter(cat))));
 	}
 
 	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string distance, ResultType resultType, Category category, Func<Course, RankedList<T>> results)

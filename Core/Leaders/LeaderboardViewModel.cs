@@ -42,19 +42,19 @@ public class LeaderboardViewModel : ViewModel
 			var vm = new OverallResults(_courses);
 			var leaderboards = new List<LeaderboardTable>
 			{
-				OverallTable("Points/F", ResultType.Fastest, Category.F, () => vm.MostPoints(Category.F).Take(3)
+				OverallTable("Points/F", ResultType.Fastest, Category.F, () => vm.MostPoints(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("Points/M", ResultType.Fastest, Category.M, () => vm.MostPoints(Category.M).Take(3)
+				OverallTable("Points/M", ResultType.Fastest, Category.M, () => vm.MostPoints(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("PointsTop3/F", ResultType.Fastest, Category.F, () => vm.MostPoints(3, Category.F).Take(3)
+				OverallTable("PointsTop3/F", ResultType.Fastest, Category.F, () => vm.MostPoints(3, Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("PointsTop3/M", ResultType.Fastest, Category.M, () => vm.MostPoints(3, Category.M).Take(3)
+				OverallTable("PointsTop3/M", ResultType.Fastest, Category.M, () => vm.MostPoints(3, Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
@@ -93,7 +93,7 @@ public class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Category = Category.F,
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/F",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Category.F).Take(3)
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -104,7 +104,7 @@ public class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Category = Category.M,
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/M",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Category.M).Take(3)
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -115,7 +115,7 @@ public class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Category = Category.F,
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/F",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Category.F).Take(3)
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -126,7 +126,7 @@ public class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Category = Category.M,
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/M",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Category.M).Take(3)
+				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},

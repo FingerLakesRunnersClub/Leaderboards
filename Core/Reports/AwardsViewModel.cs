@@ -3,6 +3,7 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Reports;
@@ -23,16 +24,16 @@ public class AwardsViewModel : ViewModel
 		var overall = new OverallResults(results);
 		var awards = new List<Award>();
 
-		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(Category.F), 5));
-		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(Category.M), 5));
+		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(Filter.F), 5));
+		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(Filter.M), 5));
 		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(), 10));
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(), 10));
 		awards.AddRange(Overall("Community", "Overall Community", overall.CommunityStars(), 10));
-		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints().First().Value.Team.Value)));
-		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Category.F))));
-		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Category.M))));
-		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Category.F))));
-		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Category.M))));
+		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints().First().Value.Team)));
+		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Filter.F))));
+		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Filter.M))));
+		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Filter.F))));
+		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Filter.M))));
 		awards.AddRange(Course("MostRuns", "Most Runs", results.SelectMany(c => c.MostRuns())));
 		awards.AddRange(AgeGroup(results, Category.F));
 		awards.AddRange(AgeGroup(results, Category.M));
@@ -74,8 +75,8 @@ public class AwardsViewModel : ViewModel
 			.ToArray();
 
 	private IReadOnlyCollection<Award> AgeGroup(IReadOnlyCollection<Course> results, Category category)
-		=> Athlete.Teams.SelectMany(t => results.SelectMany(c => c.Fastest(category, t.Key)
-				.Where(r => r.Rank.Value == (!c.Fastest(category, t.Key).First().Result.Athlete.Equals(c.Fastest(category).First().Result.Athlete) ? 1 : 2))
+		=> Athlete.Teams.SelectMany(t => results.SelectMany(c => c.Fastest(new Filter(category, t.Value))
+				.Where(r => r.Rank.Value == (!c.Fastest(new Filter(category, t.Value)).First().Result.Athlete.Equals(c.Fastest(new Filter(category)).First().Result.Athlete) ? 1 : 2))
 				.Select(r => new Award
 				{
 					Name = $"{r.Result.CourseName} {t.Value.Display} ({category.Display})",

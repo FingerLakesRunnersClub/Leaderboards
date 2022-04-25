@@ -68,7 +68,7 @@
 							@if (Model.Config.Features.MultiAttempt)
 							{
 								<dt class="col-6">
-									Average (Top @course.AverageThreshold(Model.Summary.Athlete.Category))
+									Average (Top @course.AverageThreshold(new Filter(Model.Summary.Athlete.Category)))
 								</dt>
 								<dd class="col-6">
 									@if (Model.Summary.Average[course] != null)

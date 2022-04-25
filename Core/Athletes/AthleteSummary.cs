@@ -36,8 +36,9 @@ public class AthleteSummary
 		_config = config;
 
 		Athlete = athlete;
-		Fastest = results.ToDictionary(c => c, c => c.Fastest(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
-		Average = results.ToDictionary(c => c, c => c.BestAverage(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
+		var filter = new Filter(athlete.Category);
+		Fastest = results.ToDictionary(c => c, c => c.Fastest(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
+		Average = results.ToDictionary(c => c, c => c.BestAverage(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
 		Runs = results.ToDictionary(c => c, c => c.MostRuns().FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
 		CommunityStars = results.ToDictionary(c => c, c => c.CommunityStars().FirstOrDefault(r => r.Result.Athlete.Equals(athlete)));
 		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.Equals(athlete)).ToArray());
@@ -45,22 +46,22 @@ public class AthleteSummary
 		var overall = new OverallResults(results);
 		Competitions = new[]
 			{
-				OverallRow("Points/F", Category.F, athlete, () => overall.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("Points/M", Category.M, athlete, () => overall.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("PointsTop3/F", Category.F, athlete, () => overall.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("PointsTop3/M", Category.M, athlete, () => overall.MostPoints(3, athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("AgeGrade", null, athlete, () => overall.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("Miles", null, athlete, () => overall.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("Community", null, athlete, () => overall.CommunityStars().FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
-				OverallRow("Team", null, athlete, () => overall.TeamPoints().FirstOrDefault(r => r.Value.Team == athlete.Team))
+				OverallRow("Points/F", Category.F, athlete, () => overall.MostPoints(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Points/M", Category.M, athlete, () => overall.MostPoints(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("PointsTop3/F", Category.F, athlete, () => overall.MostPoints(3, filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("PointsTop3/M", Category.M, athlete, () => overall.MostPoints(3, filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("AgeGrade", null, athlete, () => overall.AgeGrade(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Miles", null, athlete, () => overall.MostMiles(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Community", null, athlete, () => overall.CommunityStars(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete))),
+				OverallRow("Team", null, athlete, () => overall.TeamPoints(filter).FirstOrDefault(r => r.Value.Team == athlete.Team))
 			}.Where(c => c?.Value != null)
 			.ToArray();
 
-		OverallPoints = overall.MostPoints(athlete.Category).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
-		OverallAgeGrade = overall.AgeGrade().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
-		OverallMiles = overall.MostMiles().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
-		OverallCommunityStars = overall.CommunityStars().FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
-		TeamResults = overall.TeamPoints().FirstOrDefault(r => r.Value.Team == athlete.Team);
+		OverallPoints = overall.MostPoints(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		OverallAgeGrade = overall.AgeGrade(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		OverallMiles = overall.MostMiles(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		OverallCommunityStars = overall.CommunityStars(filter).FirstOrDefault(r => r.Result.Athlete.Equals(athlete));
+		TeamResults = overall.TeamPoints(filter).FirstOrDefault(r => r.Value.Team == athlete.Team);
 
 		TotalResults = Fastest.Count(r => r.Value != null) + Average.Count(r => r.Value != null);
 	}

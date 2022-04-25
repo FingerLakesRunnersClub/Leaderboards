@@ -3,6 +3,7 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Teams;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,13 +23,13 @@ public class OverallController : Controller
 	public async Task<ViewResult> Points(string id)
 	{
 		var category = Category.Parse(id);
-		return View(await GetResults(_config.Competitions[$"Points/{id}"], overall => overall.MostPoints(category)));
+		return View(await GetResults(_config.Competitions[$"Points/{id}"], overall => overall.MostPoints(new Filter(category))));
 	}
 
 	public async Task<ViewResult> PointsTop3(string id)
 	{
 		var category = Category.Parse(id);
-		return View("Points", await GetResults(_config.Competitions[$"PointsTop3/{id}"], overall => overall.MostPoints(3, category)));
+		return View("Points", await GetResults(_config.Competitions[$"PointsTop3/{id}"], overall => overall.MostPoints(3, new Filter(category))));
 	}
 
 	public async Task<ViewResult> Miles()

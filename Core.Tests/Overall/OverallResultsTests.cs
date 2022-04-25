@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using Xunit;
 
@@ -27,7 +28,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var mostPoints = vm.MostPoints(Category.F);
+		var mostPoints = vm.MostPoints(Filter.F);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Result.Athlete);
@@ -53,7 +54,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var mostMiles = vm.MostMiles(Category.F);
+		var mostMiles = vm.MostMiles(Filter.F);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete4, mostMiles.First().Result.Athlete);
@@ -79,7 +80,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var ageGrade = vm.AgeGrade(Category.F);
+		var ageGrade = vm.AgeGrade(Filter.F);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete3, ageGrade.First().Result.Athlete);
@@ -105,7 +106,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var points = vm.CommunityStars(Category.F);
+		var points = vm.CommunityStars(Filter.F);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete3, points.First().Result.Athlete);
@@ -131,7 +132,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var completed = vm.Completed(Category.M);
+		var completed = vm.Completed(Filter.M);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete1, completed.First().Result.Athlete);
@@ -157,7 +158,7 @@ public class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var members = vm.TeamMembers(2);
+		var members = vm.TeamMembers(Athlete.Teams[2]);
 
 		//assert
 		Assert.Equal("1–29", members.First().Result.Athlete.Team.Display);
