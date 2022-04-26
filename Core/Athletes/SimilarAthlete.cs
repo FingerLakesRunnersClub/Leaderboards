@@ -18,9 +18,9 @@ public class SimilarAthlete
 
 	public SimilarAthlete(AthleteSummary my, AthleteSummary their)
 	{
-		var fastestToCompare = my.Fastest.Where(r => r.Value != null && their.Fastest[r.Key] != null).ToList();
-		var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToList();
-		var totalMatches = fastestToCompare.Count + avgToCompare.Count;
+		var fastestToCompare = my.Fastest.Where(r => r.Value != null && their.Fastest[r.Key] != null).ToArray();
+		var avgToCompare = my.Average.Where(r => r.Value != null && their.Average[r.Key] != null).ToArray();
+		var totalMatches = fastestToCompare.Length + avgToCompare.Length;
 
 		var fastestDiffTotal = fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0) / totalMatches;
 		var avgDiffTotal = avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? Time.PercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0) / totalMatches;

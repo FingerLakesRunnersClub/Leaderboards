@@ -19,7 +19,7 @@ public class CourseControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(new Course { Results = new List<Result>() });
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(new Course { Results = Array.Empty<Result>() });
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
@@ -36,10 +36,10 @@ public class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new List<Result>
+			Results = new []
 			{
-				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
 			}
 		};
 
@@ -62,10 +62,10 @@ public class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new List<Result>
+			Results = new []
 			{
-				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
 			}
 		};
 
@@ -88,10 +88,10 @@ public class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new List<Result>
+			Results = new []
 			{
-				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
 			}
 		};
 
@@ -114,11 +114,11 @@ public class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10 miles"),
-			Results = new List<Result>
+			Results = new[]
 			{
-				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, Duration = new Time(TimeSpan.Parse("2:35")) },
-				new Result { Athlete = new Athlete { ID = 234, Age = 30 }, Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:35")) },
+				new Result { Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
 			}
 		};
 
@@ -132,7 +132,7 @@ public class CourseControllerTests
 
 		//assert
 		var vm = (CourseResultsViewModel<TeamResults>) response.Model;
-		var results = vm!.RankedResults.ToList();
+		var results = vm!.RankedResults.ToArray();
 		var team2 = results.First(r => r.Value.Team == Athlete.Teams[2]);
 		var team3 = results.First(r => r.Value.Team == Athlete.Teams[3]);
 		Assert.Equal(1, team3.Value.AgeGradePoints);
@@ -150,10 +150,10 @@ public class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new List<Result>
+			Results = new []
 			{
-				new() { Athlete = new Athlete { ID = 123 }, Duration = new Time(TimeSpan.Parse("2:34")), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true }},
-				new() { Athlete = new Athlete { ID = 234 }, Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.ShopLocal] = true }},
+				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true } },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.ShopLocal] = true } },
 			}
 		};
 

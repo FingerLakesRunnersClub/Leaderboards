@@ -30,7 +30,7 @@ public class AthleteController : Controller
 	private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
 	{
 		var athlete = await _dataService.GetAthlete(id);
-		var courses = (await _dataService.GetAllResults()).ToList();
+		var courses = (await _dataService.GetAllResults()).ToArray();
 		var summary = new AthleteSummary(athlete, courses, _config);
 
 		return new AthleteSummaryViewModel
@@ -43,7 +43,7 @@ public class AthleteController : Controller
 	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID, string distance)
 	{
 		var course = await _dataService.GetResults(courseID, distance);
-		var results = course.Results.Where(r => r.Athlete.ID == id).ToList();
+		var results = course.Results.Where(r => r.Athlete.ID == id).ToArray();
 
 		return new AthleteCourseResultsViewModel
 		{
@@ -58,8 +58,8 @@ public class AthleteController : Controller
 	{
 		var ranks = new RankedList<Time>();
 
-		var sorted = results.OrderBy(r => r.Duration.Value).ToList();
-		for (ushort rank = 1; rank <= sorted.Count; rank++)
+		var sorted = results.OrderBy(r => r.Duration.Value).ToArray();
+		for (ushort rank = 1; rank <= sorted.Length; rank++)
 		{
 			var result = sorted[rank - 1];
 			var category = result.Athlete.Category?.Value ?? Category.M.Value;
@@ -106,7 +106,7 @@ public class AthleteController : Controller
 	private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
 	{
 		var athlete = await _dataService.GetAthlete(id);
-		var results = (await _dataService.GetAllResults()).ToList();
+		var results = (await _dataService.GetAllResults()).ToArray();
 		var my = new AthleteSummary(athlete, results, _config);
 
 		return new SimilarAthletesViewModel

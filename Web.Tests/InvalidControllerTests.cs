@@ -30,7 +30,7 @@ public class InvalidControllerTests
 
 		//assert
 		var model = (InvalidViewModel)result.Model;
-		Assert.Empty(model.Results);
+		Assert.Empty(model!.Results);
 	}
 
 	[Fact]
@@ -44,6 +44,7 @@ public class InvalidControllerTests
 			StartTime = new Date(new DateTime(2021, 7, 1)),
 			Duration = new Time(TimeSpan.FromMinutes(5))
 		};
+
 		var results = CourseData.Results.ToList();
 		results.Add(badResult);
 		var course = new Course
@@ -59,6 +60,6 @@ public class InvalidControllerTests
 
 		//assert
 		var model = (InvalidViewModel)result.Model;
-		Assert.Equal(1, model.Results.Count);
+		Assert.Equal(1, model!.Results.Count);
 	}
 }

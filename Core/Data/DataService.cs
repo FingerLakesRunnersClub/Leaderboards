@@ -48,7 +48,7 @@ public class DataService : IDataService
 				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section.GetValue<string>("Distance") : c.Key)
 			})
 			.OrderBy(c => c.Distance)
-			.ToList();
+			.ToArray();
 
 	private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
 	private DateTime _athleteCacheTimestamp;
@@ -198,7 +198,7 @@ public class DataService : IDataService
 		catch (Exception e)
 		{
 			_logger.LogWarning(e, $"Could not retrieve group members for {id}");
-			return new List<Athlete>();
+			return Array.Empty<Athlete>();
 		}
 	}
 

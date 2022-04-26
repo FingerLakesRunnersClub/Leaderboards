@@ -34,7 +34,7 @@ public class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToList();
+		var result = results.First().Value.ToArray();
 		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Age Grade").Rows.Value.First().Name);
 		Assert.Equal("30–39", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Most Runs").Rows.Value.First().Name);
 		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Team Points").Rows.Value.First().Name);
@@ -53,7 +53,7 @@ public class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToList();
+		var result = results.First().Value.ToArray();
 		Assert.Equal("3:02:01", result.First(r => r.Category == Category.F && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
 		Assert.StartsWith("4:", result.First(r => r.Category == Category.F && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
@@ -72,7 +72,7 @@ public class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToList();
+		var result = results.First().Value.ToArray();
 		Assert.Equal("1:02:03", result.First(r => r.Category == Category.M && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
 		Assert.StartsWith("2:", result.First(r => r.Category == Category.M && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
@@ -88,7 +88,7 @@ public class LeaderboardViewModelTests
 		};
 
 		//act
-		var results = vm.OverallResults.ToList();
+		var results = vm.OverallResults.ToArray();
 
 		//assert
 		Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.Value.First().Name);

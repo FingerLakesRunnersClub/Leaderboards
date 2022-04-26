@@ -207,7 +207,7 @@ public class AthleteControllerTests
 
 		//assert
 		var vm = (SimilarAthletesViewModel) result.Model;
-		var matches = vm!.Matches.ToList();
+		var matches = vm!.Matches.ToArray();
 		Assert.Equal(CourseData.Athlete1, vm.Athlete);
 		Assert.Equal(CourseData.Athlete4, matches[0].Athlete);
 		Assert.Equal("96%", matches[0].Similarity.Display);

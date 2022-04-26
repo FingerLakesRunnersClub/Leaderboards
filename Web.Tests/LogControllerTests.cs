@@ -66,8 +66,7 @@ public class LogControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var results = new List<Result>();
-		results.AddRange(CourseData.Results);
+		var results = CourseData.Results.ToList();
 		results.Add(new Result { StartTime = new Date(new DateTime(2021, 1, 1)) });
 		var course = new Course { Results = results };
 		dataService.GetAllResults().Returns(new[] { course });

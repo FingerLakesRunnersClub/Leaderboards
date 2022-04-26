@@ -168,7 +168,7 @@ public class DataServiceTests
 		var athletes = await dataService.GetAthletes();
 
 		//assert
-		Assert.Equal("Steve Desmond", athletes.ToList().First().Value.Name);
+		Assert.Equal("Steve Desmond", athletes.ToArray().First().Value.Name);
 	}
 
 	[Fact]

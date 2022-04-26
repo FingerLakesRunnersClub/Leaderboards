@@ -63,10 +63,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -96,10 +93,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -129,10 +123,7 @@ public class ResultTests
 	{
 		//arrange
 		var results1 = new List<Result>();
-		var course1 = new Course
-		{
-			Results = results1
-		};
+		var course1 = new Course { Results = results1 };
 		var r1 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -143,10 +134,8 @@ public class ResultTests
 		results1.AddRange(new[] { r1 });
 
 		var results2 = new List<Result>();
-		var course2 = new Course
-		{
-			Results = results2
-		};
+		var course2 = new Course { Results = results2 };
+
 		var r2 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -168,10 +157,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -201,10 +187,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -237,10 +220,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -273,10 +253,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{
@@ -309,10 +286,7 @@ public class ResultTests
 	{
 		//arrange
 		var results = new List<Result>();
-		var course = new Course
-		{
-			Results = results
-		};
+		var course = new Course { Results = results };
 
 		var r1 = new Result
 		{

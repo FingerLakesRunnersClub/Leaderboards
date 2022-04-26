@@ -23,11 +23,11 @@ public class StatisticsController : Controller
 
 	private async Task<StatisticsViewModel> GetStatistics()
 	{
-		var results = (await _dataService.GetAllResults()).ToList();
+		var results = (await _dataService.GetAllResults()).ToArray();
 
 		var courseStats = results.ToDictionary(c => c, c => c.Statistics());
 		var athletes = courseStats.SelectMany(stats => stats.Key.Results.Select(r => r.Athlete)).Distinct()
-			.ToList();
+			.ToArray();
 
 		var history = results.SelectMany(c => c.Results).GroupBy(r => r.StartTime.Week)
 			.OrderByDescending(r => r.Key)
@@ -84,26 +84,26 @@ public class StatisticsController : Controller
 
 	private Statistics weeklyStatistics(IEnumerable<Result> results)
 	{
-		var resultList = results.ToList();
-		var athletes = resultList.Select(r => r.Athlete).Distinct().ToList();
-		var fResults = resultList.Where(r => r.Athlete.Category == Category.F).ToList();
-		var mResults = resultList.Where(r => r.Athlete.Category == Category.M).ToList();
+		var resultList = results.ToArray();
+		var athletes = resultList.Select(r => r.Athlete).Distinct().ToArray();
+		var fResults = resultList.Where(r => r.Athlete.Category == Category.F).ToArray();
+		var mResults = resultList.Where(r => r.Athlete.Category == Category.M).ToArray();
 
-		var fAthletes = athletes.Where(a => a.Category == Category.F).ToList();
-		var mAthletes = athletes.Where(a => a.Category == Category.M).ToList();
+		var fAthletes = athletes.Where(a => a.Category == Category.F).ToArray();
+		var mAthletes = athletes.Where(a => a.Category == Category.M).ToArray();
 		return new Statistics
 		{
 			Participants = new Dictionary<string, int>
 			{
-				{ string.Empty, athletes.Count },
-				{ Category.F.Display, fAthletes.Count },
-				{ Category.M.Display, mAthletes.Count }
+				{ string.Empty, athletes.Length },
+				{ Category.F.Display, fAthletes.Length },
+				{ Category.M.Display, mAthletes.Length }
 			},
 			Runs = new Dictionary<string, int>
 			{
-				{ string.Empty, resultList.Count },
-				{ Category.F.Display, fResults.Count },
-				{ Category.M.Display, mResults.Count }
+				{ string.Empty, resultList.Length },
+				{ Category.F.Display, fResults.Length },
+				{ Category.M.Display, mResults.Length }
 			},
 			Miles = new Dictionary<string, double>
 			{
@@ -122,9 +122,9 @@ public class StatisticsController : Controller
 			},
 			Average = new Dictionary<string, double>
 			{
-				{ string.Empty, (double) resultList.Count / athletes.Count },
-				{ Category.F.Display, (double) fResults.Count / fAthletes.Count },
-				{ Category.M.Display, (double) mResults.Count / mAthletes.Count }
+				{ string.Empty, (double) resultList.Length / athletes.Length },
+				{ Category.F.Display, (double) fResults.Length / fAthletes.Length },
+				{ Category.M.Display, (double) mResults.Length / mAthletes.Length }
 			}
 		};
 	}

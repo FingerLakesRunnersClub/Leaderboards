@@ -86,8 +86,8 @@ public class OverallResults
 	private static RankedList<T1> RankedList<T1, T2, T3, T4>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, T4> tiebreaker, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
 	{
 		var ranks = new RankedList<T1>();
-		var list = results.OrderByDescending(sort).ThenByDescending(tiebreaker).ToList();
-		for (ushort rank = 1; rank <= list.Count; rank++)
+		var list = results.OrderByDescending(sort).ThenByDescending(tiebreaker).ToArray();
+		for (ushort rank = 1; rank <= list.Length; rank++)
 		{
 			var result = list[rank - 1];
 			var value = getValue(result);

@@ -37,8 +37,7 @@
 }
 @foreach (var (course, tables) in Model.CourseResults.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
 {
-	var tables = competitions.ToList();
-	var width = 12 / tables.Count;
+	var width = 12 / tables.Length;
 
 	<div class="card card-highlighted mb-3">
 		<div class="card-header">
