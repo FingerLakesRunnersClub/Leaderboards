@@ -1,7 +1,7 @@
 ﻿using FLRC.Leaderboards.Core.Races;
 using Xunit;
 
-namespace FLRC.Leaderboards.Core.Tests;
+namespace FLRC.Leaderboards.Core.Tests.Races;
 
 public class DistanceTests
 {

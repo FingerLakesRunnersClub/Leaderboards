@@ -5,7 +5,7 @@ using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
-namespace FLRC.Leaderboards.Core.Tests;
+namespace FLRC.Leaderboards.Core.Tests.Races;
 
 public class CourseTests
 {
