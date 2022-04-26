@@ -96,27 +96,19 @@ public class DataService : IDataService
 	private async Task CacheAthletesFromStartList()
 	{
 		var json = await _resultsAPI[nameof(WebScorer)].GetResults(_startListID);
-		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_resultsAPI[nameof(WebScorer)].Source.ParseAthlete))
+		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_resultsAPI[nameof(WebScorer)].Source.ParseAthlete).Where(a => !_athletes.ContainsKey(a.ID)))
 		{
-			CacheAthlete(athlete);
+			_athletes[athlete.ID] = athlete;
 		}
 	}
 
 	private async Task CacheAthletesFromResults()
 	{
 		var results = await GetAllResults();
-		var athletes = results.SelectMany(c => c.Results.Select(r => r.Athlete)).DistinctBy(a => a.ID);
+		var athletes = results.SelectMany(c => c.Results.Select(r => r.Athlete).Where(a => !_athletes.ContainsKey(a.ID))).DistinctBy(a => a.ID);
 		foreach (var athlete in athletes)
 		{
-			CacheAthlete(athlete);
-		}
-	}
-
-	private void CacheAthlete(Athlete athlete)
-	{
-		if (!_athletes.ContainsKey(athlete.ID))
-		{
-			_athletes.Add(athlete.ID, athlete);
+			_athletes[athlete.ID] = athlete;
 		}
 	}
 

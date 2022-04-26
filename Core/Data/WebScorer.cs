@@ -55,20 +55,20 @@ public class WebScorer : IDataSource
 			         : null)
 		         ?? element.GetProperty("UserId").GetUInt32();
 
-		if (!athletes.ContainsKey(id))
+		if (athletes.ContainsKey(id))
 		{
-			var hasDOB = DateTime.TryParse(element.GetProperty("Info1").GetString(), out var dob);
-			athletes.Add(id, new Athlete
-			{
-				ID = id,
-				Name = element.GetProperty("Name").GetString(),
-				Age = element.GetProperty("Age").GetByte(),
-				Category = Category.Parse(element.GetProperty("Gender").GetString()),
-				DateOfBirth = hasDOB ? dob : null
-			});
+			return athletes[id];
 		}
 
-		return athletes[id];
+		var hasDOB = DateTime.TryParse(element.GetProperty("Info1").GetString(), out var dob);
+		return athletes[id] = new Athlete
+		{
+			ID = id,
+			Name = element.GetProperty("Name").GetString(),
+			Age = element.GetProperty("Age").GetByte(),
+			Category = Category.Parse(element.GetProperty("Gender").GetString()),
+			DateOfBirth = hasDOB ? dob : null
+		};
 	}
 
 	private static Date ParseStart(string value)

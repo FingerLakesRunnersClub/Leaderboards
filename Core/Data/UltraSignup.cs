@@ -42,17 +42,14 @@ public class UltraSignup : IDataSource
 		var name = element.GetProperty("firstname").GetString() + " " + element.GetProperty("lastname").GetString();
 		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
 
-		if (!athletes.ContainsKey(id))
-		{
-			athletes.Add(id, new Athlete
+		return athletes.ContainsKey(id)
+			? athletes[id]
+			: athletes[id] = new Athlete
 			{
 				ID = id,
 				Name = name,
 				Category = Category.Parse(element.GetProperty("gender").GetString()),
 				Age = element.GetProperty("age").GetByte()
-			});
-		}
-
-		return athletes[id];
+			};
 	}
 }
