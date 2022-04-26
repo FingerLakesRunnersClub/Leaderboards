@@ -31,7 +31,7 @@ public class Course
 	}
 
 	public IReadOnlyCollection<Result> ResultsAsOf(DateTime date)
-		=> Results.Where(r => r.StartTime.Value <= date).ToArray();
+		=> _results.Where(r => r.StartTime.Value <= date).ToArray();
 
 	private void resetCaches()
 	{
@@ -107,7 +107,7 @@ public class Course
 	}
 
 	public IReadOnlyCollection<GroupedResult> GroupedResults(Filter filter = null)
-		=> Results.Filter(filter)
+		=> _results.Filter(filter)
 			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
 			.ToArray();
 
@@ -228,15 +228,15 @@ public class Course
 		},
 		Runs = new Dictionary<string, int>
 		{
-			{ string.Empty, Results.Count },
-			{ Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) },
-			{ Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) }
+			{ string.Empty, _results.Count },
+			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) },
+			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) }
 		},
 		Miles = new Dictionary<string, double>
 		{
-			{ string.Empty, Results.Count * Distance.Miles },
-			{ Category.F.Display, Results.Count(r => r.Athlete.Category == Category.F) * Distance.Miles },
-			{ Category.M.Display, Results.Count(r => r.Athlete.Category == Category.M) * Distance.Miles }
+			{ string.Empty, _results.Count * Distance.Miles },
+			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) * Distance.Miles },
+			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) * Distance.Miles }
 		},
 		Average = new Dictionary<string, double>
 		{
@@ -245,4 +245,10 @@ public class Course
 			{ Category.M.Display, GroupedResults(Filter.M).Any() ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
 		}
 	};
+
+	public IReadOnlyCollection<DateOnly> DistinctMonths()
+		=> _results.Select(r => new DateOnly(r.StartTime.Value.Year, r.StartTime.Value.Month, 1))
+			.Distinct()
+			.OrderBy(d => d)
+			.ToArray();
 }
