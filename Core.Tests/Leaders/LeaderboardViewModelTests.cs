@@ -54,8 +54,8 @@ public class LeaderboardViewModelTests
 
 		//assert
 		var result = results.First().Value.ToArray();
-		Assert.Equal("3:02:01", result.First(r => r.Category == Category.F && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
-		Assert.StartsWith("4:", result.First(r => r.Category == Category.F && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
+		Assert.Equal("3:02:01", result.First(r => r.Filter.Category == Category.F && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
+		Assert.StartsWith("4:", result.First(r => r.Filter.Category == Category.F && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
 	}
 
@@ -73,8 +73,8 @@ public class LeaderboardViewModelTests
 
 		//assert
 		var result = results.First().Value.ToArray();
-		Assert.Equal("1:02:03", result.First(r => r.Category == Category.M && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
-		Assert.StartsWith("2:", result.First(r => r.Category == Category.M && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
+		Assert.Equal("1:02:03", result.First(r => r.Filter.Category == Category.M && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
+		Assert.StartsWith("2:", result.First(r => r.Filter.Category == Category.M && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
 	}
 

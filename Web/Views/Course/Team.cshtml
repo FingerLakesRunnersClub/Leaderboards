@@ -3,6 +3,8 @@
 @using System.Text.Json
 @model CourseResultsViewModel<TeamResults>
 
+@await Html.PartialAsync("MonthFilter")
+
 <h2>Course Results</h2>
 <div class="card card-highlighted">
     <div class="card-body">

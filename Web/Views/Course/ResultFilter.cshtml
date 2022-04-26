@@ -13,7 +13,7 @@
 		? "secondary"
 		: "light";
 
-	string style(Category category) => Model.Category == null && category == null || Model.Category == category
+	string style(Category category) => Model.Filter.Category == null && category == null || Model.Filter.Category == category
 		? "secondary"
 		: "light";
 }
@@ -25,27 +25,28 @@
 			{
 				foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
 				{
-					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@Model.Course.Distance.Display/@type.Value/@Model.Category?.Value">@type.Display</a>
+					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@Model.Course.Distance.Display/@type.Value/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value&month=@Model.Filter.Month">@type.Display</a>
 				}
 			}
 			else
 			{
 				foreach (var course in Model.Course.Race.Courses)
 				{
-					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Category?.Value">@course.Distance.Display</a>
+					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@course.Distance.Display</a>
 				}
 			}
 		</div>
 	</section>
 
-	@if (Model.ResultType.Value != ResultType.Team && Model.ResultType.Value != ResultType.Community)
+	@if (Model.ResultType.Value is ResultType.Fastest or ResultType.BestAverage)
 	{
 		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.Distance.Display}/{Model.ResultType.Value}".Replace("//", "/");
+		var query = $"?ag={Model.Filter.AgeGroup?.Value}&month={Model.Filter.Month}";
 		<section class="mb-4">
 			<div class="btn-group">
-				<a class="btn btn-sm btn-@style((Category)null)" href="@resultsURL">All</a>
-				<a class="btn btn-sm btn-@style(Category.F)" href="@resultsURL/F">F</a>
-				<a class="btn btn-sm btn-@style(Category.M)" href="@resultsURL/M">M</a>
+				<a class="btn btn-sm btn-@style((Category)null)" href="@resultsURL@query">All</a>
+				<a class="btn btn-sm btn-@style(Category.F)" href="@resultsURL/F@(query)">F</a>
+				<a class="btn btn-sm btn-@style(Category.M)" href="@resultsURL/M@(query)">M</a>
 			</div>
 
 			@if (Model.ResultType.Value == ResultType.Fastest)
@@ -55,7 +56,7 @@
 						<option value="">All Age Groups</option>
 						@foreach (var team in Athlete.Teams)
 						{
-							<option value="@team.Key" @(ViewBag.AgeGroup == team.Key ? "selected" : String.Empty)>
+							<option value="@team.Key" @(Model.Filter.AgeGroup == team.Value ? "selected" : string.Empty)>
 								@team.Value.Display
 							</option>
 						}
@@ -69,6 +70,6 @@
 
 <script>
     function goToAgeGroup(ag) {
-        location.href = ag ? `?ag=${ag}` : '?';
+        location.href = ag ? `?ag=${ag}&month=@Model.Filter.Month` : '?';
     }
 </script>

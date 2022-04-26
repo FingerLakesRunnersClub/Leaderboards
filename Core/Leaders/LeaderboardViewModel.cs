@@ -33,14 +33,14 @@ public class LeaderboardViewModel : ViewModel
 		_leaderboardFilter = GetFilter(type);
 	}
 
-	private LeaderboardTable OverallTable(string id, ResultType type, Category category, Func<IReadOnlyCollection<LeaderboardRow>> rows)
+	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<IReadOnlyCollection<LeaderboardRow>> rows)
 		=> Config.Competitions.ContainsKey(id)
 			? new LeaderboardTable
 			{
 				Link = $"/Overall/{id}/{Month}",
 				Title = Config.Competitions[id],
 				ResultType = new FormattedResultType(type),
-				Category = category,
+				Filter = filter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(rows)
 			}
 			: null;
@@ -52,35 +52,35 @@ public class LeaderboardViewModel : ViewModel
 			var vm = new OverallResults(_courses);
 			var leaderboards = new List<LeaderboardTable>
 			{
-				OverallTable("Points/F", ResultType.Fastest, Category.F, () => vm.MostPoints(_resultFilter with { Category = Category.F }).Take(3)
+				OverallTable("Points/F", ResultType.Fastest, _resultFilter with { Category = Category.F }, () => vm.MostPoints(_resultFilter with { Category = Category.F }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("Points/M", ResultType.Fastest, Category.M, () => vm.MostPoints(_resultFilter with { Category = Category.M }).Take(3)
+				OverallTable("Points/M", ResultType.Fastest, _resultFilter with { Category = Category.M }, () => vm.MostPoints(_resultFilter with { Category = Category.M }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("PointsTop3/F", ResultType.Fastest, Category.F, () => vm.MostPoints(3, _resultFilter with { Category = Category.F }).Take(3)
+				OverallTable("PointsTop3/F", ResultType.Fastest, _resultFilter with { Category = Category.F }, () => vm.MostPoints(3, _resultFilter with { Category = Category.F }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("PointsTop3/M", ResultType.Fastest, Category.M, () => vm.MostPoints(3, _resultFilter with { Category = Category.M }).Take(3)
+				OverallTable("PointsTop3/M", ResultType.Fastest, _resultFilter with { Category = Category.M }, () => vm.MostPoints(3, _resultFilter with { Category = Category.M }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("AgeGrade", ResultType.BestAverage, null, () => vm.AgeGrade(_resultFilter).Take(3)
+				OverallTable("AgeGrade", ResultType.BestAverage, _resultFilter, () => vm.AgeGrade(_resultFilter).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })
 					.ToArray()),
 
-				OverallTable("Miles", ResultType.MostRuns, null, () => vm.MostMiles(_resultFilter).Take(3)
+				OverallTable("Miles", ResultType.MostRuns, _resultFilter, () => vm.MostMiles(_resultFilter).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
-				OverallTable("Community", ResultType.Community, null, () => vm.CommunityStars(_resultFilter).Take(3)
+				OverallTable("Community", ResultType.Community, _resultFilter, () => vm.CommunityStars(_resultFilter).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Value.ToString() })
 					.ToArray()),
 
-				OverallTable("Team", ResultType.Team, null, () => vm.TeamPoints(_resultFilter).Take(3)
+				OverallTable("Team", ResultType.Team, _resultFilter, () => vm.TeamPoints(_resultFilter).Take(3)
 					.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
 					.ToArray())
 			};
@@ -101,7 +101,7 @@ public class LeaderboardViewModel : ViewModel
 				Title = "Fastest (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
-				Category = Category.F,
+				Filter = _resultFilter with { Category = Category.F },
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/F",
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(_resultFilter with { Category = Category.F }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
@@ -112,7 +112,7 @@ public class LeaderboardViewModel : ViewModel
 				Title = "Fastest (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
-				Category = Category.M,
+				Filter = _resultFilter with { Category = Category.M },
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/M",
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(_resultFilter with { Category = Category.M }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
@@ -123,7 +123,7 @@ public class LeaderboardViewModel : ViewModel
 				Title = "Best Average (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
-				Category = Category.F,
+				Filter = _resultFilter with { Category = Category.F },
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/F",
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(_resultFilter with { Category = Category.F }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
@@ -134,7 +134,7 @@ public class LeaderboardViewModel : ViewModel
 				Title = "Best Average (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
-				Category = Category.M,
+				Filter = _resultFilter with { Category = Category.M },
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/M",
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(_resultFilter with { Category = Category.M }).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
@@ -146,6 +146,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.MostRuns),
 				Link = $"/Course/{course.ID}/{ResultType.MostRuns}",
+				Filter = _resultFilter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.MostRuns(_resultFilter).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray())
@@ -156,6 +157,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = _resultFilter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(_resultFilter).OrderByDescending(p => p.Value.AverageAgeGrade).Take(3)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 					.ToArray())
@@ -166,6 +168,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = _resultFilter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(_resultFilter).OrderByDescending(p => p.Value.TotalRuns).Take(3)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 					.ToArray())
@@ -176,6 +179,7 @@ public class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = _resultFilter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(_resultFilter).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 					.ToArray())
@@ -186,8 +190,8 @@ public class LeaderboardViewModel : ViewModel
 	{
 		return type switch
 		{
-			LeaderboardResultType.F => t => t.Category == Category.F || t.Category == null && t.ResultType?.Value != ResultType.Team,
-			LeaderboardResultType.M => t => t.Category == Category.M || t.Category == null && t.ResultType?.Value != ResultType.Team,
+			LeaderboardResultType.F => t => t.Filter.Category == Category.F || t.Filter.Category == null && t.ResultType?.Value != ResultType.Team,
+			LeaderboardResultType.M => t => t.Filter.Category == Category.M || t.Filter.Category == null && t.ResultType?.Value != ResultType.Team,
 			_ => t => t.ResultType?.Value == ResultType.Team
 		};
 	}
