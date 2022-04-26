@@ -16,17 +16,17 @@ public class LeaderboardController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index(string id = null)
+	public async Task<ViewResult> Index(string id = null, byte? month = null)
 	{
 		if (!Enum.TryParse<LeaderboardResultType>(id, out var type))
 			type = LeaderboardResultType.Team;
-		return View(await GetLeaderboard(type));
+		return View(await GetLeaderboard(type, month));
 	}
 
-	private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type)
+	private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type, byte? month)
 	{
 		var results = await _dataService.GetAllResults();
-		return new LeaderboardViewModel(results, type)
+		return new LeaderboardViewModel(results, type, month)
 		{
 			Config = _config
 		};

@@ -8,6 +8,8 @@
 		: "light";
 }
 
+@await Html.PartialAsync("MonthFilter")
+
 <h2>Overall Leaders</h2>
 <div class="card card-highlighted">
 	<div class="card-body">
@@ -29,11 +31,11 @@
 	<div class="btn-group mb-2">
 		@foreach (var type in Enum.GetValues<LeaderboardResultType>())
 		{
-			<a class="btn btn-sm btn-@style(type)" href="/Leaderboard/Index/@type">@type</a>
+			<a class="btn btn-sm btn-@style(type)" href="/Leaderboard/Index/@type/@Model.Month">@type</a>
 		}
 	</div>
 }
-@foreach (var (course, competitions) in Model.CourseResults.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
+@foreach (var (course, tables) in Model.CourseResults.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
 {
 	var tables = competitions.ToList();
 	var width = 12 / tables.Count;
