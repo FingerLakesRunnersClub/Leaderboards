@@ -7,4 +7,5 @@ public interface IFeatureSet
 	bool AgeGroupTeams { get; }
 	bool ShowBadges { get; }
 	bool CommunityStars { get; }
+	bool Monthly { get; }
 }
