@@ -298,7 +298,7 @@ public class CourseTests
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 
 		//act
-		var results = course.ResultsAsOf(new DateTime(2020, 1, 5));
+		var results = course.ResultsAsOf(new DateTime(2020, 2, 5));
 
 		//assert
 		Assert.Equal(5, results.Count());

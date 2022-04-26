@@ -41,6 +41,15 @@ public class DateTests
 	[InlineData("6/10/21", "6/5/21")]
 	[InlineData("6/11/21", "6/5/21")]
 	[InlineData("6/12/21", "6/12/21")]
+	[InlineData("4/15/22", "4/9/22")]
+	[InlineData("4/16/22", "4/16/22")]
+	[InlineData("4/17/22", "4/16/22")]
+	[InlineData("4/18/22", "4/16/22")]
+	[InlineData("4/19/22", "4/16/22")]
+	[InlineData("4/20/22", "4/16/22")]
+	[InlineData("4/21/22", "4/16/22")]
+	[InlineData("4/22/22", "4/16/22")]
+	[InlineData("4/23/22", "4/23/22")]
 	public void CanGetWeekFromDay(string day, string expectedWeek)
 	{
 		//arrange
@@ -50,7 +59,7 @@ public class DateTests
 		var week = date.Week;
 
 		//assert
-		Assert.Equal(DateTime.Parse(expectedWeek), week);
+		Assert.Equal(DateOnly.Parse(expectedWeek), week);
 	}
 
 	[Fact]

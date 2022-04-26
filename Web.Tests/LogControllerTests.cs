@@ -18,7 +18,7 @@ public class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
 		dataService.GetAllResults().Returns(new[] { course });
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
+		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 2, 8));
 
 		//act
 		var response = await controller.Index();
@@ -27,13 +27,13 @@ public class LogControllerTests
 		var vm = (ActivityLogViewModel) response.Model;
 		var results = vm!.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
-		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 2), results[6].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
 	}
 
 	[Fact]
@@ -51,14 +51,14 @@ public class LogControllerTests
 		//assert
 		var vm = (ActivityLogViewModel) response.Model;
 		var results = vm!.Results.SelectMany(g => g).ToArray();
-		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 2), results[6].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 1), results[7].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 1), results[7].StartTime.Value);
 	}
 
 	[Fact]
@@ -67,7 +67,7 @@ public class LogControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		var results = CourseData.Results.ToList();
-		results.Add(new Result { StartTime = new Date(new DateTime(2021, 1, 1)) });
+		results.Add(new Result { StartTime = new Date(new DateTime(2021, 2, 1)) });
 		var course = new Course { Results = results };
 		dataService.GetAllResults().Returns(new[] { course });
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
@@ -79,8 +79,8 @@ public class LogControllerTests
 		var vm = (ActivityLogViewModel) response.Model;
 		var groups = vm!.Results.Select(g => g.Key).ToArray();
 		Assert.Equal(2, groups.Length);
-		Assert.Equal("January 2021", groups[0]);
-		Assert.Equal("January 2020", groups[1]);
+		Assert.Equal("February 2021", groups[0]);
+		Assert.Equal("February 2020", groups[1]);
 	}
 
 	[Fact]
@@ -90,7 +90,7 @@ public class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
 		dataService.GetResults(123, null).Returns(course);
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
+		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 2, 8));
 
 		//act
 		var response = await controller.Index(123);
@@ -99,12 +99,12 @@ public class LogControllerTests
 		var vm = (ActivityLogViewModel) response.Model;
 		var results = vm!.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
-		Assert.Equal(new DateTime(2020, 1, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 1, 2), results[6].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
 	}
 }
