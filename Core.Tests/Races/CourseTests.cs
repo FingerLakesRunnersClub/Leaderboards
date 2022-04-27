@@ -200,15 +200,13 @@ public class CourseTests
 		var points = course.CommunityStars();
 
 		//assert
-		Assert.Equal(4, points.Count);
+		Assert.Equal(3, points.Count);
 		Assert.Equal(3, points[0].Value.Value);
 		Assert.Equal(2, points[1].Value.Value);
 		Assert.Equal(1, points[2].Value.Value);
-		Assert.Equal(0, points[3].Value.Value);
 		Assert.Equal(CourseData.Athlete1, points[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, points[1].Result.Athlete);
 		Assert.Equal(CourseData.Athlete4, points[2].Result.Athlete);
-		Assert.Equal(CourseData.Athlete2, points[3].Result.Athlete);
 	}
 
 	[Fact]

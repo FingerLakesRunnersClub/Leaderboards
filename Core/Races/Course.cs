@@ -103,7 +103,7 @@ public class Course
 		filter ??= new Filter();
 		return _communityCache.ContainsKey(filter)
 			? _communityCache[filter]
-			: _communityCache[filter] = RankDescending(filter, _ => true, g => g.Average(this), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
+			: _communityCache[filter] = RankDescending(filter, g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(this), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 	}
 
 	public IReadOnlyCollection<GroupedResult> GroupedResults(Filter filter = null)
