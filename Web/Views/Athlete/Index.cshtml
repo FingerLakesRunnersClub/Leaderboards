@@ -95,7 +95,7 @@
 									Community Stars
 								</dt>
 								<dd class="col-6">
-									@Model.Summary.CommunityStars[course].Value.Display
+									@(Model.Summary.CommunityStars[course]?.Value.Display ?? "0")
 								</dd>
 							}
 						</dl>
