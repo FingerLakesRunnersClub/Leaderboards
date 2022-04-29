@@ -12,8 +12,22 @@ public class Race
 	public string URL { get; init; }
 
 	public ushort CommunityID { get; init; }
-	public IReadOnlyCollection<Post> CommunityPosts { get; set; } = Array.Empty<Post>();
+
+	private IReadOnlyCollection<Post> _communityPosts = Array.Empty<Post>();
+	public IReadOnlyCollection<Post> CommunityPosts
+	{
+		get => _communityPosts;
+		set
+		{
+			_communityPosts = value;
+			foreach (var course in Courses)
+			{
+				course.ClearCommunityCache();
+			}
+		}
+	}
+
 	public int CommunityHash { get; set; }
 
-	public IReadOnlyCollection<Course> Courses { get; set; }
+	public IReadOnlyCollection<Course> Courses { get; set; } = Array.Empty<Course>();
 }

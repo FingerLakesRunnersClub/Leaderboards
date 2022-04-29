@@ -42,7 +42,11 @@ public class Course
 		_earliestCache.Clear();
 		_thresholdCache.Clear();
 		_teamCache.Clear();
+		ClearCommunityCache();
 	}
+
+	public void ClearCommunityCache()
+		=> _communityCache.Clear();
 
 	private readonly IDictionary<Filter, RankedList<Time>> _fastestCache = new ConcurrentDictionary<Filter, RankedList<Time>>();
 
