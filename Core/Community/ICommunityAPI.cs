@@ -4,6 +4,6 @@ namespace FLRC.Leaderboards.Core.Community;
 
 public interface ICommunityAPI
 {
-	Task<JsonElement> GetPosts(ushort id);
-	IReadOnlyCollection<Post> ParsePosts(JsonElement posts);
+	Task<IReadOnlyCollection<JsonElement>> GetPosts(ushort id);
+	IReadOnlyCollection<Post> ParsePosts(IReadOnlyCollection<JsonElement> posts);
 }

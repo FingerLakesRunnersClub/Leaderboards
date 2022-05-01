@@ -64,7 +64,6 @@ public class DataServiceTests
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(json.RootElement);
 		var groupAPI = Substitute.For<IGroupAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		communityAPI.GetPosts(Arg.Any<ushort>()).Returns(JsonDocument.Parse("[]").RootElement);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
@@ -93,7 +92,7 @@ public class DataServiceTests
 			new() { Name = "Other Athlete", Date = new DateTime(2011, 9, 24), Content = "## Shop Local" },
 			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 25), Content = "## Shop Local" },
 		};
-		communityAPI.ParsePosts(Arg.Any<JsonElement>()).Returns(posts);
+		communityAPI.ParsePosts(Arg.Any<IReadOnlyCollection<JsonElement>>()).Returns(posts);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		var dataService = new DataService(resultsAPI, groupAPI, communityAPI, config, loggerFactory);
