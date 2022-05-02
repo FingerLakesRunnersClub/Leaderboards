@@ -158,7 +158,7 @@ public class DataService : IDataService
 			}
 
 			var posts = await _communityAPI.GetPosts(race.CommunityID);
-			var communityHash = posts.ToString().GetHashCode();
+			var communityHash = string.Join(string.Empty, posts.Select(p => p.ToString().GetHashCode())).GetHashCode();
 
 			if (communityHash != race.CommunityHash)
 			{
