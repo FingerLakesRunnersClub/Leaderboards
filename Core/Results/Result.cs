@@ -32,8 +32,8 @@ public class Result : IComparable<Result>
 			? Athlete.AgeAsOf(StartTime.Value)
 			: Athlete.Age;
 
-	private static readonly IDictionary<ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>, double> _ageGradeCache
-		= new ConcurrentDictionary<ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>, double>();
+	private static readonly IDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double> _ageGradeCache
+		= new ConcurrentDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double>();
 
 	[JsonIgnore]
 	public double AgeGrade
@@ -44,7 +44,7 @@ public class Result : IComparable<Result>
 			var age = AgeOnDayOfRun;
 			var distance = Course.Distance.Meters;
 			var duration = Duration.Value;
-			var key = new ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>(category, age, distance, duration);
+			var key = (category, age, distance, duration);
 
 			return _ageGradeCache.ContainsKey(key)
 				? _ageGradeCache[key]
