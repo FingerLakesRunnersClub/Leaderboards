@@ -1,0 +1,17 @@
+@using FLRC.Leaderboards.Core
+@model ErrorViewModel
+
+<h3>@(Model.Error == null ? "Page Not Found" : "Sorry, an unexpected error occurred")</h3>
+
+<div class="card card-highlighted">
+	<div class="card-body">
+		<p>Please <a href="javascript:history.back()">go back</a> and try again, or contact an admin if the issue persists.</p>
+		@if (Model.Error != null)
+		{
+			<details>
+				<summary>Details</summary>
+				<pre>@Model.Error</pre>
+			</details>
+		}
+	</div>
+</div>

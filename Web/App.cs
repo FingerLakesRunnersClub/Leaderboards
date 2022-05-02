@@ -29,6 +29,7 @@ public static class App
 	{
 		services.AddControllersWithViews();
 		services.AddHttpClient();
+		services.AddHttpContextAccessor();
 
 		services.AddSingleton<IConfig>(s => new AppConfig(s.GetRequiredService<IConfiguration>()));
 
@@ -51,8 +52,8 @@ public static class App
 
 	public static void Configure(IApplicationBuilder app, IHostEnvironment env)
 	{
-		if (env.IsDevelopment())
-			app.UseDeveloperExceptionPage();
+		app.UseExceptionHandler("/error");
+		app.UseStatusCodePagesWithReExecute("/error");
 
 		app.UseStaticFiles();
 		app.UseRouting();
