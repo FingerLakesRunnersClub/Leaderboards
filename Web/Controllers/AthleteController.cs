@@ -62,19 +62,17 @@ public class AthleteController : Controller
 		for (ushort rank = 1; rank <= sorted.Length; rank++)
 		{
 			var result = sorted[rank - 1];
-			var category = result.Athlete.Category?.Value ?? Category.M.Value;
-			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, result.Course.Distance.Meters, result.Duration.Value);
 
 			ranks.Add(new Ranked<Time>
 			{
 				All = ranks,
-				Rank = ageGrade >= 100 ? new Rank(0)
+				Rank = result.AgeGrade >= 100 ? new Rank(0)
 					: !ranks.Any(r => r.Rank.Value > 0) ? new Rank(1)
 					: ranks.Any() && ranks.Last().Value == result.Duration ? ranks.Last().Rank
 					: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0))),
 				Result = result,
 				Value = result.Duration,
-				AgeGrade = new AgeGrade(ageGrade)
+				AgeGrade = new AgeGrade(result.AgeGrade)
 			});
 		}
 

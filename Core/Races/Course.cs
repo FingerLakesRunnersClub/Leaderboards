@@ -148,12 +148,7 @@ public class Course
 				Team = t.Key,
 				AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration))
 					.Take(10)
-					.Select(rs =>
-						AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(
-							rs.First().Athlete.Category?.Value ?? Category.M.Value,
-							rs.First().AgeOnDayOfRun,
-							Distance.Meters,
-							rs.Min(r => r.Duration.Value)))
+					.Select(rs => rs.MinBy(r => r.Duration)!.AgeGrade)
 					.Average()
 				),
 				TotalRuns = (ushort) t.Sum(rs => rs.Count())
@@ -188,13 +183,9 @@ public class Course
 		for (ushort rank = 1; rank <= list.Length; rank++)
 		{
 			var results = list[rank - 1];
-			var athlete = results.Key;
-			var category = athlete.Category?.Value ?? Category.M.Value;
-
 			var result = getResult(results);
-			var ageGrade = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, result.AgeOnDayOfRun, Distance.Meters, result.Duration.Value);
 
-			if (ageGrade >= 100)
+			if (result.AgeGrade >= 100)
 				continue;
 
 			var firstPlace = !ranks.Any();
@@ -213,7 +204,7 @@ public class Course
 				Points = new Points(firstPlace
 					? 100
 					: ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
-				AgeGrade = new AgeGrade(ageGrade)
+				AgeGrade = new AgeGrade(result.AgeGrade)
 			};
 
 			ranks.Add(rankedResult);
@@ -226,7 +217,7 @@ public class Course
 	{
 		Participants = new Dictionary<string, int>
 		{
-			{ string.Empty, GroupedResults().Count() },
+			{ string.Empty, GroupedResults().Count },
 			{ Category.F.Display, GroupedResults(Filter.F).Count },
 			{ Category.M.Display, GroupedResults(Filter.M).Count }
 		},

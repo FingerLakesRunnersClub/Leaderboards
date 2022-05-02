@@ -44,24 +44,22 @@ public class AthleteSummaryTests
 	public void SimilarAthletesFiltersOutliers()
 	{
 		//arrange
-		var course = new Course
+		var results = new List<Result>();
+		var course = new Course { Distance = new Distance("400m"), Results = results };
+		results.AddRange(new[]
 		{
-			Distance = new Distance("400m"),
-			Results = new[]
-			{
-					new Result { Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(100))},
-					new Result { Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(101))},
-					new Result { Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(102))},
-					new Result { Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(103))},
-					new Result { Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(104))},
-					new Result { Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(105))},
-					new Result { Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(95))},
-					new Result { Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(200))},
-					new Result { Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(300))}
-				}
-		};
-		var results = new[] { course };
-		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
+			new Result { Course = course, Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(100)) },
+			new Result { Course = course, Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(101)) },
+			new Result { Course = course, Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(102)) },
+			new Result { Course = course, Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(103)) },
+			new Result { Course = course, Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(104)) },
+			new Result { Course = course, Athlete = CourseData.Athlete2, Duration = new Time(TimeSpan.FromSeconds(105)) },
+			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(95)) },
+			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(200)) },
+			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(300)) }
+		});
+		var courses = new[] { course };
+		var summary = new AthleteSummary(CourseData.Athlete1, courses, TestHelpers.Config);
 
 		//act
 		var similar = summary.SimilarAthletes.ToArray();

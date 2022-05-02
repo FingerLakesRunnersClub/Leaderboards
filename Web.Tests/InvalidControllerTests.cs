@@ -40,6 +40,7 @@ public class InvalidControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var badResult = new Result
 		{
+			Course = CourseData.Course,
 			Athlete = CourseData.Athlete1,
 			StartTime = new Date(new DateTime(2021, 7, 1)),
 			Duration = new Time(TimeSpan.FromMinutes(5))

@@ -33,15 +33,17 @@ public class CourseControllerTests
 	public async Task CanGetFastestResults()
 	{
 		//arrange
+		var results = new List<Result>();
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new []
-			{
-				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
-			}
+			Results = results
 		};
+		results.AddRange(new []
+		{
+			new Result { Course = course, Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+			new Result { Course = course, Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+		});
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
@@ -111,16 +113,18 @@ public class CourseControllerTests
 	public async Task CanGetTeamResults()
 	{
 		//arrange
+		var results = new List<Result>();
 		var course = new Course
 		{
 			Distance = new Distance("10 miles"),
-			Results = new[]
-			{
-				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:35")) },
-				new Result { Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
-			}
+			Results = results
 		};
+		results.AddRange(new[]
+		{
+			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
+			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:35")) },
+			new Result { Course = course, Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+		});
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
@@ -132,9 +136,9 @@ public class CourseControllerTests
 
 		//assert
 		var vm = (CourseResultsViewModel<TeamResults>) response.Model;
-		var results = vm!.RankedResults.ToArray();
-		var team2 = results.First(r => r.Value.Team == Athlete.Teams[2]);
-		var team3 = results.First(r => r.Value.Team == Athlete.Teams[3]);
+		var ranked = vm!.RankedResults.ToArray();
+		var team2 = ranked.First(r => r.Value.Team == Athlete.Teams[2]);
+		var team3 = ranked.First(r => r.Value.Team == Athlete.Teams[3]);
 		Assert.Equal(1, team3.Value.AgeGradePoints);
 		Assert.Equal(2, team2.Value.AgeGradePoints);
 		Assert.Equal(1, team2.Value.MostRunsPoints);

@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
@@ -8,8 +9,7 @@ namespace FLRC.Leaderboards.Core.Results;
 
 public class Result : IComparable<Result>
 {
-	[JsonIgnore]
-	public Course Course { get; init; }
+	[JsonIgnore] public Course Course { get; init; }
 
 	public uint? CourseID => Course?.Race.ID;
 	public string CourseName => Course?.Name;
@@ -27,15 +27,39 @@ public class Result : IComparable<Result>
 			{ StarType.ShopLocal, false }
 		};
 
-	public byte AgeOnDayOfRun => StartTime != null
-		? Athlete.AgeAsOf(StartTime.Value)
-		: Athlete.Age;
+	public byte AgeOnDayOfRun
+		=> StartTime != null
+			? Athlete.AgeAsOf(StartTime.Value)
+			: Athlete.Age;
 
-	public int CompareTo(Result other) => Duration.CompareTo(other.Duration);
+	private static readonly IDictionary<ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>, double> _ageGradeCache
+		= new ConcurrentDictionary<ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>, double>();
 
-	public Time Behind(Result other) => Duration.Subtract(other.Duration);
+	[JsonIgnore]
+	public double AgeGrade
+	{
+		get
+		{
+			var category = Athlete.Category?.Value ?? Category.M.Value;
+			var age = AgeOnDayOfRun;
+			var distance = Course.Distance.Meters;
+			var duration = Duration.Value;
+			var key = new ValueTuple<AgeGradeCalculator.Category, byte, double, TimeSpan>(category, age, distance, duration);
 
-	private static readonly TimeSpan GroupRunStartTimeLimit = TimeSpan.FromMinutes(5);
+			return _ageGradeCache.ContainsKey(key)
+				? _ageGradeCache[key]
+				: _ageGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, distance, duration);
+		}
+	}
+
+	public int CompareTo(Result other)
+		=> Duration.CompareTo(other.Duration);
+
+	public Time Behind(Result other)
+		=> Duration.Subtract(other.Duration);
+
+	private static readonly TimeSpan GroupRunStartTimeLimit
+		= TimeSpan.FromMinutes(5);
 
 	public bool IsGroupRun()
 		=> Course.Results.Any(r => !r.Athlete.Equals(Athlete) && r.StartTime.Value.Subtract(StartTime.Value).Duration() < GroupRunStartTimeLimit);
