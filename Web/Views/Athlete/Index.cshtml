@@ -74,7 +74,7 @@
 									@if (Model.Summary.Average[course] != null)
 									{
 										@Model.Summary.Average[course].Value.Display
-										@:(<a href="/Course/@course.ID/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
+										@:(<a href="/Course/@course.ID/@course.Distance.Display/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
 									}
 									else
 									{
