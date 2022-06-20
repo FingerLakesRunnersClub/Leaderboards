@@ -2,7 +2,6 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Reports;
-using FLRC.Leaderboards.Core.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
