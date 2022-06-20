@@ -1,5 +1,5 @@
-using System.Text.Json;
-using Microsoft.Extensions.Configuration;
+using System.Net.Http.Json;
+using FLRC.Leaderboards.Core.Config;
 
 namespace FLRC.Leaderboards.Core.Groups;
 
@@ -8,15 +8,12 @@ public class GroupAPI : IGroupAPI
 	private readonly HttpClient _httpClient;
 	private readonly string _url;
 
-	public GroupAPI(HttpClient httpClient, IConfiguration configuration)
+	public GroupAPI(HttpClient httpClient, IConfig config)
 	{
 		_httpClient = httpClient;
-		_url = configuration.GetValue<string>("GroupAPI");
+		_url = config.GroupAPI;
 	}
 
 	public async Task<IDictionary<string, IReadOnlyCollection<uint>>> GetGroups()
-	{
-		var response = await _httpClient.GetStreamAsync(_url);
-		return await JsonSerializer.DeserializeAsync<IDictionary<string, IReadOnlyCollection<uint>>>(response);
-	}
+		=> await _httpClient.GetFromJsonAsync<IDictionary<string, IReadOnlyCollection<uint>>>(_url);
 }

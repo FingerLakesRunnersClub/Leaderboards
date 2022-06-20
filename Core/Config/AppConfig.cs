@@ -6,10 +6,15 @@ public record AppConfig : IConfig
 {
 	public string App { get; }
 	public IFeatureSet Features { get; }
+
 	public IDictionary<uint, string> CourseNames { get; }
 	public IDictionary<string, string> Links { get; }
 	public IDictionary<string, string> Competitions { get; }
 	public IDictionary<string, byte> Awards { get; }
+
+	public string AliasAPI { get; }
+	public string GroupAPI { get; }
+
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
 
@@ -22,6 +27,10 @@ public record AppConfig : IConfig
 		Links = GetStringDictionary(config.GetSection("Links"));
 		Competitions = GetStringDictionary(config.GetSection("Competitions"));
 		Awards = GetByteDictionary(config.GetSection("Awards"));
+
+		AliasAPI = config.GetValue<string>("AliasAPI");
+		GroupAPI = config.GetValue<string>("GroupAPI");
+
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
 	}

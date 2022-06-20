@@ -1,5 +1,6 @@
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Groups;
-using Microsoft.Extensions.Configuration;
+using NSubstitute;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Groups;
@@ -12,9 +13,9 @@ public class GroupAPITests
 		//arrange
 		const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
 		var http = new MockHttpMessageHandler(data);
-		var configData = new Dictionary<string, string> { { "GroupAPI", "http://localhost" } };
-		var configuration = new ConfigurationBuilder().AddInMemoryCollection(configData).Build();
-		var api = new GroupAPI(new HttpClient(http), configuration);
+		var config = Substitute.For<IConfig>();
+		config.GroupAPI.Returns("http://localhost");
+		var api = new GroupAPI(new HttpClient(http), config);
 
 		//act
 		var groups = await api.GetGroups();

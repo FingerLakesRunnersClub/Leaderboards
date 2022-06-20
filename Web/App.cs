@@ -1,9 +1,9 @@
-﻿using FLRC.Leaderboards.Core.Community;
+﻿using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Groups;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -31,11 +31,12 @@ public static class App
 		services.AddHttpClient();
 		services.AddHttpContextAccessor();
 
-		services.AddSingleton<IConfig>(s => new AppConfig(s.GetRequiredService<IConfiguration>()));
+		services.AddSingleton<IConfig, AppConfig>();
 
 		services.AddSingleton<IDataService, DataService>();
-		services.AddSingleton<IGroupAPI, GroupAPI>();
 		services.AddSingleton<ICommunityAPI, DiscourseAPI>();
+		services.AddSingleton<IAliasAPI, AliasAPI>();
+		services.AddSingleton<IGroupAPI, GroupAPI>();
 
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();
