@@ -11,6 +11,7 @@ namespace FLRC.Leaderboards.Core.Data;
 public class DataService : IDataService
 {
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
+	private readonly IAliasAPI _aliasAPI;
 	private readonly IGroupAPI _groupAPI;
 	private readonly ICommunityAPI _communityAPI;
 	private readonly ILogger _logger;
@@ -18,9 +19,10 @@ public class DataService : IDataService
 	private readonly IDictionary<uint, Race> _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IGroupAPI groupAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IAliasAPI aliasAPI, IGroupAPI groupAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
 	{
 		_resultsAPI = resultsAPI;
+		_aliasAPI = aliasAPI;
 		_groupAPI = groupAPI;
 		_communityAPI = communityAPI;
 
@@ -96,7 +98,8 @@ public class DataService : IDataService
 	private async Task CacheAthletesFromStartList()
 	{
 		var json = await _resultsAPI[nameof(WebScorer)].GetResults(_startListID);
-		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(_resultsAPI[nameof(WebScorer)].Source.ParseAthlete).Where(a => !_athletes.ContainsKey(a.ID)))
+		var aliases = await GetAliases();
+		foreach (var athlete in json.GetProperty("Racers").EnumerateArray().Select(a => _resultsAPI[nameof(WebScorer)].Source.ParseAthlete(a, aliases)).Where(a => !_athletes.ContainsKey(a.ID)))
 		{
 			_athletes[athlete.ID] = athlete;
 		}
@@ -138,7 +141,8 @@ public class DataService : IDataService
 
 			if (resultsHash != course.LastHash)
 			{
-				course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results);
+				var aliases = GetAliases();
+				course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results, await aliases);
 				course.LastHash = resultsHash;
 			}
 		}
@@ -146,6 +150,19 @@ public class DataService : IDataService
 		{
 			_logger.LogWarning(e, "Could not retrieve results");
 		}
+	}
+
+	private DateTime _cachedAliasTimestamp;
+	private IDictionary<string, string> _cachedAliases = new ConcurrentDictionary<string, string>();
+	private async Task<IDictionary<string, string>> GetAliases()
+	{
+		if (_cachedAliasTimestamp < DateTime.Now.Subtract(_cacheLength))
+		{
+			_cachedAliases = await _aliasAPI.GetAliases();
+			_cachedAliasTimestamp = DateTime.Now;
+		}
+
+		return _cachedAliases;
 	}
 
 	private async Task UpdateCommunityPosts(Race race)
