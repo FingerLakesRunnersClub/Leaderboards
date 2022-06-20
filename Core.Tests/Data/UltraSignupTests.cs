@@ -7,16 +7,16 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class WebScorerTests
+public class UltraSignupTests
 {
 	[Fact]
 	public async Task CanGetResultsForCourse()
 	{
 		//arrange
-		var data = await File.ReadAllTextAsync("json/athlete.json");
+		var data = await File.ReadAllTextAsync("json/ultra.json");
 		var json = JsonDocument.Parse(data).RootElement;
-		var course = new Course();
-		var source = new WebScorer(TestHelpers.Config);
+		var course = new Course { Race = new Race { Date = new DateTime(2011, 9, 24) } };
+		var source = new UltraSignup(TestHelpers.Config);
 
 		//act
 		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
@@ -26,7 +26,6 @@ public class WebScorerTests
 		Assert.Equal((ushort) 234, result.Athlete.ID);
 		Assert.Equal("Steve Desmond", result.Athlete.Name);
 		Assert.Equal(26, result.Athlete.Age);
-		Assert.Equal(new DateTime(1985, 02, 16), result.Athlete.DateOfBirth);
 		Assert.Equal(AgeGradeCalculator.Category.M, result.Athlete.Category.Value);
 		Assert.Equal(new DateTime(2011, 09, 24), result.StartTime.Value);
 		Assert.Equal(new Time(new TimeSpan(0, 5, 04, 0)), result.Duration);
@@ -36,10 +35,10 @@ public class WebScorerTests
 	public async Task CanGetResultsWithAlias()
 	{
 		//arrange
-		var data = await File.ReadAllTextAsync("json/athlete.json");
+		var data = await File.ReadAllTextAsync("json/ultra.json");
 		var json = JsonDocument.Parse(data).RootElement;
-		var course = new Course();
-		var source = new WebScorer(TestHelpers.Config);
+		var course = new Course { Race = new Race { Date = new DateTime(2011, 9, 24) } };
+		var source = new UltraSignup(TestHelpers.Config);
 		var aliases = new Dictionary<string, string>
 		{
 			{ "Steve Desmond", "Rob Sutherland" }
@@ -55,72 +54,37 @@ public class WebScorerTests
 	}
 
 	[Fact]
-	public async Task DNFsAreIgnored()
-	{
-		//arrange
-		var data = await File.ReadAllTextAsync("json/dnf.json");
-		var json = JsonDocument.Parse(data).RootElement;
-		var course = new Course();
-		var source = new WebScorer(TestHelpers.Config);
-
-		//act
-		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
-
-		//assert
-		Assert.Empty(results);
-	}
-
-	[Fact]
-	public async Task FalseStartsAreIgnored()
-	{
-		//arrange
-		var data = await File.ReadAllTextAsync("json/false-start.json");
-		var json = JsonDocument.Parse(data).RootElement;
-		var course = new Course();
-		var source = new WebScorer(TestHelpers.Config);
-
-		//act
-		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
-
-		//assert
-		Assert.Empty(results);
-	}
-
-	[Fact]
 	public async Task CanParseAthlete()
 	{
 		//arrange
-		var data = await File.ReadAllTextAsync("json/athlete.json");
+		var data = await File.ReadAllTextAsync("json/ultra.json");
 		var json = JsonDocument.Parse(data).RootElement;
-		var element = json.GetProperty("Racers").EnumerateArray().First();
-		var source = new WebScorer(TestHelpers.Config);
+		var source = new UltraSignup(TestHelpers.Config);
 
 		//act
-		var athlete = source.ParseAthlete(element, ImmutableDictionary<string, string>.Empty);
+		var athlete = source.ParseAthlete(json.EnumerateArray().First(), ImmutableDictionary<string, string>.Empty);
 
 		//assert
 		Assert.Equal((ushort) 234, athlete.ID);
 		Assert.Equal("Steve Desmond", athlete.Name);
 		Assert.Equal(26, athlete.Age);
 		Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
-		Assert.Equal(new DateTime(1985, 02, 16), athlete.DateOfBirth);
 	}
 
 	[Fact]
 	public async Task CanParseAthleteWithAlias()
 	{
 		//arrange
-		var data = await File.ReadAllTextAsync("json/athlete.json");
+		var data = await File.ReadAllTextAsync("json/ultra.json");
 		var json = JsonDocument.Parse(data).RootElement;
-		var element = json.GetProperty("Racers").EnumerateArray().First();
-		var source = new WebScorer(TestHelpers.Config);
+		var source = new UltraSignup(TestHelpers.Config);
 		var aliases = new Dictionary<string, string>
 		{
 			{ "Steve Desmond", "Rob Sutherland" }
 		};
 
 		//act
-		var athlete = source.ParseAthlete(element, aliases);
+		var athlete = source.ParseAthlete(json.EnumerateArray().First(), aliases);
 
 		//assert
 		Assert.Equal((ushort) 234, athlete.ID);
@@ -131,25 +95,26 @@ public class WebScorerTests
 	public void CanParseDuration()
 	{
 		//arrange
-		const double seconds = 123.12;
+		const string ms = "123120";
 
 		//act
-		var duration = WebScorer.ParseDuration(seconds);
+		var duration = UltraSignup.ParseDuration(ms);
 
 		//assert
-		Assert.Equal(new TimeSpan(0, 2, 4), duration.Value);
+		Assert.Equal(new TimeSpan(0, 0, 2, 3, 120), duration.Value);
 	}
 
 	[Fact]
-	public void DurationRoundsAppropriately()
+	public void CanParseURL()
 	{
 		//arrange
-		const double seconds = 123.09;
+		var source = new UltraSignup(TestHelpers.Config);
 
 		//act
-		var duration = WebScorer.ParseDuration(seconds);
+		var url = source.URL(123);
 
 		//assert
-		Assert.Equal(new TimeSpan(0, 2, 3), duration.Value);
+		Assert.StartsWith("https://ultrasignup.com/", url);
+		Assert.EndsWith("/123/1/json", url);
 	}
 }

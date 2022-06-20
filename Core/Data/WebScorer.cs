@@ -19,18 +19,18 @@ public class WebScorer : IDataSource
 	public WebScorer(IConfig config)
 		=> _config = config;
 
-	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)
+	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 	{
 		var results = json.GetProperty("Racers");
 
 		return results.GetArrayLength() > 0
-			? ParseResults(course, results)
+			? ParseResults(course, results, aliases)
 			: Array.Empty<Result>();
 	}
 
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-	private IReadOnlyCollection<Result> ParseResults(Course course, JsonElement results)
+	private IReadOnlyCollection<Result> ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
 			            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
@@ -40,18 +40,24 @@ public class WebScorer : IDataSource
 			.Select(r => new Result
 			{
 				Course = course,
-				Athlete = ParseAthlete(r),
+				Athlete = ParseAthlete(r, aliases),
 				StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
 				Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
 			}).Where(r => r.Duration.Value >= MinimumDuration)
 			.ToArray();
 
-	private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
+	private readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 
-	public Athlete ParseAthlete(JsonElement element)
+	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
+		var name = element.GetProperty("Name").GetString() ?? "(unknown)";
+		if (aliases.ContainsKey(name))
+		{
+			name = aliases[name];
+		}
+
 		var id = (_config.Features.GenerateAthleteID
-			         ? element.GetProperty("Name").GetString()?.GetID()
+			         ? name?.GetID()
 			         : null)
 		         ?? element.GetProperty("UserId").GetUInt32();
 
@@ -64,7 +70,7 @@ public class WebScorer : IDataSource
 		return athletes[id] = new Athlete
 		{
 			ID = id,
-			Name = element.GetProperty("Name").GetString(),
+			Name = name,
 			Age = element.GetProperty("Age").GetByte(),
 			Category = Category.Parse(element.GetProperty("Gender").GetString()),
 			DateOfBirth = hasDOB ? dob : null

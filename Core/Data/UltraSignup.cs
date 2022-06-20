@@ -19,27 +19,32 @@ public class UltraSignup : IDataSource
 	public UltraSignup(IConfig config)
 		=> _config = config;
 
-	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json)
+	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 	{
 		return json.EnumerateArray()
 			.Where(r => r.GetProperty("status").GetByte() == 1)
 			.Select(j => new Result
 			{
 				Course = course,
-				Athlete = ParseAthlete(j),
+				Athlete = ParseAthlete(j, aliases),
 				StartTime = new Date(course.Race.Date),
 				Duration = ParseDuration(j.GetProperty("time").GetString())
 			}).ToArray();
 	}
 
-	private static Time ParseDuration(string milliseconds)
+	public static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));
 
-	private static readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
+	private readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 
-	public Athlete ParseAthlete(JsonElement element)
+	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
 		var name = element.GetProperty("firstname").GetString() + " " + element.GetProperty("lastname").GetString();
+		if (aliases.ContainsKey(name))
+		{
+			name = aliases[name];
+		}
+
 		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
 
 		return athletes.ContainsKey(id)
