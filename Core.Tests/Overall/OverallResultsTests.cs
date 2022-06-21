@@ -35,6 +35,32 @@ public class OverallResultsTests
 	}
 
 	[Fact]
+	public void CanGetMostPointsForTopRaces()
+	{
+		//arrange
+		var vm = new OverallResults(LeaderboardData.Courses);
+
+		//act
+		var mostPoints = vm.MostPoints(1);
+
+		//assert
+		Assert.Equal(LeaderboardData.Athlete1, mostPoints.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void CanGetMostPointsForCategoryTopRaces()
+	{
+		//arrange
+		var vm = new OverallResults(LeaderboardData.Courses);
+
+		//act
+		var mostPoints = vm.MostPoints(1, Filter.F);
+
+		//assert
+		Assert.Equal(LeaderboardData.Athlete3, mostPoints.First().Result.Athlete);
+	}
+
+	[Fact]
 	public void CanGetMostMiles()
 	{
 		//arrange

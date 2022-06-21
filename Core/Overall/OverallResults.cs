@@ -17,7 +17,7 @@ public class OverallResults
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
 
 	public RankedList<Points> MostPoints(byte limit, Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value)), g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[2].BehindLeader.Value.TotalSeconds : 0));
+		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value)), g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0));
 
 	public RankedList<Miles> MostMiles(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)));
