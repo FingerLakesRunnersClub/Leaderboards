@@ -146,10 +146,10 @@ public class Course
 			.Select(t => new TeamResults
 			{
 				Team = t.Key,
-				AverageAgeGrade = new AgeGrade(t.OrderBy(rs => rs.Min(r => r.Duration))
-					.Take(10)
-					.Select(rs => rs.MinBy(r => r.Duration)!.AgeGrade)
-					.Average()
+				AverageAgeGrade = new AgeGrade(t.Select(rs => rs.MinBy(r => r.Duration)!)
+						.OrderBy(r => r.Duration)
+						.Take(10)
+						.Average(r => r.AgeGrade)
 				),
 				TotalRuns = (ushort) t.Sum(rs => rs.Count())
 			}).ToArray();
