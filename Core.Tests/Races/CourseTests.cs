@@ -270,7 +270,7 @@ public class CourseTests
 		var results = course.TeamPoints();
 
 		//assert
-		Assert.Equal("43.81%", results.First().Value.AverageAgeGrade.Display);
+		Assert.Equal("8.76%", results.First().Value.AverageAgeGrade.Display);
 	}
 
 	[Fact]
