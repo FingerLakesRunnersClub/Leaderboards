@@ -23,7 +23,7 @@
 							@athlete.Key.Name
 						</a>
 					</th>
-					<th rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value)</th>
+					<th rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value).ToString("C0")</th>
 				</tr>
 				@foreach (var award in athlete.Value)
 				{
@@ -33,7 +33,7 @@
 								@award.Name
 							</a>
 						</td>
-						<td class="text-right">@award.Value</td>
+						<td class="text-right">@award.Value.ToString("C0")</td>
 					</tr>
 				}
 				<tr class="bg-white">
@@ -44,7 +44,7 @@
 			<tfoot>
 			<tr>
 				<th>Total</th>
-				<th class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value))</th>
+				<th class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value)).ToString("C0")</th>
 				<td colspan="2">Athletes: @Model.Awards.Count / Awards: @Model.Awards.Sum(a => a.Value.Length)</td>
 			</tr>
 			</tfoot>
