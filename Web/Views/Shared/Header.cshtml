@@ -22,6 +22,16 @@
 							<li class="dropdown-item">
 								<a href="/Log">Activity Log</a>
 							</li>
+						}
+						@if (Model.Config.Awards.Any())
+						{
+							<li class="dropdown-item">
+								<a href="/Awards">Awards</a>
+							</li>
+						}
+						
+						@if (Model.Config.Features.MultiAttempt)
+						{
 							<li class="dropdown-item">
 								<a href="/Completed">Completions</a>
 							</li>
