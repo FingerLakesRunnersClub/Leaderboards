@@ -6,7 +6,6 @@ services:
       context: .
       args:
         app: "Challenge"
-        file: "Challenge.dll"
     ports:
       - "5001:80"
     restart: always
@@ -15,7 +14,6 @@ services:
       context: .
       args:
         app: "TrailCircuit"
-        file: "TrailCircuit.dll"
     ports:
       - "5002:80"
     restart: always
