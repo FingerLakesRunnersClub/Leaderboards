@@ -75,14 +75,26 @@ public class AwardsViewModel : ViewModel
 			.ToArray();
 
 	private IReadOnlyCollection<Award> AgeGroup(IReadOnlyCollection<Course> results, Category category)
-		=> Athlete.Teams.SelectMany(t => results.SelectMany(c => c.Fastest(new Filter(category, t.Value))
-				.Where(r => r.Rank.Value == (!c.Fastest(new Filter(category, t.Value)).First().Result.Athlete.Equals(c.Fastest(new Filter(category)).First().Result.Athlete) ? 1 : 2))
-				.Select(r => new Award
-				{
-					Name = $"{r.Result.CourseName} {t.Value.Display} ({category.Display})",
-					Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/Fastest/{category.Display}?ag={t.Value.Value}",
-					Value = Config.Awards["Age Group"],
-					Athlete = r.Result.Athlete
-				})))
+		=> Athlete.Teams
+			.SelectMany(t => results.SelectMany(c => CourseAgeGroupAwards(c, category, t.Value)))
 			.ToArray();
+
+	private IReadOnlyCollection<Award> CourseAgeGroupAwards(Course course, Category category, Team team)
+	{
+		var categoryWinners = course.Fastest(new Filter(category))
+			.Where(r => r.Rank.Value == 1)
+			.Select(r => r.Result.Athlete)
+			.ToArray();
+
+		var ageGroupResults = course.Fastest(new Filter(category, team));
+		var winningRank = ageGroupResults.FirstOrDefault(r => !categoryWinners.Contains(r.Result.Athlete));
+		return ageGroupResults.Where(r => r.Rank == winningRank?.Rank && !categoryWinners.Contains(r.Result.Athlete))
+			.Select(r => new Award
+			{
+				Name = $"{r.Result.CourseName} {team.Display} ({category.Display})",
+				Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/Fastest/{category.Display}?ag={team.Value}",
+				Value = Config.Awards["Age Group"],
+				Athlete = r.Result.Athlete
+			}).ToArray();
+	}
 }
