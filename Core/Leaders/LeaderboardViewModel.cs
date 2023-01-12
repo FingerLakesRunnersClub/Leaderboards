@@ -22,8 +22,7 @@ public class LeaderboardViewModel : ViewModel
 
 	public LeaderboardViewModel(IReadOnlyCollection<Course> courses, LeaderboardResultType type, byte? month = null)
 	{
-		var courseList = courses.ToArray();
-		_courses = courseList;
+		_courses = courses;
 
 		Months = _courses.DistinctMonths();
 		Month = month;
