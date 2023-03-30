@@ -11,6 +11,7 @@ public static class CourseData
 	public static readonly Athlete Athlete2 = new() { ID = 234, Category = Category.F, Age = 20, DateOfBirth = DateTime.Parse("1/1/2000") };
 	public static readonly Athlete Athlete3 = new() { ID = 345, Category = Category.M, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990") };
 	public static readonly Athlete Athlete4 = new() { ID = 456, Category = Category.F, Age = 30, DateOfBirth = DateTime.Parse("1/1/1990") };
+	public static readonly Athlete Private = new() { ID = 567, Category = Category.F, Age = 40, DateOfBirth = DateTime.Parse("1/1/1980"), Private = true };
 
 	public static readonly Course Course = new() { Distance = new Distance("10K") };
 

@@ -31,6 +31,49 @@ public class ResultTests
 	}
 
 	[Fact]
+	public void CanGetAgeGradeForResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Duration = new Time(new TimeSpan(1, 0, 0)),
+			Course = new Course { Distance = new Distance("10 miles") },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Equal(72.9, ageGrade!.Value, 1);
+	}
+
+	[Fact]
+	public void AgeGradeIsNullWhenDurationIsNull()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Course = new Course { Distance = new Distance("10 miles") },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Null(ageGrade);
+	}
+
+	[Fact]
 	public void CanCompareResultsByDuration()
 	{
 		//arrange

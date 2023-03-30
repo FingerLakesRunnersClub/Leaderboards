@@ -17,7 +17,7 @@
 				Activity Log
 				<i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
 			</a>
-			@if (Model.Config.Features.MultiAttempt)
+			@if (Model.Config.Features.MultiAttempt && !Model.Summary.Athlete.Private)
 			{
 				<a href="/Athlete/Similar/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 					Similar Athletes
@@ -35,7 +35,7 @@
 			<div class="card-highlighted card mb-3">
 				<div class="card-body no-activity-log">
 					@await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
-					@if (Model.Summary.Fastest[course] == null)
+					@if (!Model.Summary.Athlete.Private && Model.Summary.Fastest[course] == null)
 					{
 						<div class="alert alert-danger">
 							There is an invalid result for this course.
@@ -46,41 +46,48 @@
 					else
 					{
 						<dl class="row mb-0 mt-3">
-							<dt class="col-6">
-								@(Model.Config.Features.MultiAttempt ? "Fastest" : string.Empty) Time
-							</dt>
-							<dd class="col-6">
-								@Model.Summary.Fastest[course].Value.Display
-								(<a href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank.Display</a>)
-							</dd>
-							<dt class="col-6">
-								Points
-							</dt>
-							<dd class="col-6">
-								@Model.Summary.Fastest[course].Points.Display
-							</dd>
-							<dt class="col-6">
-								Age Grade
-							</dt>
-							<dd class="col-6">
-								@Model.Summary.Fastest[course].AgeGrade.Display
-							</dd>
-							@if (Model.Config.Features.MultiAttempt)
+							@if (!Model.Summary.Athlete.Private)
 							{
 								<dt class="col-6">
-									Average (Top @course.AverageThreshold(new Filter(Model.Summary.Athlete.Category)))
+									@(Model.Config.Features.MultiAttempt ? "Fastest" : string.Empty) Time
 								</dt>
 								<dd class="col-6">
-									@if (Model.Summary.Average[course] != null)
-									{
-										@Model.Summary.Average[course].Value.Display
-										@:(<a href="/Course/@course.ID/@course.Distance.Display/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
-									}
-									else
-									{
-										@:(not enough runs)
-									}
+									@Model.Summary.Fastest[course].Value?.Display
+									(<a href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank?.Display</a>)
 								</dd>
+								<dt class="col-6">
+									Points
+								</dt>
+								<dd class="col-6">
+									@Model.Summary.Fastest[course].Points?.Display
+								</dd>
+								<dt class="col-6">
+									Age Grade
+								</dt>
+								<dd class="col-6">
+									@Model.Summary.Fastest[course].AgeGrade?.Display
+								</dd>
+							}
+
+							@if (Model.Config.Features.MultiAttempt)
+							{
+								@if (!Model.Summary.Athlete.Private)
+								{
+									<dt class="col-6">
+										Average (Top @course.AverageThreshold(new Filter(Model.Summary.Athlete.Category)))
+									</dt>
+									<dd class="col-6">
+										@if (Model.Summary.Average[course] != null)
+										{
+											@Model.Summary.Average[course].Value?.Display
+											@:(<a href="/Course/@course.ID/@course.Distance.Display/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
+										}
+										else
+										{
+											@:(not enough runs)
+										}
+									</dd>
+								}
 								<dt class="col-6">
 									# of Runs
 								</dt>

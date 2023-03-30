@@ -58,7 +58,7 @@ public class AthleteController : Controller
 	{
 		var ranks = new RankedList<Time>();
 
-		var sorted = results.OrderBy(r => r.Duration.Value).ToArray();
+		var sorted = results.OrderBy(r => r.Duration ?? Time.Max).ToArray();
 		for (ushort rank = 1; rank <= sorted.Length; rank++)
 		{
 			var result = sorted[rank - 1];
@@ -66,13 +66,16 @@ public class AthleteController : Controller
 			ranks.Add(new Ranked<Time>
 			{
 				All = ranks,
-				Rank = result.AgeGrade >= 100 ? new Rank(0)
+				Rank = result.Athlete.Private ? null
+					: result.AgeGrade >= 100 ? new Rank(0)
 					: !ranks.Any(r => r.Rank.Value > 0) ? new Rank(1)
 					: ranks.Any() && ranks.Last().Value == result.Duration ? ranks.Last().Rank
 					: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0))),
 				Result = result,
 				Value = result.Duration,
-				AgeGrade = new AgeGrade(result.AgeGrade)
+				AgeGrade = result.AgeGrade is not null
+					? new AgeGrade(result.AgeGrade.Value)
+					: null
 			});
 		}
 

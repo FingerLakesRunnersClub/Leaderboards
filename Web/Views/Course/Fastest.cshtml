@@ -18,13 +18,13 @@
                 { name: 'Age', center: true, value: r => r.Result.AgeOnDayOfRun },
                 { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0), show: @((Model.Filter.Category == null).ToString().ToLower()) },
                 { name: 'Team', center: true, value: r => r.Result.Athlete.Team.Display, sort: r => r.Result.Athlete.Team.Value, link: r => `/Team/Index/${r.Result.Athlete.Team.Value}`, show: @Model.Config.Features.AgeGroupTeams.ToString().ToLower() },
-                { name: 'Time', center: true, value: r => r.Result.Duration.Display, sort: r => r.Result.Duration.Value.TotalSeconds },
-                { name: 'Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
-                { name: 'Behind Leader', center: true, value: r => `+ ${r.BehindLeader.Display}`, sort: r => r.BehindLeader.Value.TotalSeconds },
-                { name: 'Points', center: true, value: r => r.Points.Display, sort: r => r.Points.Value, descending: true, show: @((Model.Filter.Category != null && Model.Filter.AgeGroup == null).ToString().ToLower()) }
+                { name: 'Time', center: true, value: r => r.Result.Duration?.Display, sort: r => r.Result.Duration?.Value.TotalSeconds },
+                { name: 'Age Grade', center: true, value: r => r.AgeGrade?.Display, sort: r => r.AgeGrade?.Value, descending: true },
+                { name: 'Behind Leader', center: true, value: r => r.BehindLeader != null ? `+ ${r.BehindLeader.Display}` : null, sort: r => r.BehindLeader?.Value.TotalSeconds },
+                { name: 'Points', center: true, value: r => r.Points?.Display, sort: r => r.Points?.Value, descending: true, show: @((Model.Filter.Category != null && Model.Filter.AgeGroup == null).ToString().ToLower()) }
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults.Where(r => r.Result.Duration is not null)));
         </script>
 
         @await Html.PartialAsync("DataTable")

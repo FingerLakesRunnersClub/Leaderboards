@@ -15,4 +15,6 @@ public record Time(TimeSpan Value) : Formatted<TimeSpan>(Value), IComparable<Tim
 
 	public static double AbsolutePercentDifference(Time mine, Time theirs)
 		=> Math.Abs(PercentDifference(mine, theirs));
+
+	public static readonly Time Max = new(TimeSpan.MaxValue);
 }

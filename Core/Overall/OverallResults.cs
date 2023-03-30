@@ -14,16 +14,16 @@ public class OverallResults
 	public OverallResults(IReadOnlyCollection<Course> courses) => _courses = courses;
 
 	public RankedList<Points> MostPoints(Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Points(g.Sum(r => r.Points.Value)), g => g.Sum(r => r.Points.Value));
+		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.Sum(r => r.Points?.Value ?? 0)) : null, g => g.Sum(r => r.Points?.Value));
 
 	public RankedList<Points> MostPoints(byte limit, Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value)), g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points.Value), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0));
+		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0)) : null, g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0));
 
 	public RankedList<Miles> MostMiles(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)));
 
 	public RankedList<AgeGrade> AgeGrade(Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new AgeGrade(g.Average(r => r.AgeGrade.Value)), g => g.Count(), g => (uint) g.Count());
+		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new AgeGrade(g.Average(r => r.AgeGrade.Value)) : null, g => g.Count(), g => (uint) g.Count());
 
 	public RankedList<Stars> CommunityStars(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.CommunityStars(filter).Where(p => p.Value.Value > 0)).GroupBy(r => r.Result.Athlete), g => new Stars((ushort) g.Sum(c => c.Value.Value)), g => g.Sum(c => c.Value.Value));
@@ -91,13 +91,20 @@ public class OverallResults
 		{
 			var result = list[rank - 1];
 			var value = getValue(result);
+			var notInFirstPlace = ranks.Any();
+			var lastPlace = notInFirstPlace
+				? ranks.Last()
+				: null;
+
 			ranks.Add(new Ranked<T1>
 			{
 				All = ranks,
-				Rank = ranks.Any() && ranks.Last().Value.Equals(value) ? ranks.Last().Rank : new Rank(rank),
+				Rank = notInFirstPlace && lastPlace.Value.Equals(value) ? lastPlace.Rank : new Rank(rank),
 				Result = new Result { Athlete = result.Key },
 				Count = count(result),
-				AgeGrade = new AgeGrade(result.Average(r => r.AgeGrade.Value)),
+				AgeGrade = !result.Key.Private
+					? new AgeGrade(result.Average(r => r.AgeGrade.Value))
+					: null,
 				Value = value
 			});
 		}

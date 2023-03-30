@@ -19,7 +19,7 @@ public record TeamMember : IComparable<TeamMember>
 	public TeamMember(IReadOnlyCollection<Ranked<Time>> results)
 	{
 		Courses = (byte) results.Count;
-		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade.Value));
+		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade?.Value ?? 0));
 		Runs = (ushort) results.Sum(r => r.Count);
 		Miles = new Miles(results.Sum(r => r.Count * r.Result.Course.Distance.Miles));
 	}

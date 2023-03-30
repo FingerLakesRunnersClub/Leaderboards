@@ -30,6 +30,22 @@ public class OverallControllerTests
 	}
 
 	[Fact]
+	public async Task CanGetMostPointsForLimitedEvents()
+	{
+		//arrange
+		var dataService = Substitute.For<IDataService>();
+		dataService.GetAllResults().Returns(LeaderboardData.Courses);
+		var controller = new OverallController(dataService, TestHelpers.Config);
+
+		//act
+		var response = await controller.PointsTop3(Category.M.Display);
+
+		//assert
+		var vm = (OverallResultsViewModel<Points>) response.Model;
+		Assert.Equal(LeaderboardData.Athlete1, vm!.RankedResults.First().Result.Athlete);
+	}
+
+	[Fact]
 	public async Task CanGetMostMiles()
 	{
 		//arrange

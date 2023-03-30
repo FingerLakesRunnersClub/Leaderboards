@@ -87,6 +87,22 @@ public class WebScorerTests
 	}
 
 	[Fact]
+	public async Task PrivateAthletesHaveNoTime()
+	{
+		//arrange
+		var data = await File.ReadAllTextAsync("json/private.json");
+		var json = JsonDocument.Parse(data).RootElement;
+		var course = new Course();
+		var source = new WebScorer(TestHelpers.Config);
+
+		//act
+		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
+
+		//assert
+		Assert.Null(results.First().Duration);
+	}
+
+	[Fact]
 	public async Task CanParseAthlete()
 	{
 		//arrange
@@ -104,6 +120,27 @@ public class WebScorerTests
 		Assert.Equal(26, athlete.Age);
 		Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
 		Assert.Equal(new DateTime(1985, 02, 16), athlete.DateOfBirth);
+	}
+
+	[Fact]
+	public async Task CanParsePrivateAthlete()
+	{
+		//arrange
+		var data = await File.ReadAllTextAsync("json/private.json");
+		var json = JsonDocument.Parse(data).RootElement;
+		var element = json.GetProperty("Racers").EnumerateArray().First();
+		var source = new WebScorer(TestHelpers.Config);
+
+		//act
+		var athlete = source.ParseAthlete(element, ImmutableDictionary<string, string>.Empty);
+
+		//assert
+		Assert.Equal((ushort) 234, athlete.ID);
+		Assert.Equal("Steve Desmond", athlete.Name);
+		Assert.Equal(26, athlete.Age);
+		Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
+		Assert.Equal(new DateTime(1985, 02, 16), athlete.DateOfBirth);
+		Assert.True(athlete.Private);
 	}
 
 	[Fact]

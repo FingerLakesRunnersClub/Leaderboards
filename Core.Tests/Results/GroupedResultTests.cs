@@ -32,6 +32,26 @@ public class GroupedResultTests
 	}
 
 	[Fact]
+	public void AverageDurationIsNullForPrivateAthlete()
+	{
+		var athlete = new Athlete { Private = true };
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) }
+		};
+
+		var groupedResult = new GroupedResult(results.GroupBy(r => r.Athlete).First());
+
+		//act
+		var avg = groupedResult.Average(new Course());
+
+		//assert
+		Assert.Null(avg.Duration);
+	}
+
+	[Fact]
 	public void CanGetAverageFromTopAttempts()
 	{
 		//arrange

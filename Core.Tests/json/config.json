@@ -3,12 +3,22 @@
 	"MultiAttempt": true,
 	"CommunityStars": true
   },
+  "CustomFields": {
+	"Birthdate": "DOB",
+	"Private": "Private"
+  },
   "Competitions": [
 	{
 	  "Points/F": "Most Points (F)"
 	},
 	{
 	  "Points/M": "Most Points (M)"
+	},
+	{
+	  "PointsTop3/F": "Most Points From Top 3 (F)"
+	},
+	{
+	  "PointsTop3/M": "Most Points From Top 3 (M)"
 	},
 	{
 	  "AgeGrade": "Age Grade"

@@ -55,7 +55,7 @@ public class Course
 		filter ??= new Filter();
 		return _fastestCache.ContainsKey(filter)
 			? _fastestCache[filter]
-			: _fastestCache[filter] = Rank(filter, _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration));
+			: _fastestCache[filter] = Rank(filter, _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration ?? Time.Max));
 	}
 
 	private readonly IDictionary<Filter, RankedList<Time>> _averageCache = new ConcurrentDictionary<Filter, RankedList<Time>>();
@@ -67,7 +67,7 @@ public class Course
 
 		return _averageCache.ContainsKey(filter)
 			? _averageCache[filter]
-			: _averageCache[filter] = Rank(filter, rs => rs.Count() >= threshold, rs => rs.Average(this, threshold), rs => rs.Average(this, threshold).Duration);
+			: _averageCache[filter] = Rank(filter, rs => !rs.Key.Private && rs.Count() >= threshold, rs => rs.Average(this, threshold), rs => rs.Average(this, threshold).Duration ?? Time.Max);
 	}
 
 	private readonly IDictionary<Filter, RankedList<ushort>> _mostRunsCache = new ConcurrentDictionary<Filter, RankedList<ushort>>();
@@ -124,9 +124,9 @@ public class Course
 
 		return _thresholdCache.ContainsKey(filter)
 			? _thresholdCache[filter]
-			: (_thresholdCache[filter] = groupedResults.Any()
+			: _thresholdCache[filter] = groupedResults.Any()
 				? (ushort) Math.Ceiling(groupedResults.Average(r => r.Count()))
-				: (ushort) 0);
+				: (ushort) 0;
 	}
 
 	private readonly IDictionary<Filter, RankedList<TeamResults>> _teamCache = new ConcurrentDictionary<Filter, RankedList<TeamResults>>();
@@ -147,10 +147,10 @@ public class Course
 			{
 				Team = t.Key,
 				AverageAgeGrade = new AgeGrade(t.Select(rs => rs.MinBy(r => r.Duration))
-						.Where(r => r != null)
+						.Where(r => r?.Duration != null)
 						.OrderBy(r => r.Duration)
 						.Take(10)
-						.Sum(r => r.AgeGrade) / 10
+						.Sum(r => r.AgeGrade ?? 0) / 10
 				),
 				TotalRuns = (ushort) t.Sum(rs => rs.Count())
 			}).ToArray();
@@ -176,11 +176,11 @@ public class Course
 	private RankedList<T> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
 		=> RankedList(GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
-	private RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
+	private static RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
 	{
 		var ranks = new RankedList<T>();
 
-		var list = sorted.ThenBy(rs => getResult(rs).Duration).ToArray();
+		var list = sorted.ThenBy(rs => getResult(rs).Duration ?? Time.Max).ToArray();
 		for (ushort rank = 1; rank <= list.Length; rank++)
 		{
 			var results = list[rank - 1];
@@ -189,23 +189,28 @@ public class Course
 			if (result.AgeGrade >= 100)
 				continue;
 
-			var firstPlace = !ranks.Any();
+			var isInFirstPlace = !ranks.Any(r => r.Result.Duration is not null);
 			var value = getValue(results);
+
+			var firstPlace = !isInFirstPlace ? ranks.First(r => r.Result.Duration is not null) : null;
+			var lastPlace = !isInFirstPlace ? ranks.Last() : null;
 
 			var rankedResult = new Ranked<T>
 			{
 				All = ranks,
-				Rank = !firstPlace && ranks.Last().Value.Equals(value)
-					? ranks.Last().Rank
-					: new Rank((ushort) (firstPlace ? 1 : rank)),
+				Rank = !isInFirstPlace && lastPlace.Value.Equals(value)
+					? lastPlace.Rank
+					: new Rank((ushort) (isInFirstPlace ? 1 : rank)),
 				Result = result,
 				Value = value,
 				Count = (uint) results.Count(),
-				BehindLeader = firstPlace ? new Time(TimeSpan.Zero) : result.Behind(ranks.First().Result),
-				Points = new Points(firstPlace
-					? 100
-					: ranks.First().Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100),
-				AgeGrade = new AgeGrade(result.AgeGrade)
+				BehindLeader = isInFirstPlace ? new Time(TimeSpan.Zero) : result.Behind(firstPlace.Result),
+				Points = result.Duration is not null
+					? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100)
+					: null,
+				AgeGrade = result.AgeGrade is not null
+					? new AgeGrade(result.AgeGrade.Value)
+					: null
 			};
 
 			ranks.Add(rankedResult);

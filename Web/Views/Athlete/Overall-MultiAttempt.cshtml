@@ -9,7 +9,7 @@
 	(<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
 </dd>
 
-@if (Model.Summary.Athlete.Category != null)
+@if (Model.Summary.Athlete.Category != null && !Model.Summary.Athlete.Private)
 {
 	<dt class="col-6">
 		Overall Points
@@ -20,15 +20,18 @@
 	</dd>
 }
 
-<dt class="col-6">
-	<span class="d-none d-sm-inline">Average</span>
-	<span class="d-sm-none">Avg</span>
-	Age Grade
-</dt>
-<dd class="col-6">
-	@Model.Summary.OverallAgeGrade?.Value?.Display
-	(<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
-</dd>
+@if (!Model.Summary.Athlete.Private)
+{
+	<dt class="col-6">
+		<span class="d-none d-sm-inline">Average</span>
+		<span class="d-sm-none">Avg</span>
+		Age Grade
+	</dt>
+	<dd class="col-6">
+		@Model.Summary.OverallAgeGrade?.Value?.Display
+		(<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
+	</dd>
+}
 
 <dt class="col-6">
 	Total Miles

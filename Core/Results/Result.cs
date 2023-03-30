@@ -36,10 +36,12 @@ public class Result : IComparable<Result>
 		= new ConcurrentDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double>();
 
 	[JsonIgnore]
-	public double AgeGrade
+	public double? AgeGrade
 	{
 		get
 		{
+			if (Duration is null)
+				return null;
 			var category = Athlete.Category?.Value ?? Category.M.Value;
 			var age = AgeOnDayOfRun;
 			var distance = Course.Distance.Meters;
@@ -56,7 +58,7 @@ public class Result : IComparable<Result>
 		=> Duration.CompareTo(other.Duration);
 
 	public Time Behind(Result other)
-		=> Duration.Subtract(other.Duration);
+		=> Duration?.Subtract(other.Duration);
 
 	private static readonly TimeSpan GroupRunStartTimeLimit
 		= TimeSpan.FromMinutes(5);

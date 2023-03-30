@@ -34,17 +34,25 @@ public class WebScorer : IDataSource
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
 			            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
-							|| r.GetProperty("Distance").GetString() == Distance.DefaultKey
+			                || r.GetProperty("Distance").GetString() == Distance.DefaultKey
 			                || r.GetProperty("Distance").GetString() == course.Distance.Display)
 			)
-			.Select(r => new Result
-			{
-				Course = course,
-				Athlete = ParseAthlete(r, aliases),
-				StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
-				Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
-			}).Where(r => r.Duration.Value >= MinimumDuration)
+			.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))
+			.Where(r => r.Duration is null || r.Duration.Value >= MinimumDuration)
 			.ToArray();
+
+	private static Result GetResult(Course course, JsonElement r, Athlete athlete)
+	{
+		return new Result
+		{
+			Course = course,
+			Athlete = athlete,
+			StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
+			Duration = !athlete.Private
+				? ParseDuration(r.GetProperty("RaceTime").GetDouble())
+				: null
+		};
+	}
 
 	private readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
 
@@ -66,16 +74,26 @@ public class WebScorer : IDataSource
 			return athletes[id];
 		}
 
-		var hasDOB = DateTime.TryParse(element.GetProperty("Info1").GetString(), out var dob);
 		return athletes[id] = new Athlete
 		{
 			ID = id,
 			Name = name,
 			Age = element.GetProperty("Age").GetByte(),
 			Category = Category.Parse(element.GetProperty("Gender").GetString()),
-			DateOfBirth = hasDOB ? dob : null
+			DateOfBirth = GetDOB(element),
+			Private = IsPrivate(element)
 		};
 	}
+
+	private DateTime? GetDOB(JsonElement element)
+		=> _config.BirthdateField is not null
+		   && DateTime.TryParse(element.GetProperty(_config.BirthdateField).GetString(), out var dob)
+			? dob
+			: null;
+
+	private bool IsPrivate(JsonElement element)
+		=> _config.PrivateField is not null
+		   && element.GetProperty(_config.PrivateField).GetString()?.ToLowerInvariant() == "yes";
 
 	private static Date ParseStart(string value)
 	{

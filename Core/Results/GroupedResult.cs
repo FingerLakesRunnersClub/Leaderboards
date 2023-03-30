@@ -16,8 +16,10 @@ public class GroupedResult : IGrouping<Athlete, Result>, IComparable<GroupedResu
 		{
 			Athlete = Key,
 			Course = course,
-			Duration = new Time(TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
-				.Take(threshold ?? _group.Count()).Average(r => r.Duration.Value.TotalSeconds)))
+			Duration = !Key.Private
+				? new Time(TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
+					.Take(threshold ?? _group.Count()).Average(r => r.Duration.Value.TotalSeconds)))
+				: null
 		};
 
 	public Athlete Key => _group.Key;

@@ -372,4 +372,89 @@ public class CourseTests
 		Assert.Equal(new DateOnly(2019, 12, 1), months.First());
 		Assert.Equal(new DateOnly(2020, 1, 1), months.Skip(1).First());
 	}
+
+	[Fact]
+	public void PrivateAthletesAreIncludedInFastest()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) }
+		};
+		var course = new Course { Results = results };
+
+		//act
+		var fastest = course.Fastest();
+
+		//assert
+		Assert.Equal(CourseData.Private, fastest.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthletesAreIncludedInMostMiles()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K") };
+
+		//act
+		var most = course.MostMiles();
+
+		//assert
+		Assert.Equal(CourseData.Private, most.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthletesAreIncludedInMostRuns()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) }
+		};
+		var course = new Course { Results = results };
+
+		//act
+		var most = course.MostRuns();
+
+		//assert
+		Assert.Equal(CourseData.Private, most.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthletesAreIncludedInCommunityStars()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)), CommunityStars = { [StarType.Story] = true }}
+		};
+		var course = new Course { Results = results };
+
+		//act
+		var stars = course.CommunityStars();
+
+		//assert
+		Assert.Equal(CourseData.Private, stars.First().Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthletesAreNotIncludedInBestAverage()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) }
+		};
+		var course = new Course { Results = results };
+
+		//act
+		var best = course.BestAverage();
+
+		//assert
+		Assert.Empty(best);
+	}
 }

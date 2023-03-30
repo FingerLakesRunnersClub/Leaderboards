@@ -1,6 +1,9 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using Xunit;
 
@@ -201,5 +204,39 @@ public class OverallResultsTests
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete2, members.Single().Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthletesInAllNonTimeBasedCompetitions()
+	{
+		//arrange
+		var results = new[]
+		{
+			new Course
+			{
+				Race = new Race { Name = "Test" },
+				Distance = new Distance("10 miles"),
+				Results = new[]
+				{
+					new Result
+					{
+						Course = new Course { Distance = new Distance("10 miles") },
+						Athlete = LeaderboardData.Private, CommunityStars = { [StarType.Story] = true }
+					}
+				}
+			}
+		};
+
+		//act
+		var vm = new OverallResults(results);
+
+		//assert
+		Assert.Empty(vm.MostPoints());
+		Assert.Empty(vm.AgeGrade());
+		Assert.NotEmpty(vm.MostMiles());
+		Assert.NotEmpty(vm.TeamPoints());
+		Assert.NotEmpty(vm.CommunityStars());
+		Assert.NotEmpty(vm.Completed());
+		Assert.NotEmpty(vm.TeamMembers(new Team(4)));
 	}
 }

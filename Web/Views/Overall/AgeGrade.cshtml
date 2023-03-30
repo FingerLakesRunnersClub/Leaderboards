@@ -17,7 +17,7 @@
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
                 { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
                 { name: 'Courses Run', center: true, value: r => r.Count, sort: r => -r.Count },
-                { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true }
+                { name: 'Average Age Grade', center: true, value: r => r.AgeGrade?.Display, sort: r => r.AgeGrade?.Value, descending: true }
             ];
 
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
