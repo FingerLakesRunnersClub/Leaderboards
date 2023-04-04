@@ -8,12 +8,20 @@
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=FingerLakesRunnersClub_Leaderboards&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=FingerLakesRunnersClub_Leaderboards)
 
 This repository contains the code for the various leaderboard apps that the Finger Lakes Runners Club uses:
-- [FLRC Challenge](https://challenge.fingerlakesrunners.org) ([2021 results](https://2021.challenge.fingerlakesrunners.org))
-- [FLRC Trail Circuit](https://trailcircuit.fingerlakesrunners.org) ([2021 results](https://2021.trailcircuit.fingerlakesrunners.org))
+- [FLRC Challenge](https://challenge.fingerlakesrunners.org)
+  (
+    [2022 results](https://2022.challenge.fingerlakesrunners.org),
+    [2021 results](https://2021.challenge.fingerlakesrunners.org)
+  )
+- [FLRC Trail Circuit](https://trailcircuit.fingerlakesrunners.org)
+  (
+    [2022 results](https://2022.trailcircuit.fingerlakesrunners.org),
+    [2021 results](https://2021.trailcircuit.fingerlakesrunners.org)
+  )
 
 ## Requirements
 
-- [.NET SDK 6](https://dotnet.microsoft.com/download/dotnet/6.0)
+- [.NET SDK 7](https://dotnet.microsoft.com/download/dotnet/7.0)
 
 ## Installation
 
