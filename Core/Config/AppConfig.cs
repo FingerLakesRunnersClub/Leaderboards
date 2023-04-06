@@ -20,6 +20,7 @@ public record AppConfig : IConfig
 
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
+	public IDictionary<byte, string> CommunityGroups { get; }
 
 
 	public AppConfig(IConfiguration config)
@@ -40,6 +41,7 @@ public record AppConfig : IConfig
 
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
+		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
 	}
 
 	private static IDictionary<string, string> GetStringDictionary(IConfiguration section)
@@ -47,6 +49,10 @@ public record AppConfig : IConfig
 			.ToDictionary(c => c.Key, c => c.Value);
 
 	private static IDictionary<string, byte> GetByteDictionary(IConfiguration section)
-		=> section.GetChildren().SelectMany(c => c.GetChildren())
+		=> GetStringDictionary(section)
 			.ToDictionary(c => c.Key, c => byte.Parse(c.Value));
+
+	private static IDictionary<byte,string> GetByteKeyedStringDictionary(IConfiguration section)
+		=> GetStringDictionary(section)
+			.ToDictionary(c => byte.Parse(c.Key), c => c.Value);
 }

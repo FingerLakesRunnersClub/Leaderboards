@@ -18,4 +18,5 @@ public interface IConfig
 
 	string CommunityURL { get; }
 	string CommunityKey { get; }
+	IDictionary<byte, string> CommunityGroups { get; }
 }
