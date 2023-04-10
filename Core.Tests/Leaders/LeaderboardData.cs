@@ -37,4 +37,14 @@ public static class LeaderboardData
 			new() { Course = Course, Athlete = Athlete4, StartTime = new Date(DateTime.Parse("1/10/2020")), Duration = new Time(new TimeSpan(4, 32, 10)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new() { Course = Course, Athlete = Athlete4, StartTime = new Date(DateTime.Parse("1/1/2020")), Duration = new Time(new TimeSpan(4, 4, 4)) }
 		};
+
+	public static readonly IDictionary<uint, Athlete> Athletes
+		= new Dictionary<uint, Athlete>
+		{
+			{ 123, Athlete1 },
+			{ 234, Athlete2 },
+			{ 345, Athlete3 },
+			{ 456, Athlete4 },
+			{ 567, Private }
+		};
 }
