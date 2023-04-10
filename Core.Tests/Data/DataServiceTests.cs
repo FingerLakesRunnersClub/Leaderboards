@@ -162,7 +162,7 @@ public class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		var course = await dataService.GetResults(123);
+		await dataService.GetResults(123);
 
 		//assert
 		Assert.True(logger.Called);
@@ -379,5 +379,100 @@ public class DataServiceTests
 
 		//assert
 		Assert.True(logger.Called);
+	}
+
+	[Fact]
+	public async Task CanGetCommunityUsers()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var aliasAPI = Substitute.For<IAliasAPI>();
+		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		communityAPI.GetUsers().Returns(new[]
+		{
+			JsonDocument.Parse(@"{""id"":123,""name"":""Steve"",""username"":""steve""}").RootElement,
+			JsonDocument.Parse(@"{""id"":234,""name"":""Test"",""username"":""test""}").RootElement
+		});
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
+
+		//act
+		var users = await dataService.GetCommunityUsers();
+
+		//assert
+		Assert.Equal(2, users.Count);
+		Assert.Equal("Steve", users.First().Name);
+		Assert.Equal("Test", users.Skip(1).First().Name);
+	}
+
+	[Fact]
+	public async Task CanGetCommunityGroupMembers()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var aliasAPI = Substitute.For<IAliasAPI>();
+		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		communityAPI.GetMembers("group").Returns(new[]
+		{
+			JsonDocument.Parse(@"{""id"":123,""name"":""Steve"",""username"":""steve""}").RootElement,
+			JsonDocument.Parse(@"{""id"":234,""name"":""Test"",""username"":""test""}").RootElement
+		});
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
+
+		//act
+		var users = await dataService.GetCommunityGroupMembers("group");
+
+		//assert
+		Assert.Equal(2, users.Count);
+		Assert.Equal("Steve", users.First().Name);
+		Assert.Equal("Test", users.Skip(1).First().Name);
+	}
+
+	[Fact]
+	public async Task CanAddMembersToGroups()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var aliasAPI = Substitute.For<IAliasAPI>();
+		var groupAPI = Substitute.For<IGroupAPI>();
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		communityAPI.GetGroup("group1").Returns(JsonDocument.Parse(@"{""id"":123,""name"":""group1""}").RootElement);
+		communityAPI.GetGroup("group2").Returns(JsonDocument.Parse(@"{""id"":234,""name"":""group2""}").RootElement);
+		var arg1 = Array.Empty<string>();
+		var arg2 = Array.Empty<string>();
+		await communityAPI.AddMembers(123, Arg.Do<IReadOnlyCollection<string>>(c => arg1 = c.ToArray()));
+		await communityAPI.AddMembers(234, Arg.Do<IReadOnlyCollection<string>>(c => arg2 = c.ToArray()));
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
+
+		var members = new Dictionary<string, string[]>
+		{
+			{ "group1", new[] { "user1", "user2" } },
+			{ "group2", new[] { "user1", "user3" } }
+		};
+
+		//act
+		await dataService.AddCommunityGroupMembers(members);
+
+		//assert
+		Assert.Contains("user1", arg1);
+		Assert.Contains("user2", arg1);
+		Assert.DoesNotContain("user3", arg1);
+
+		Assert.Contains("user1", arg2);
+		Assert.DoesNotContain("user2", arg2);
+		Assert.Contains("user3", arg2);
 	}
 }

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Groups;
@@ -46,7 +47,7 @@ public class DataService : IDataService
 			.Select(c => new Course
 			{
 				Race = race,
-				ID = uint.Parse(c.Value),
+				ID = uint.Parse(c.Value ?? "0"),
 				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section.GetValue<string>("Distance") : c.Key)
 			})
 			.OrderBy(c => c.Distance)
@@ -193,9 +194,9 @@ public class DataService : IDataService
 	{
 		foreach (var result in course.Results)
 		{
-				result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityStarToday(StarType.GroupRun);
-				result.CommunityStars[StarType.Story] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasNarrative()) && !result.HasCommunityStarToday(StarType.Story);
-				result.CommunityStars[StarType.ShopLocal] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasLocalBusiness()) && !result.HasCommunityStarToday(StarType.ShopLocal);
+			result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityStarToday(StarType.GroupRun);
+			result.CommunityStars[StarType.Story] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasNarrative()) && !result.HasCommunityStarToday(StarType.Story);
+			result.CommunityStars[StarType.ShopLocal] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasLocalBusiness()) && !result.HasCommunityStarToday(StarType.ShopLocal);
 		}
 	}
 
@@ -235,4 +236,33 @@ public class DataService : IDataService
 
 		return _groups;
 	}
+
+	public async Task<IReadOnlyCollection<User>> GetCommunityUsers()
+	{
+		var users = await _communityAPI.GetUsers();
+		return users.Select(ParseUser).ToArray();
+	}
+
+	public async Task<IReadOnlyCollection<User>> GetCommunityGroupMembers(string groupID)
+	{
+		var users = await _communityAPI.GetMembers(groupID);
+		return users.Select(ParseUser).ToArray();
+	}
+
+	public async Task AddCommunityGroupMembers(IDictionary<string, string[]> groupAdditions)
+	{
+		var groupTasks = groupAdditions.Select(g => _communityAPI.GetGroup(g.Key));
+		var groupInfo = await Task.WhenAll(groupTasks);
+		var groupIDs = groupInfo.ToDictionary(json => json.GetProperty("name").GetString(), json => json.GetProperty("id").GetUInt16());
+		var memberTasks = groupAdditions.Select(g => _communityAPI.AddMembers(groupIDs[g.Key], g.Value));
+		await Task.WhenAll(memberTasks);
+	}
+
+	private static User ParseUser(JsonElement json)
+		=> new()
+		{
+			ID = json.GetProperty("id").GetUInt16(),
+			Name = json.GetProperty("name").GetString(),
+			Username = json.GetProperty("username").GetString()
+		};
 }
