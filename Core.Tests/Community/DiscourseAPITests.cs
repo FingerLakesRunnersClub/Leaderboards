@@ -9,6 +9,19 @@ namespace FLRC.Leaderboards.Core.Tests.Community;
 public class DiscourseAPITests
 {
 	[Fact]
+	public void CanCreateWithoutURL()
+	{
+		//arrange
+		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]},""posts_count"":0}");
+		var config = Substitute.For<IConfig>();
+
+		//act
+		var api = new DiscourseAPI(new HttpClient(http), config);
+
+		//assert
+		Assert.NotNull(api);
+	}
+	[Fact]
 	public async Task RequestHasRelevantHeadersSet()
 	{
 		//arrange

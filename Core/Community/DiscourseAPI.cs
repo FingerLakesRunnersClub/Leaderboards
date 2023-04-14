@@ -12,6 +12,11 @@ public class DiscourseAPI : ICommunityAPI
 
 	public DiscourseAPI(HttpClient http, IConfig config)
 	{
+		if (string.IsNullOrWhiteSpace(config.CommunityURL))
+		{
+			return;
+		}
+
 		_http = http;
 		_http.BaseAddress = new Uri(config.CommunityURL);
 		if (!string.IsNullOrWhiteSpace(config.CommunityKey))
@@ -22,11 +27,6 @@ public class DiscourseAPI : ICommunityAPI
 
 	public async Task<IReadOnlyCollection<JsonElement>> GetPosts(ushort id)
 	{
-		if (_http == null)
-		{
-			return Array.Empty<JsonElement>();
-		}
-
 		var page1 = await GetPostResponse(id, 1);
 		var postCount = page1.GetProperty("posts_count").GetUInt16();
 		var pageCount = (byte) Math.Ceiling(postCount * 1.0 / PageSize);
