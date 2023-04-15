@@ -57,54 +57,6 @@ public class PostTests
 	}
 
 	[Fact]
-	public void HasLocalBusinessWhenHeaderFound()
-	{
-		//arrange
-		var post = new Post
-		{
-			Content = "## Shop Local"
-		};
-
-		//act
-		var hasLocalBusiness = post.HasLocalBusiness();
-
-		//assert
-		Assert.True(hasLocalBusiness);
-	}
-
-	[Fact]
-	public void DoesNotHaveLocalBusinessWhenHeaderNotFound()
-	{
-		//arrange
-		var post = new Post
-		{
-			Content = "# Shop Local"
-		};
-
-		//act
-		var hasLocalBusiness = post.HasLocalBusiness();
-
-		//assert
-		Assert.False(hasLocalBusiness);
-	}
-
-	[Fact]
-	public void DoesNotHaveLocalBusinessWhenQuoted()
-	{
-		//arrange
-		var post = new Post
-		{
-			Content = "[quote] ## Shop Local [/quote] yeah right"
-		};
-
-		//act
-		var hasLocalBusiness = post.HasLocalBusiness();
-
-		//assert
-		Assert.False(hasLocalBusiness);
-	}
-
-	[Fact]
 	public void MatchesResultWhenNameAndDateMatch()
 	{
 		//arrange

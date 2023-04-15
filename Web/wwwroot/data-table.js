@@ -17,14 +17,6 @@ function communityEmoji(stars) {
 				</span>`
 			: '')
 		+ `</span>
-			<span class="group">`
-		+ (stars.ShopLocal
-			? `<span class="star" title="Shop Local">
-					<i class="fa fa-utensils"></i>
-					<i class="fa fa-star"></i>
-				</span>`
-			: '')
-		+ `</span>
 		</div>`;
 }
 

@@ -15,9 +15,6 @@ public class Post
 	public bool HasNarrative()
 		=> HasHeader("## Story");
 
-	public bool HasLocalBusiness()
-		=> HasHeader("## Shop Local");
-
 	private bool HasHeader(string text)
 		=> Content.Contains(text) && NotQuoted(text);
 

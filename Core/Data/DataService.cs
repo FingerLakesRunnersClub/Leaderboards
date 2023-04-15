@@ -190,13 +190,12 @@ public class DataService : IDataService
 		}
 	}
 
-	private void SetCommunityStars(Course course)
+	private static void SetCommunityStars(Course course)
 	{
 		foreach (var result in course.Results)
 		{
 			result.CommunityStars[StarType.GroupRun] = result.IsGroupRun() && !result.HasCommunityStarToday(StarType.GroupRun);
 			result.CommunityStars[StarType.Story] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasNarrative()) && !result.HasCommunityStarToday(StarType.Story);
-			result.CommunityStars[StarType.ShopLocal] = result.Course.Race.CommunityPosts.Any(p => p.Matches(result) && p.HasLocalBusiness()) && !result.HasCommunityStarToday(StarType.ShopLocal);
 		}
 	}
 

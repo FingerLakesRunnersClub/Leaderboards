@@ -90,7 +90,7 @@ public class OverallControllerTests
 
 		//assert
 		var vm = (OverallResultsViewModel<Stars>) response.Model;
-		Assert.Equal(LeaderboardData.Athlete1, vm!.RankedResults.First().Result.Athlete);
+		Assert.Equal(LeaderboardData.Athlete4, vm!.RankedResults.First().Result.Athlete);
 	}
 
 	[Fact]

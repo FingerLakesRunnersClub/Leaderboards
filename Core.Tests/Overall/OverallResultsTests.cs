@@ -125,7 +125,7 @@ public class OverallResultsTests
 		var points = vm.CommunityStars();
 
 		//assert
-		Assert.Equal(LeaderboardData.Athlete1, points.First().Result.Athlete);
+		Assert.Equal(LeaderboardData.Athlete4, points.First().Result.Athlete);
 	}
 
 	[Fact]
@@ -138,7 +138,7 @@ public class OverallResultsTests
 		var points = vm.CommunityStars(Filter.F);
 
 		//assert
-		Assert.Equal(LeaderboardData.Athlete3, points.First().Result.Athlete);
+		Assert.Equal(LeaderboardData.Athlete4, points.First().Result.Athlete);
 	}
 
 	[Fact]

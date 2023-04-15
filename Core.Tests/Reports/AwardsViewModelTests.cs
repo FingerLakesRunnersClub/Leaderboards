@@ -20,21 +20,20 @@ public class AwardsViewModelTests
 		var vm = new AwardsViewModel(TestHelpers.Config, results);
 
 		//assert
-		var awards = vm.Awards;
-		var athletes = awards.Count;
-		var count = awards.Sum(athlete => athlete.Value.Length);
-		var amount = awards.Sum(athlete => athlete.Value.Sum(award => award.Value));
+		var athletes = vm.Awards.Count;
+		var count = vm.Awards.Sum(athlete => athlete.Value.Length);
+		var amount = vm.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value));
 		Assert.Equal(4, athletes);
 		Assert.Equal(27, count);
 		Assert.Equal(91, amount);
-		Assert.Contains("1st Overall Points (M)", awards[LeaderboardData.Athlete1].Select(a => a.Name));
-		Assert.Contains("1st Overall Community", awards[LeaderboardData.Athlete1].Select(a => a.Name));
-		Assert.Contains("2nd Overall Points (M)", awards[LeaderboardData.Athlete2].Select(a => a.Name));
-		Assert.Contains("1st Overall Miles", awards[LeaderboardData.Athlete2].Select(a => a.Name));
-		Assert.Contains("1st Overall Points (F)", awards[LeaderboardData.Athlete3].Select(a => a.Name));
-		Assert.Contains("2nd Overall Community", awards[LeaderboardData.Athlete3].Select(a => a.Name));
-		Assert.Contains("2nd Overall Points (F)", awards[LeaderboardData.Athlete4].Select(a => a.Name));
-		Assert.Contains("1st Overall Miles", awards[LeaderboardData.Athlete4].Select(a => a.Name));
+		Assert.Contains("1st Overall Points (M)", vm.Awards[LeaderboardData.Athlete1].Select(a => a.Name));
+		Assert.Contains("2nd Overall Community", vm.Awards[LeaderboardData.Athlete1].Select(a => a.Name));
+		Assert.Contains("2nd Overall Points (M)", vm.Awards[LeaderboardData.Athlete2].Select(a => a.Name));
+		Assert.Contains("1st Overall Miles", vm.Awards[LeaderboardData.Athlete2].Select(a => a.Name));
+		Assert.Contains("1st Overall Points (F)", vm.Awards[LeaderboardData.Athlete3].Select(a => a.Name));
+		Assert.Contains("1st Overall Community", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
+		Assert.Contains("2nd Overall Points (F)", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
+		Assert.Contains("1st Overall Miles", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
 	}
 
 	[Fact]
@@ -66,6 +65,5 @@ public class AwardsViewModelTests
 		Assert.Contains("Mile 1–29 (F)", awards[a2].Select(a => a.Name));
 		Assert.Contains("Mile Fastest (F)", awards[a3].Select(a => a.Name));
 		Assert.Contains("Mile 30–39 (F)", awards[a4].Select(a => a.Name));
-
 	}
 }

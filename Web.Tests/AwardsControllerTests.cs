@@ -31,11 +31,11 @@ public class AwardsControllerTests
 		Assert.Equal(27, count);
 		Assert.Equal(91, amount);
 		Assert.Contains("1st Overall Points (M)", vm.Awards[LeaderboardData.Athlete1].Select(a => a.Name));
-		Assert.Contains("1st Overall Community", vm.Awards[LeaderboardData.Athlete1].Select(a => a.Name));
+		Assert.Contains("2nd Overall Community", vm.Awards[LeaderboardData.Athlete1].Select(a => a.Name));
 		Assert.Contains("2nd Overall Points (M)", vm.Awards[LeaderboardData.Athlete2].Select(a => a.Name));
 		Assert.Contains("1st Overall Miles", vm.Awards[LeaderboardData.Athlete2].Select(a => a.Name));
 		Assert.Contains("1st Overall Points (F)", vm.Awards[LeaderboardData.Athlete3].Select(a => a.Name));
-		Assert.Contains("2nd Overall Community", vm.Awards[LeaderboardData.Athlete3].Select(a => a.Name));
+		Assert.Contains("1st Overall Community", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
 		Assert.Contains("2nd Overall Points (F)", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
 		Assert.Contains("1st Overall Miles", vm.Awards[LeaderboardData.Athlete4].Select(a => a.Name));
 	}

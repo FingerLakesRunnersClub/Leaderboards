@@ -190,7 +190,7 @@ public class CourseTests
 		var course = new Course { Results = results, Distance = new Distance("10K") };
 		results.AddRange(new[]
 		{
-			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true, [StarType.ShopLocal] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
@@ -201,7 +201,7 @@ public class CourseTests
 
 		//assert
 		Assert.Equal(3, points.Count);
-		Assert.Equal(3, points[0].Value.Value);
+		Assert.Equal(2, points[0].Value.Value);
 		Assert.Equal(2, points[1].Value.Value);
 		Assert.Equal(1, points[2].Value.Value);
 		Assert.Equal(CourseData.Athlete1, points[0].Result.Athlete);
@@ -217,9 +217,9 @@ public class CourseTests
 		var course = new Course { Results = results, Distance = new Distance("10K") };
 		results.AddRange(new[]
 		{
-			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true, [StarType.ShopLocal] = true } },
-			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
-			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
+			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
 		});
 
@@ -228,8 +228,8 @@ public class CourseTests
 
 		//assert
 		Assert.Equal(2, points.Count);
-		Assert.Equal(3, points[0].Value.Value);
-		Assert.Equal(2, points[1].Value.Value);
+		Assert.Equal(2, points[0].Value.Value);
+		Assert.Equal(1, points[1].Value.Value);
 		Assert.Equal(CourseData.Athlete1, points[0].Result.Athlete);
 		Assert.Equal(CourseData.Athlete3, points[1].Result.Athlete);
 	}

@@ -124,9 +124,7 @@ public class DataServiceTests
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var posts = new List<Post>
 		{
-			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Story" },
-			new() { Name = "Other Athlete", Date = new DateTime(2011, 9, 24), Content = "## Shop Local" },
-			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 25), Content = "## Shop Local" },
+			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Story" }
 		};
 		communityAPI.ParsePosts(Arg.Any<IReadOnlyCollection<JsonElement>>()).Returns(posts);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
@@ -140,7 +138,6 @@ public class DataServiceTests
 		var result = course.Results.Single();
 		Assert.False(result.CommunityStars[StarType.GroupRun]);
 		Assert.True(result.CommunityStars[StarType.Story]);
-		Assert.False(result.CommunityStars[StarType.ShopLocal]);
 	}
 
 	[Fact]

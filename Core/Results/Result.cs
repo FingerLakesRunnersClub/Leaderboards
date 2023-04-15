@@ -23,8 +23,7 @@ public class Result : IComparable<Result>
 		= new Dictionary<StarType, bool>
 		{
 			{ StarType.GroupRun, false },
-			{ StarType.Story, false },
-			{ StarType.ShopLocal, false }
+			{ StarType.Story, false }
 		};
 
 	public byte AgeOnDayOfRun
