@@ -93,7 +93,7 @@ public class WebScorer : IDataSource
 
 	private bool IsPrivate(JsonElement element)
 		=> _config.PrivateField is not null
-		   && element.GetProperty(_config.PrivateField).GetString()?.ToLowerInvariant() == "yes";
+		   && element.GetProperty(_config.PrivateField).GetString() == "Y";
 
 	private static Date ParseStart(string value)
 	{
