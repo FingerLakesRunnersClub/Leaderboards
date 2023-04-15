@@ -69,8 +69,10 @@ public class WebScorer : IDataSource
 			         : null)
 		         ?? element.GetProperty("UserId").GetUInt32();
 
+		var nowPrivate = IsPrivate(element);
 		if (athletes.ContainsKey(id))
 		{
+			athletes[id].Private = athletes[id].Private || nowPrivate;
 			return athletes[id];
 		}
 
@@ -81,7 +83,7 @@ public class WebScorer : IDataSource
 			Age = element.GetProperty("Age").GetByte(),
 			Category = Category.Parse(element.GetProperty("Gender").GetString()),
 			DateOfBirth = GetDOB(element),
-			Private = IsPrivate(element)
+			Private = nowPrivate
 		};
 	}
 
