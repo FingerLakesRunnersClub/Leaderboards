@@ -12,9 +12,6 @@ public class OverallResultsViewModel : DataTableViewModel
 	public override string Title => ResultType;
 	public string ResultType { get; init; }
 
-	public int? Month { get; init; }
-	public IReadOnlyCollection<DateOnly> Months { get; init; }
-
 	public override string ResponsiveBreakpoint
 		=> ResultType switch
 		{

@@ -12,7 +12,7 @@
 	@foreach (var key in Model.Config.Competitions.Keys)
 	{
 		var category = key.Contains("/") ? string.Empty : "X";
-		var url = $"/Overall/{key}/{category}/{Model.Month}".Replace("//", "/");
+		var url = $"/Overall/{key}/{category}".Replace("//", "/");
 		<a class="btn btn-sm btn-@style(Model.Config.Competitions[key])" href="@url">@Model.Config.Competitions[key]</a>
 	}
 </div>

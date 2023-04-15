@@ -1,4 +1,3 @@
-using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Races;

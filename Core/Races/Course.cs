@@ -246,10 +246,4 @@ public class Course
 			{ Category.M.Display, GroupedResults(Filter.M).Any() ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
 		}
 	};
-
-	public IReadOnlyCollection<DateOnly> DistinctMonths()
-		=> _results.Select(r => new DateOnly(r.StartTime.Value.Year, r.StartTime.Value.Month, 1))
-			.Distinct()
-			.OrderBy(d => d)
-			.ToArray();
 }

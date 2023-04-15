@@ -61,7 +61,7 @@ public static class App
 
 		app.UseEndpoints(endpoints =>
 		{
-			endpoints.MapControllerRoute("Leaderboard", "{controller=Leaderboard}/{action=Index}/{id?}/{month?}");
+			endpoints.MapControllerRoute("Leaderboard", "{controller=Leaderboard}/{action=Index}/{id?}");
 			endpoints.MapControllerRoute("Athlete", "{controller}/{id}/{action}/{courseID}/{distance?}");
 			endpoints.MapControllerRoute("Course", "{controller}/{id}/{distance}/{action}/{category?}");
 			endpoints.MapControllerRoute("Default", "{controller}/{id}/{action}");

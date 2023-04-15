@@ -20,29 +20,23 @@ public class CourseController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Fastest(uint id, string distance, string category = null, byte? month = null, byte? ag = null)
+	public async Task<ViewResult> Fastest(uint id, string distance, string category = null, byte? ag = null)
 	{
-		var filter = new Filter { Category = Category.Parse(category), Month = month, AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
+		var filter = new Filter { Category = Category.Parse(category), AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
 		return View(await GetResults(id, distance, ResultType.Fastest, filter, c => c.Fastest(filter)));
 	}
 
-	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null, byte? month = null)
+	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null)
 	{
-		var filter = new Filter { Category = Category.Parse(category), Month = month };
+		var filter = new Filter { Category = Category.Parse(category) };
 		return View(await GetResults(id, distance, ResultType.BestAverage, filter, c => c.BestAverage(filter)));
 	}
 
-	public async Task<ViewResult> MostRuns(uint id, string distance, byte? month = null)
-	{
-		var filter = new Filter { Month = month };
-		return View(await GetResults(id, distance, ResultType.MostRuns, filter, c => c.MostRuns(filter)));
-	}
+	public async Task<ViewResult> MostRuns(uint id, string distance)
+		=> View(await GetResults(id, distance, ResultType.MostRuns, Filter.None, c => c.MostRuns(Filter.None)));
 
-	public async Task<ViewResult> Community(uint id, string distance, byte? month = null)
-	{
-		var filter = new Filter { Month = month };
-		return View(await GetResults(id, distance, ResultType.Community, filter, c => c.CommunityStars(filter)));
-	}
+	public async Task<ViewResult> Community(uint id, string distance)
+		=> View(await GetResults(id, distance, ResultType.Community, Filter.None, c => c.CommunityStars(Filter.None)));
 
 	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string distance, ResultType resultType, Filter filter, Func<Course, RankedList<T>> results)
 	{
@@ -53,25 +47,23 @@ public class CourseController : Controller
 			ResultType = new FormattedResultType(resultType),
 			Filter = filter,
 			Course = course,
-			Months = course.DistinctMonths(),
-			RankedResults = results(course),
+			RankedResults = results(course)
 		};
 	}
 
-	public async Task<ViewResult> Team(uint id, string distance, byte? month = null) => View(await GetTeamResults(id, distance, month));
+	public async Task<ViewResult> Team(uint id, string distance)
+		=> View(await GetTeamResults(id, distance));
 
-	private async Task<CourseResultsViewModel<TeamResults>> GetTeamResults(uint courseID, string distance, byte? month = null)
+	private async Task<CourseResultsViewModel<TeamResults>> GetTeamResults(uint courseID, string distance)
 	{
 		var course = await _dataService.GetResults(courseID, distance);
-		var filter = new Filter { Month = month };
 		return new CourseResultsViewModel<TeamResults>
 		{
 			Config = _config,
 			ResultType = new FormattedResultType(ResultType.Team),
-			Filter = filter,
+			Filter = Filter.None,
 			Course = course,
-			Months = course.DistinctMonths(),
-			RankedResults = course.TeamPoints(filter),
+			RankedResults = course.TeamPoints(Filter.None),
 		};
 	}
 }

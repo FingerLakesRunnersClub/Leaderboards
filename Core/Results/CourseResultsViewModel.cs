@@ -15,8 +15,6 @@ public class CourseResultsViewModel : DataTableViewModel
 	public FormattedResultType ResultType { get; init; }
 	public Filter Filter { get; init; }
 	public Course Course { get; init; }
-	public IReadOnlyCollection<DateOnly> Months { get; init; }
-
 
 	public override string ResponsiveBreakpoint
 		=> ResultType.Value switch
