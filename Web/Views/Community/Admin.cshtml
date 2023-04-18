@@ -8,7 +8,7 @@
 		<form method="post" action="">
 			<input type="submit" value="Sync" class="btn btn-success float-right"/>
 			<h3>Athletes Missing Community Groups</h3>
-			<table class="table table-bordered table-striped table-hover table-sm">
+			<table class="table table-bordered table-striped table-hover table-sm table-responsive-md">
 				<thead>
 				<tr>
 					<th class="text-center">Add</th>
@@ -48,7 +48,7 @@
 		</form>
 
 		<h3>Athletes Without Community Users</h3>
-		<table class="table table-bordered table-striped table-hover table-sm">
+		<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 			<thead>
 			<tr>
 				<th>Name</th>
@@ -67,7 +67,7 @@
 		</table>
 
 		<h3>Synchronized Athletes</h3>
-		<table class="table table-bordered table-striped table-hover table-sm">
+		<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 			<thead>
 			<tr>
 				<th>Name</th>
@@ -87,12 +87,6 @@
 						@foreach (var group in row.Current)
 						{
 							<span class="badge badge-pill badge-primary">@group</span>
-						}
-					</td>
-					<td>
-						@foreach (var group in row.Missing)
-						{
-							<span class="badge badge-pill badge-secondary">@group</span>
 						}
 					</td>
 				</tr>
