@@ -22,6 +22,7 @@ public static class App
 		ConfigureServices(builder.Services);
 		var app = builder.Build();
 		Configure(app, app.Environment);
+		await app.Services.GetRequiredService<IDataService>().GetAthletes();
 		await app.RunAsync();
 	}
 
