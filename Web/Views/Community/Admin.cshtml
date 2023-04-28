@@ -7,16 +7,16 @@
 	<div class="card-body">
 		<form method="post" action="">
 			<input type="submit" value="Sync" class="btn btn-success float-right"/>
-			<h3>Athletes Missing Community Groups</h3>
-			<table class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+			<h3 id="missing-groups">Athletes Missing Community Groups</h3>
+			<table aria-labelledby="missing-groups" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
 				<thead>
 				<tr>
-					<th class="text-center">Add</th>
-					<th>Name</th>
-					<th class="text-center">Team</th>
-					<th>Username</th>
-					<th>Current</th>
-					<th>Missing</th>
+					<th scope="col" class="text-center">Add</th>
+					<th scope="col">Name</th>
+					<th scope="col" class="text-center">Team</th>
+					<th scope="col">Username</th>
+					<th scope="col">Current</th>
+					<th scope="col">Missing</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -47,12 +47,12 @@
 			</table>
 		</form>
 
-		<h3>Athletes Without Community Users</h3>
-		<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
+		<h3 id="no-users">Athletes Without Community Users</h3>
+		<table aria-labelledby="no-users" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th>Team</th>
+				<th scope="col">Name</th>
+				<th scope="col">Team</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -66,14 +66,14 @@
 			</tbody>
 		</table>
 
-		<h3>Synchronized Athletes</h3>
-		<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
+		<h3 id="matched">Synchronized Athletes</h3>
+		<table aria-labelledby="matched" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th>Team</th>
-				<th>Username</th>
-				<th>Current</th>
+				<th scope="col">Name</th>
+				<th scope="col">Team</th>
+				<th scope="col">Username</th>
+				<th scope="col">Current</th>
 			</tr>
 			</thead>
 			<tbody>

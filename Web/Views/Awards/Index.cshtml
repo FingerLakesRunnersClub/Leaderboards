@@ -1,29 +1,29 @@
 @using FLRC.Leaderboards.Core.Reports
 @model AwardsViewModel
 
-<h2>@Model.Title</h2>
+<h2 id="table-header">@Model.Title</h2>
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
-		<table class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+		<table aria-labelledby="table-header" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
 			<thead>
 			<tr>
-				<th>Name</th>
-				<th class="text-right">Total</th>
-				<th>Award</th>
-				<th class="text-right">Score</th>
+				<th scope="col">Name</th>
+				<th scope="col" class="text-right">Total</th>
+				<th scope="col">Award</th>
+				<th scope="col" class="text-right">Score</th>
 			</tr>
 			</thead>
 			@foreach (var athlete in Model.Awards.OrderBy(a => a.Key.Name))
 			{
 				<tbody>
 				<tr>
-					<th rowspan="@(athlete.Value.Length + 1)">
+					<th scope="rowgroup" rowspan="@(athlete.Value.Length + 1)">
 						<a href="/Athlete/Index/@athlete.Key.ID">
 							@athlete.Key.Name
 						</a>
 					</th>
-					<th rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value).ToString("C0")</th>
+					<th scope="rowgroup" rowspan="@(athlete.Value.Length + 1)" class="text-right">@athlete.Value.Sum(a => a.Value).ToString("C0")</th>
 				</tr>
 				@foreach (var award in athlete.Value)
 				{
@@ -43,8 +43,8 @@
 			}
 			<tfoot>
 			<tr>
-				<th>Total</th>
-				<th class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value)).ToString("C0")</th>
+				<th scope="row">Total</th>
+				<th scope="row" class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value)).ToString("C0")</th>
 				<td colspan="2">Athletes: @Model.Awards.Count / Awards: @Model.Awards.Sum(a => a.Value.Length)</td>
 			</tr>
 			</tfoot>

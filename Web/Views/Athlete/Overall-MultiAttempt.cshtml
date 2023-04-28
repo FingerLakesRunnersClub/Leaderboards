@@ -1,53 +1,55 @@
 ﻿@using FLRC.Leaderboards.Core.Athletes
 @model AthleteSummaryViewModel
 
-<dt class="col-6">
-	Team
-</dt>
-<dd class="col-6">
-	@Model.Summary.Athlete.Team.Display
-	(<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
-</dd>
-
-@if (Model.Summary.Athlete.Category != null && !Model.Summary.Athlete.Private)
-{
+<dl>
 	<dt class="col-6">
-		Overall Points
+		Team
 	</dt>
 	<dd class="col-6">
-		@Model.Summary.OverallPoints?.Value?.Display
-		(<a href="/Overall/Points/@Model.Summary.Athlete.Category.Display">@Model.Summary.OverallPoints?.Rank?.Display</a>)
+		@Model.Summary.Athlete.Team.Display
+		(<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
 	</dd>
-}
 
-@if (!Model.Summary.Athlete.Private)
-{
+	@if (Model.Summary.Athlete.Category != null && !Model.Summary.Athlete.Private)
+	{
+		<dt class="col-6">
+			Overall Points
+		</dt>
+		<dd class="col-6">
+			@Model.Summary.OverallPoints?.Value?.Display
+			(<a href="/Overall/Points/@Model.Summary.Athlete.Category.Display">@Model.Summary.OverallPoints?.Rank?.Display</a>)
+		</dd>
+	}
+
+	@if (!Model.Summary.Athlete.Private)
+	{
+		<dt class="col-6">
+			<span class="d-none d-sm-inline">Average</span>
+			<span class="d-sm-none">Avg</span>
+			Age Grade
+		</dt>
+		<dd class="col-6">
+			@Model.Summary.OverallAgeGrade?.Value?.Display
+			(<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
+		</dd>
+	}
+
 	<dt class="col-6">
-		<span class="d-none d-sm-inline">Average</span>
-		<span class="d-sm-none">Avg</span>
-		Age Grade
+		Total Miles
 	</dt>
 	<dd class="col-6">
-		@Model.Summary.OverallAgeGrade?.Value?.Display
-		(<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
+		@Model.Summary.OverallMiles?.Value?.Display
+		(<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
 	</dd>
-}
 
-<dt class="col-6">
-	Total Miles
-</dt>
-<dd class="col-6">
-	@Model.Summary.OverallMiles?.Value?.Display
-	(<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
-</dd>
-
-@if (Model.Config.Features.CommunityStars)
-{
-	<dt class="col-6">
-		Community Stars
-	</dt>
-	<dd class="col-6">
-		@Model.Summary.OverallCommunityStars?.Value?.Display
-		(<a href="/Overall/Community">@Model.Summary.OverallCommunityStars?.Rank?.Display</a>)
-	</dd>
-}
+	@if (Model.Config.Features.CommunityStars)
+	{
+		<dt class="col-6">
+			Community Stars
+		</dt>
+		<dd class="col-6">
+			@Model.Summary.OverallCommunityStars?.Value?.Display
+			(<a href="/Overall/Community">@Model.Summary.OverallCommunityStars?.Rank?.Display</a>)
+		</dd>
+	}
+</dl>
