@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class SpeedComparisonTests
+public sealed class SpeedComparisonTests
 {
 	[Theory]
 	[InlineData(-5.43, "5.4% faster")]

@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class ResultsExtensionsTests
+public sealed class ResultsExtensionsTests
 {
 	[Fact]
 	public void PerformsNoFilteringByDefault()
@@ -18,7 +18,7 @@ public class ResultsExtensionsTests
 		var filtered = results.Filter(filter).ToArray();
 
 		//assert
-		Assert.Equal(results.Count, filtered.Count());
+		Assert.Equal(results.Count, filtered.Length);
 	}
 
 	[Fact]

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Teams;
 
-public class TeamResultsTests
+public sealed class TeamResultsTests
 {
 	[Fact]
 	public void CanGetTotalPoints()

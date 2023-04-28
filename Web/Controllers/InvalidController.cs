@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class InvalidController : Controller
+public sealed class InvalidController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

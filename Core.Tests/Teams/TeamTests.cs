@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Teams;
 
-public class TeamTests
+public sealed class TeamTests
 {
 	[Theory]
 	[InlineData(2, "1–29")]

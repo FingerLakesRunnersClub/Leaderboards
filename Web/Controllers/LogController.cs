@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class LogController : Controller
+public sealed class LogController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

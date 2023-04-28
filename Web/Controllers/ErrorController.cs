@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class ErrorController : Controller
+public sealed class ErrorController : Controller
 {
 	private readonly IConfig _config;
 	private readonly IHttpContextAccessor _http;

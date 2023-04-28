@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Races;
 
-public class CourseTests
+public sealed class CourseTests
 {
 	[Fact]
 	public void CanGetFastestResults()
@@ -299,7 +299,7 @@ public class CourseTests
 		var results = course.ResultsAsOf(new DateTime(2020, 2, 5));
 
 		//assert
-		Assert.Equal(5, results.Count());
+		Assert.Equal(5, results.Count);
 	}
 
 	[Fact]

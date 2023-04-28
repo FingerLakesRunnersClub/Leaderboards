@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class TeamController : Controller
+public sealed class TeamController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

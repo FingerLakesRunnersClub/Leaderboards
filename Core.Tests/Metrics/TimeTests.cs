@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class TimeTests
+public sealed class TimeTests
 {
 	[Fact]
 	public void CanGetTimeToDisplay()

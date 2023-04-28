@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core;
 
-public class ErrorViewModel : ViewModel
+public sealed class ErrorViewModel : ViewModel
 {
 	public override string Title => Error != null ? "Error" : "Not Found";
 

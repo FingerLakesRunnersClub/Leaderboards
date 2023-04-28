@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class AthleteViewModelTests
+public sealed class AthleteViewModelTests
 {
 	[Fact]
 	public void TitleIsAthleteName()

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class NameExtensionsTests
+public sealed class NameExtensionsTests
 {
 	[Fact]
 	public void IdenticalNamesProduceIdenticalIDs()

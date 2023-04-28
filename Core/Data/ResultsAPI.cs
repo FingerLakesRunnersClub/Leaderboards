@@ -2,7 +2,7 @@ using System.Text.Json;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class ResultsAPI<T> : IResultsAPI where T : IDataSource
+public sealed class ResultsAPI<T> : IResultsAPI where T : IDataSource
 {
 	private readonly HttpClient _httpClient;
 	public IDataSource Source { get; }

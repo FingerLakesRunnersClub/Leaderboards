@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class FormattedResultTypeTests
+public sealed class FormattedResultTypeTests
 {
 	[Fact]
 	public void CanDisplayName()

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class LeaderboardControllerTests
+public sealed class LeaderboardControllerTests
 {
 	[Fact]
 	public async Task CanGetAllCourses()

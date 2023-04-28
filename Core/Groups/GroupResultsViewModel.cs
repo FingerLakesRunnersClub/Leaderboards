@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Groups;
 
-public class GroupResultsViewModel : OverallResultsViewModel<TeamMember>
+public sealed class GroupResultsViewModel : OverallResultsViewModel<TeamMember>
 {
 	public override string Title => $"{Name} Group Members";
 

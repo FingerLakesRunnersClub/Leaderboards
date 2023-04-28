@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class PointsTests
+public sealed class PointsTests
 {
 	[Fact]
 	public void CanDisplayRoundedPoints()

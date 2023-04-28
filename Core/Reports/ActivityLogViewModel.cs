@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Reports;
 
-public class ActivityLogViewModel : ViewModel
+public sealed class ActivityLogViewModel : ViewModel
 {
 	public override string Title => $"Activity Log" + (Course != null ? $" — {Course.Name}" : string.Empty);
 

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class TeamControllerTests
+public sealed class TeamControllerTests
 {
 	[Fact]
 	public async Task CanGetTeamNameFromViewModel()

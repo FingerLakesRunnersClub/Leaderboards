@@ -2,7 +2,7 @@
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public class Race
+public sealed class Race
 {
 	public uint ID { get; init; }
 	public string Name { get; init; }

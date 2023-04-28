@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class AgeGradeTests
+public sealed class AgeGradeTests
 {
 	[Fact]
 	public void CanDisplayRoundedAgeGradeAsPercent()

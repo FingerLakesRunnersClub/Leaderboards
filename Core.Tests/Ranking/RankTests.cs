@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Ranking;
 
-public class RankTests
+public sealed class RankTests
 {
 	[Theory]
 	[InlineData(0, "0")]

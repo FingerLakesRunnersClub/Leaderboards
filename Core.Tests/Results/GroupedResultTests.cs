@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class GroupedResultTests
+public sealed class GroupedResultTests
 {
 	[Fact]
 	public void CanGetAverageDuration()

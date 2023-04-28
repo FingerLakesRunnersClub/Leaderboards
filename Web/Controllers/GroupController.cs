@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class GroupController : Controller
+public sealed class GroupController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

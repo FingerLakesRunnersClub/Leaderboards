@@ -12,7 +12,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class CourseControllerTests
+public sealed class CourseControllerTests
 {
 	[Fact]
 	public async Task ResultsGetCourseInfo()

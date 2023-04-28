@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Races;
 
-public class DateTests
+public sealed class DateTests
 {
 	[Fact]
 	public void CanFormatDate()

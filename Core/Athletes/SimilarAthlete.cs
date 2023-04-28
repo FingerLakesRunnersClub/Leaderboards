@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class SimilarAthlete
+public sealed class SimilarAthlete
 {
 	private const double weighting = 0.1;
 

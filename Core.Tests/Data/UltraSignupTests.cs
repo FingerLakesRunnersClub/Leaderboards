@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class UltraSignupTests
+public sealed class UltraSignupTests
 {
 	[Fact]
 	public async Task CanGetResultsForCourse()

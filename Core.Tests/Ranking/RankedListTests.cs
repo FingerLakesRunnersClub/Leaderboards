@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Ranking;
 
-public class RankedListTests
+public sealed class RankedListTests
 {
 	[Fact]
 	public void CanCreateEmptyRankedList()

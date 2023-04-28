@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class ErrorControllerTests
+public sealed class ErrorControllerTests
 {
 	[Fact]
 	public void CanGenerateErrorPageForException()

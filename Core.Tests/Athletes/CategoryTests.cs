@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class CategoryTests
+public sealed class CategoryTests
 {
 	[Theory]
 	[InlineData(AgeGradeCalculator.Category.F, "F")]

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class AwardsController : Controller
+public sealed class AwardsController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

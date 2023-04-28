@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class CourseResultsViewModelTests
+public sealed class CourseResultsViewModelTests
 {
 	[Fact]
 	public void CanGetTitle()

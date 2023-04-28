@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Reports;
 
-public class ActivityLogViewModelTests
+public sealed class ActivityLogViewModelTests
 {
 	[Fact]
 	public void TitleIsSimplifiedForAllCourses()

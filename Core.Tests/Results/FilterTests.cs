@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class FilterTests
+public sealed class FilterTests
 {
 	[Fact]
 	public void AllResultsMatchByDefault()

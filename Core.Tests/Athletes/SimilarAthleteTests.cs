@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class SimilarAthleteTests
+public sealed class SimilarAthleteTests
 {
 	[Fact]
 	public void CanGetSimilarity()

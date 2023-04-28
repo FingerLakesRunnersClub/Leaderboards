@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Community;
 
-public class PostTests
+public sealed class PostTests
 {
 	[Fact]
 	public void HasNarrativeWhenHeaderFound()

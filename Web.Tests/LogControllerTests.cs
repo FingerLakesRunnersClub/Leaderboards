@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class LogControllerTests
+public sealed class LogControllerTests
 {
 	[Fact]
 	public async Task RecentShowsResultsInReverseChronologicalOrder()

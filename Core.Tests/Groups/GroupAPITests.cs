@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Groups;
 
-public class GroupAPITests
+public sealed class GroupAPITests
 {
 	[Fact]
 	public async Task CanGetGroupMemberIDs()

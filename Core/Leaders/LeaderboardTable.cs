@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Leaders;
 
-public class LeaderboardTable
+public sealed class LeaderboardTable
 {
 	public string Link { get; init; }
 	public string Title { get; init; }

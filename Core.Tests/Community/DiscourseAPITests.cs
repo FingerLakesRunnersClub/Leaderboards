@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Community;
 
-public class DiscourseAPITests
+public sealed class DiscourseAPITests
 {
 	[Fact]
 	public void CanCreateWithoutURL()

@@ -8,7 +8,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class UltraSignup : IDataSource
+public sealed class UltraSignup : IDataSource
 {
 	private readonly IConfig _config;
 	public string Name => nameof(UltraSignup);

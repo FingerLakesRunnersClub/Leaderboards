@@ -8,7 +8,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Reports;
 
-public class AwardsViewModel : ViewModel
+public sealed class AwardsViewModel : ViewModel
 {
 	public override string Title => "Awards";
 	public IDictionary<Athlete, Award[]> Awards { get; }

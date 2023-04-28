@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class CompletedController : Controller
+public sealed class CompletedController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

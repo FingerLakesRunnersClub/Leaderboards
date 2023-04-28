@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class Athlete : IEquatable<Athlete>
+public sealed class Athlete : IEquatable<Athlete>
 {
 	public uint ID { get; init; }
 	public string Name { get; init; }

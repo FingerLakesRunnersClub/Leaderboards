@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Config;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class AliasAPI : IAliasAPI
+public sealed class AliasAPI : IAliasAPI
 {
 	private readonly HttpClient _httpClient;
 	private readonly string _url;

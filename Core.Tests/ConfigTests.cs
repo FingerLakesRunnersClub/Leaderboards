@@ -2,7 +2,7 @@
 
 namespace FLRC.Leaderboards.Core.Tests;
 
-public class ConfigTests
+public sealed class ConfigTests
 {
 	[Fact]
 	public void CanGetCourseNames()

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class GroupControllerTests
+public sealed class GroupControllerTests
 {
 	[Fact]
 	public async Task CanGetGroupMembers()

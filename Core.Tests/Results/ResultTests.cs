@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
 
-public class ResultTests
+public sealed class ResultTests
 {
 	[Fact]
 	public void CanGetAgeOnDayOfRun()

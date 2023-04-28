@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class WebScorerTests
+public sealed class WebScorerTests
 {
 	[Fact]
 	public async Task CanGetResultsForCourse()

@@ -7,7 +7,7 @@ using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public class Result : IComparable<Result>
+public sealed class Result : IComparable<Result>
 {
 	[JsonIgnore] public Course Course { get; init; }
 

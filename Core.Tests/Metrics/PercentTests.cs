@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class PercentTests
+public sealed class PercentTests
 {
 	[Fact]
 	public void CanGetDisplayedValueFromDecimal()

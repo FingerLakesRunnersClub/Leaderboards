@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Config;
 
 namespace FLRC.Leaderboards.Core.Groups;
 
-public class GroupAPI : IGroupAPI
+public sealed class GroupAPI : IGroupAPI
 {
 	private readonly HttpClient _httpClient;
 	private readonly string _url;

@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class ResultsAPITests
+public sealed class ResultsAPITests
 {
 	[Fact]
 	public async Task CanGetJSONFromResponse()

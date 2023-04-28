@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class AthleteSummaryViewModel : ViewModel
+public sealed class AthleteSummaryViewModel : ViewModel
 {
 	public override string Title => Summary.Athlete.Name;
 

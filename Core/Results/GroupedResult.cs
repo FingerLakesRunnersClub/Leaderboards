@@ -5,7 +5,7 @@ using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public class GroupedResult : IGrouping<Athlete, Result>, IComparable<GroupedResult>
+public sealed class GroupedResult : IGrouping<Athlete, Result>, IComparable<GroupedResult>
 {
 	private readonly IGrouping<Athlete, Result> _group;
 

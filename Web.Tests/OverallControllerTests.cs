@@ -11,7 +11,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class OverallControllerTests
+public sealed class OverallControllerTests
 {
 	[Fact]
 	public async Task CanGetMostPoints()

@@ -2,7 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 
 namespace FLRC.Leaderboards.Core.Reports;
 
-public class Award
+public sealed class Award
 {
 	public string Name { get; init; }
 	public string Link { get; init; }

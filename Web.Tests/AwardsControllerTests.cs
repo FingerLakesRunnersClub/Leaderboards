@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class AwardsControllerTests
+public sealed class AwardsControllerTests
 {
 	[Fact]
 	public async Task CalculatesCorrectAwards()

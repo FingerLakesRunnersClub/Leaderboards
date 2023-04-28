@@ -6,7 +6,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Leaders;
 
-public class LeaderboardViewModel : ViewModel
+public sealed class LeaderboardViewModel : ViewModel
 {
 	public override string Title => "Leaderboard";
 

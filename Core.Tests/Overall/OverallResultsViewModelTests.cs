@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Overall;
 
-public class OverallResultsViewModelTests
+public sealed class OverallResultsViewModelTests
 {
 	[Fact]
 	public void CanGetTitle()

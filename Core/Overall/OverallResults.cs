@@ -7,7 +7,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Overall;
 
-public class OverallResults
+public sealed class OverallResults
 {
 	private readonly IReadOnlyCollection<Course> _courses;
 

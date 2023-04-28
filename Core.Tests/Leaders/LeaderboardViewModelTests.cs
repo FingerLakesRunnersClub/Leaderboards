@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Leaders;
 
-public class LeaderboardViewModelTests
+public sealed class LeaderboardViewModelTests
 {
 	[Fact]
 	public void TitleIsStatic()

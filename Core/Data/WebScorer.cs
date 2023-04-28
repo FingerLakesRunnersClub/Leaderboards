@@ -8,7 +8,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class WebScorer : IDataSource
+public sealed class WebScorer : IDataSource
 {
 	private readonly IConfig _config;
 	public string Name => nameof(WebScorer);

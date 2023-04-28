@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Teams;
 
-public class TeamMemberTests
+public sealed class TeamMemberTests
 {
 	[Fact]
 	public void CanGetTotalsForAthlete()

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class InvalidControllerTests
+public sealed class InvalidControllerTests
 {
 	[Fact]
 	public async Task InvalidResultsAreEmptyWhenAllResultsAreGood()

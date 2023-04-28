@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Races;
 
-public class DistanceTests
+public sealed class DistanceTests
 {
 	[Theory]
 	[InlineData("1 mile", Distance.MetersPerMile)]

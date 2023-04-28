@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Config;
 
 namespace FLRC.Leaderboards.Core.Community;
 
-public class DiscourseAPI : ICommunityAPI
+public sealed class DiscourseAPI : ICommunityAPI
 {
 	private const byte PageSize = 20;
 

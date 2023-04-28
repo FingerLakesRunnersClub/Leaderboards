@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class AthleteController : Controller
+public sealed class AthleteController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

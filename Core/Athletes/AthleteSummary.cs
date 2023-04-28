@@ -8,7 +8,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class AthleteSummary
+public sealed class AthleteSummary
 {
 	public Athlete Athlete { get; }
 	public IDictionary<Course, Ranked<Time>> Fastest { get; }

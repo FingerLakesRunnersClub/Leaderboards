@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class OverallController : Controller
+public sealed class OverallController : Controller
 {
 	private readonly IDataService _dataService;
 	private readonly IConfig _config;

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class StatisticsControllerTests
+public sealed class StatisticsControllerTests
 {
 	[Fact]
 	public async Task CanGetAllStatistics()

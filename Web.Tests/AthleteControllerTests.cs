@@ -11,7 +11,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class AthleteControllerTests
+public sealed class AthleteControllerTests
 {
 	[Fact]
 	public async Task PageContainsAllInfo()

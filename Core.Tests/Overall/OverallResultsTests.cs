@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Overall;
 
-public class OverallResultsTests
+public sealed class OverallResultsTests
 {
 	[Fact]
 	public void CanGetMostPoints()

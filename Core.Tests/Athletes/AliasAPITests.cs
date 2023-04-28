@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class AliasAPITests
+public sealed class AliasAPITests
 {
 	[Fact]
 	public async Task CanCreateAliasLookup()

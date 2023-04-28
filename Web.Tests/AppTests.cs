@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class AppTests
+public sealed class AppTests
 {
 	[Fact]
 	public void CanConfigureServices()

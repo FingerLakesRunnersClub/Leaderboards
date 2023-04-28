@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Core.Tests;
 
-public class TestLogger : ILogger, IDisposable
+public sealed class TestLogger : ILogger, IDisposable
 {
 	public IDisposable BeginScope<TState>(TState state)
 	{

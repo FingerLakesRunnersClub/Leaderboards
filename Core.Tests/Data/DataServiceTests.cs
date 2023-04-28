@@ -11,7 +11,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class DataServiceTests
+public sealed class DataServiceTests
 {
 	[Fact]
 	public async Task CanParseResultsFromAPI()
@@ -300,7 +300,7 @@ public class DataServiceTests
 		Assert.True(logger.Called);
 	}
 
-	private IDictionary<string, IReadOnlyCollection<uint>> groups
+	private static IDictionary<string, IReadOnlyCollection<uint>> groups
 		=> new Dictionary<string, IReadOnlyCollection<uint>>
 		{
 			{ "Test 1", new uint[] { 123, 234 } },

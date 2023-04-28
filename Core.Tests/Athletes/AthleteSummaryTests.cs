@@ -6,7 +6,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Athletes;
 
-public class AthleteSummaryTests
+public sealed class AthleteSummaryTests
 {
 	[Fact]
 	public void CanGetTotalNumberOfResults()

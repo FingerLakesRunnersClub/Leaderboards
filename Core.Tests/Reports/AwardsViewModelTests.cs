@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Reports;
 
-public class AwardsViewModelTests
+public sealed class AwardsViewModelTests
 {
 	[Fact]
 	public void CalculatesCorrectAwards()

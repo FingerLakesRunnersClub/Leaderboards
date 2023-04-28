@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public class SimilarAthletesViewModel : DataTableViewModel
+public sealed class SimilarAthletesViewModel : DataTableViewModel
 {
 	public override string Title => "Similar Athletes";
 	public override string ResponsiveBreakpoint => "xl";

@@ -8,7 +8,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public class Course
+public sealed class Course
 {
 	public Race Race { get; init; }
 	public uint ID { get; init; }

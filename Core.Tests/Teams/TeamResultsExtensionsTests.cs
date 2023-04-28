@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Teams;
 
-public class TeamResultsExtensionsTests
+public sealed class TeamResultsExtensionsTests
 {
 	[Fact]
 	public void CanRankResults()

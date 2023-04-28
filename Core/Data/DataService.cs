@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public class DataService : IDataService
+public sealed class DataService : IDataService
 {
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
 	private readonly IAliasAPI _aliasAPI;

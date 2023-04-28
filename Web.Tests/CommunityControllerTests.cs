@@ -9,7 +9,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class CommunityControllerTests
+public sealed class CommunityControllerTests
 {
 	[Fact]
 	public async Task CanShowOutstandingGroupsToAdd()
