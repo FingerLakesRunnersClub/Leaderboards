@@ -116,7 +116,7 @@ public sealed class DataService : IDataService
 		}
 	}
 
-	public async Task<Course> GetResults(uint id, string distance = null)
+	public async Task<Course> GetResults(uint id, string distance)
 	{
 		var course = _races.SelectMany(r => r.Value.Courses).First(c => (c.ID == id || c.Race.ID == id) && (distance == null || c.Distance.Display == distance));
 		if (course.ID == 0)

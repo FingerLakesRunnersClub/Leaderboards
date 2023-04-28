@@ -29,7 +29,7 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		var course = await dataService.GetResults(123);
+		var course = await dataService.GetResults(123, null);
 
 		//assert
 		Assert.Equal("Steve Desmond", course.Results.First().Athlete.Name);
@@ -73,8 +73,8 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		await dataService.GetResults(123);
-		await dataService.GetResults(123);
+		await dataService.GetResults(123, null);
+		await dataService.GetResults(123, null);
 
 		//assert
 		await resultsAPI[Arg.Any<string>()].Received(1).GetResults(Arg.Any<uint>());
@@ -104,7 +104,7 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		var course = await dataService.GetResults(123);
+		var course = await dataService.GetResults(123, null);
 
 		//assert
 		var result = course.Results.Single();
@@ -132,7 +132,7 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		var course = await dataService.GetResults(123);
+		var course = await dataService.GetResults(123, null);
 
 		//assert
 		var result = course.Results.Single();
@@ -159,7 +159,7 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		await dataService.GetResults(123);
+		await dataService.GetResults(123, null);
 
 		//assert
 		Assert.True(logger.Called);
@@ -181,7 +181,7 @@ public sealed class DataServiceTests
 		var dataService = new DataService(resultsAPI, aliasAPI, groupAPI, communityAPI, config, loggerFactory);
 
 		//act
-		await dataService.GetResults(123);
+		await dataService.GetResults(123, null);
 
 		//assert
 		Assert.True(logger.Called);
