@@ -19,5 +19,5 @@ public class Post
 		=> Content.Contains(text) && NotQuoted(text);
 
 	private bool NotQuoted(string text)
-		=> !Regex.IsMatch(Content, $@"\[quote.*\].*{text}.*\[/quote.*\]");
+		=> !Regex.IsMatch(Content, $@"\[quote.*\].*{text}.*\[/quote.*\]", RegexOptions.None, TimeSpan.FromSeconds(1));
 }

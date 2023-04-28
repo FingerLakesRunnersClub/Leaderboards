@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace FLRC.Leaderboards.Core.Races;
+﻿namespace FLRC.Leaderboards.Core.Races;
 
 public record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
 {
@@ -22,7 +20,7 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 				? MetersPerMarathon / 2
 				: MetersPerMarathon;
 
-		var split = Regex.Match(value, @"([\d\.]+)(.*)").Groups;
+		var split = Patterns.Distance().Match(value).Groups;
 		if (split.Count < 2)
 			return 0;
 
