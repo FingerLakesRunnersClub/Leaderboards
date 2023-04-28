@@ -229,7 +229,7 @@ public sealed class DataService : IDataService
 			var athletes = await GetAthletes();
 			var members = await _groupAPI.GetGroups();
 			_groups = members.ToDictionary(m => m.Key,
-				m => m.Value.Select(v => athletes.ContainsKey(v) ? athletes[v] : null).Where(a => a != null).ToArray());
+				m => m.Value.Select(v => athletes.TryGetValue(v, out var athlete) ? athlete : null).Where(a => a is not null).ToArray());
 			_groupCacheTimestamp = DateTime.Now;
 		}
 

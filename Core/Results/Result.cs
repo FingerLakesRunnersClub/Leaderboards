@@ -47,8 +47,8 @@ public sealed class Result : IComparable<Result>
 			var duration = Duration.Value;
 			var key = (category, age, distance, duration);
 
-			return _ageGradeCache.ContainsKey(key)
-				? _ageGradeCache[key]
+			return _ageGradeCache.TryGetValue(key, out var ageGrade)
+				? ageGrade
 				: _ageGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, distance, duration);
 		}
 	}

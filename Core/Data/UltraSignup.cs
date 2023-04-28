@@ -47,8 +47,8 @@ public sealed class UltraSignup : IDataSource
 
 		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
 
-		return athletes.ContainsKey(id)
-			? athletes[id]
+		return athletes.TryGetValue(id, out var athlete)
+			? athlete
 			: athletes[id] = new Athlete
 			{
 				ID = id,

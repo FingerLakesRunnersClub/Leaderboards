@@ -70,10 +70,10 @@ public sealed class WebScorer : IDataSource
 		         ?? element.GetProperty("UserId").GetUInt32();
 
 		var nowPrivate = IsPrivate(element);
-		if (athletes.ContainsKey(id))
+		if (athletes.TryGetValue(id, out var athlete))
 		{
-			athletes[id].Private = athletes[id].Private || nowPrivate;
-			return athletes[id];
+			athlete.Private = athletes[id].Private || nowPrivate;
+			return athlete;
 		}
 
 		return athletes[id] = new Athlete

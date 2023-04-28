@@ -53,8 +53,8 @@ public sealed class Course
 	public RankedList<Time> Fastest(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _fastestCache.ContainsKey(filter)
-			? _fastestCache[filter]
+		return _fastestCache.TryGetValue(filter, out var results)
+			? results
 			: _fastestCache[filter] = Rank(filter, _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration ?? Time.Max));
 	}
 
@@ -65,8 +65,8 @@ public sealed class Course
 		filter ??= new Filter();
 		var threshold = AverageThreshold(filter);
 
-		return _averageCache.ContainsKey(filter)
-			? _averageCache[filter]
+		return _averageCache.TryGetValue(filter, out var results)
+			? results
 			: _averageCache[filter] = Rank(filter, rs => !rs.Key.Private && rs.Count() >= threshold, rs => rs.Average(this, threshold), rs => rs.Average(this, threshold).Duration ?? Time.Max);
 	}
 
@@ -75,8 +75,8 @@ public sealed class Course
 	public RankedList<ushort> MostRuns(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _mostRunsCache.ContainsKey(filter)
-			? _mostRunsCache[filter]
+		return _mostRunsCache.TryGetValue(filter, out var results)
+			? results
 			: _mostRunsCache[filter] = RankDescending(filter, _ => true, r => r.Average(this), r => (ushort) r.Count());
 	}
 
@@ -85,8 +85,8 @@ public sealed class Course
 	public RankedList<Miles> MostMiles(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _mostMilesCache.ContainsKey(filter)
-			? _mostMilesCache[filter]
+		return _mostMilesCache.TryGetValue(filter, out var results)
+			? results
 			: _mostMilesCache[filter] = RankDescending(filter, _ => true, r => r.Average(this), r => new Miles(r.Count() * Distance.Miles));
 	}
 
@@ -95,8 +95,8 @@ public sealed class Course
 	public RankedList<Date> Earliest(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _earliestCache.ContainsKey(filter)
-			? _earliestCache[filter]
+		return _earliestCache.TryGetValue(filter, out var results)
+			? results
 			: _earliestCache[filter] = Rank(filter, _ => true, g => g.MinBy(r => r.StartTime), g => g.Min(r => r.StartTime));
 	}
 
@@ -105,8 +105,8 @@ public sealed class Course
 	public RankedList<Stars> CommunityStars(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _communityCache.ContainsKey(filter)
-			? _communityCache[filter]
+		return _communityCache.TryGetValue(filter, out var results)
+			? results
 			: _communityCache[filter] = RankDescending(filter, g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(this), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 	}
 
@@ -120,11 +120,13 @@ public sealed class Course
 	public ushort AverageThreshold(Filter filter = null)
 	{
 		filter ??= new Filter();
-		var groupedResults = GroupedResults(filter);
+		if (_thresholdCache.TryGetValue(filter, out var threshold))
+		{
+			return threshold;
+		}
 
-		return _thresholdCache.ContainsKey(filter)
-			? _thresholdCache[filter]
-			: _thresholdCache[filter] = groupedResults.Any()
+		var groupedResults = GroupedResults(filter);
+		return _thresholdCache[filter] = groupedResults.Any()
 				? (ushort) Math.Ceiling(groupedResults.Average(r => r.Count()))
 				: (ushort) 0;
 	}
@@ -134,8 +136,8 @@ public sealed class Course
 	public RankedList<TeamResults> TeamPoints(Filter filter = null)
 	{
 		filter ??= new Filter();
-		return _teamCache.ContainsKey(filter)
-			? _teamCache[filter]
+		return _teamCache.TryGetValue(filter, out var results)
+			? results
 			: _teamCache[filter] = RankedTeamResults(filter);
 	}
 
