@@ -12,9 +12,10 @@
 <div class="card card-highlighted">
 	<div class="card-body">
 		<div class="row justify-content-center">
-			@foreach (var table in Model.OverallResults)
+			@{ var overallResults = Model.OverallResults(); }
+			@foreach (var table in overallResults)
 			{
-				var width = table.Link.Contains("/Points/") && Model.OverallResults.Count % 2 == 1 ? "col-lg-6" : "col-lg-4";
+				var width = table.Link.Contains("/Points/") && overallResults.Count % 2 == 1 ? "col-lg-6" : "col-lg-4";
 				<div class="col-12 @width mb-3">
 					@await Html.PartialAsync("Table", table)
 				</div>

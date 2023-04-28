@@ -88,7 +88,7 @@ public sealed class LeaderboardViewModelTests
 		};
 
 		//act
-		var results = vm.OverallResults.ToArray();
+		var results = vm.OverallResults().ToArray();
 
 		//assert
 		Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.Value.First().Name);

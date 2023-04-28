@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace FLRC.Leaderboards.Core;
 
-public partial class Patterns
+public static partial class Patterns
 {
 	[GeneratedRegex("([\\d\\.]+)(.*)")]
 	public static partial Regex Distance();
