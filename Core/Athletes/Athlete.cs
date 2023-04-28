@@ -20,9 +20,13 @@ public sealed class Athlete : IEquatable<Athlete>
 		? (byte) (date.Subtract(DateOfBirth.Value).TotalDays / 365.2425)
 		: Age;
 
-	public Team Team => Age < 20 ? Teams[2]
-		: Age >= 70 ? Teams[6]
-		: Teams[(byte) (Age / 10)];
+	public Team Team
+		=> Age switch
+		{
+			< 20 => Teams[2],
+			>= 70 => Teams[6],
+			_ => Teams[(byte) (Age / 10)]
+		};
 
 	public byte AgeToday => AgeAsOf(DateTime.Today);
 
