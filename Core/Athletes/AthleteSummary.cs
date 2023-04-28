@@ -81,24 +81,21 @@ public sealed class AthleteSummary
 		};
 	}
 
-	public IReadOnlyCollection<SimilarAthlete> SimilarAthletes
+	public IReadOnlyCollection<SimilarAthlete> SimilarAthletes()
 	{
-		get
-		{
-			var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Fastest[c], r)));
-			var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Average[c], r)));
+		var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Fastest[c], r)));
+		var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Average[c], r)));
 
-			var athletes = fastMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete))
-				.Union(avgMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete)))
-				.Distinct()
-				.Select(a => new AthleteSummary(a, _results, _config));
+		var athletes = fastMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete))
+			.Union(avgMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete)))
+			.Distinct()
+			.Select(a => new AthleteSummary(a, _results, _config));
 
-			return athletes.Select(their => new SimilarAthlete(this, their))
-				.Where(m => Math.Abs(m.FastestPercent.Value) < 10
-				            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
-				            && m.Similarity.Value >= 80)
-				.ToArray();
-		}
+		return athletes.Select(their => new SimilarAthlete(this, their))
+			.Where(m => Math.Abs(m.FastestPercent.Value) < 10
+	            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
+	            && m.Similarity.Value >= 80)
+			.ToArray();
 	}
 
 	private const byte percentThreshold = 5;

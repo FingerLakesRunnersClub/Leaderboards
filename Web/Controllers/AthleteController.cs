@@ -114,7 +114,7 @@ public sealed class AthleteController : Controller
 		{
 			Config = _config,
 			Athlete = my.Athlete,
-			Matches = Rank(my.SimilarAthletes)
+			Matches = Rank(my.SimilarAthletes())
 		};
 	}
 }

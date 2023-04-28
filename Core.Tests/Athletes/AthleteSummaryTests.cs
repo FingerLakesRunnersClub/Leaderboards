@@ -32,7 +32,7 @@ public sealed class AthleteSummaryTests
 		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
 
 		//act
-		var similar = summary.SimilarAthletes.ToArray();
+		var similar = summary.SimilarAthletes().ToArray();
 
 		//assert
 		Assert.Equal(2, similar.Length);
@@ -62,7 +62,7 @@ public sealed class AthleteSummaryTests
 		var summary = new AthleteSummary(CourseData.Athlete1, courses, TestHelpers.Config);
 
 		//act
-		var similar = summary.SimilarAthletes.ToArray();
+		var similar = summary.SimilarAthletes().ToArray();
 
 		//assert
 		Assert.Equal(CourseData.Athlete2, similar.Single().Athlete);
