@@ -103,6 +103,22 @@ public sealed class WebScorerTests
 	}
 
 	[Fact]
+	public async Task AnonymousResultsAreIgnored()
+	{
+		//arrange
+		var data = await File.ReadAllTextAsync("json/anonymous.json");
+		var json = JsonDocument.Parse(data).RootElement;
+		var course = new Course();
+		var source = new WebScorer(TestHelpers.Config);
+
+		//act
+		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
+
+		//assert
+		Assert.Empty(results);
+	}
+
+	[Fact]
 	public async Task CanParseAthlete()
 	{
 		//arrange
