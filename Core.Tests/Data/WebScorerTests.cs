@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Text.Json;
+using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
@@ -103,7 +104,23 @@ public sealed class WebScorerTests
 	}
 
 	[Fact]
-	public async Task AnonymousResultsAreIgnored()
+	public async Task AnonymousResultsAreAllowedInStandardRaces()
+	{
+		//arrange
+		var data = await File.ReadAllTextAsync("json/anonymous.json");
+		var json = JsonDocument.Parse(data).RootElement;
+		var course = new Course();
+		var source = new WebScorer(TestHelpers.TrailConfig);
+
+		//act
+		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
+
+		//assert
+		Assert.NotEmpty(results);
+	}
+
+	[Fact]
+	public async Task AnonymousResultsAreIgnoredInMultiAttemptCompetition()
 	{
 		//arrange
 		var data = await File.ReadAllTextAsync("json/anonymous.json");

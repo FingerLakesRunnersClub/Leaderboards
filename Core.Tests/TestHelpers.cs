@@ -5,5 +5,9 @@ namespace FLRC.Leaderboards.Core.Tests;
 
 public static class TestHelpers
 {
-	public static IConfig Config => new AppConfig(new ConfigurationBuilder().AddJsonFile("json/config.json").Build());
+	public static IConfig Config => JSONConfig("json/config.json");
+	public static IConfig TrailConfig => JSONConfig("json/config-trail.json");
+
+	private static IConfig JSONConfig(string file) => new AppConfig(new ConfigurationBuilder().AddJsonFile(file).Build());
+
 }
