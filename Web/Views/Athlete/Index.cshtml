@@ -9,9 +9,7 @@
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
-		<dl class="row mb-0">
-			@await Html.PartialAsync("Overall-" + (Model.Config.Features.MultiAttempt ? "MultiAttempt" : "Competitions"), Model)
-		</dl>
+		@await Html.PartialAsync("Overall-" + (Model.Config.Features.MultiAttempt ? "MultiAttempt" : "Competitions"), Model)
 		<div class="text-center">
 			<a href="/Athlete/Log/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 				Activity Log
