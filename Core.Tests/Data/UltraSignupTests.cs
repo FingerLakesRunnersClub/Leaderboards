@@ -20,9 +20,10 @@ public sealed class UltraSignupTests
 
 		//act
 		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
-		var result = results.First();
 
 		//assert
+		Assert.Equal(2, results.Count);
+		var result = results.First();
 		Assert.Equal((ushort) 234, result.Athlete.ID);
 		Assert.Equal("Steve Desmond", result.Athlete.Name);
 		Assert.Equal(26, result.Athlete.Age);

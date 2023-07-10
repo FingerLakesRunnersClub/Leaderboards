@@ -19,10 +19,10 @@ public sealed class UltraSignup : IDataSource
 	public UltraSignup(IConfig config)
 		=> _config = config;
 
+	private static readonly byte[] ValidStatusTypes = { 1, 6 };
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
-	{
-		return json.EnumerateArray()
-			.Where(r => r.GetProperty("status").GetByte() == 1)
+		=> json.EnumerateArray()
+			.Where(r => ValidStatusTypes.Contains(r.GetProperty("status").GetByte()))
 			.Select(j => new Result
 			{
 				Course = course,
@@ -30,7 +30,6 @@ public sealed class UltraSignup : IDataSource
 				StartTime = new Date(course.Race.Date),
 				Duration = ParseDuration(j.GetProperty("time").GetString())
 			}).ToArray();
-	}
 
 	public static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));
