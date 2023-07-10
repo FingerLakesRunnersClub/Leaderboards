@@ -30,9 +30,6 @@ public sealed class Course
 		}
 	}
 
-	public IReadOnlyCollection<Result> ResultsAsOf(DateTime date)
-		=> _results.Where(r => r.StartTime.Value <= date).ToArray();
-
 	private void resetCaches()
 	{
 		_fastestCache.Clear();

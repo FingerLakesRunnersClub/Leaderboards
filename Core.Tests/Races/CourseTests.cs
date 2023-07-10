@@ -290,19 +290,6 @@ public sealed class CourseTests
 	}
 
 	[Fact]
-	public void CanGetResultsAsOfDate()
-	{
-		//arrange
-		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-
-		//act
-		var results = course.ResultsAsOf(new DateTime(2020, 2, 5));
-
-		//assert
-		Assert.Equal(5, results.Count);
-	}
-
-	[Fact]
 	public void RanksWithTiesSkipCorrectly()
 	{
 		//arrange
