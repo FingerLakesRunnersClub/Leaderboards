@@ -61,9 +61,9 @@ public sealed class WebScorer : IDataSource
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
 		var name = element.GetProperty("Name").GetString() ?? "(unknown)";
-		if (aliases.ContainsKey(name))
+		if (aliases.TryGetValue(name, out var alias))
 		{
-			name = aliases[name];
+			name = alias;
 		}
 
 		var id = (_config.Features.GenerateAthleteID
