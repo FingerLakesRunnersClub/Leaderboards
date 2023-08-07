@@ -2,7 +2,6 @@ using System.Collections.Concurrent;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
-using FLRC.Leaderboards.Core.Groups;
 using FLRC.Leaderboards.Core.Races;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -12,19 +11,17 @@ namespace FLRC.Leaderboards.Core.Data;
 public sealed class DataService : IDataService
 {
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
-	private readonly IAliasAPI _aliasAPI;
-	private readonly IGroupAPI _groupAPI;
+	private readonly ICustomInfoAPI _customInfoAPI;
 	private readonly ICommunityAPI _communityAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
 	private readonly IDictionary<uint, Race> _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IAliasAPI aliasAPI, IGroupAPI groupAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, ICustomInfoAPI customInfoAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
 	{
 		_resultsAPI = resultsAPI;
-		_aliasAPI = aliasAPI;
-		_groupAPI = groupAPI;
+		_customInfoAPI = customInfoAPI;
 		_communityAPI = communityAPI;
 
 		_logger = loggerFactory.CreateLogger("DataService");
@@ -159,7 +156,7 @@ public sealed class DataService : IDataService
 	{
 		if (_cachedAliasTimestamp < DateTime.Now.Subtract(_cacheLength))
 		{
-			_cachedAliases = await _aliasAPI.GetAliases();
+			_cachedAliases = await _customInfoAPI.GetAliases();
 			_cachedAliasTimestamp = DateTime.Now;
 		}
 
@@ -227,7 +224,7 @@ public sealed class DataService : IDataService
 		if (_groupCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
 		{
 			var athletes = await GetAthletes();
-			var members = await _groupAPI.GetGroups();
+			var members = await _customInfoAPI.GetGroups();
 			_groups = members.ToDictionary(m => m.Key,
 				m => m.Value.Select(v => athletes.TryGetValue(v, out var athlete) ? athlete : null).Where(a => a is not null).ToArray());
 			_groupCacheTimestamp = DateTime.Now;

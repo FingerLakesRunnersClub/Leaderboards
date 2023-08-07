@@ -1,9 +1,9 @@
-using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Core.Data;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Core.Tests.Athletes;
+namespace FLRC.Leaderboards.Core.Tests.Data;
 
 public sealed class AliasAPITests
 {
@@ -16,7 +16,7 @@ public sealed class AliasAPITests
 		var config = Substitute.For<IConfig>();
 		config.AliasAPI.Returns("http://localhost");
 
-		var api = new AliasAPI(new HttpClient(http), config);
+		var api = new CustomInfoAPI(new HttpClient(http), config);
 
 		//act
 		var aliases = await api.GetAliases();
@@ -34,12 +34,35 @@ public sealed class AliasAPITests
 		var http = new MockHttpMessageHandler(json);
 		var config = Substitute.For<IConfig>();
 
-		var api = new AliasAPI(new HttpClient(http), config);
+		var api = new CustomInfoAPI(new HttpClient(http), config);
 
 		//act
 		var aliases = await api.GetAliases();
 
 		//assert
 		Assert.Empty(aliases);
+	}
+
+	[Fact]
+	public async Task CanGetGroupMemberIDs()
+	{
+		//arrange
+		const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
+		var http = new MockHttpMessageHandler(data);
+		var config = Substitute.For<IConfig>();
+		config.GroupAPI.Returns("http://localhost");
+		var api = new CustomInfoAPI(new HttpClient(http), config);
+
+		//act
+		var groups = await api.GetGroups();
+
+		//assert
+		var members1 = groups["Test 1"].ToArray();
+		Assert.Equal((uint)123, members1[0]);
+		Assert.Equal((uint)234, members1[1]);
+
+		var members2 = groups["Test 2"].ToArray();
+		Assert.Equal((uint)234, members2[0]);
+		Assert.Equal((uint)345, members2[1]);
 	}
 }

@@ -61,6 +61,6 @@ public sealed class InvalidControllerTests
 
 		//assert
 		var model = (InvalidViewModel)result.Model;
-		Assert.Equal(1, model!.Results.Count);
+		Assert.Single(model!.Results);
 	}
 }

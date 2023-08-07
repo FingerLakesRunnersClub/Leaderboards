@@ -1,7 +1,6 @@
-using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Teams;
 
-namespace FLRC.Leaderboards.Core.Groups;
+namespace FLRC.Leaderboards.Core.Overall;
 
 public sealed class GroupResultsViewModel : OverallResultsViewModel<TeamMember>
 {

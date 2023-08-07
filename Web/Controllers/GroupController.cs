@@ -1,6 +1,5 @@
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Groups;
 using FLRC.Leaderboards.Core.Overall;
 using Microsoft.AspNetCore.Mvc;
 
