@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Reports;
@@ -11,12 +12,18 @@ namespace FLRC.Leaderboards.Web.Tests;
 public sealed class CompletedControllerTests
 {
 	[Fact]
-	public async Task CanGetListOfAthletes()
+	public async Task CanGetListOfCompletions()
 	{
 		//arrange
+		var personal = new Dictionary<Athlete, DateOnly>
+		{
+			{ CourseData.Athlete1, new DateOnly(2023, 08, 09) },
+			{ CourseData.Athlete2, new DateOnly(2023, 08, 09) }
+		};
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetPersonalCompletions().Returns(personal);
 
 		var controller = new CompletedController(dataService, TestHelpers.Config);
 
@@ -26,5 +33,6 @@ public sealed class CompletedControllerTests
 		//assert
 		var vm = (CompletedViewModel)response.Model;
 		Assert.Equal(4, vm!.RankedResults.Count);
+		Assert.Equal(2, vm!.PersonalResults.Count);
 	}
 }

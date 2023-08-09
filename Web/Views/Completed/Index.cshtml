@@ -5,8 +5,8 @@
 <h2>@Model.Title</h2>
 
 <div class="card card-highlighted">
-    <div class="card-body">
-        <script>
+	<div class="card-body">
+		<script>
             const fields = [
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
                 { name: 'Name', value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
@@ -18,6 +18,36 @@
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("DataTable")
-    </div>
+		@await Html.PartialAsync("DataTable")
+
+		@if (Model.PersonalResults.Any())
+		{
+			<h3>Personal Completions</h3>
+			<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
+				<thead>
+				<tr>
+					<th>Name</th>
+					<th class="text-center">Age</th>
+					<th class="text-center">Category</th>
+					<th class="text-center">Date Completed</th>
+				</tr>
+				</thead>
+				<tbody>
+				@foreach (var row in Model.PersonalResults)
+				{
+					<tr>
+						<td>
+							<a href="/Athlete/Index/@row.Key.ID">
+								@row.Key.Name
+							</a>
+						</td>
+						<td class="text-center">@row.Key.AgeAsOf(row.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local))</td>
+						<td class="text-center">@row.Key.Category.Display</td>
+						<td class="text-center">@row.Value.ToShortDateString()</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+		}
+	</div>
 </div>

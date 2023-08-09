@@ -23,11 +23,13 @@ public sealed class CompletedController : Controller
 	{
 		var results = await _dataService.GetAllResults();
 		var overall = new OverallResults(results);
+		var personal = await _dataService.GetPersonalCompletions();
 
 		return new CompletedViewModel
 		{
 			Config = _config,
-			RankedResults = overall.Completed()
+			RankedResults = overall.Completed(),
+			PersonalResults = personal
 		};
 	}
 }
