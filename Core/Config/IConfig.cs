@@ -15,6 +15,7 @@ public interface IConfig
 
 	string AliasAPI { get; }
 	string GroupAPI { get; }
+	string PersonalAPI { get; }
 
 	string CommunityURL { get; }
 	string CommunityKey { get; }

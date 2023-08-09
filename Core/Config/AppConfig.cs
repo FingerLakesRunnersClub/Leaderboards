@@ -17,6 +17,7 @@ public record AppConfig : IConfig
 
 	public string AliasAPI { get; }
 	public string GroupAPI { get; }
+	public string PersonalAPI { get; }
 
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
@@ -38,6 +39,7 @@ public record AppConfig : IConfig
 
 		AliasAPI = config.GetValue<string>("AliasAPI");
 		GroupAPI = config.GetValue<string>("GroupAPI");
+		PersonalAPI = config.GetValue<string>("PersonalAPI");
 
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
