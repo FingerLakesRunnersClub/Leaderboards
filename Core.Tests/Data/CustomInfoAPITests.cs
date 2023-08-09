@@ -11,7 +11,7 @@ public sealed class AliasAPITests
 	public async Task CanCreateAliasLookup()
 	{
 		//arrange
-		var json = @"{ ""Incorrect One"": ""Correct Un"", ""Incorrect Two"": ""Correct Deux"" }";
+		var json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
 		var http = new MockHttpMessageHandler(json);
 		var config = Substitute.For<IConfig>();
 		config.AliasAPI.Returns("http://localhost");
@@ -30,7 +30,7 @@ public sealed class AliasAPITests
 	public async Task AliasesAreEmptyWhenNoAPI()
 	{
 		//arrange
-		var json = @"{ ""Incorrect One"": ""Correct Un"", ""Incorrect Two"": ""Correct Deux"" }";
+		var json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
 		var http = new MockHttpMessageHandler(json);
 		var config = Substitute.For<IConfig>();
 
@@ -47,7 +47,7 @@ public sealed class AliasAPITests
 	public async Task CanGetGroupMemberIDs()
 	{
 		//arrange
-		const string data = @"{ ""Test 1"": [ 123, 234 ], ""Test 2"": [ 234, 345 ] }";
+		const string data = """{ "Test 1": [ 123, 234 ], "Test 2": [ 234, 345 ] }""";
 		var http = new MockHttpMessageHandler(data);
 		var config = Substitute.For<IConfig>();
 		config.GroupAPI.Returns("http://localhost");
@@ -64,5 +64,54 @@ public sealed class AliasAPITests
 		var members2 = groups["Test 2"].ToArray();
 		Assert.Equal((uint)234, members2[0]);
 		Assert.Equal((uint)345, members2[1]);
+	}
+
+	[Fact]
+	public async Task GroupMembersAreEmptyWhenNoAPI()
+	{
+		//arrange
+		const string data = """{ "Test 1": [ 123, 234 ], "Test 2": [ 234, 345 ] }""";
+		var http = new MockHttpMessageHandler(data);
+		var config = Substitute.For<IConfig>();
+		var api = new CustomInfoAPI(new HttpClient(http), config);
+
+		//act
+		var groups = await api.GetGroups();
+
+		//assert
+		Assert.Empty(groups);
+	}
+
+	[Fact]
+	public async Task CanGetPersonalCompletions()
+	{
+		//arrange
+		const string data = """{ "123": "2023-08-09" }""";
+		var http = new MockHttpMessageHandler(data);
+		var config = Substitute.For<IConfig>();
+		config.PersonalAPI.Returns("http://localhost");
+		var api = new CustomInfoAPI(new HttpClient(http), config);
+
+		//act
+		var personal = await api.GetPersonalCompletions();
+
+		//assert
+		Assert.Equal(new DateOnly(2023, 08, 09), personal[123]);
+	}
+
+	[Fact]
+	public async Task PersonalCompletionsAreEmptyWhenNoAPI()
+	{
+		//arrange
+		const string data = """{ "123": "2023-08-09" }""";
+		var http = new MockHttpMessageHandler(data);
+		var config = Substitute.For<IConfig>();
+		var api = new CustomInfoAPI(new HttpClient(http), config);
+
+		//act
+		var personal = await api.GetPersonalCompletions();
+
+		//assert
+		Assert.Empty(personal);
 	}
 }

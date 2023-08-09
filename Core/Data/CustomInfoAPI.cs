@@ -21,5 +21,12 @@ public sealed class CustomInfoAPI : ICustomInfoAPI
 			: ImmutableDictionary<string, string>.Empty;
 
 	public async Task<IDictionary<string, IReadOnlyCollection<uint>>> GetGroups()
-		=> await _httpClient.GetFromJsonAsync<IDictionary<string, IReadOnlyCollection<uint>>>(_config.GroupAPI);
+		=> !string.IsNullOrWhiteSpace(_config.GroupAPI)
+			? await _httpClient.GetFromJsonAsync<IDictionary<string, IReadOnlyCollection<uint>>>(_config.GroupAPI)
+			: ImmutableDictionary<string, IReadOnlyCollection<uint>>.Empty;
+
+	public async Task<IDictionary<uint, DateOnly>> GetPersonalCompletions()
+		=> !string.IsNullOrWhiteSpace(_config.PersonalAPI)
+			? await _httpClient.GetFromJsonAsync<IDictionary<uint, DateOnly>>(_config.PersonalAPI)
+			: ImmutableDictionary<uint, DateOnly>.Empty;
 }
