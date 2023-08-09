@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Data;
@@ -359,6 +360,122 @@ public sealed class DataServiceTests
 
 		//assert
 		Assert.True(logger.Called);
+	}
+
+	[Fact]
+	public async Task GroupMembersNotFoundExceptionsAreIgnored()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
+		customInfoAPI.GetGroups().Throws(new HttpRequestException(null, null, HttpStatusCode.NotFound));
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
+
+		//act
+		await dataService.GetGroupMembers("Test 1");
+
+		//assert
+		Assert.False(logger.Called);
+	}
+
+	private static IDictionary<uint, DateOnly> personal
+		=> new Dictionary<uint, DateOnly>
+		{
+			{ 234, new DateOnly(2023, 08, 07) }
+		};
+
+	[Fact]
+	public async Task CanGetPersonalCompletions()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
+		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
+		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
+		customInfoAPI.GetPersonalCompletions().Returns(personal);
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
+
+		//act
+		var members = await dataService.GetPersonalCompletions();
+
+		//assert
+		Assert.Equal("Steve Desmond", members.First().Key.Name);
+	}
+
+	[Fact]
+	public async Task PersonalCompletionsAreCached()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		resultsAPI[Arg.Any<string>()].Source.Returns(new WebScorer(TestHelpers.Config));
+		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
+		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
+		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
+		customInfoAPI.GetPersonalCompletions().Returns(personal);
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
+
+		//act
+		var members1 = await dataService.GetPersonalCompletions();
+		var members2 = await dataService.GetPersonalCompletions();
+
+		//assert
+		Assert.Equal("Steve Desmond", members1.First().Key.Name);
+		Assert.Equal("Steve Desmond", members2.First().Key.Name);
+		await customInfoAPI.Received(1).GetPersonalCompletions();
+	}
+
+	[Fact]
+	public async Task PersonalCompletionExceptionsAreLogged()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
+		customInfoAPI.GetPersonalCompletions().Throws(new Exception());
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
+
+		//act
+		await dataService.GetPersonalCompletions();
+
+		//assert
+		Assert.True(logger.Called);
+	}
+
+	[Fact]
+	public async Task PersonalCompletionsNotFoundExceptionsAreIgnored()
+	{
+		//arrange
+		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
+		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
+		customInfoAPI.GetPersonalCompletions().Throws(new HttpRequestException(null, null, HttpStatusCode.NotFound));
+		var communityAPI = Substitute.For<ICommunityAPI>();
+		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
+		var logger = new TestLogger();
+		var loggerFactory = Substitute.For<ILoggerFactory>();
+		loggerFactory.CreateLogger(Arg.Any<string>()).Returns(logger);
+		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
+
+		//act
+		await dataService.GetPersonalCompletions();
+
+		//assert
+		Assert.False(logger.Called);
 	}
 
 	[Fact]

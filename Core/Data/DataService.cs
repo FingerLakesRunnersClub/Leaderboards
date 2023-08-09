@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Net;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
@@ -152,6 +153,7 @@ public sealed class DataService : IDataService
 
 	private DateTime _cachedAliasTimestamp;
 	private IDictionary<string, string> _cachedAliases = new ConcurrentDictionary<string, string>();
+
 	private async Task<IDictionary<string, string>> GetAliases()
 	{
 		if (_cachedAliasTimestamp < DateTime.Now.Subtract(_cacheLength))
@@ -211,12 +213,16 @@ public sealed class DataService : IDataService
 		}
 		catch (Exception e)
 		{
-			_logger.LogWarning(e, "Could not retrieve group members for {id}", id);
+			if (e is not HttpRequestException { StatusCode: HttpStatusCode.NotFound })
+			{
+				_logger.LogWarning(e, "Could not retrieve group members for {id}", id);
+			}
+
 			return Array.Empty<Athlete>();
 		}
 	}
 
-	private IDictionary<string, Athlete[]> _groups;
+	private IDictionary<string, Athlete[]> _groups = new ConcurrentDictionary<string, Athlete[]>();
 	private DateTime _groupCacheTimestamp;
 
 	private async Task<IDictionary<string, Athlete[]>> GetGroups()
@@ -231,6 +237,37 @@ public sealed class DataService : IDataService
 		}
 
 		return _groups;
+	}
+
+	private IDictionary<Athlete, DateOnly> _personal = new ConcurrentDictionary<Athlete, DateOnly>();
+	private DateTime _personalCacheTimestamp;
+
+	public async Task<IDictionary<Athlete, DateOnly>> GetPersonalCompletions()
+	{
+		if (_personalCacheTimestamp < DateTime.Now.Subtract(_cacheLength))
+		{
+			await UpdatePersonalCompletions();
+		}
+
+		return _personal;
+	}
+
+	private async Task UpdatePersonalCompletions()
+	{
+		try
+		{
+			var athletes = await GetAthletes();
+			var completions = await _customInfoAPI.GetPersonalCompletions();
+			_personal = completions.ToDictionary(c => athletes[c.Key], c => c.Value);
+			_personalCacheTimestamp = DateTime.Now;
+		}
+		catch (Exception e)
+		{
+			if (e is not HttpRequestException { StatusCode: HttpStatusCode.NotFound })
+			{
+				_logger.LogWarning(e, "Could not retrieve personal completions");
+			}
+		}
 	}
 
 	public async Task<IReadOnlyCollection<User>> GetCommunityUsers()
