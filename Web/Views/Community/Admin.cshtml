@@ -5,47 +5,54 @@
 
 <div class="card card-highlighted">
 	<div class="card-body">
-		<form method="post" action="">
-			<input type="submit" value="Sync" class="btn btn-success float-right"/>
-			<h3 id="missing-groups">Athletes Missing Community Groups</h3>
-			<table aria-labelledby="missing-groups" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
-				<thead>
-				<tr>
-					<th scope="col" class="text-center">Add</th>
-					<th scope="col">Name</th>
-					<th scope="col" class="text-center">Team</th>
-					<th scope="col">Username</th>
-					<th scope="col">Current</th>
-					<th scope="col">Missing</th>
-				</tr>
-				</thead>
-				<tbody>
-				@foreach (var row in Model.Rows.Where(r => r.User is not null && r.Missing.Any()))
-				{
+		@if (Model.MissingRows.Any())
+		{
+			<form method="post" action="">
+				<input type="submit" value="Sync" class="btn btn-success float-right"/>
+                <h3 id="missing-groups">Athletes Missing Community Groups</h3>
+                <table aria-labelledby="missing-groups" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+					<thead>
 					<tr>
-						<td class="text-center">
-							<input type="checkbox" checked="checked" name="users" value="@row.User.ID"/>
-						</td>
-						<td>@row.Athlete.Name</td>
-						<td class="text-center">@row.Athlete.Team.Display</td>
-						<td>@row.User.Username</td>
-						<td>
-							@foreach (var group in row.Current)
-							{
-								<span class="badge badge-pill badge-primary">@group</span>
-							}
-						</td>
-						<td>
-							@foreach (var group in row.Missing)
-							{
-								<span class="badge badge-pill badge-secondary">@group</span>
-							}
-						</td>
+						<th scope="col" class="text-center">Add</th>
+						<th scope="col">Name</th>
+						<th scope="col" class="text-center">Team</th>
+						<th scope="col">Username</th>
+						<th scope="col">Current</th>
+						<th scope="col">Missing</th>
 					</tr>
-				}
-				</tbody>
-			</table>
-		</form>
+					</thead>
+					<tbody>
+					@foreach (var row in Model.MissingRows)
+					{
+						<tr>
+							<td class="text-center">
+								<input type="checkbox" checked="checked" name="users" value="@row.User.ID"/>
+							</td>
+							<td>@row.Athlete.Name</td>
+							<td class="text-center">@row.Athlete.Team.Display</td>
+							<td>@row.User.Username</td>
+							<td>
+								@foreach (var group in row.CurrentGroups)
+								{
+									<span class="badge badge-pill badge-primary">@group</span>
+								}
+							</td>
+							<td>
+								@foreach (var group in row.MissingGroups)
+								{
+									<span class="badge badge-pill badge-secondary">@group</span>
+								}
+							</td>
+						</tr>
+					}
+					</tbody>
+				</table>
+			</form>
+		}
+		else
+		{
+			<div class="alert alert-success">All athletes with community users have been synchronized.</div>
+		}
 
 		<h3 id="no-users">Athletes Without Community Users</h3>
 		<table aria-labelledby="no-users" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
@@ -56,7 +63,7 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var row in Model.Rows.Where(r => r.User is null))
+			@foreach (var row in Model.NoUserRows)
 			{
 				<tr>
 					<td>@row.Athlete.Name</td>
@@ -77,14 +84,14 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var row in Model.Rows.Where(r => r.User is not null && !r.Missing.Any()))
+			@foreach (var row in Model.SyncedRows)
 			{
 				<tr>
 					<td>@row.Athlete.Name</td>
 					<td>@row.Athlete.Team.Display</td>
 					<td>@row.User.Username</td>
 					<td>
-						@foreach (var group in row.Current)
+						@foreach (var group in row.CurrentGroups)
 						{
 							<span class="badge badge-pill badge-primary">@group</span>
 						}

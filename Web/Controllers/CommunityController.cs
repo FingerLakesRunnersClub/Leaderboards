@@ -25,8 +25,8 @@ public sealed class CommunityController : Controller
 	{
 		var vm = await GetMemberships();
 		var usersToUpdate = vm.Rows.Where(r => r.User is not null && users.Contains(r.User.ID)).ToArray();
-		var groupsToUpdate = usersToUpdate.SelectMany(r => r.Missing).Distinct().ToArray();
-		var mappingsToAdd = groupsToUpdate.ToDictionary(g => g, g => usersToUpdate.Where(r => r.Missing.Contains(g)).Select(r => r.User.Username).ToArray());
+		var groupsToUpdate = usersToUpdate.SelectMany(r => r.MissingGroups).Distinct().ToArray();
+		var mappingsToAdd = groupsToUpdate.ToDictionary(g => g, g => usersToUpdate.Where(r => r.MissingGroups.Contains(g)).Select(r => r.User.Username).ToArray());
 		await _dataService.AddCommunityGroupMembers(mappingsToAdd);
 		return await Admin();
 	}
@@ -40,39 +40,39 @@ public sealed class CommunityController : Controller
 
 		var athletes = await athleteTask;
 		var users = await userTask;
-		var global = await groupMembers[0];
+		var globalGroup = await groupMembers[0];
 
 		var rows = new List<CommunityAdminViewModel.Row>();
 		foreach (var (_, athlete) in athletes.OrderBy(a => a.Value.Name))
 		{
 			var user = users.FirstOrDefault(u => u.Name == athlete.Name);
-			var current = new List<string>();
-			var missing = new List<string>();
-			if (global.Contains(user))
+			var currentGroups = new List<string>();
+			var missingGroups = new List<string>();
+			if (globalGroup.Contains(user))
 			{
-				current.Add(_config.CommunityGroups[0]);
+				currentGroups.Add(_config.CommunityGroups[0]);
 			}
 			else
 			{
-				missing.Add(_config.CommunityGroups[0]);
+				missingGroups.Add(_config.CommunityGroups[0]);
 			}
 
 			var team = await groupMembers[athlete.Team.Value];
 			if (team.Contains(user))
 			{
-				current.Add(_config.CommunityGroups[athlete.Team.Value]);
+				currentGroups.Add(_config.CommunityGroups[athlete.Team.Value]);
 			}
 			else
 			{
-				missing.Add(_config.CommunityGroups[athlete.Team.Value]);
+				missingGroups.Add(_config.CommunityGroups[athlete.Team.Value]);
 			}
 
 			var row = new CommunityAdminViewModel.Row
 			{
 				Athlete = athlete,
 				User = user,
-				Current = current,
-				Missing = missing
+				CurrentGroups = currentGroups,
+				MissingGroups = missingGroups
 			};
 			rows.Add(row);
 		}
