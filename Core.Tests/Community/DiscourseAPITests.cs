@@ -36,10 +36,10 @@ public sealed class DiscourseAPITests
 		await api.GetPosts(123);
 
 		//assert
-		var queryString = http.Requested.RequestUri!.Query;
+		var queryString = http.LastRequested.RequestUri!.Query;
 		Assert.Contains("page=1", queryString);
 		Assert.Contains("include_raw=true", queryString);
-		Assert.Equal("abc123", http.Requested.Headers.First(h => h.Key == "Api-Key").Value.First());
+		Assert.Equal("abc123", http.LastRequested.Headers.First(h => h.Key == "Api-Key").Value.First());
 	}
 
 	[Fact]
@@ -149,6 +149,39 @@ public sealed class DiscourseAPITests
 	}
 
 	[Fact]
+	public async Task SmallNumberOfGroupMembersOnlyMakesOneRequest()
+	{
+		//arrange
+		var http = new MockHttpMessageHandler(@"{""members"":[{""id"":123,""name"": ""Steve Desmond""}]}");
+		var config = Substitute.For<IConfig>();
+		config.CommunityURL.Returns("https://example.com");
+		var api = new DiscourseAPI(new HttpClient(http), config);
+
+		//act
+		await api.GetMembers("test");
+
+		//assert
+		Assert.Single(http.Requests);
+	}
+
+	[Fact]
+	public async Task LargeNumberOfGroupMembersMakesMultipleRequests()
+	{
+		//arrange
+		var data = new { members = Enumerable.Range(1, 1000).Select(n => new { id = n, name = "test" }) };
+		var http = new MockHttpMessageHandler(JsonSerializer.Serialize(data));
+		var config = Substitute.For<IConfig>();
+		config.CommunityURL.Returns("https://example.com");
+		var api = new DiscourseAPI(new HttpClient(http), config);
+
+		//act
+		await api.GetMembers("test");
+
+		//assert
+		Assert.Equal(2, http.Requests.Count);
+	}
+
+	[Fact]
 	public async Task CanGetGroupInfo()
 	{
 		//arrange
@@ -177,7 +210,7 @@ public sealed class DiscourseAPITests
 		await api.AddMembers(123, new[] { "user1", "user2" });
 
 		//assert
-		Assert.Equal("/groups/123/members.json", http.Requested.RequestUri!.AbsolutePath);
-		Assert.Equal(@"{""usernames"":""user1,user2""}", await http.Requested.Content!.ReadAsStringAsync());
+		Assert.Equal("/groups/123/members.json", http.LastRequested.RequestUri!.AbsolutePath);
+		Assert.Equal(@"{""usernames"":""user1,user2""}", await http.LastRequested.Content!.ReadAsStringAsync());
 	}
 }

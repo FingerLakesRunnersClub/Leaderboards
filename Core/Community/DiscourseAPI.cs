@@ -59,7 +59,20 @@ public sealed class DiscourseAPI : ICommunityAPI
 
 	public async Task<IReadOnlyCollection<JsonElement>> GetMembers(string groupID)
 	{
-		var response = await _http.GetStreamAsync($"/groups/{groupID}/members.json?limit=1000&asc=true");
+		const int pageSize = 1000;
+
+		var members = await GetMembers(groupID, pageSize, 1);
+		if (members.Count < pageSize)
+			return members;
+
+		var moreMembers = await GetMembers(groupID, pageSize, 2);
+		return members.Concat(moreMembers).ToArray();
+	}
+
+	private async Task<IReadOnlyCollection<JsonElement>> GetMembers(string groupID, int pageSize, int pageNumber)
+	{
+		var offset = pageSize * (pageNumber - 1);
+		var response = await _http.GetStreamAsync($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
 		var json = await JsonDocument.ParseAsync(response);
 		return json.RootElement.GetProperty("members").EnumerateArray().ToArray();
 	}
