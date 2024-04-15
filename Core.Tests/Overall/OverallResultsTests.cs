@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
+using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
@@ -221,6 +222,8 @@ public sealed class OverallResultsTests
 					new Result
 					{
 						Course = new Course { Distance = new Distance("10 miles") },
+						StartTime = new Date(new DateTime(2024, 04, 15, 9, 36, 00)),
+						Duration = new Time(TimeSpan.FromHours(2)),
 						Athlete = LeaderboardData.Private, CommunityStars = { [StarType.Story] = true }
 					}
 				}

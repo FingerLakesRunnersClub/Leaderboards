@@ -168,6 +168,31 @@ public sealed class CourseTests
 	}
 
 	[Fact]
+	public void EarliestRunIsBasedOnFinishTime()
+	{
+		//arrange
+		var course = new Course
+		{
+			Results = new []
+			{
+				new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 9:40am")), Duration = new Time(TimeSpan.FromHours(3))},
+				new Result { Athlete = CourseData.Athlete2, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 9:45am")), Duration = new Time(TimeSpan.FromHours(2))},
+				new Result { Athlete = CourseData.Athlete3, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 11:50am")), Duration = new Time(TimeSpan.FromHours(1))}
+			},
+			Distance = new Distance("10K")
+		};
+
+		//act
+		var earliest = course.Earliest();
+
+		//assert
+		Assert.Equal(3, earliest.Count);
+		Assert.Equal(CourseData.Athlete2, earliest[0].Result.Athlete);
+		Assert.Equal(CourseData.Athlete1, earliest[1].Result.Athlete);
+		Assert.Equal(CourseData.Athlete3, earliest[2].Result.Athlete);
+	}
+
+	[Fact]
 	public void CanGetEarliestForCategory()
 	{
 		//arrange

@@ -94,7 +94,7 @@ public sealed class Course
 		filter ??= new Filter();
 		return _earliestCache.TryGetValue(filter, out var results)
 			? results
-			: _earliestCache[filter] = Rank(filter, _ => true, g => g.MinBy(r => r.StartTime), g => g.Min(r => r.StartTime));
+			: _earliestCache[filter] = Rank(filter, _ => true, g => g.MinBy(r => r.FinishTime), g => g.Min(r => r.FinishTime));
 	}
 
 	private readonly IDictionary<Filter, RankedList<Stars>> _communityCache = new ConcurrentDictionary<Filter, RankedList<Stars>>();
