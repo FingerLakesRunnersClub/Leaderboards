@@ -10,11 +10,10 @@ public sealed class Athlete : IEquatable<Athlete>
 	public string Name { get; init; }
 
 	public Category Category { get; init; }
+	public bool Private { get; set; }
 
 	public byte Age { get; init; }
-
 	[JsonIgnore] public DateTime? DateOfBirth { get; init; }
-	[JsonIgnore] public bool Private { get; set; }
 
 	public byte AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte) (date.Subtract(DateOfBirth.Value).TotalDays / 365.2425)

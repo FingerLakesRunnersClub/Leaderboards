@@ -18,7 +18,10 @@ public sealed class Result : IComparable<Result>
 	public Athlete Athlete { get; init; }
 	public Date StartTime { get; init; }
 	public Time Duration { get; init; }
-	public Date FinishTime => new(StartTime.Value + Duration.Value);
+
+	public Date FinishTime => StartTime != null
+		? new Date(StartTime.Value + (Duration?.Value ?? TimeSpan.Zero))
+		: null;
 
 	public IDictionary<StarType, bool> CommunityStars { get; }
 		= new Dictionary<StarType, bool>

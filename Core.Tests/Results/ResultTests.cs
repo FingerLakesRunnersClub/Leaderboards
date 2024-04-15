@@ -10,6 +10,52 @@ namespace FLRC.Leaderboards.Core.Tests.Results;
 public sealed class ResultTests
 {
 	[Fact]
+	public void CanGetFinishTime()
+	{
+		//arrange
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2024, 04, 15, 09, 25, 00)),
+			Duration = new Time(new TimeSpan(1, 2, 3))
+		};
+
+		//act
+		var finishTime = result.FinishTime;
+
+		//assert
+		Assert.Equal(new DateTime(2024, 04, 15, 10, 27, 03), finishTime.Value);
+	}
+
+	[Fact]
+	public void FinishTimeIsStartTimeWhenDurationIsNull()
+	{
+		//arrange
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2024, 04, 15, 09, 25, 00))
+		};
+
+		//act
+		var finishTime = result.FinishTime;
+
+		//assert
+		Assert.Equal(result.StartTime.Value, finishTime.Value);
+	}
+
+	[Fact]
+	public void FinishTimeIsNullWhenStartTimeIsNull()
+	{
+		//arrange
+		var result = new Result();
+
+		//act
+		var finishTime = result.FinishTime;
+
+		//assert
+		Assert.Null(finishTime);
+	}
+
+	[Fact]
 	public void CanGetAgeOnDayOfRun()
 	{
 		//arrange
