@@ -32,7 +32,7 @@ public sealed class ResultsExtensionsTests
 		var filtered = results.Filter(filter).ToArray();
 
 		//assert
-		Assert.True(filtered.Any());
+		Assert.NotEmpty(filtered);
 		Assert.True(filtered.All(r => r.Athlete.Category == Category.M));
 	}
 
@@ -47,7 +47,7 @@ public sealed class ResultsExtensionsTests
 		var filtered = results.Filter(filter).ToArray();
 
 		//assert
-		Assert.True(filtered.Any());
+		Assert.NotEmpty(filtered);
 		Assert.True(filtered.All(r => r.Athlete.Category == Category.M && r.AgeOnDayOfRun.ToString().StartsWith('2')));
 	}
 
@@ -67,7 +67,7 @@ public sealed class ResultsExtensionsTests
 		var filtered = results.Filter(filter).ToArray();
 
 		//assert
-		Assert.True(filtered.Any());
+		Assert.NotEmpty(filtered);
 		Assert.True(filtered.All(r => r.Athlete.Category == Category.M && r.AgeOnDayOfRun.ToString().StartsWith('7')));
 	}
 }

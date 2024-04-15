@@ -34,7 +34,7 @@ public sealed class OverallResults
 	public RankedList<TeamMember> TeamMembers(Team team, Filter filter = null)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest(filter).Where(r => r.Result.Athlete.Team == team)).ToArray());
 
-	private static RankedList<TeamMember> RankTeam(IReadOnlyCollection<Ranked<Time>> results)
+	private static RankedList<TeamMember> RankTeam(IEnumerable<Ranked<Time>> results)
 	{
 		var ranked = results
 			.GroupBy(r => r.Result.Athlete)
@@ -60,7 +60,7 @@ public sealed class OverallResults
 		return ranks;
 	}
 
-	public RankedList<TeamMember> GroupMembers(IReadOnlyCollection<Athlete> athletes)
+	public RankedList<TeamMember> GroupMembers(IEnumerable<Athlete> athletes)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).ToArray());
 
 	public RankedList<TeamResults> TeamPoints(Filter filter = null)

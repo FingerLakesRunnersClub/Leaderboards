@@ -81,7 +81,7 @@ public sealed class TimeTests
 
 		//act
 		var h1 = t1.GetHashCode();
-		var h2 = t1.GetHashCode();
+		var h2 = t2.GetHashCode();
 
 		//assert
 		Assert.Equal(h1, h2);

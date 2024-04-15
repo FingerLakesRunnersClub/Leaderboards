@@ -30,7 +30,7 @@ public sealed class InvalidController : Controller
 		return new InvalidViewModel
 		{
 			Config = _config,
-			Results = invalid.Where(r => r.Value.Any())
+			Results = invalid.Where(r => r.Value.Length != 0)
 				.ToDictionary(r => r.Key, r => r.Value)
 		};
 	}

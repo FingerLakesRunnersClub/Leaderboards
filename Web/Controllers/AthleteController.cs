@@ -54,7 +54,7 @@ public sealed class AthleteController : Controller
 		};
 	}
 
-	private static RankedList<Time> Rank(IReadOnlyCollection<Result> results)
+	private static RankedList<Time> Rank(IEnumerable<Result> results)
 	{
 		var ranks = new RankedList<Time>();
 
@@ -82,7 +82,7 @@ public sealed class AthleteController : Controller
 		return ranks;
 	}
 
-	private static IReadOnlyCollection<SimilarAthlete> Rank(IReadOnlyCollection<SimilarAthlete> matches)
+	private static SimilarAthlete[] Rank(IEnumerable<SimilarAthlete> matches)
 	{
 		var ordered = matches.OrderByDescending(r => r.Score).ToArray();
 		for (var x = 0; x < ordered.Length; x++)

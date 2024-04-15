@@ -4,7 +4,7 @@ public record Time(TimeSpan Value) : Formatted<TimeSpan>(Value), IComparable<Tim
 {
 	public override string Display => Value.ToString(Value.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss");
 
-	public Time Subtract(Time other) => new Time(Value - other.Value);
+	public Time Subtract(Time other) => new(Value - other.Value);
 
 	public int CompareTo(Time other) => Value.CompareTo(other.Value);
 

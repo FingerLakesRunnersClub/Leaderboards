@@ -23,11 +23,11 @@ public sealed class LeaderboardViewModel : ViewModel
 	}
 
 	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<IReadOnlyCollection<LeaderboardRow>> rows)
-		=> Config.Competitions.ContainsKey(id)
+		=> Config.Competitions.TryGetValue(id, out var title)
 			? new LeaderboardTable
 			{
 				Link = $"/Overall/{id}",
-				Title = Config.Competitions[id],
+				Title = title,
 				ResultType = new FormattedResultType(type),
 				Filter = filter,
 				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(rows)
@@ -79,10 +79,9 @@ public sealed class LeaderboardViewModel : ViewModel
 		=> _courses.ToDictionary(c => c, c => LeaderboardTables(c).Where(t => Config.Features.MultiAttempt ? _leaderboardFilter(t) : t.ResultType.Value == ResultType.Fastest)
 			.ToArray());
 
-	private static IReadOnlyCollection<LeaderboardTable> LeaderboardTables(Course course)
-		=> new List<LeaderboardTable>
-		{
-			new()
+	private static LeaderboardTable[] LeaderboardTables(Course course)
+		=> [
+			new LeaderboardTable
 			{
 				Title = "Fastest (F)",
 				Course = course,
@@ -93,7 +92,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Fastest (M)",
 				Course = course,
@@ -104,7 +103,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Best Average (F)",
 				Course = course,
@@ -115,7 +114,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Best Average (M)",
 				Course = course,
@@ -126,7 +125,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Most Runs",
 				Course = course,
@@ -137,7 +136,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Age Grade",
 				Course = course,
@@ -148,7 +147,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Most Runs",
 				Course = course,
@@ -159,7 +158,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Team Points",
 				Course = course,
@@ -170,7 +169,7 @@ public sealed class LeaderboardViewModel : ViewModel
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 					.ToArray())
 			}
-		};
+		];
 
 	private static Func<LeaderboardTable, bool> GetFilter(LeaderboardResultType type)
 	{

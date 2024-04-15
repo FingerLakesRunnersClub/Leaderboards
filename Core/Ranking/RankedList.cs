@@ -6,7 +6,7 @@ public sealed class RankedList<T> : List<Ranked<T>>
 	{
 	}
 
-	public RankedList(IReadOnlyCollection<Ranked<T>> list)
+	public RankedList(IEnumerable<Ranked<T>> list)
 	{
 		AddRange(list);
 	}

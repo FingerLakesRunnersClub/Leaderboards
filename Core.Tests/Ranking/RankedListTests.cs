@@ -21,9 +21,9 @@ public sealed class RankedListTests
 		//arrange
 		var list = new List<Ranked<byte>>
 			{
-				new () { Rank = new ((ushort) 1) },
-				new () { Rank = new ((ushort) 2) },
-				new () { Rank = new ((ushort) 3) }
+				new () { Rank = new Rank(1) },
+				new () { Rank = new Rank(2) },
+				new () { Rank = new Rank(3) }
 			};
 
 		//act

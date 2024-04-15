@@ -487,8 +487,8 @@ public sealed class DataServiceTests
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		communityAPI.GetUsers().Returns(new[]
 		{
-			JsonDocument.Parse(@"{""id"":123,""name"":""Steve"",""username"":""steve""}").RootElement,
-			JsonDocument.Parse(@"{""id"":234,""name"":""Test"",""username"":""test""}").RootElement
+			JsonDocument.Parse("""{"id":123,"name":"Steve","username":"steve"}""").RootElement,
+			JsonDocument.Parse("""{"id":234,"name":"Test","username":"test"}""").RootElement
 		});
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
@@ -514,8 +514,8 @@ public sealed class DataServiceTests
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		communityAPI.GetMembers("group").Returns(new[]
 		{
-			JsonDocument.Parse(@"{""id"":123,""name"":""Steve"",""username"":""steve""}").RootElement,
-			JsonDocument.Parse(@"{""id"":234,""name"":""Test"",""username"":""test""}").RootElement
+			JsonDocument.Parse("""{"id":123,"name":"Steve","username":"steve"}""").RootElement,
+			JsonDocument.Parse("""{"id":234,"name":"Test","username":"test"}""").RootElement
 		});
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
@@ -539,8 +539,8 @@ public sealed class DataServiceTests
 		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		communityAPI.GetGroup("group1").Returns(JsonDocument.Parse(@"{""id"":123,""name"":""group1""}").RootElement);
-		communityAPI.GetGroup("group2").Returns(JsonDocument.Parse(@"{""id"":234,""name"":""group2""}").RootElement);
+		communityAPI.GetGroup("group1").Returns(JsonDocument.Parse("""{"id":123,"name":"group1"}""").RootElement);
+		communityAPI.GetGroup("group2").Returns(JsonDocument.Parse("""{"id":234,"name":"group2"}""").RootElement);
 		var arg1 = Array.Empty<string>();
 		var arg2 = Array.Empty<string>();
 		await communityAPI.AddMembers(123, Arg.Do<IReadOnlyCollection<string>>(c => arg1 = c.ToArray()));
@@ -553,8 +553,8 @@ public sealed class DataServiceTests
 
 		var members = new Dictionary<string, string[]>
 		{
-			{ "group1", new[] { "user1", "user2" } },
-			{ "group2", new[] { "user1", "user3" } }
+			{ "group1", ["user1", "user2"] },
+			{ "group2", ["user1", "user3"] }
 		};
 
 		//act

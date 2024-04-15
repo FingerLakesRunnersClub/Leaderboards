@@ -282,7 +282,7 @@ public sealed class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0))
 		};
 
 		var r2 = new Result
@@ -315,7 +315,7 @@ public sealed class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0))
 		};
 
 		var r2 = new Result
@@ -348,7 +348,7 @@ public sealed class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0))
 		};
 
 		var r2 = new Result
@@ -381,7 +381,7 @@ public sealed class ResultTests
 		{
 			Athlete = CourseData.Athlete1,
 			Course = course,
-			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
+			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0))
 		};
 
 		var r2 = new Result

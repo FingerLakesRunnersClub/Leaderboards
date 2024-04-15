@@ -15,8 +15,10 @@ public sealed class ErrorControllerTests
 	public void CanGenerateErrorPageForException()
 	{
 		//arrange
-		var exception = new ExceptionHandlerFeature();
-		exception.Error = new Exception("The system is down");
+		var exception = new ExceptionHandlerFeature
+		{
+			Error = new Exception("The system is down")
+		};
 		var features = Substitute.For<IFeatureCollection>();
 		features.Revision.Returns(1);
 		features.Get<IExceptionHandlerFeature>().Returns(exception);

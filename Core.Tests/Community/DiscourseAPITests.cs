@@ -12,7 +12,7 @@ public sealed class DiscourseAPITests
 	public void CanCreateWithoutURL()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]},""posts_count"":0}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]},"posts_count":0}""");
 		var config = Substitute.For<IConfig>();
 
 		//act
@@ -25,7 +25,7 @@ public sealed class DiscourseAPITests
 	public async Task RequestHasRelevantHeadersSet()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]},""posts_count"":0}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]},"posts_count":0}""");
 		var config = Substitute.For<IConfig>();
 		config.Features.CommunityStars.Returns(true);
 		config.CommunityURL.Returns("https://example.com");
@@ -46,7 +46,7 @@ public sealed class DiscourseAPITests
 	public async Task CanGetPostsFromSinglePage()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]},""posts_count"":20}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]},"posts_count":20}""");
 		var config = Substitute.For<IConfig>();
 		config.Features.CommunityStars.Returns(true);
 		config.CommunityURL.Returns("https://example.com");
@@ -64,7 +64,7 @@ public sealed class DiscourseAPITests
 	public async Task CanGetPostsFromMultiplePages()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]},""posts_count"":21}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]},"posts_count":21}""");
 		var config = Substitute.For<IConfig>();
 		config.Features.CommunityStars.Returns(true);
 		config.CommunityURL.Returns("https://example.com");
@@ -82,8 +82,8 @@ public sealed class DiscourseAPITests
 	public void CanParsePosts()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]}}");
-		var json = JsonDocument.Parse(@"{""name"":""User 123"", ""created_at"":""2022-04-07T06:51:23Z"",""raw"":""test 123""}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]}}""");
+		var json = JsonDocument.Parse("""{"name":"User 123", "created_at":"2022-04-07T06:51:23Z","raw":"test 123"}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -101,8 +101,8 @@ public sealed class DiscourseAPITests
 	public void ParsePostsConvertsTimeZone()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""post_stream"":{""posts"":[{}]}}");
-		var json = JsonDocument.Parse(@"{""name"":""User 123"", ""created_at"":""2022-04-08T03:51:23Z"",""raw"":""test 123""}");
+		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]}}""");
+		var json = JsonDocument.Parse("""{"name":"User 123", "created_at":"2022-04-08T03:51:23Z","raw":"test 123"}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -120,7 +120,7 @@ public sealed class DiscourseAPITests
 	public async Task CanGetUsers()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""members"":[{""id"":123,""name"": ""Steve Desmond""}]}");
+		var http = new MockHttpMessageHandler("""{"members":[{"id":123,"name": "Steve Desmond"}]}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -136,7 +136,7 @@ public sealed class DiscourseAPITests
 	public async Task CanGetGroupMembers()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""members"":[{""id"":123,""name"": ""Steve Desmond""}]}");
+		var http = new MockHttpMessageHandler("""{"members":[{"id":123,"name": "Steve Desmond"}]}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -152,7 +152,7 @@ public sealed class DiscourseAPITests
 	public async Task SmallNumberOfGroupMembersOnlyMakesOneRequest()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""members"":[{""id"":123,""name"": ""Steve Desmond""}]}");
+		var http = new MockHttpMessageHandler("""{"members":[{"id":123,"name": "Steve Desmond"}]}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -185,7 +185,7 @@ public sealed class DiscourseAPITests
 	public async Task CanGetGroupInfo()
 	{
 		//arrange
-		var http = new MockHttpMessageHandler(@"{""group"":{""id"":123,""name"": ""test""}}");
+		var http = new MockHttpMessageHandler("""{"group":{"id":123,"name": "test"}}""");
 		var config = Substitute.For<IConfig>();
 		config.CommunityURL.Returns("https://example.com");
 		var api = new DiscourseAPI(new HttpClient(http), config);
@@ -207,10 +207,10 @@ public sealed class DiscourseAPITests
 		var api = new DiscourseAPI(new HttpClient(http), config);
 
 		//act
-		await api.AddMembers(123, new[] { "user1", "user2" });
+		await api.AddMembers(123, ["user1", "user2"]);
 
 		//assert
 		Assert.Equal("/groups/123/members.json", http.LastRequested.RequestUri!.AbsolutePath);
-		Assert.Equal(@"{""usernames"":""user1,user2""}", await http.LastRequested.Content!.ReadAsStringAsync());
+		Assert.Equal("""{"usernames":"user1,user2"}""", await http.LastRequested.Content!.ReadAsStringAsync());
 	}
 }

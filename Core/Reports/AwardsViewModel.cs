@@ -19,7 +19,7 @@ public sealed class AwardsViewModel : ViewModel
 		Awards = GetAwards(results);
 	}
 
-	private IDictionary<Athlete, Award[]> GetAwards(IReadOnlyCollection<Course> results)
+	private Dictionary<Athlete, Award[]> GetAwards(IReadOnlyCollection<Course> results)
 	{
 		var overall = new OverallResults(results);
 		var awards = new List<Award>();
@@ -41,7 +41,7 @@ public sealed class AwardsViewModel : ViewModel
 		return awards.GroupBy(a => a.Athlete).ToDictionary(a => a.Key, a => a.ToArray());
 	}
 
-	private IReadOnlyCollection<Award> Overall<T>(string type, string title, RankedList<T> results, byte top)
+	private Award[] Overall<T>(string type, string title, RankedList<T> results, byte top)
 		=> results.Where(r => r.Rank.Value <= top)
 			.Select(r => new Award
 			{
@@ -52,7 +52,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private IReadOnlyCollection<Award> Team(RankedList<TeamMember> members)
+	private Award[] Team(RankedList<TeamMember> members)
 		=> members.Where(m => m.Rank.Value <= 10)
 			.Select(r => new Award
 			{
@@ -63,7 +63,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private IReadOnlyCollection<Award> Course<T>(string type, string title, IEnumerable<Ranked<T>> results)
+	private Award[] Course<T>(string type, string title, IEnumerable<Ranked<T>> results)
 		=> results.Where(r => r.Rank.Value == 1)
 			.Select(r => new Award
 			{
@@ -74,12 +74,12 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private IReadOnlyCollection<Award> AgeGroup(IReadOnlyCollection<Course> results, Category category)
+	private Award[] AgeGroup(IReadOnlyCollection<Course> results, Category category)
 		=> Athlete.Teams
 			.SelectMany(t => results.SelectMany(c => CourseAgeGroupAwards(c, category, t.Value)))
 			.ToArray();
 
-	private IReadOnlyCollection<Award> CourseAgeGroupAwards(Course course, Category category, Team team)
+	private Award[] CourseAgeGroupAwards(Course course, Category category, Team team)
 	{
 		var categoryWinners = course.Fastest(new Filter(category))
 			.Where(r => r.Rank.Value == 1)

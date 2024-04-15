@@ -30,7 +30,7 @@ public sealed class WebScorer : IDataSource
 
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
-	private IReadOnlyCollection<Result> ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
+	private Result[] ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
 	            && (!_config.Features.MultiAttempt
@@ -56,11 +56,11 @@ public sealed class WebScorer : IDataSource
 		};
 	}
 
-	private readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
+	private readonly ConcurrentDictionary<uint, Athlete> athletes = new();
 
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
-		var name = element.GetProperty("Name").GetString() ?? "(unknown)";
+		var name = element.GetProperty(nameof(Name)).GetString() ?? "(unknown)";
 		if (aliases.TryGetValue(name, out var alias))
 		{
 			name = alias;

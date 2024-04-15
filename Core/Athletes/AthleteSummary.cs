@@ -68,20 +68,20 @@ public sealed class AthleteSummary
 
 	private AthleteOverallRow OverallRow<T>(string id, Category category, Athlete athlete, Func<Ranked<T>> results) where T : Formattable
 	{
-		if (!_config.Competitions.ContainsKey(id) || category != null && category != athlete.Category)
+		if (!_config.Competitions.TryGetValue(id, out var name) || category != null && category != athlete.Category)
 			return null;
 
 		var result = results();
 		return new AthleteOverallRow
 		{
 			ID = id,
-			Name = _config.Competitions[id],
+			Name = name,
 			Rank = result?.Rank,
 			Value = result?.Value?.Display
 		};
 	}
 
-	public IReadOnlyCollection<SimilarAthlete> SimilarAthletes()
+	public IEnumerable<SimilarAthlete> SimilarAthletes()
 	{
 		var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Fastest[c], r)));
 		var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Average[c], r)));

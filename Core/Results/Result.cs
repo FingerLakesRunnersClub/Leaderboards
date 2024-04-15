@@ -35,8 +35,7 @@ public sealed class Result : IComparable<Result>
 			? Athlete.AgeAsOf(StartTime.Value)
 			: Athlete.Age;
 
-	private static readonly IDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double> _ageGradeCache
-		= new ConcurrentDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double>();
+	private static readonly ConcurrentDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double> _ageGradeCache = new();
 
 	[JsonIgnore]
 	public double? AgeGrade

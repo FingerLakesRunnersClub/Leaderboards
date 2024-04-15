@@ -42,7 +42,7 @@ public sealed class CourseControllerTests
 		results.AddRange(new []
 		{
 			new Result { Course = course, Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
-			new Result { Course = course, Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+			new Result { Course = course, Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
 		});
 
 		var dataService = Substitute.For<IDataService>();
@@ -67,7 +67,7 @@ public sealed class CourseControllerTests
 			Results = new []
 			{
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
 			}
 		};
 
@@ -93,7 +93,7 @@ public sealed class CourseControllerTests
 			Results = new []
 			{
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
-				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
 			}
 		};
 
@@ -123,7 +123,7 @@ public sealed class CourseControllerTests
 		{
 			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
 			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:35")) },
-			new Result { Course = course, Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) },
+			new Result { Course = course, Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
 		});
 
 		var dataService = Substitute.For<IDataService>();
@@ -157,7 +157,7 @@ public sealed class CourseControllerTests
 			Results = new []
 			{
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true } },
-				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.Story] = true } },
+				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.Story] = true } }
 			}
 		};
 

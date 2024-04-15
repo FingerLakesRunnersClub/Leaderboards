@@ -11,7 +11,7 @@ public sealed class AliasAPITests
 	public async Task CanCreateAliasLookup()
 	{
 		//arrange
-		var json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
+		const string json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
 		var http = new MockHttpMessageHandler(json);
 		var config = Substitute.For<IConfig>();
 		config.AliasAPI.Returns("http://localhost");
@@ -30,7 +30,7 @@ public sealed class AliasAPITests
 	public async Task AliasesAreEmptyWhenNoAPI()
 	{
 		//arrange
-		var json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
+		const string json = """{ "Incorrect One": "Correct Un", "Incorrect Two": "Correct Deux" }""";
 		var http = new MockHttpMessageHandler(json);
 		var config = Substitute.For<IConfig>();
 

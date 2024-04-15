@@ -4,7 +4,7 @@ namespace FLRC.Leaderboards.Core;
 
 public static partial class Patterns
 {
-	[GeneratedRegex("([\\d\\.]+)(.*)")]
+	[GeneratedRegex(@"([\d\.]+)(.*)")]
 	public static partial Regex Distance();
 
 	[GeneratedRegex("([a-z])([A-Z])")]

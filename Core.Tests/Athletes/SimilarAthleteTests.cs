@@ -63,6 +63,6 @@ public sealed class SimilarAthleteTests
 		var similar = new SimilarAthlete(my, their);
 
 		//assert
-		Assert.Equal((68.2 * 0.9) + (68.2 * 0.5 * 0.1), similar.Score, 1);
+		Assert.Equal(68.2 * 0.9 + 68.2 * 0.5 * 0.1, similar.Score, 1);
 	}
 }

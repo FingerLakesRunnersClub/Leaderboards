@@ -46,7 +46,7 @@ public sealed class DiscourseAPI : ICommunityAPI
 		return json.RootElement;
 	}
 
-	public IReadOnlyCollection<Post> ParsePosts(IReadOnlyCollection<JsonElement> json)
+	public IReadOnlyCollection<Post> ParsePosts(IEnumerable<JsonElement> json)
 		=> json.Select(p => new Post
 		{
 			Name = p.GetProperty("name").GetString(),
@@ -84,9 +84,9 @@ public sealed class DiscourseAPI : ICommunityAPI
 		return json.RootElement.GetProperty("group");
 	}
 
-	public async Task AddMembers(ushort groupID, IReadOnlyCollection<string> usernames)
+	public async Task AddMembers(ushort groupID, IEnumerable<string> usernames)
 	{
-		var data = new StringContent($@"{{""usernames"":""{string.Join(',', usernames)}""}}", MediaTypeHeaderValue.Parse("application/json"));
+		var data = new StringContent($$"""{"usernames":"{{string.Join(',', usernames)}}"}""", MediaTypeHeaderValue.Parse("application/json"));
 		await _http.PutAsync($"/groups/{groupID}/members.json", data);
 	}
 }

@@ -67,9 +67,9 @@ public sealed class CommunityControllerTests
 		//assert
 		var expected = new Dictionary<string, string[]>
 		{
-			{ "everybody-everybody", new[] { "u3" } },
-			{ "youngins", new[] { "u3" } },
-			{ "dirty-thirties", new[] { "u2" } }
+			{ "everybody-everybody", ["u3"] },
+			{ "youngins", ["u3"] },
+			{ "dirty-thirties", ["u2"] }
 		};
 		Assert.Equal(expected, updates);
 	}

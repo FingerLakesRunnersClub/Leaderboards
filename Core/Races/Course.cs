@@ -45,7 +45,7 @@ public sealed class Course
 	public void ClearCommunityCache()
 		=> _communityCache.Clear();
 
-	private readonly IDictionary<Filter, RankedList<Time>> _fastestCache = new ConcurrentDictionary<Filter, RankedList<Time>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<Time>> _fastestCache = new();
 
 	public RankedList<Time> Fastest(Filter filter = null)
 	{
@@ -55,7 +55,7 @@ public sealed class Course
 			: _fastestCache[filter] = Rank(filter, _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration ?? Time.Max));
 	}
 
-	private readonly IDictionary<Filter, RankedList<Time>> _averageCache = new ConcurrentDictionary<Filter, RankedList<Time>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<Time>> _averageCache = new();
 
 	public RankedList<Time> BestAverage(Filter filter = null)
 	{
@@ -67,7 +67,7 @@ public sealed class Course
 			: _averageCache[filter] = Rank(filter, rs => !rs.Key.Private && rs.Count() >= threshold, rs => rs.Average(this, threshold), rs => rs.Average(this, threshold).Duration ?? Time.Max);
 	}
 
-	private readonly IDictionary<Filter, RankedList<ushort>> _mostRunsCache = new ConcurrentDictionary<Filter, RankedList<ushort>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<ushort>> _mostRunsCache = new();
 
 	public RankedList<ushort> MostRuns(Filter filter = null)
 	{
@@ -77,7 +77,7 @@ public sealed class Course
 			: _mostRunsCache[filter] = RankDescending(filter, _ => true, r => r.Average(this), r => (ushort) r.Count());
 	}
 
-	private readonly IDictionary<Filter, RankedList<Miles>> _mostMilesCache = new ConcurrentDictionary<Filter, RankedList<Miles>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<Miles>> _mostMilesCache = new();
 
 	public RankedList<Miles> MostMiles(Filter filter = null)
 	{
@@ -87,7 +87,7 @@ public sealed class Course
 			: _mostMilesCache[filter] = RankDescending(filter, _ => true, r => r.Average(this), r => new Miles(r.Count() * Distance.Miles));
 	}
 
-	private readonly IDictionary<Filter, RankedList<Date>> _earliestCache = new ConcurrentDictionary<Filter, RankedList<Date>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<Date>> _earliestCache = new();
 
 	public RankedList<Date> Earliest(Filter filter = null)
 	{
@@ -97,7 +97,7 @@ public sealed class Course
 			: _earliestCache[filter] = Rank(filter, _ => true, g => g.MinBy(r => r.FinishTime), g => g.Min(r => r.FinishTime));
 	}
 
-	private readonly IDictionary<Filter, RankedList<Stars>> _communityCache = new ConcurrentDictionary<Filter, RankedList<Stars>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<Stars>> _communityCache = new();
 
 	public RankedList<Stars> CommunityStars(Filter filter = null)
 	{
@@ -112,7 +112,7 @@ public sealed class Course
 			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
 			.ToArray();
 
-	private readonly IDictionary<Filter, ushort> _thresholdCache = new ConcurrentDictionary<Filter, ushort>();
+	private readonly ConcurrentDictionary<Filter, ushort> _thresholdCache = new();
 
 	public ushort AverageThreshold(Filter filter = null)
 	{
@@ -123,12 +123,12 @@ public sealed class Course
 		}
 
 		var groupedResults = GroupedResults(filter);
-		return _thresholdCache[filter] = groupedResults.Any()
+		return _thresholdCache[filter] = groupedResults.Count != 0
 				? (ushort) Math.Ceiling(groupedResults.Average(r => r.Count()))
 				: (ushort) 0;
 	}
 
-	private readonly IDictionary<Filter, RankedList<TeamResults>> _teamCache = new ConcurrentDictionary<Filter, RankedList<TeamResults>>();
+	private readonly ConcurrentDictionary<Filter, RankedList<TeamResults>> _teamCache = new();
 
 	public RankedList<TeamResults> TeamPoints(Filter filter = null)
 	{
@@ -240,9 +240,9 @@ public sealed class Course
 		},
 		Average = new Dictionary<string, double>
 		{
-			{ string.Empty, GroupedResults().Any() ? GroupedResults().Average(a => a.Count()) : 0 },
-			{ Category.F.Display, GroupedResults(Filter.F).Any() ? GroupedResults(Filter.F).Average(a => a.Count()) : 0 },
-			{ Category.M.Display, GroupedResults(Filter.M).Any() ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
+			{ string.Empty, GroupedResults().Count != 0 ? GroupedResults().Average(a => a.Count()) : 0 },
+			{ Category.F.Display, GroupedResults(Filter.F).Count != 0 ? GroupedResults(Filter.F).Average(a => a.Count()) : 0 },
+			{ Category.M.Display, GroupedResults(Filter.M).Count != 0 ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
 		}
 	};
 }

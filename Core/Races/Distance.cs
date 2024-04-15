@@ -15,8 +15,8 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 
 	private static double ParseDistance(string value)
 	{
-		if (value.ToLowerInvariant().Contains("marathon"))
-			return value.ToLowerInvariant().Contains("half")
+		if (value.Contains("marathon", StringComparison.InvariantCultureIgnoreCase))
+			return value.Contains("half", StringComparison.InvariantCultureIgnoreCase)
 				? MetersPerMarathon / 2
 				: MetersPerMarathon;
 

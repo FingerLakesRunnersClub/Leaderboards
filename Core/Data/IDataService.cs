@@ -1,7 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Data;
 

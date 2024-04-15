@@ -29,12 +29,12 @@ public sealed class SimilarAthlete
 		Athlete = their.Athlete;
 		Similarity = new Percent(total / matches);
 		Overlap = new Percent(100.0 * matches / my.TotalResults);
-		FastestPercent = fastestToCompare.Any() ? new SpeedComparison(fastestDiffTotal) : null;
-		AveragePercent = avgToCompare.Any() ? new SpeedComparison(avgDiffTotal) : null;
+		FastestPercent = fastestToCompare.Count != 0 ? new SpeedComparison(fastestDiffTotal) : null;
+		AveragePercent = avgToCompare.Count != 0 ? new SpeedComparison(avgDiffTotal) : null;
 		Score = GetScore(Similarity.Value, Overlap.Value);
 	}
 
-	private static IDictionary<Course, Ranked<Time>> GetResultsToCompare(IDictionary<Course, Ranked<Time>> mine, IDictionary<Course, Ranked<Time>> theirs)
+	private static Dictionary<Course, Ranked<Time>> GetResultsToCompare(IDictionary<Course, Ranked<Time>> mine, IDictionary<Course, Ranked<Time>> theirs)
 		=> mine
 			.Where(r => r.Value != null && theirs[r.Key] != null)
 			.ToDictionary(r => r.Key, r => r.Value);

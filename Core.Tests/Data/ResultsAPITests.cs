@@ -10,7 +10,6 @@ public sealed class ResultsAPITests
 	{
 		var data = await File.ReadAllTextAsync("json/empty.json");
 		var http = new MockHttpMessageHandler(data);
-		var configData = new Dictionary<string, string> { { "API", "http://localhost" } };
 		var api = new ResultsAPI<WebScorer>(new HttpClient(http), new WebScorer(TestHelpers.Config));
 
 		//act

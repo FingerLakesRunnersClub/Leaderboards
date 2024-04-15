@@ -24,7 +24,7 @@ public sealed class AthleteControllerTests
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 			{
-				new Result
+				new()
 				{
 					Athlete = athlete,
 					Course = CourseData.Course,
@@ -35,7 +35,7 @@ public sealed class AthleteControllerTests
 						[StarType.Story] = true
 					}
 				},
-				new Result
+				new()
 				{
 					Athlete = new Athlete { ID = 234, Category = Category.F },
 					Course = CourseData.Course,
@@ -111,7 +111,7 @@ public sealed class AthleteControllerTests
 			Distance = new Distance("10 miles"),
 			Results = new List<Result>
 			{
-				new Result
+				new()
 				{
 					Athlete = new Athlete { ID = 123 },
 					Course = CourseData.Course,

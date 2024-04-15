@@ -82,7 +82,7 @@ public sealed class StatisticsController : Controller
 			}
 		};
 
-	private Statistics weeklyStatistics(IEnumerable<Result> results)
+	private static Statistics weeklyStatistics(IEnumerable<Result> results)
 	{
 		var resultList = results.ToArray();
 		var athletes = resultList.Select(r => r.Athlete).Distinct().ToArray();
@@ -118,7 +118,7 @@ public sealed class StatisticsController : Controller
 				{
 					Category.M.Display,
 					mResults.Sum(r => r.Course.Distance.Miles)
-				},
+				}
 			},
 			Average = new Dictionary<string, double>
 			{

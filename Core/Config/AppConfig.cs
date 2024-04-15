@@ -46,15 +46,15 @@ public record AppConfig : IConfig
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
 	}
 
-	private static IDictionary<string, string> GetStringDictionary(IConfiguration section)
+	private static Dictionary<string, string> GetStringDictionary(IConfiguration section)
 		=> section.GetChildren().SelectMany(c => c.GetChildren())
 			.ToDictionary(c => c.Key, c => c.Value);
 
-	private static IDictionary<string, byte> GetByteDictionary(IConfiguration section)
+	private static Dictionary<string, byte> GetByteDictionary(IConfiguration section)
 		=> GetStringDictionary(section)
 			.ToDictionary(c => c.Key, c => byte.Parse(c.Value));
 
-	private static IDictionary<byte,string> GetByteKeyedStringDictionary(IConfiguration section)
+	private static Dictionary<byte,string> GetByteKeyedStringDictionary(IConfiguration section)
 		=> GetStringDictionary(section)
 			.ToDictionary(c => byte.Parse(c.Key), c => c.Value);
 }

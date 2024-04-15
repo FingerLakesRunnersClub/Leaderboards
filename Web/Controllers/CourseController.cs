@@ -63,7 +63,7 @@ public sealed class CourseController : Controller
 			ResultType = new FormattedResultType(ResultType.Team),
 			Filter = Filter.None,
 			Course = course,
-			RankedResults = course.TeamPoints(Filter.None),
+			RankedResults = course.TeamPoints(Filter.None)
 		};
 	}
 }

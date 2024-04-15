@@ -19,7 +19,7 @@ public sealed class UltraSignup : IDataSource
 	public UltraSignup(IConfig config)
 		=> _config = config;
 
-	private static readonly byte[] ValidStatusTypes = { 1, 6 };
+	private static readonly byte[] ValidStatusTypes = [1, 6];
 	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 		=> json.EnumerateArray()
 			.Where(r => ValidStatusTypes.Contains(r.GetProperty("status").GetByte()))
@@ -34,14 +34,14 @@ public sealed class UltraSignup : IDataSource
 	public static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));
 
-	private readonly IDictionary<uint, Athlete> athletes = new ConcurrentDictionary<uint, Athlete>();
+	private readonly ConcurrentDictionary<uint, Athlete> athletes = new();
 
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
 		var name = element.GetProperty("firstname").GetString() + " " + element.GetProperty("lastname").GetString();
-		if (aliases.ContainsKey(name))
+		if (aliases.TryGetValue(name, out var alias))
 		{
-			name = aliases[name];
+			name = alias;
 		}
 
 		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();

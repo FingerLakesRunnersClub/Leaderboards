@@ -40,7 +40,7 @@ public sealed class DataService : IDataService
 		return race;
 	}
 
-	private static IReadOnlyCollection<Course> GetCourses(Race race, IConfiguration section)
+	private static Course[] GetCourses(Race race, IConfiguration section)
 		=> section.GetSection("Courses").GetChildren()
 			.Select(c => new Course
 			{
@@ -51,7 +51,7 @@ public sealed class DataService : IDataService
 			.OrderBy(c => c.Distance)
 			.ToArray();
 
-	private readonly IDictionary<uint, Athlete> _athletes = new ConcurrentDictionary<uint, Athlete>();
+	private readonly ConcurrentDictionary<uint, Athlete> _athletes = new();
 	private DateTime _athleteCacheTimestamp;
 
 	public async Task<Athlete> GetAthlete(uint id)
