@@ -45,7 +45,7 @@ public sealed class CommunityController : Controller
 		var rows = new List<CommunityAdminViewModel.Row>();
 		foreach (var (_, athlete) in athletes.OrderBy(a => a.Value.Name))
 		{
-			var user = users.FirstOrDefault(u => u.Name == athlete.Name);
+			var user = Array.Find(users, u => u.Name == athlete.Name);
 			var currentGroups = new List<string>();
 			var missingGroups = new List<string>();
 			if (globalGroup.Contains(user))

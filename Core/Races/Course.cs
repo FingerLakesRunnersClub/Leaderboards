@@ -188,11 +188,11 @@ public sealed class Course
 			if (result.AgeGrade >= 100)
 				continue;
 
-			var isInFirstPlace = !ranks.Any(r => r.Result.Duration is not null);
+			var isInFirstPlace = !ranks.Exists(r => r.Result.Duration is not null);
 			var value = getValue(results);
 
 			var firstPlace = !isInFirstPlace ? ranks.First(r => r.Result.Duration is not null) : null;
-			var lastPlace = !isInFirstPlace ? ranks.Last() : null;
+			var lastPlace = !isInFirstPlace ? ranks[^1] : null;
 
 			var rankedResult = new Ranked<T>
 			{

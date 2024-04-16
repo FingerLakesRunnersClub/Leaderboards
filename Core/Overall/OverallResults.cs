@@ -49,7 +49,7 @@ public sealed class OverallResults
 			ranks.Add(new Ranked<TeamMember>
 			{
 				All = ranks,
-				Rank = ranks.Any() && ranks.Last().Value.Score.Equals(value.Score) ? ranks.Last().Rank : new Rank(rank),
+				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
 				Result = new Result { Athlete = value.Athlete },
 				Count = value.Courses,
 				AgeGrade = value.AgeGrade,
@@ -93,7 +93,7 @@ public sealed class OverallResults
 			var value = getValue(result);
 			var notInFirstPlace = ranks.Any();
 			var lastPlace = notInFirstPlace
-				? ranks.Last()
+				? ranks[^1]
 				: null;
 
 			ranks.Add(new Ranked<T1>

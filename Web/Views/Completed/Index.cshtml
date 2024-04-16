@@ -20,7 +20,7 @@
 
 		@await Html.PartialAsync("DataTable")
 
-		@if (Model.RankedResults.Any(r => r.Result.Athlete.Private))
+		@if (Model.RankedResults.Exists(r => r.Result.Athlete.Private))
 		{
 			<div class="alert alert-info">* Athletes that have chosen to hide their times are shown as when they began their final course. All others are displayed with the time that they finished their final course.</div>
 		}

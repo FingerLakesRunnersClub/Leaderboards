@@ -43,8 +43,8 @@ public sealed class TeamController : Controller
 		{
 			Config = _config,
 			Team = team,
-			Overall = overall.TeamPoints().FirstOrDefault(r => r.Value.Team == team),
-			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().FirstOrDefault(r => r.Value.Team == team))
+			Overall = overall.TeamPoints().Find(r => r.Value.Team == team),
+			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().Find(r => r.Value.Team == team))
 		};
 	}
 }

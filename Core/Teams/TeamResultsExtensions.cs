@@ -14,7 +14,7 @@ public static class TeamResultsExtensions
 			ranks.Add(new Ranked<TeamResults>
 			{
 				All = ranks,
-				Rank = ranks.Any() && ranks.Last().Value.TotalPoints.Equals(value.TotalPoints) ? ranks.Last().Rank : new Rank(rank),
+				Rank = ranks.Any() && ranks[^1].Value.TotalPoints.Equals(value.TotalPoints) ? ranks[^1].Rank : new Rank(rank),
 				AgeGrade = value.AverageAgeGrade,
 				Value = value
 			});

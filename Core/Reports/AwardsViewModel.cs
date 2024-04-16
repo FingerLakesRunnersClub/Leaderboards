@@ -29,7 +29,7 @@ public sealed class AwardsViewModel : ViewModel
 		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(), 10));
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(), 10));
 		awards.AddRange(Overall("Community", "Overall Community", overall.CommunityStars(), 10));
-		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints().First().Value.Team)));
+		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints()[0].Value.Team)));
 		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Filter.F)).ToArray()));
 		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Filter.M)).ToArray()));
 		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Filter.F)).ToArray()));
@@ -87,7 +87,7 @@ public sealed class AwardsViewModel : ViewModel
 			.ToArray();
 
 		var ageGroupResults = course.Fastest(new Filter(category, team));
-		var winningRank = ageGroupResults.FirstOrDefault(r => !categoryWinners.Contains(r.Result.Athlete));
+		var winningRank = ageGroupResults.Find(r => !categoryWinners.Contains(r.Result.Athlete));
 		return ageGroupResults.Where(r => r.Rank == winningRank?.Rank && !categoryWinners.Contains(r.Result.Athlete))
 			.Select(r => new Award
 			{

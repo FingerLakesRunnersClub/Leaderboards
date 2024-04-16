@@ -48,7 +48,7 @@ public sealed class AthleteController : Controller
 		return new AthleteCourseResultsViewModel
 		{
 			Config = _config,
-			Athlete = results.First().Athlete,
+			Athlete = results[0].Athlete,
 			Course = course,
 			RankedResults = Rank(results)
 		};
