@@ -18,7 +18,7 @@ public sealed class Course
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
 
-	private Result[] _results = Array.Empty<Result>();
+	private Result[] _results = [];
 
 	public Result[] Results
 	{

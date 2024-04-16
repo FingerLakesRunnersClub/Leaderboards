@@ -22,7 +22,7 @@ public sealed class InvalidControllerTests
 			Distance = new Distance("10K"),
 			Results = CourseData.Results
 		};
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new InvalidController(dataService, TestHelpers.Config);
 
 		//act
@@ -53,7 +53,7 @@ public sealed class InvalidControllerTests
 			Distance = new Distance("10K"),
 			Results = results.ToArray()
 		};
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new InvalidController(dataService, TestHelpers.Config);
 
 		//act

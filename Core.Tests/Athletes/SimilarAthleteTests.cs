@@ -11,8 +11,8 @@ public sealed class SimilarAthleteTests
 	{
 		//arrange
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		var my = new AthleteSummary(CourseData.Athlete1, new[] { course }, TestHelpers.Config);
-		var their = new AthleteSummary(CourseData.Athlete2, new[] { course }, TestHelpers.Config);
+		var my = new AthleteSummary(CourseData.Athlete1, [course], TestHelpers.Config);
+		var their = new AthleteSummary(CourseData.Athlete2, [course], TestHelpers.Config);
 
 		//act
 		var similar = new SimilarAthlete(my, their);
@@ -26,8 +26,8 @@ public sealed class SimilarAthleteTests
 	{
 		//arrange
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		var my = new AthleteSummary(CourseData.Athlete1, new[] { course }, TestHelpers.Config);
-		var their = new AthleteSummary(CourseData.Athlete2, new[] { course }, TestHelpers.Config);
+		var my = new AthleteSummary(CourseData.Athlete1, [course], TestHelpers.Config);
+		var their = new AthleteSummary(CourseData.Athlete2, [course], TestHelpers.Config);
 
 		//act
 		var similar = new SimilarAthlete(my, their);
@@ -41,8 +41,8 @@ public sealed class SimilarAthleteTests
 	{
 		//arrange
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		var my = new AthleteSummary(CourseData.Athlete1, new[] { course }, TestHelpers.Config);
-		var their = new AthleteSummary(CourseData.Athlete2, new[] { course }, TestHelpers.Config);
+		var my = new AthleteSummary(CourseData.Athlete1, [course], TestHelpers.Config);
+		var their = new AthleteSummary(CourseData.Athlete2, [course], TestHelpers.Config);
 
 		//act
 		var similar = new SimilarAthlete(my, their);
@@ -56,8 +56,8 @@ public sealed class SimilarAthleteTests
 	{
 		//arrange
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		var my = new AthleteSummary(CourseData.Athlete1, new[] { course }, TestHelpers.Config);
-		var their = new AthleteSummary(CourseData.Athlete2, new[] { course }, TestHelpers.Config);
+		var my = new AthleteSummary(CourseData.Athlete1, [course], TestHelpers.Config);
+		var their = new AthleteSummary(CourseData.Athlete2, [course], TestHelpers.Config);
 
 		//act
 		var similar = new SimilarAthlete(my, their);

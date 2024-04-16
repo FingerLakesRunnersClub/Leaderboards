@@ -10,7 +10,7 @@ public static class CommunityData
 	public static readonly User User5 = new() { Name = "A5", ID = 56, Username = "u5" };
 
 	public static readonly User[] Users
-		= new[] { User1, User2, User3, User5 };
+		= [User1, User2, User3, User5];
 
 	public static readonly IDictionary<byte, string> Groups
 		= new Dictionary<byte, string>

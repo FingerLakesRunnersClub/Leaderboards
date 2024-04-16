@@ -47,17 +47,17 @@ public sealed class AwardsViewModelTests
 		var a3 = new Athlete { ID = 3, Name = "A3", Category = Category.F, DateOfBirth = DateTime.Parse("7/1/1990") };
 		var a4 = new Athlete { ID = 4, Name = "A4", Category = Category.F, DateOfBirth = DateTime.Parse("7/1/1990") };
 
-		course.Results = new[]
-		{
+		course.Results =
+		[
 			new Result { Course = course, Athlete = a1, StartTime = new Date(DateTime.Parse("6/1/2020")), Duration = new Time(TimeSpan.FromMinutes(6)) },
 			new Result { Course = course, Athlete = a1, StartTime = new Date(DateTime.Parse("8/1/2020")), Duration = new Time(TimeSpan.FromMinutes(5)) },
 			new Result { Course = course, Athlete = a2, StartTime = new Date(DateTime.Parse("6/1/2020")), Duration = new Time(TimeSpan.FromMinutes(6)) },
 			new Result { Course = course, Athlete = a3, StartTime = new Date(DateTime.Parse("6/1/2020")), Duration = new Time(TimeSpan.FromMinutes(5)) },
 			new Result { Course = course, Athlete = a4, StartTime = new Date(DateTime.Parse("8/1/2020")), Duration = new Time(TimeSpan.FromMinutes(6)) }
-		};
+		];
 
 		//act
-		var vm = new AwardsViewModel(TestHelpers.Config, new[] { course });
+		var vm = new AwardsViewModel(TestHelpers.Config, [course]);
 
 		//assert
 		var awards = vm.Awards;

@@ -71,7 +71,7 @@ public sealed class DiscourseAPITests
 		var api = new DiscourseAPI(new HttpClient(http), config);
 
 		//act
-		var posts = api.ParsePosts(new[] { json.RootElement });
+		var posts = api.ParsePosts([json.RootElement]);
 
 		//act
 		Assert.Equal("User 123", posts.First().Name);
@@ -90,7 +90,7 @@ public sealed class DiscourseAPITests
 		var api = new DiscourseAPI(new HttpClient(http), config);
 
 		//act
-		var posts = api.ParsePosts(new[] { json.RootElement });
+		var posts = api.ParsePosts([json.RootElement]);
 
 		//act
 		Assert.Equal("User 123", posts.First().Name);

@@ -18,11 +18,11 @@ public sealed class CommunityControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAthletes().Returns(LeaderboardData.Athletes);
 		dataService.GetCommunityUsers().Returns(CommunityData.Users);
-		dataService.GetCommunityGroupMembers("everybody-everybody").Returns(new[] { CommunityData.User1, CommunityData.User2, CommunityData.User5 });
-		dataService.GetCommunityGroupMembers("youngins").Returns(new[] { CommunityData.User1 });
-		dataService.GetCommunityGroupMembers("dirty-thirties").Returns(Array.Empty<User>());
-		dataService.GetCommunityGroupMembers("masters").Returns(new [] { CommunityData.User5 });
-		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns(Array.Empty<User>());
+		dataService.GetCommunityGroupMembers("everybody-everybody").Returns([CommunityData.User1, CommunityData.User2, CommunityData.User5]);
+		dataService.GetCommunityGroupMembers("youngins").Returns([CommunityData.User1]);
+		dataService.GetCommunityGroupMembers("dirty-thirties").Returns([]);
+		dataService.GetCommunityGroupMembers("masters").Returns([CommunityData.User5]);
+		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns([]);
 		var config = Substitute.For<IConfig>();
 		config.CommunityGroups.Returns(CommunityData.Groups);
 		var controller = new CommunityController(dataService, config);
@@ -48,11 +48,11 @@ public sealed class CommunityControllerTests
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetAthletes().Returns(LeaderboardData.Athletes);
 		dataService.GetCommunityUsers().Returns(CommunityData.Users);
-		dataService.GetCommunityGroupMembers("everybody-everybody").Returns(new[] { CommunityData.User1, CommunityData.User2, CommunityData.User5 });
-		dataService.GetCommunityGroupMembers("youngins").Returns(new[] { CommunityData.User1 });
-		dataService.GetCommunityGroupMembers("dirty-thirties").Returns(Array.Empty<User>());
-		dataService.GetCommunityGroupMembers("masters").Returns(new [] { CommunityData.User5 });
-		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns(Array.Empty<User>());
+		dataService.GetCommunityGroupMembers("everybody-everybody").Returns([CommunityData.User1, CommunityData.User2, CommunityData.User5]);
+		dataService.GetCommunityGroupMembers("youngins").Returns([CommunityData.User1]);
+		dataService.GetCommunityGroupMembers("dirty-thirties").Returns([]);
+		dataService.GetCommunityGroupMembers("masters").Returns([CommunityData.User5]);
+		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns([]);
 
 		IDictionary<string, string[]> updates = new Dictionary<string, string[]>();
 		await dataService.AddCommunityGroupMembers(Arg.Do<IDictionary<string, string[]>>(d => updates = d));
@@ -62,7 +62,7 @@ public sealed class CommunityControllerTests
 		var controller = new CommunityController(dataService, config);
 
 		//act
-		await controller.Admin(new uint[] { 12, 23, 34 });
+		await controller.Admin([12, 23, 34]);
 
 		//assert
 		var expected = new Dictionary<string, string[]>

@@ -16,7 +16,7 @@ public sealed class StatisticsControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new StatisticsController(dataService, TestHelpers.Config);
 
 		//act

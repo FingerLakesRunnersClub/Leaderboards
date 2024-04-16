@@ -17,7 +17,7 @@ public sealed class LogControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 2, 8));
 
 		//act
@@ -42,7 +42,7 @@ public sealed class LogControllerTests
 		//arrange
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course { Results = CourseData.Results };
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act
@@ -69,7 +69,7 @@ public sealed class LogControllerTests
 		var results = CourseData.Results.ToList();
 		results.Add(new Result { StartTime = new Date(new DateTime(2021, 2, 1)) });
 		var course = new Course { Results = results.ToArray() };
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 
 		//act

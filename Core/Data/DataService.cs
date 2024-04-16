@@ -218,7 +218,7 @@ public sealed class DataService : IDataService
 				_logger.LogWarning(e, "Could not retrieve group members for {id}", id);
 			}
 
-			return Array.Empty<Athlete>();
+			return [];
 		}
 	}
 

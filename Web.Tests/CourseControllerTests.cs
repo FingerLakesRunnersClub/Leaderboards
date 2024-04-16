@@ -19,7 +19,7 @@ public sealed class CourseControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(new Course { Results = Array.Empty<Result>() });
+		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(new Course { Results = [] });
 		var controller = new CourseController(dataService, TestHelpers.Config);
 
 		//act
@@ -59,11 +59,11 @@ public sealed class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new []
-			{
+			Results =
+			[
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
 				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
-			}
+			]
 		};
 
 		var dataService = Substitute.For<IDataService>();
@@ -85,11 +85,11 @@ public sealed class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new []
-			{
+			Results =
+			[
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
 				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
-			}
+			]
 		};
 
 		var dataService = Substitute.For<IDataService>();
@@ -144,11 +144,11 @@ public sealed class CourseControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = new []
-			{
+			Results =
+			[
 				new Result { Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true } },
 				new Result { Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")), CommunityStars = { [StarType.Story] = true } }
-			}
+			]
 		};
 
 		var dataService = Substitute.For<IDataService>();

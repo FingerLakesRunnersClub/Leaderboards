@@ -201,7 +201,7 @@ public sealed class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var members = vm.GroupMembers(new[] { LeaderboardData.Athlete2 });
+		var members = vm.GroupMembers([LeaderboardData.Athlete2]);
 
 		//assert
 		Assert.Equal(LeaderboardData.Athlete2, members.Single().Result.Athlete);
@@ -217,8 +217,8 @@ public sealed class OverallResultsTests
 			{
 				Race = new Race { Name = "Test" },
 				Distance = new Distance("10 miles"),
-				Results = new[]
-				{
+				Results =
+				[
 					new Result
 					{
 						Course = new Course { Distance = new Distance("10 miles") },
@@ -226,7 +226,7 @@ public sealed class OverallResultsTests
 						Duration = new Time(TimeSpan.FromHours(2)),
 						Athlete = LeaderboardData.Private, CommunityStars = { [StarType.Story] = true }
 					}
-				}
+				]
 			}
 		};
 

@@ -290,8 +290,8 @@ public sealed class DataServiceTests
 	private static IDictionary<string, uint[]> Groups
 		=> new Dictionary<string, uint[]>
 		{
-			{ "Test 1", new uint[] { 123, 234 } },
-			{ "Test 2", new uint[] { 234, 345 } }
+			{ "Test 1", [123, 234] },
+			{ "Test 2", [234, 345] }
 		};
 
 	[Fact]
@@ -485,11 +485,10 @@ public sealed class DataServiceTests
 		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		communityAPI.GetUsers().Returns(new[]
-		{
+		communityAPI.GetUsers().Returns([
 			JsonDocument.Parse("""{"id":123,"name":"Steve","username":"steve"}""").RootElement,
 			JsonDocument.Parse("""{"id":234,"name":"Test","username":"test"}""").RootElement
-		});
+		]);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
@@ -512,11 +511,10 @@ public sealed class DataServiceTests
 		var resultsAPI = Substitute.For<IDictionary<string, IResultsAPI>>();
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		communityAPI.GetMembers("group").Returns(new[]
-		{
+		communityAPI.GetMembers("group").Returns([
 			JsonDocument.Parse("""{"id":123,"name":"Steve","username":"steve"}""").RootElement,
 			JsonDocument.Parse("""{"id":234,"name":"Test","username":"test"}""").RootElement
-		});
+		]);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();

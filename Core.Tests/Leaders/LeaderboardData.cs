@@ -18,10 +18,7 @@ public static class LeaderboardData
 	private static readonly Distance Distance = new("10 miles");
 	private static readonly Course Course = new() { Race = Race, Distance = Distance, Results = Results };
 
-	public static readonly Course[] Courses = new[]
-	{
-		new Course { Race = Race, Distance = Distance, Results = Results }
-	};
+	public static readonly Course[] Courses = [new Course { Race = Race, Distance = Distance, Results = Results }];
 
 	private static Result[] Results
 		=>

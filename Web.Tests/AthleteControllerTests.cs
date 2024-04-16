@@ -89,7 +89,7 @@ public sealed class AthleteControllerTests
 			]
 		};
 		dataService.GetAthlete(123).Returns(athlete);
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
@@ -197,7 +197,7 @@ public sealed class AthleteControllerTests
 		dataService.GetAthlete(234).Returns(CourseData.Athlete2);
 		dataService.GetAthlete(345).Returns(CourseData.Athlete3);
 		dataService.GetAthlete(456).Returns(CourseData.Athlete4);
-		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") } });
+		dataService.GetAllResults().Returns([new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") }]);
 
 		var controller = new AthleteController(dataService, TestHelpers.Config);
 

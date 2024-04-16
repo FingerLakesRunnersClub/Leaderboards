@@ -30,7 +30,7 @@ public sealed class LogController : Controller
 		var course = id != null ? await _dataService.GetResults(id.Value, null) : null;
 		var results = course == null
 			? await _dataService.GetAllResults()
-			: new[] { course };
+			: [course];
 
 		return new ActivityLogViewModel
 		{

@@ -25,7 +25,7 @@ public sealed class WebScorer : IDataSource
 
 		return results.GetArrayLength() > 0
 			? ParseResults(course, results, aliases)
-			: Array.Empty<Result>();
+			: [];
 	}
 
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);

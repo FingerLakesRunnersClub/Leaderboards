@@ -22,7 +22,7 @@ public sealed class CompletedControllerTests
 		};
 		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetAllResults().Returns(new[] { course });
+		dataService.GetAllResults().Returns([course]);
 		dataService.GetPersonalCompletions().Returns(personal);
 
 		var controller = new CompletedController(dataService, TestHelpers.Config);

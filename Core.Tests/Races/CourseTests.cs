@@ -173,12 +173,12 @@ public sealed class CourseTests
 		//arrange
 		var course = new Course
 		{
-			Results = new []
-			{
+			Results =
+			[
 				new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 9:40am")), Duration = new Time(TimeSpan.FromHours(3))},
 				new Result { Athlete = CourseData.Athlete2, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 9:45am")), Duration = new Time(TimeSpan.FromHours(2))},
 				new Result { Athlete = CourseData.Athlete3, Course = CourseData.Course, StartTime = new Date(DateTime.Parse("4/15/2024 11:50am")), Duration = new Time(TimeSpan.FromHours(1))}
-			},
+			],
 			Distance = new Distance("10K")
 		};
 

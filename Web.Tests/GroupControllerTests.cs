@@ -15,12 +15,8 @@ public sealed class GroupControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		dataService.GetGroupMembers("Test").Returns(new[]
-		{
-				CourseData.Athlete1,
-				CourseData.Athlete3
-			});
-		dataService.GetAllResults().Returns(new[] { new Course { Results = CourseData.Results, Distance = new Distance("10K")} });
+		dataService.GetGroupMembers("Test").Returns([CourseData.Athlete1, CourseData.Athlete3]);
+		dataService.GetAllResults().Returns([new Course { Results = CourseData.Results, Distance = new Distance("10K")}]);
 		var controller = new GroupController(dataService, TestHelpers.Config);
 
 		//act
