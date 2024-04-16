@@ -197,19 +197,13 @@ public sealed class Course
 			var rankedResult = new Ranked<T>
 			{
 				All = ranks,
-				Rank = !isInFirstPlace && lastPlace.Value.Equals(value)
-					? lastPlace.Rank
-					: new Rank((ushort) (isInFirstPlace ? 1 : rank)),
+				Rank = Rank(isInFirstPlace, lastPlace, value, rank),
 				Result = result,
 				Value = value,
 				Count = (uint) results.Count(),
-				BehindLeader = isInFirstPlace ? new Time(TimeSpan.Zero) : result.Behind(firstPlace.Result),
-				Points = result.Duration is not null
-					? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100)
-					: null,
-				AgeGrade = result.AgeGrade is not null
-					? new AgeGrade(result.AgeGrade.Value)
-					: null
+				BehindLeader = BehindLeader(result, isInFirstPlace, firstPlace),
+				Points = Points(result, isInFirstPlace, firstPlace),
+				AgeGrade = AgeGrade(result)
 			};
 
 			ranks.Add(rankedResult);
@@ -217,6 +211,26 @@ public sealed class Course
 
 		return new RankedList<T>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
 	}
+
+	private static Rank Rank<T>(bool isInFirstPlace, Ranked<T> lastPlace, T value, ushort rank)
+		=> !isInFirstPlace && lastPlace.Value.Equals(value)
+			? lastPlace.Rank
+			: new Rank((ushort) (isInFirstPlace ? 1 : rank));
+
+	private static Time BehindLeader<T>(Result result, bool isInFirstPlace, Ranked<T> firstPlace)
+		=> isInFirstPlace
+			? new Time(TimeSpan.Zero)
+			: result.Behind(firstPlace.Result);
+
+	private static Points Points<T>(Result result, bool isInFirstPlace, Ranked<T> firstPlace)
+		=> result.Duration is not null
+			? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100)
+			: null;
+
+	private static AgeGrade AgeGrade(Result result)
+		=> result.AgeGrade is not null
+			? new AgeGrade(result.AgeGrade.Value)
+			: null;
 
 	public Statistics Statistics() => new()
 	{
