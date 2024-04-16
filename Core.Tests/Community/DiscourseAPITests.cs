@@ -37,8 +37,8 @@ public sealed class DiscourseAPITests
 
 		//assert
 		var queryString = http.LastRequested.RequestUri!.Query;
-		Assert.Contains("page=1", queryString);
 		Assert.Contains("include_raw=true", queryString);
+		Assert.Contains("print=true", queryString);
 		Assert.Equal("abc123", http.LastRequested.Headers.First(h => h.Key == "Api-Key").Value.First());
 	}
 
@@ -58,24 +58,6 @@ public sealed class DiscourseAPITests
 
 		//assert
 		Assert.Single(posts);
-	}
-
-	[Fact]
-	public async Task CanGetPostsFromMultiplePages()
-	{
-		//arrange
-		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]},"posts_count":21}""");
-		var config = Substitute.For<IConfig>();
-		config.Features.CommunityStars.Returns(true);
-		config.CommunityURL.Returns("https://example.com");
-		config.CommunityKey.Returns("abc123");
-		var api = new DiscourseAPI(new HttpClient(http), config);
-
-		//act
-		var posts = await api.GetPosts(123);
-
-		//assert
-		Assert.Equal(2, posts.Length);
 	}
 
 	[Fact]

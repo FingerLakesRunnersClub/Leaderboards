@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Config;
 
@@ -6,8 +7,6 @@ namespace FLRC.Leaderboards.Core.Community;
 
 public sealed class DiscourseAPI : ICommunityAPI
 {
-	private const byte PageSize = 20;
-
 	private readonly HttpClient _http;
 
 	public DiscourseAPI(HttpClient http, IConfig config)
@@ -27,23 +26,8 @@ public sealed class DiscourseAPI : ICommunityAPI
 
 	public async Task<JsonElement[]> GetPosts(ushort id)
 	{
-		var page1 = await GetPostResponse(id, 1);
-		var postCount = page1.GetProperty("posts_count").GetUInt16();
-		var pageCount = (byte) Math.Ceiling(postCount * 1.0 / PageSize);
-		var pageTasks = pageCount > 1
-			? Enumerable.Range(2, pageCount - 1).Select(p => GetPostResponse(id, (byte) p))
-			: Enumerable.Empty<Task<JsonElement>>();
-		var pages = await Task.WhenAll(pageTasks);
-		return page1.GetProperty("post_stream").GetProperty("posts").EnumerateArray()
-			.Union(pages.SelectMany(p => p.GetProperty("post_stream").GetProperty("posts").EnumerateArray()))
-			.ToArray();
-	}
-
-	private async Task<JsonElement> GetPostResponse(ushort id, byte page)
-	{
-		var response = await _http.GetStreamAsync($"/t/{id}.json?page={page}&include_raw=true");
-		var json = await JsonDocument.ParseAsync(response);
-		return json.RootElement;
+		var json = await _http.GetFromJsonAsync<JsonElement>($"/t/{id}.json?include_raw=true&print=true");
+		return json.GetProperty("post_stream").GetProperty("posts").EnumerateArray().ToArray();
 	}
 
 	public Post[] ParsePosts(JsonElement[] json)
@@ -72,16 +56,14 @@ public sealed class DiscourseAPI : ICommunityAPI
 	private async Task<JsonElement[]> GetMembers(string groupID, int pageSize, int pageNumber)
 	{
 		var offset = pageSize * (pageNumber - 1);
-		var response = await _http.GetStreamAsync($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
-		var json = await JsonDocument.ParseAsync(response);
-		return json.RootElement.GetProperty("members").EnumerateArray().ToArray();
+		var json = await _http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
+		return json.GetProperty("members").EnumerateArray().ToArray();
 	}
 
 	public async Task<JsonElement> GetGroup(string groupID)
 	{
-		var response = await _http.GetStreamAsync($"/groups/{groupID}.json");
-		var json = await JsonDocument.ParseAsync(response);
-		return json.RootElement.GetProperty("group");
+		var json = await _http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}.json");
+		return json.GetProperty("group");
 	}
 
 	public async Task AddMembers(ushort groupID, string[] usernames)
