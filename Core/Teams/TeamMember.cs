@@ -16,9 +16,9 @@ public record TeamMember : IComparable<TeamMember>
 
 	public Points Score => new(50 * Courses + AgeGrade.Value + Runs / 50.0 + Miles.Value / Distance.MilesPerMarathon);
 
-	public TeamMember(IReadOnlyCollection<Ranked<Time>> results)
+	public TeamMember(Ranked<Time>[] results)
 	{
-		Courses = (byte) results.Count;
+		Courses = (byte)results.Length;
 		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade?.Value ?? 0));
 		Runs = (ushort) results.Sum(r => r.Count);
 		Miles = new Miles(results.Sum(r => r.Count * r.Result.Course.Distance.Miles));

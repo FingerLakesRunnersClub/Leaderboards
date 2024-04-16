@@ -23,7 +23,7 @@ public sealed class StatisticsController : Controller
 
 	private async Task<StatisticsViewModel> GetStatistics()
 	{
-		var results = (await _dataService.GetAllResults()).ToArray();
+		var results = await _dataService.GetAllResults();
 
 		var courseStats = results.ToDictionary(c => c, c => c.Statistics());
 		var athletes = courseStats.SelectMany(stats => stats.Key.Results.Select(r => r.Athlete)).Distinct()
@@ -42,12 +42,12 @@ public sealed class StatisticsController : Controller
 		};
 	}
 
-	private static Statistics GetTotals(IReadOnlyCollection<Athlete> athletes, IDictionary<Course, Statistics> courseStats)
+	private static Statistics GetTotals(Athlete[] athletes, IDictionary<Course, Statistics> courseStats)
 		=> new()
 		{
 			Participants = new Dictionary<string, int>
 			{
-				{ string.Empty, athletes.Count },
+				{ string.Empty, athletes.Length },
 				{ Category.F.Display, athletes.Count(a => a.Category == Category.F) },
 				{ Category.M.Display, athletes.Count(a => a.Category == Category.M) }
 			},
@@ -67,7 +67,7 @@ public sealed class StatisticsController : Controller
 			{
 				{
 					string.Empty,
-					(double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Count
+					(double) courseStats.Sum(stats => stats.Value.Runs[string.Empty]) / athletes.Length
 				},
 				{
 					Category.F.Display,

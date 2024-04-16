@@ -12,17 +12,17 @@ public sealed class LeaderboardViewModel : ViewModel
 
 	public LeaderboardResultType LeaderboardResultType { get; }
 
-	private readonly IReadOnlyCollection<Course> _courses;
+	private readonly Course[] _courses;
 	private readonly Func<LeaderboardTable, bool> _leaderboardFilter;
 
-	public LeaderboardViewModel(IReadOnlyCollection<Course> courses, LeaderboardResultType type)
+	public LeaderboardViewModel(Course[] courses, LeaderboardResultType type)
 	{
 		_courses = courses;
 		LeaderboardResultType = type;
 		_leaderboardFilter = GetFilter(type);
 	}
 
-	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<IReadOnlyCollection<LeaderboardRow>> rows)
+	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<LeaderboardRow[]> rows)
 		=> Config.Competitions.TryGetValue(id, out var title)
 			? new LeaderboardTable
 			{
@@ -30,11 +30,11 @@ public sealed class LeaderboardViewModel : ViewModel
 				Title = title,
 				ResultType = new FormattedResultType(type),
 				Filter = filter,
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(rows)
+				Rows = new Lazy<LeaderboardRow[]>(rows)
 			}
 			: null;
 
-	public IReadOnlyCollection<LeaderboardTable> OverallResults()
+	public LeaderboardTable[] OverallResults()
 	{
 		var vm = new OverallResults(_courses);
 		var leaderboards = new List<LeaderboardTable>
@@ -88,7 +88,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.F,
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/F",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Filter.F).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Fastest(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -99,7 +99,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.M,
 				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/M",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.Fastest(Filter.M).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Fastest(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -110,7 +110,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Filter = Filter.F,
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/F",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Filter.F).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.BestAverage(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -121,7 +121,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Filter = Filter.M,
 				Link = $"/Course/{course.ID}/{ResultType.BestAverage}/M",
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.BestAverage(Filter.M).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.BestAverage(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
@@ -132,7 +132,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.MostRuns),
 				Link = $"/Course/{course.ID}/{ResultType.MostRuns}",
 				Filter = Filter.None,
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.MostRuns(Filter.None).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.MostRuns(Filter.None).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray())
 			},
@@ -143,7 +143,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
 				Filter = Filter.None,
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(Filter.None).OrderByDescending(p => p.Value.AverageAgeGrade).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.TeamPoints(Filter.None).OrderByDescending(p => p.Value.AverageAgeGrade).Take(3)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 					.ToArray())
 			},
@@ -154,7 +154,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
 				Filter = Filter.None,
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(Filter.None).OrderByDescending(p => p.Value.TotalRuns).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.TeamPoints(Filter.None).OrderByDescending(p => p.Value.TotalRuns).Take(3)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 					.ToArray())
 			},
@@ -165,7 +165,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Course/{course.ID}/{ResultType.Team}",
 				Filter = Filter.None,
-				Rows = new Lazy<IReadOnlyCollection<LeaderboardRow>>(() => course.TeamPoints(Filter.None).Take(3)
+				Rows = new Lazy<LeaderboardRow[]>(() => course.TeamPoints(Filter.None).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 					.ToArray())
 			}

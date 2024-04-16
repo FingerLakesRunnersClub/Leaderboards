@@ -10,12 +10,12 @@ public interface IDataService
 	Task<IDictionary<uint, Athlete>> GetAthletes();
 
 	Task<Course> GetResults(uint id, string distance);
-	Task<IReadOnlyCollection<Course>> GetAllResults();
+	Task<Course[]> GetAllResults();
 
-	Task<IReadOnlyCollection<Athlete>> GetGroupMembers(string id);
+	Task<Athlete[]> GetGroupMembers(string id);
 	Task<IDictionary<Athlete, DateOnly>> GetPersonalCompletions();
 
-	Task<IReadOnlyCollection<User>> GetCommunityUsers();
-	Task<IReadOnlyCollection<User>> GetCommunityGroupMembers(string groupID);
+	Task<User[]> GetCommunityUsers();
+	Task<User[]> GetCommunityGroupMembers(string groupID);
 	Task AddCommunityGroupMembers(IDictionary<string, string[]> groupAdditions);
 }

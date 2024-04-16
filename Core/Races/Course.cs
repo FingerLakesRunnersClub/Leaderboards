@@ -12,15 +12,15 @@ public sealed class Course
 {
 	public Race Race { get; init; }
 	public uint ID { get; init; }
-	public string Name => Race.Name + (Race.Courses?.Count > 1 ? $" ({Distance.Display})" : string.Empty);
+	public string Name => Race.Name + (Race.Courses?.Length > 1 ? $" ({Distance.Display})" : string.Empty);
 	public Distance Distance { get; init; }
 
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
 
-	private IReadOnlyCollection<Result> _results = Array.Empty<Result>();
+	private Result[] _results = Array.Empty<Result>();
 
-	public IReadOnlyCollection<Result> Results
+	public Result[] Results
 	{
 		get => _results;
 		set
@@ -107,7 +107,7 @@ public sealed class Course
 			: _communityCache[filter] = RankDescending(filter, g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(this), g => new Stars((ushort) g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 	}
 
-	public IReadOnlyCollection<GroupedResult> GroupedResults(Filter filter = null)
+	public GroupedResult[] GroupedResults(Filter filter = null)
 		=> _results.Filter(filter)
 			.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
 			.ToArray();
@@ -123,7 +123,7 @@ public sealed class Course
 		}
 
 		var groupedResults = GroupedResults(filter);
-		return _thresholdCache[filter] = groupedResults.Count != 0
+		return _thresholdCache[filter] = groupedResults.Length != 0
 				? (ushort) Math.Ceiling(groupedResults.Average(r => r.Count()))
 				: (ushort) 0;
 	}
@@ -222,27 +222,27 @@ public sealed class Course
 	{
 		Participants = new Dictionary<string, int>
 		{
-			{ string.Empty, GroupedResults().Count },
-			{ Category.F.Display, GroupedResults(Filter.F).Count },
-			{ Category.M.Display, GroupedResults(Filter.M).Count }
+			{ string.Empty, GroupedResults().Length },
+			{ Category.F.Display, GroupedResults(Filter.F).Length },
+			{ Category.M.Display, GroupedResults(Filter.M).Length }
 		},
 		Runs = new Dictionary<string, int>
 		{
-			{ string.Empty, _results.Count },
+			{ string.Empty, _results.Length },
 			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) },
 			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) }
 		},
 		Miles = new Dictionary<string, double>
 		{
-			{ string.Empty, _results.Count * Distance.Miles },
+			{ string.Empty, _results.Length * Distance.Miles },
 			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) * Distance.Miles },
 			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) * Distance.Miles }
 		},
 		Average = new Dictionary<string, double>
 		{
-			{ string.Empty, GroupedResults().Count != 0 ? GroupedResults().Average(a => a.Count()) : 0 },
-			{ Category.F.Display, GroupedResults(Filter.F).Count != 0 ? GroupedResults(Filter.F).Average(a => a.Count()) : 0 },
-			{ Category.M.Display, GroupedResults(Filter.M).Count != 0 ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
+			{ string.Empty, GroupedResults().Length != 0 ? GroupedResults().Average(a => a.Count()) : 0 },
+			{ Category.F.Display, GroupedResults(Filter.F).Length != 0 ? GroupedResults(Filter.F).Average(a => a.Count()) : 0 },
+			{ Category.M.Display, GroupedResults(Filter.M).Length != 0 ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
 		}
 	};
 }

@@ -17,7 +17,7 @@ public sealed class AthleteSummary
 	public Dictionary<Course, Ranked<Stars>> CommunityStars { get; }
 	public Dictionary<Course, Result[]> All { get; }
 
-	public IReadOnlyCollection<AthleteOverallRow> Competitions { get; }
+	public AthleteOverallRow[] Competitions { get; }
 
 	public Ranked<Points> OverallPoints { get; }
 	public Ranked<AgeGrade> OverallAgeGrade { get; }
@@ -26,11 +26,11 @@ public sealed class AthleteSummary
 	public Ranked<TeamResults> TeamResults { get; }
 
 	public int TotalResults { get; }
-	private readonly IReadOnlyCollection<Course> _results;
+	private readonly Course[] _results;
 	private readonly IConfig _config;
 
 
-	public AthleteSummary(Athlete athlete, IReadOnlyCollection<Course> results, IConfig config)
+	public AthleteSummary(Athlete athlete, Course[] results, IConfig config)
 	{
 		_results = results;
 		_config = config;
@@ -81,7 +81,7 @@ public sealed class AthleteSummary
 		};
 	}
 
-	public IEnumerable<SimilarAthlete> SimilarAthletes()
+	public SimilarAthlete[] SimilarAthletes()
 	{
 		var fastMatches = _results.ToDictionary(c => c, c => c.Fastest().Where(r => Fastest[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Fastest[c], r)));
 		var avgMatches = _results.ToDictionary(c => c, c => c.BestAverage().Where(r => Average[c] != null && !r.Result.Athlete.Equals(Athlete) && IsMatch(Average[c], r)));

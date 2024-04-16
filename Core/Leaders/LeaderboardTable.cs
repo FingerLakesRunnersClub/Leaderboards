@@ -10,5 +10,5 @@ public sealed class LeaderboardTable
 	public Course Course { get; init; }
 	public FormattedResultType ResultType { get; init; }
 	public Filter Filter { get; init; }
-	public Lazy<IReadOnlyCollection<LeaderboardRow>> Rows { get; init; }
+	public Lazy<LeaderboardRow[]> Rows { get; init; }
 }

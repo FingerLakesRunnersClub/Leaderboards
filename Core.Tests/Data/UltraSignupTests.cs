@@ -22,7 +22,7 @@ public sealed class UltraSignupTests
 		var results = source.ParseCourse(course, json, ImmutableDictionary<string, string>.Empty);
 
 		//assert
-		Assert.Equal(2, results.Count);
+		Assert.Equal(2, results.Length);
 		var result = results.First();
 		Assert.Equal((ushort) 234, result.Athlete.ID);
 		Assert.Equal("Steve Desmond", result.Athlete.Name);

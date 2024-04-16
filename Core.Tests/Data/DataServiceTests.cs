@@ -116,11 +116,11 @@ public sealed class DataServiceTests
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(resultsJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		var posts = new List<Post>
+		var posts = new Post[]
 		{
 			new() { Name = "Steve Desmond", Date = new DateTime(2011, 9, 24), Content = "## Story" }
 		};
-		communityAPI.ParsePosts(Arg.Any<IReadOnlyCollection<JsonElement>>()).Returns(posts);
+		communityAPI.ParsePosts(Arg.Any<JsonElement[]>()).Returns(posts);
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
 		var dataService = new DataService(resultsAPI, customInfoAPI, communityAPI, config, loggerFactory);
@@ -144,7 +144,7 @@ public sealed class DataServiceTests
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(resultsJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
 		var communityAPI = Substitute.For<ICommunityAPI>();
-		communityAPI.ParsePosts(Arg.Any<IReadOnlyCollection<JsonElement>>()).Throws(new Exception());
+		communityAPI.ParsePosts(Arg.Any<JsonElement[]>()).Throws(new Exception());
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
@@ -287,8 +287,8 @@ public sealed class DataServiceTests
 		Assert.True(logger.Called);
 	}
 
-	private static IDictionary<string, IReadOnlyCollection<uint>> groups
-		=> new Dictionary<string, IReadOnlyCollection<uint>>
+	private static IDictionary<string, uint[]> groups
+		=> new Dictionary<string, uint[]>
 		{
 			{ "Test 1", new uint[] { 123, 234 } },
 			{ "Test 2", new uint[] { 234, 345 } }
@@ -500,7 +500,7 @@ public sealed class DataServiceTests
 		var users = await dataService.GetCommunityUsers();
 
 		//assert
-		Assert.Equal(2, users.Count);
+		Assert.Equal(2, users.Length);
 		Assert.Equal("Steve", users.First().Name);
 		Assert.Equal("Test", users.Skip(1).First().Name);
 	}
@@ -527,7 +527,7 @@ public sealed class DataServiceTests
 		var users = await dataService.GetCommunityGroupMembers("group");
 
 		//assert
-		Assert.Equal(2, users.Count);
+		Assert.Equal(2, users.Length);
 		Assert.Equal("Steve", users.First().Name);
 		Assert.Equal("Test", users.Skip(1).First().Name);
 	}
@@ -543,8 +543,8 @@ public sealed class DataServiceTests
 		communityAPI.GetGroup("group2").Returns(JsonDocument.Parse("""{"id":234,"name":"group2"}""").RootElement);
 		var arg1 = Array.Empty<string>();
 		var arg2 = Array.Empty<string>();
-		await communityAPI.AddMembers(123, Arg.Do<IReadOnlyCollection<string>>(c => arg1 = c.ToArray()));
-		await communityAPI.AddMembers(234, Arg.Do<IReadOnlyCollection<string>>(c => arg2 = c.ToArray()));
+		await communityAPI.AddMembers(123, Arg.Do<string[]>(c => arg1 = c.ToArray()));
+		await communityAPI.AddMembers(234, Arg.Do<string[]>(c => arg2 = c.ToArray()));
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var logger = new TestLogger();
 		var loggerFactory = Substitute.For<ILoggerFactory>();

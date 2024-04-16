@@ -21,11 +21,11 @@ public sealed class CommunityController : Controller
 		=> View(await GetMemberships());
 
 	[HttpPost]
-	public async Task<ViewResult> Admin(IReadOnlyCollection<uint> users)
+	public async Task<ViewResult> Admin(uint[] users)
 	{
 		var vm = await GetMemberships();
 		var usersToUpdate = vm.Rows.Where(r => r.User is not null && users.Contains(r.User.ID)).ToArray();
-		var groupsToUpdate = usersToUpdate.SelectMany(r => r.MissingGroups).Distinct().ToArray();
+		var groupsToUpdate = usersToUpdate.SelectMany(r => r.MissingGroups).Distinct();
 		var mappingsToAdd = groupsToUpdate.ToDictionary(g => g, g => usersToUpdate.Where(r => r.MissingGroups.Contains(g)).Select(r => r.User.Username).ToArray());
 		await _dataService.AddCommunityGroupMembers(mappingsToAdd);
 		return await Admin();
@@ -71,14 +71,14 @@ public sealed class CommunityController : Controller
 			{
 				Athlete = athlete,
 				User = user,
-				CurrentGroups = currentGroups,
-				MissingGroups = missingGroups
+				CurrentGroups = currentGroups.ToArray(),
+				MissingGroups = missingGroups.ToArray()
 			};
 			rows.Add(row);
 		}
 		return new CommunityAdminViewModel
 		{
-			Rows = rows,
+			Rows = rows.ToArray(),
 			Config = _config
 		};
 	}

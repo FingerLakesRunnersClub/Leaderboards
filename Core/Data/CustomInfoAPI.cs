@@ -20,10 +20,10 @@ public sealed class CustomInfoAPI : ICustomInfoAPI
 			? await _httpClient.GetFromJsonAsync<IDictionary<string, string>>(_config.AliasAPI)
 			: ImmutableDictionary<string, string>.Empty;
 
-	public async Task<IDictionary<string, IReadOnlyCollection<uint>>> GetGroups()
+	public async Task<IDictionary<string, uint[]>> GetGroups()
 		=> !string.IsNullOrWhiteSpace(_config.GroupAPI)
-			? await _httpClient.GetFromJsonAsync<IDictionary<string, IReadOnlyCollection<uint>>>(_config.GroupAPI)
-			: ImmutableDictionary<string, IReadOnlyCollection<uint>>.Empty;
+			? await _httpClient.GetFromJsonAsync<IDictionary<string, uint[]>>(_config.GroupAPI)
+			: ImmutableDictionary<string, uint[]>.Empty;
 
 	public async Task<IDictionary<uint, DateOnly>> GetPersonalCompletions()
 		=> !string.IsNullOrWhiteSpace(_config.PersonalAPI)

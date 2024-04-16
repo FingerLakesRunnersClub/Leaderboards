@@ -75,7 +75,7 @@ public sealed class DiscourseAPITests
 		var posts = await api.GetPosts(123);
 
 		//assert
-		Assert.Equal(2, posts.Count);
+		Assert.Equal(2, posts.Length);
 	}
 
 	[Fact]

@@ -68,7 +68,7 @@ public sealed class LogControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var results = CourseData.Results.ToList();
 		results.Add(new Result { StartTime = new Date(new DateTime(2021, 2, 1)) });
-		var course = new Course { Results = results };
+		var course = new Course { Results = results.ToArray() };
 		dataService.GetAllResults().Returns(new[] { course });
 		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
 

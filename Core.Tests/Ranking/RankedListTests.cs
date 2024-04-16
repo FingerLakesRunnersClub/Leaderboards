@@ -19,12 +19,12 @@ public sealed class RankedListTests
 	public void CanCreateRankedListFromList()
 	{
 		//arrange
-		var list = new List<Ranked<byte>>
-			{
-				new () { Rank = new Rank(1) },
-				new () { Rank = new Rank(2) },
-				new () { Rank = new Rank(3) }
-			};
+		var list = new Ranked<byte>[]
+		{
+			new() { Rank = new Rank(1) },
+			new() { Rank = new Rank(2) },
+			new() { Rank = new Rank(3) }
+		};
 
 		//act
 		var rankedList = new RankedList<byte>(list);

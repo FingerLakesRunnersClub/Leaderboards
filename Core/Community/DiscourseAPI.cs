@@ -25,7 +25,7 @@ public sealed class DiscourseAPI : ICommunityAPI
 		}
 	}
 
-	public async Task<IReadOnlyCollection<JsonElement>> GetPosts(ushort id)
+	public async Task<JsonElement[]> GetPosts(ushort id)
 	{
 		var page1 = await GetPostResponse(id, 1);
 		var postCount = page1.GetProperty("posts_count").GetUInt16();
@@ -46,7 +46,7 @@ public sealed class DiscourseAPI : ICommunityAPI
 		return json.RootElement;
 	}
 
-	public IReadOnlyCollection<Post> ParsePosts(IEnumerable<JsonElement> json)
+	public Post[] ParsePosts(JsonElement[] json)
 		=> json.Select(p => new Post
 		{
 			Name = p.GetProperty("name").GetString(),
@@ -54,22 +54,22 @@ public sealed class DiscourseAPI : ICommunityAPI
 			Content = p.GetProperty("raw").GetString()
 		}).ToArray();
 
-	public async Task<IReadOnlyCollection<JsonElement>> GetUsers()
+	public async Task<JsonElement[]> GetUsers()
 		=> await GetMembers("trust_level_0");
 
-	public async Task<IReadOnlyCollection<JsonElement>> GetMembers(string groupID)
+	public async Task<JsonElement[]> GetMembers(string groupID)
 	{
 		const int pageSize = 1000;
 
 		var members = await GetMembers(groupID, pageSize, 1);
-		if (members.Count < pageSize)
+		if (members.Length < pageSize)
 			return members;
 
 		var moreMembers = await GetMembers(groupID, pageSize, 2);
 		return members.Concat(moreMembers).ToArray();
 	}
 
-	private async Task<IReadOnlyCollection<JsonElement>> GetMembers(string groupID, int pageSize, int pageNumber)
+	private async Task<JsonElement[]> GetMembers(string groupID, int pageSize, int pageNumber)
 	{
 		var offset = pageSize * (pageNumber - 1);
 		var response = await _http.GetStreamAsync($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
@@ -84,7 +84,7 @@ public sealed class DiscourseAPI : ICommunityAPI
 		return json.RootElement.GetProperty("group");
 	}
 
-	public async Task AddMembers(ushort groupID, IEnumerable<string> usernames)
+	public async Task AddMembers(ushort groupID, string[] usernames)
 	{
 		var data = new StringContent($$"""{"usernames":"{{string.Join(',', usernames)}}"}""", MediaTypeHeaderValue.Parse("application/json"));
 		await _http.PutAsync($"/groups/{groupID}/members.json", data);

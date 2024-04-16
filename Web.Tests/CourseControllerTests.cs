@@ -33,17 +33,12 @@ public sealed class CourseControllerTests
 	public async Task CanGetFastestResults()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course
-		{
-			Distance = new Distance("10K"),
-			Results = results
-		};
-		results.AddRange(new []
-		{
+		var course = new Course { Distance = new Distance("10K") };
+		course.Results =
+		[
 			new Result { Course = course, Athlete = new Athlete { ID = 123 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
 			new Result { Course = course, Athlete = new Athlete { ID = 234 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
-		});
+		];
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
@@ -113,18 +108,13 @@ public sealed class CourseControllerTests
 	public async Task CanGetTeamResults()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course
-		{
-			Distance = new Distance("10 miles"),
-			Results = results
-		};
-		results.AddRange(new[]
-		{
+		var course = new Course { Distance = new Distance("10 miles") };
+		course.Results =
+		[
 			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:34")) },
 			new Result { Course = course, Athlete = new Athlete { ID = 123, Age = 20 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("2:35")) },
 			new Result { Course = course, Athlete = new Athlete { ID = 234, Age = 30 }, StartTime = new Date(new DateTime(2022, 4, 26)), Duration = new Time(TimeSpan.Parse("1:23")) }
-		});
+		];
 
 		var dataService = Substitute.For<IDataService>();
 		dataService.GetResults(Arg.Any<uint>(), Arg.Any<string>()).Returns(course);
@@ -136,7 +126,7 @@ public sealed class CourseControllerTests
 
 		//assert
 		var vm = (CourseResultsViewModel<TeamResults>) response.Model;
-		var ranked = vm!.RankedResults.ToArray();
+		var ranked = vm!.RankedResults;
 		var team2 = ranked.First(r => r.Value.Team == Athlete.Teams[2]);
 		var team3 = ranked.First(r => r.Value.Team == Athlete.Teams[3]);
 		Assert.Equal(1, team3.Value.AgeGradePoints);

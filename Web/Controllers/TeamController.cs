@@ -36,7 +36,7 @@ public sealed class TeamController : Controller
 
 	private async Task<TeamSummaryViewModel> GetTeam(Team team)
 	{
-		var courses = (await _dataService.GetAllResults()).ToArray();
+		var courses = await _dataService.GetAllResults();
 		var overall = new OverallResults(courses);
 
 		return new TeamSummaryViewModel

@@ -211,15 +211,14 @@ public sealed class CourseTests
 	public void CanGetCommunityStars()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results, Distance = new Distance("10K") };
-		results.AddRange(new[]
-		{
+		var course = new Course { Distance = new Distance("10K") };
+		course.Results =
+		[
 			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
-		});
+		];
 
 		//act
 		var points = course.CommunityStars();
@@ -238,15 +237,14 @@ public sealed class CourseTests
 	public void CanGetCommunityStarsForCategory()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results, Distance = new Distance("10K") };
-		results.AddRange(new[]
-		{
+		var course = new Course { Distance = new Distance("10K") };
+		course.Results =
+		[
 			new Result { Course = course, Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete3, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete4, StartTime = new Date(new DateTime(2022, 4, 8)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true, [StarType.Story] = true } },
 			new Result { Course = course, Athlete = CourseData.Athlete2, StartTime = new Date(new DateTime(2022, 4, 7)), Duration = new Time(TimeSpan.FromHours(1)) }
-		});
+		];
 
 		//act
 		var points = course.CommunityStars(Filter.M);
@@ -326,7 +324,7 @@ public sealed class CourseTests
 			StartTime = new Date(DateTime.Parse("1/9/2020")),
 			Duration = new Time(TimeSpan.Parse("0:54:32.1"))
 		});
-		var course = new Course { Results = courseResults, Distance = new Distance("10K") };
+		var course = new Course { Results = courseResults.ToArray(), Distance = new Distance("10K") };
 
 		//act
 		var results = course.Fastest();

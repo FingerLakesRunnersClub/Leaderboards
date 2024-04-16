@@ -13,11 +13,11 @@ public sealed class TeamMemberTests
 	public void CanGetTotalsForAthlete()
 	{
 		//arrange
-		var results = new List<Ranked<Time>>
-			{
-				new() { Count = 1, AgeGrade = new AgeGrade(90), Result = new Result { Course = new Course { Distance = new Distance("3 miles") }}},
-				new() { Count = 2, AgeGrade = new AgeGrade(80), Result = new Result { Course = new Course { Distance = new Distance("4 miles") }}}
-			};
+		var results = new Ranked<Time>[]
+		{
+			new() { Count = 1, AgeGrade = new AgeGrade(90), Result = new Result { Course = new Course { Distance = new Distance("3 miles") } } },
+			new() { Count = 2, AgeGrade = new AgeGrade(80), Result = new Result { Course = new Course { Distance = new Distance("4 miles") } } }
+		};
 
 		//act
 		var member = new TeamMember(results);

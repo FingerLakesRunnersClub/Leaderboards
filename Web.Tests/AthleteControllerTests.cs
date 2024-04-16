@@ -22,9 +22,9 @@ public sealed class AthleteControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10 miles"),
-			Results = new List<Result>
-			{
-				new()
+			Results =
+			[
+				new Result
 				{
 					Athlete = athlete,
 					Course = CourseData.Course,
@@ -35,7 +35,7 @@ public sealed class AthleteControllerTests
 						[StarType.Story] = true
 					}
 				},
-				new()
+				new Result
 				{
 					Athlete = new Athlete { ID = 234, Category = Category.F },
 					Course = CourseData.Course,
@@ -46,10 +46,10 @@ public sealed class AthleteControllerTests
 						[StarType.Story] = true
 					}
 				}
-			}
+			]
 		};
 		dataService.GetAthlete(123).Returns(athlete);
-		dataService.GetAllResults().Returns(new List<Course> { course });
+		dataService.GetAllResults().Returns([course]);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
 
 		//act
@@ -78,15 +78,15 @@ public sealed class AthleteControllerTests
 		{
 			ID = 234,
 			Distance = new Distance("10 miles"),
-			Results = new List<Result>
-			{
-				new()
+			Results =
+			[
+				new Result
 				{
 					Athlete = athlete,
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
-			}
+			]
 		};
 		dataService.GetAthlete(123).Returns(athlete);
 		dataService.GetAllResults().Returns(new[] { course });
@@ -109,15 +109,15 @@ public sealed class AthleteControllerTests
 		{
 			ID = 234,
 			Distance = new Distance("10 miles"),
-			Results = new List<Result>
-			{
-				new()
+			Results =
+			[
+				new Result
 				{
 					Athlete = new Athlete { ID = 123 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
-			}
+			]
 		};
 		dataService.GetResults(234, null).Returns(course);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
@@ -139,39 +139,39 @@ public sealed class AthleteControllerTests
 		{
 			ID = 234,
 			Distance = new Distance("10 miles"),
-			Results = new List<Result>
-			{
-				new()
+			Results =
+			[
+				new Result
 				{
 					Athlete = new Athlete { ID = 123, Age = 35 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(0, 2, 3))
 				},
-				new()
+				new Result
 				{
 					Athlete = new Athlete { ID = 123, Age = 35 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(1, 2, 3))
 				},
-				new()
+				new Result
 				{
 					Athlete = new Athlete { ID = 123, Age = 35 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(2, 3, 4))
 				},
-				new()
+				new Result
 				{
 					Athlete = new Athlete { ID = 123, Age = 35 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(0, 2, 3))
 				},
-				new()
+				new Result
 				{
 					Athlete = new Athlete { ID = 123, Age = 35 },
 					Course = CourseData.Course,
 					Duration = new Time(new TimeSpan(1, 2, 3))
 				}
-			}
+			]
 		};
 		dataService.GetResults(234, null).Returns(course);
 		var controller = new AthleteController(dataService, TestHelpers.Config);
@@ -206,7 +206,7 @@ public sealed class AthleteControllerTests
 
 		//assert
 		var vm = (SimilarAthletesViewModel) result.Model;
-		var matches = vm!.Matches.ToArray();
+		var matches = vm!.Matches;
 		Assert.Equal(CourseData.Athlete1, vm.Athlete);
 		Assert.Equal(CourseData.Athlete4, matches[0].Athlete);
 		Assert.Equal("96%", matches[0].Similarity.Display);

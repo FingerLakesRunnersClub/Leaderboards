@@ -13,13 +13,13 @@ public sealed class AwardsViewModel : ViewModel
 	public override string Title => "Awards";
 	public IDictionary<Athlete, Award[]> Awards { get; }
 
-	public AwardsViewModel(IConfig config, IReadOnlyCollection<Course> results)
+	public AwardsViewModel(IConfig config, Course[] results)
 	{
 		Config = config;
 		Awards = GetAwards(results);
 	}
 
-	private Dictionary<Athlete, Award[]> GetAwards(IReadOnlyCollection<Course> results)
+	private Dictionary<Athlete, Award[]> GetAwards(Course[] results)
 	{
 		var overall = new OverallResults(results);
 		var awards = new List<Award>();
@@ -30,11 +30,11 @@ public sealed class AwardsViewModel : ViewModel
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(), 10));
 		awards.AddRange(Overall("Community", "Overall Community", overall.CommunityStars(), 10));
 		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints().First().Value.Team)));
-		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Filter.F))));
-		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Filter.M))));
-		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Filter.F))));
-		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Filter.M))));
-		awards.AddRange(Course("MostRuns", "Most Runs", results.SelectMany(c => c.MostRuns())));
+		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Filter.F)).ToArray()));
+		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Filter.M)).ToArray()));
+		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Filter.F)).ToArray()));
+		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", results.SelectMany(c => c.BestAverage(Filter.M)).ToArray()));
+		awards.AddRange(Course("MostRuns", "Most Runs", results.SelectMany(c => c.MostRuns()).ToArray()));
 		awards.AddRange(AgeGroup(results, Category.F));
 		awards.AddRange(AgeGroup(results, Category.M));
 
@@ -63,7 +63,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private Award[] Course<T>(string type, string title, IEnumerable<Ranked<T>> results)
+	private Award[] Course<T>(string type, string title, Ranked<T>[] results)
 		=> results.Where(r => r.Rank.Value == 1)
 			.Select(r => new Award
 			{
@@ -74,7 +74,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private Award[] AgeGroup(IReadOnlyCollection<Course> results, Category category)
+	private Award[] AgeGroup(Course[] results, Category category)
 		=> Athlete.Teams
 			.SelectMany(t => results.SelectMany(c => CourseAgeGroupAwards(c, category, t.Value)))
 			.ToArray();

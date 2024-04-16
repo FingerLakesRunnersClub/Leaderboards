@@ -20,7 +20,7 @@ public sealed class UltraSignup : IDataSource
 		=> _config = config;
 
 	private static readonly byte[] ValidStatusTypes = [1, 6];
-	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
+	public Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 		=> json.EnumerateArray()
 			.Where(r => ValidStatusTypes.Contains(r.GetProperty("status").GetByte()))
 			.Select(j => new Result

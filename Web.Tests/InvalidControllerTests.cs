@@ -51,7 +51,7 @@ public sealed class InvalidControllerTests
 		var course = new Course
 		{
 			Distance = new Distance("10K"),
-			Results = results
+			Results = results.ToArray()
 		};
 		dataService.GetAllResults().Returns(new[] { course });
 		var controller = new InvalidController(dataService, TestHelpers.Config);

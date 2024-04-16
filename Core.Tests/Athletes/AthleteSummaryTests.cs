@@ -32,7 +32,7 @@ public sealed class AthleteSummaryTests
 		var summary = new AthleteSummary(CourseData.Athlete1, results, TestHelpers.Config);
 
 		//act
-		var similar = summary.SimilarAthletes().ToArray();
+		var similar = summary.SimilarAthletes();
 
 		//assert
 		Assert.Equal(2, similar.Length);
@@ -44,9 +44,8 @@ public sealed class AthleteSummaryTests
 	public void SimilarAthletesFiltersOutliers()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Distance = new Distance("400m"), Results = results };
-		results.AddRange(new[]
+		var course = new Course { Distance = new Distance("400m") };
+		var results = new[]
 		{
 			new Result { Course = course, Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(100)) },
 			new Result { Course = course, Athlete = CourseData.Athlete1, Duration = new Time(TimeSpan.FromSeconds(101)) },
@@ -57,12 +56,13 @@ public sealed class AthleteSummaryTests
 			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(95)) },
 			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(200)) },
 			new Result { Course = course, Athlete = CourseData.Athlete3, Duration = new Time(TimeSpan.FromSeconds(300)) }
-		});
+		};
+		course.Results = results;
 		var courses = new[] { course };
 		var summary = new AthleteSummary(CourseData.Athlete1, courses, TestHelpers.Config);
 
 		//act
-		var similar = summary.SimilarAthletes().ToArray();
+		var similar = summary.SimilarAthletes();
 
 		//assert
 		Assert.Equal(CourseData.Athlete2, similar.Single().Athlete);

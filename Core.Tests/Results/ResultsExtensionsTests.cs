@@ -15,10 +15,10 @@ public sealed class ResultsExtensionsTests
 		var filter = new Filter();
 
 		//act
-		var filtered = results.Filter(filter).ToArray();
+		var filtered = results.Filter(filter);
 
 		//assert
-		Assert.Equal(results.Count, filtered.Length);
+		Assert.Equal(results.Length, filtered.Length);
 	}
 
 	[Fact]
@@ -29,7 +29,7 @@ public sealed class ResultsExtensionsTests
 		var filter = new Filter(Category.M);
 
 		//act
-		var filtered = results.Filter(filter).ToArray();
+		var filtered = results.Filter(filter);
 
 		//assert
 		Assert.NotEmpty(filtered);
@@ -44,7 +44,7 @@ public sealed class ResultsExtensionsTests
 		var filter = new Filter(Category.M, Athlete.Teams[2]);
 
 		//act
-		var filtered = results.Filter(filter).ToArray();
+		var filtered = results.Filter(filter);
 
 		//assert
 		Assert.NotEmpty(filtered);
@@ -64,7 +64,7 @@ public sealed class ResultsExtensionsTests
 		var filter = new Filter(Category.M, Athlete.Teams[6]);
 
 		//act
-		var filtered = results.Filter(filter).ToArray();
+		var filtered = results.ToArray().Filter(filter);
 
 		//assert
 		Assert.NotEmpty(filtered);

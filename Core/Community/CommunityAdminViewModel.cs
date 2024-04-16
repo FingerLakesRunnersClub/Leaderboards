@@ -6,17 +6,17 @@ public sealed class CommunityAdminViewModel : ViewModel
 {
 	public override string Title => "Community Admin";
 
-	public IReadOnlyCollection<Row> Rows { get; init; }
-	public IEnumerable<Row> MissingRows => Rows.Where(r => r.User is not null && r.MissingGroups.Count != 0);
-	public IEnumerable<Row> NoUserRows => Rows.Where(r => r.User is null);
-	public IEnumerable<Row> SyncedRows => Rows.Where(r => r.User is not null && r.MissingGroups.Count == 0);
+	public Row[] Rows { get; init; }
+	public Row[] MissingRows => Rows.Where(r => r.User is not null && r.MissingGroups.Length != 0).ToArray();
+	public Row[] NoUserRows => Rows.Where(r => r.User is null).ToArray();
+	public Row[] SyncedRows => Rows.Where(r => r.User is not null && r.MissingGroups.Length == 0).ToArray();
 
 
 	public sealed class Row
 	{
 		public Athlete Athlete { get; init; }
 		public User User { get; init; }
-		public IReadOnlyCollection<string> CurrentGroups { get; init; }
-		public IReadOnlyCollection<string> MissingGroups { get; init; }
+		public string[] CurrentGroups { get; init; }
+		public string[] MissingGroups { get; init; }
 	}
 }

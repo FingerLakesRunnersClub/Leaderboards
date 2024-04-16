@@ -57,11 +57,11 @@ public sealed class AliasAPITests
 		var groups = await api.GetGroups();
 
 		//assert
-		var members1 = groups["Test 1"].ToArray();
+		var members1 = groups["Test 1"];
 		Assert.Equal((uint)123, members1[0]);
 		Assert.Equal((uint)234, members1[1]);
 
-		var members2 = groups["Test 2"].ToArray();
+		var members2 = groups["Test 2"];
 		Assert.Equal((uint)234, members2[0]);
 		Assert.Equal((uint)345, members2[1]);
 	}

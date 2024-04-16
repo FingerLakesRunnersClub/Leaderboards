@@ -19,7 +19,7 @@ public sealed class WebScorer : IDataSource
 	public WebScorer(IConfig config)
 		=> _config = config;
 
-	public IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
+	public Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 	{
 		var results = json.GetProperty("Racers");
 

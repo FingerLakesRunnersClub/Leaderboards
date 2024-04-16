@@ -13,8 +13,8 @@ public sealed class Race
 
 	public ushort CommunityID { get; init; }
 
-	private IReadOnlyCollection<Post> _communityPosts = Array.Empty<Post>();
-	public IReadOnlyCollection<Post> CommunityPosts
+	private Post[] _communityPosts = Array.Empty<Post>();
+	public Post[] CommunityPosts
 	{
 		get => _communityPosts;
 		set
@@ -29,5 +29,5 @@ public sealed class Race
 
 	public int CommunityHash { get; set; }
 
-	public IReadOnlyCollection<Course> Courses { get; set; } = Array.Empty<Course>();
+	public Course[] Courses { get; set; } = Array.Empty<Course>();
 }

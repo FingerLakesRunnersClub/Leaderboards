@@ -1,6 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Leaders;
-using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
@@ -12,7 +11,7 @@ public sealed class LeaderboardViewModelTests
 	public void TitleIsStatic()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel(new List<Course>(), LeaderboardResultType.Team);
+		var vm = new LeaderboardViewModel([], LeaderboardResultType.Team);
 
 		//act
 		var title = vm.Title;
@@ -34,7 +33,7 @@ public sealed class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToArray();
+		var result = results.First().Value;
 		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Age Grade").Rows.Value.First().Name);
 		Assert.Equal("30–39", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Most Runs").Rows.Value.First().Name);
 		Assert.Equal("1–29", result.First(r => r.ResultType.Value == ResultType.Team && r.Title == "Team Points").Rows.Value.First().Name);
@@ -53,7 +52,7 @@ public sealed class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToArray();
+		var result = results.First().Value;
 		Assert.Equal("3:02:01", result.First(r => r.Filter.Category == Category.F && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
 		Assert.StartsWith("4:", result.First(r => r.Filter.Category == Category.F && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
@@ -72,7 +71,7 @@ public sealed class LeaderboardViewModelTests
 		var results = vm.CourseResults;
 
 		//assert
-		var result = results.First().Value.ToArray();
+		var result = results.First().Value;
 		Assert.Equal("1:02:03", result.First(r => r.Filter.Category == Category.M && r.ResultType.Value == ResultType.Fastest).Rows.Value.First().Value);
 		Assert.StartsWith("2:", result.First(r => r.Filter.Category == Category.M && r.ResultType.Value == ResultType.BestAverage).Rows.Value.First().Value);
 		Assert.StartsWith("3", result.First(r => r.ResultType.Value == ResultType.MostRuns).Rows.Value.First().Value);
@@ -88,7 +87,7 @@ public sealed class LeaderboardViewModelTests
 		};
 
 		//act
-		var results = vm.OverallResults().ToArray();
+		var results = vm.OverallResults();
 
 		//assert
 		Assert.Equal("A3", results.First(r => r.Title == "Most Points (F)").Rows.Value.First().Name);

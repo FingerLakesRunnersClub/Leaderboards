@@ -198,13 +198,13 @@ public sealed class DataService : IDataService
 		}
 	}
 
-	public async Task<IReadOnlyCollection<Course>> GetAllResults()
+	public async Task<Course[]> GetAllResults()
 	{
 		var tasks = _races.SelectMany(r => r.Value.Courses.Select(c => GetResults(c.ID, c.Distance.Display)));
 		return await Task.WhenAll(tasks);
 	}
 
-	public async Task<IReadOnlyCollection<Athlete>> GetGroupMembers(string id)
+	public async Task<Athlete[]> GetGroupMembers(string id)
 	{
 		try
 		{
@@ -270,13 +270,13 @@ public sealed class DataService : IDataService
 		}
 	}
 
-	public async Task<IReadOnlyCollection<User>> GetCommunityUsers()
+	public async Task<User[]> GetCommunityUsers()
 	{
 		var users = await _communityAPI.GetUsers();
 		return users.Select(ParseUser).ToArray();
 	}
 
-	public async Task<IReadOnlyCollection<User>> GetCommunityGroupMembers(string groupID)
+	public async Task<User[]> GetCommunityGroupMembers(string groupID)
 	{
 		var users = await _communityAPI.GetMembers(groupID);
 		return users.Select(ParseUser).ToArray();

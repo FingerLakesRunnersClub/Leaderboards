@@ -3,7 +3,7 @@ namespace FLRC.Leaderboards.Core.Tests;
 internal class MockHttpMessageHandler : HttpMessageHandler
 {
 	public HttpRequestMessage LastRequested => Requests.LastOrDefault();
-	public IList<HttpRequestMessage> Requests { get; } = new List<HttpRequestMessage>();
+	public List<HttpRequestMessage> Requests { get; } = [];
 
 	private readonly string _data;
 

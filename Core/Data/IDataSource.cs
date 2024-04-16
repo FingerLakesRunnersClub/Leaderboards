@@ -8,6 +8,6 @@ namespace FLRC.Leaderboards.Core.Data;
 public interface IDataSource
 {
 	public string URL(uint courseID);
-	IReadOnlyCollection<Result> ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases);
+	Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases);
 	Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases);
 }

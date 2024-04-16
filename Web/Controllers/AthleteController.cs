@@ -30,7 +30,7 @@ public sealed class AthleteController : Controller
 	private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
 	{
 		var athlete = await _dataService.GetAthlete(id);
-		var courses = (await _dataService.GetAllResults()).ToArray();
+		var courses = await _dataService.GetAllResults();
 		var summary = new AthleteSummary(athlete, courses, _config);
 
 		return new AthleteSummaryViewModel
@@ -54,7 +54,7 @@ public sealed class AthleteController : Controller
 		};
 	}
 
-	private static RankedList<Time> Rank(IEnumerable<Result> results)
+	private static RankedList<Time> Rank(Result[] results)
 	{
 		var ranks = new RankedList<Time>();
 
@@ -82,7 +82,7 @@ public sealed class AthleteController : Controller
 		return ranks;
 	}
 
-	private static SimilarAthlete[] Rank(IEnumerable<SimilarAthlete> matches)
+	private static SimilarAthlete[] Rank(SimilarAthlete[] matches)
 	{
 		var ordered = matches.OrderByDescending(r => r.Score).ToArray();
 		for (var x = 0; x < ordered.Length; x++)
@@ -107,7 +107,7 @@ public sealed class AthleteController : Controller
 	private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
 	{
 		var athlete = await _dataService.GetAthlete(id);
-		var results = (await _dataService.GetAllResults()).ToArray();
+		var results = await _dataService.GetAllResults();
 		var my = new AthleteSummary(athlete, results, _config);
 
 		return new SimilarAthletesViewModel

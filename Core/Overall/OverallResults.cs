@@ -9,9 +9,9 @@ namespace FLRC.Leaderboards.Core.Overall;
 
 public sealed class OverallResults
 {
-	private readonly IReadOnlyCollection<Course> _courses;
+	private readonly Course[] _courses;
 
-	public OverallResults(IReadOnlyCollection<Course> courses) => _courses = courses;
+	public OverallResults(Course[] courses) => _courses = courses;
 
 	public RankedList<Points> MostPoints(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.Sum(r => r.Points?.Value ?? 0)) : null, g => g.Sum(r => r.Points?.Value));
@@ -29,12 +29,12 @@ public sealed class OverallResults
 		=> RankedList(_courses.SelectMany(c => c.CommunityStars(filter).Where(p => p.Value.Value > 0)).GroupBy(r => r.Result.Athlete), g => new Stars((ushort) g.Sum(c => c.Value.Value)), g => g.Sum(c => c.Value.Value));
 
 	public RankedList<Date> Completed(Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _courses.Count), g => g.Max(r => r.Value), g => Date.CompetitionStart.Subtract(g.Max(r => r.Value)?.Value ?? Date.CompetitionStart), g => (uint) g.Count());
+		=> RankedList(_courses.SelectMany(c => c.Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _courses.Length), g => g.Max(r => r.Value), g => Date.CompetitionStart.Subtract(g.Max(r => r.Value)?.Value ?? Date.CompetitionStart), g => (uint) g.Count());
 
 	public RankedList<TeamMember> TeamMembers(Team team, Filter filter = null)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest(filter).Where(r => r.Result.Athlete.Team == team)).ToArray());
 
-	private static RankedList<TeamMember> RankTeam(IEnumerable<Ranked<Time>> results)
+	private static RankedList<TeamMember> RankTeam(Ranked<Time>[] results)
 	{
 		var ranked = results
 			.GroupBy(r => r.Result.Athlete)
@@ -60,7 +60,7 @@ public sealed class OverallResults
 		return ranks;
 	}
 
-	public RankedList<TeamMember> GroupMembers(IEnumerable<Athlete> athletes)
+	public RankedList<TeamMember> GroupMembers(Athlete[] athletes)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).ToArray());
 
 	public RankedList<TeamResults> TeamPoints(Filter filter = null)
@@ -69,8 +69,8 @@ public sealed class OverallResults
 			.Select(g => new TeamResults
 			{
 				Team = g.Key,
-				AgeGradePoints = (byte) (g.Sum(r => r.Value.AgeGradePoints) + Athlete.Teams.Count * (_courses.Count - g.Count())),
-				MostRunsPoints = (byte) (g.Sum(r => r.Value.MostRunsPoints) + Athlete.Teams.Count * (_courses.Count - g.Count()))
+				AgeGradePoints = (byte) (g.Sum(r => r.Value.AgeGradePoints) + Athlete.Teams.Count * (_courses.Length - g.Count())),
+				MostRunsPoints = (byte) (g.Sum(r => r.Value.MostRunsPoints) + Athlete.Teams.Count * (_courses.Length - g.Count()))
 			})
 			.Rank();
 

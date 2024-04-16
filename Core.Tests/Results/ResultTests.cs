@@ -151,9 +151,7 @@ public sealed class ResultTests
 	public void IsGroupRunWhenSomeoneElseStartsWithinLimit()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
-
+		var course = new Course();
 		var r1 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -168,7 +166,7 @@ public sealed class ResultTests
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var isGroupRun = r1.IsGroupRun();
@@ -181,9 +179,7 @@ public sealed class ResultTests
 	public void IsNotGroupRunWhenNotWithinThreshold()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
-
+		var course = new Course();
 		var r1 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -198,7 +194,7 @@ public sealed class ResultTests
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 36, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var isGroupRun = r1.IsGroupRun();
@@ -211,8 +207,7 @@ public sealed class ResultTests
 	public void IsNotGroupRunWhenDifferentCourse()
 	{
 		//arrange
-		var results1 = new List<Result>();
-		var course1 = new Course { Results = results1 };
+		var course1 = new Course();
 		var r1 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -220,11 +215,9 @@ public sealed class ResultTests
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 42, 0)),
 			Duration = new Time(new TimeSpan(1, 2, 3))
 		};
-		results1.AddRange(new[] { r1 });
+		course1.Results = [r1];
 
-		var results2 = new List<Result>();
-		var course2 = new Course { Results = results2 };
-
+		var course2 = new Course();
 		var r2 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -232,7 +225,7 @@ public sealed class ResultTests
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 36, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
-		results2.AddRange(new[] { r2 });
+		course2.Results = [r2];
 
 		//act
 		var isGroupRun = r1.IsGroupRun();
@@ -245,9 +238,7 @@ public sealed class ResultTests
 	public void IsNotGroupRunWhenSameAthlete()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
-
+		var course = new Course();
 		var r1 = new Result
 		{
 			Athlete = CourseData.Athlete1,
@@ -262,7 +253,7 @@ public sealed class ResultTests
 			StartTime = new Date(new DateTime(2022, 4, 7, 16, 38, 0)),
 			Duration = new Time(new TimeSpan(4, 6, 8))
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var isGroupRun = r1.IsGroupRun();
@@ -275,8 +266,7 @@ public sealed class ResultTests
 	public void HasCommunityStarWhenRunBySameAthleteOnSameDayHasSameStar()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
+		var course = new Course();
 
 		var r1 = new Result
 		{
@@ -295,7 +285,7 @@ public sealed class ResultTests
 				[StarType.GroupRun] = true
 			}
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
@@ -308,8 +298,7 @@ public sealed class ResultTests
 	public void DoesNotHaveCommunityStarWhenRunBySameAthleteOnDifferentDayHasSameStar()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
+		var course = new Course();
 
 		var r1 = new Result
 		{
@@ -328,7 +317,7 @@ public sealed class ResultTests
 				[StarType.GroupRun] = true
 			}
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
@@ -341,8 +330,7 @@ public sealed class ResultTests
 	public void DoesNotHaveCommunityStarWhenRunByDifferentAthleteOnSameDayHasSameStar()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
+		var course = new Course();
 
 		var r1 = new Result
 		{
@@ -361,7 +349,7 @@ public sealed class ResultTests
 				[StarType.GroupRun] = true
 			}
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var hasPoint = r1.HasCommunityStarToday(StarType.GroupRun);
@@ -374,8 +362,7 @@ public sealed class ResultTests
 	public void DoesNotHaveCommunityStarWhenRunBySameAthleteOnSameDayHasDifferentStar()
 	{
 		//arrange
-		var results = new List<Result>();
-		var course = new Course { Results = results };
+		var course = new Course();
 
 		var r1 = new Result
 		{
@@ -394,7 +381,7 @@ public sealed class ResultTests
 				[StarType.GroupRun] = true
 			}
 		};
-		results.AddRange(new[] { r1, r2 });
+		course.Results = [r1, r2];
 
 		//act
 		var hasPoint = r1.HasCommunityStarToday(StarType.Story);
