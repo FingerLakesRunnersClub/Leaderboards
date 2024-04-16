@@ -2,7 +2,7 @@
 @using System.Text.Json
 @model CompletedViewModel
 
-<h2>@Model.Title</h2>
+<h2 id="table-header">@Model.Title</h2>
 
 <div class="card card-highlighted">
 	<div class="card-body">
@@ -28,7 +28,7 @@
 		@if (Model.PersonalResults.Any())
 		{
 			<h3>Personal Completions</h3>
-			<table class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
+			<table aria-labelledby="table-header" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 				<thead>
 				<tr>
 					<th>Name</th>
