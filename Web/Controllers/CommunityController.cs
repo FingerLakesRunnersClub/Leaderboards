@@ -24,7 +24,7 @@ public sealed class CommunityController : Controller
 	public async Task<ViewResult> Admin(uint[] users)
 	{
 		var vm = await GetMemberships();
-		var usersToUpdate = vm.Rows.Where(r => r.User is not null && users.Contains(r.User.ID)).ToArray();
+		var usersToUpdate = vm.MissingRows.Where(r => users.Contains(r.User.ID)).ToArray();
 		var groupsToUpdate = usersToUpdate.SelectMany(r => r.MissingGroups).Distinct();
 		var mappingsToAdd = groupsToUpdate.ToDictionary(g => g, g => usersToUpdate.Where(r => r.MissingGroups.Contains(g)).Select(r => r.User.Username).ToArray());
 		await _dataService.AddCommunityGroupMembers(mappingsToAdd);
@@ -76,9 +76,8 @@ public sealed class CommunityController : Controller
 			};
 			rows.Add(row);
 		}
-		return new CommunityAdminViewModel
+		return new CommunityAdminViewModel(rows.ToArray())
 		{
-			Rows = rows.ToArray(),
 			Config = _config
 		};
 	}

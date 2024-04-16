@@ -32,7 +32,7 @@ public sealed class CommunityControllerTests
 
 		//assert
 		var vm = result.Model as CommunityAdminViewModel;
-		var rows = vm!.Rows;
+		var rows = vm!.MissingRows.Union(vm!.NoUserRows).Union(vm!.SyncedRows).ToArray();
 		Assert.Equal(5, rows.Length);
 		Assert.Equal(CommunityData.User1, rows.First(r => r.Athlete.Equals(LeaderboardData.Athlete1)).User);
 		Assert.Equal(CommunityData.User2, rows.First(r => r.Athlete.Equals(LeaderboardData.Athlete2)).User);

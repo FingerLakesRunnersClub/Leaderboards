@@ -63,11 +63,11 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var row in Model.NoUserRows)
+			@foreach (var row in Model.NoUserRows.Select(r => r.Athlete))
 			{
 				<tr>
-					<td>@row.Athlete.Name</td>
-					<td>@row.Athlete.Team.Display</td>
+					<td>@row.Name</td>
+					<td>@row.Team.Display</td>
 				</tr>
 			}
 			</tbody>

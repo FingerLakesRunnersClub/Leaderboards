@@ -6,11 +6,16 @@ public sealed class CommunityAdminViewModel : ViewModel
 {
 	public override string Title => "Community Admin";
 
-	public Row[] Rows { get; init; }
-	public Row[] MissingRows => Rows.Where(r => r.User is not null && r.MissingGroups.Length != 0).ToArray();
-	public Row[] NoUserRows => Rows.Where(r => r.User is null).ToArray();
-	public Row[] SyncedRows => Rows.Where(r => r.User is not null && r.MissingGroups.Length == 0).ToArray();
+	public Row[] MissingRows { get; }
+	public Row[] NoUserRows { get; }
+	public Row[] SyncedRows { get; }
 
+	public CommunityAdminViewModel(Row[] rows)
+	{
+		MissingRows = rows.Where(r => r.User is not null && r.MissingGroups.Length != 0).ToArray();
+		NoUserRows = rows.Where(r => r.User is null).ToArray();
+		SyncedRows = rows.Where(r => r.User is not null && r.MissingGroups.Length == 0).ToArray();
+	}
 
 	public sealed class Row
 	{
