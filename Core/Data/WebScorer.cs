@@ -56,7 +56,7 @@ public sealed class WebScorer : IDataSource
 		};
 	}
 
-	private readonly ConcurrentDictionary<uint, Athlete> athletes = new();
+	private readonly ConcurrentDictionary<uint, Athlete> _athletes = new();
 
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
@@ -72,13 +72,13 @@ public sealed class WebScorer : IDataSource
 		         ?? element.GetProperty("UserId").GetUInt32();
 
 		var nowPrivate = IsPrivate(element);
-		if (athletes.TryGetValue(id, out var athlete))
+		if (_athletes.TryGetValue(id, out var athlete))
 		{
-			athlete.Private = athletes[id].Private || nowPrivate;
+			athlete.Private = _athletes[id].Private || nowPrivate;
 			return athlete;
 		}
 
-		return athletes[id] = new Athlete
+		return _athletes[id] = new Athlete
 		{
 			ID = id,
 			Name = name,

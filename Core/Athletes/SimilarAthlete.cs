@@ -6,7 +6,7 @@ namespace FLRC.Leaderboards.Core.Athletes;
 
 public sealed class SimilarAthlete
 {
-	private const double weighting = 0.1;
+	private const double Weighting = 0.1;
 
 	public Rank Rank { get; set; }
 	public Athlete Athlete { get; }
@@ -49,6 +49,6 @@ public sealed class SimilarAthlete
 	private static double GetScore(double similarity, double overlap)
 	{
 		var confidence = similarity * overlap / 100;
-		return similarity * (1 - weighting) + confidence * weighting;
+		return similarity * (1 - Weighting) + confidence * Weighting;
 	}
 }

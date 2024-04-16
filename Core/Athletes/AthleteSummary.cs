@@ -98,8 +98,8 @@ public sealed class AthleteSummary
 			.ToArray();
 	}
 
-	private const byte percentThreshold = 5;
+	private const byte PercentThreshold = 5;
 
 	private static bool IsMatch(Ranked<Time> mine, Ranked<Time> theirs)
-		=> Time.AbsolutePercentDifference(mine.Value, theirs.Value) <= percentThreshold;
+		=> Time.AbsolutePercentDifference(mine.Value, theirs.Value) <= PercentThreshold;
 }

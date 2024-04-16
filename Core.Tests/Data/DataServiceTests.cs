@@ -287,7 +287,7 @@ public sealed class DataServiceTests
 		Assert.True(logger.Called);
 	}
 
-	private static IDictionary<string, uint[]> groups
+	private static IDictionary<string, uint[]> Groups
 		=> new Dictionary<string, uint[]>
 		{
 			{ "Test 1", new uint[] { 123, 234 } },
@@ -303,7 +303,7 @@ public sealed class DataServiceTests
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
-		customInfoAPI.GetGroups().Returns(groups);
+		customInfoAPI.GetGroups().Returns(Groups);
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
@@ -325,7 +325,7 @@ public sealed class DataServiceTests
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
-		customInfoAPI.GetGroups().Returns(groups);
+		customInfoAPI.GetGroups().Returns(Groups);
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
@@ -383,7 +383,7 @@ public sealed class DataServiceTests
 		Assert.False(logger.Called);
 	}
 
-	private static IDictionary<uint, DateOnly> personal
+	private static IDictionary<uint, DateOnly> Personal
 		=> new Dictionary<uint, DateOnly>
 		{
 			{ 234, new DateOnly(2023, 08, 07) }
@@ -398,7 +398,7 @@ public sealed class DataServiceTests
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
-		customInfoAPI.GetPersonalCompletions().Returns(personal);
+		customInfoAPI.GetPersonalCompletions().Returns(Personal);
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();
@@ -420,7 +420,7 @@ public sealed class DataServiceTests
 		var athleteJSON = await JsonDocument.ParseAsync(File.OpenRead("json/athlete.json"));
 		resultsAPI[Arg.Any<string>()].GetResults(Arg.Any<uint>()).Returns(athleteJSON.RootElement);
 		var customInfoAPI = Substitute.For<ICustomInfoAPI>();
-		customInfoAPI.GetPersonalCompletions().Returns(personal);
+		customInfoAPI.GetPersonalCompletions().Returns(Personal);
 		var communityAPI = Substitute.For<ICommunityAPI>();
 		var config = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var loggerFactory = Substitute.For<ILoggerFactory>();

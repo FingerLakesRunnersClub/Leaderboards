@@ -34,7 +34,7 @@ public sealed class UltraSignup : IDataSource
 	public static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));
 
-	private readonly ConcurrentDictionary<uint, Athlete> athletes = new();
+	private readonly ConcurrentDictionary<uint, Athlete> _athletes = new();
 
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
@@ -46,9 +46,9 @@ public sealed class UltraSignup : IDataSource
 
 		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
 
-		return athletes.TryGetValue(id, out var athlete)
+		return _athletes.TryGetValue(id, out var athlete)
 			? athlete
-			: athletes[id] = new Athlete
+			: _athletes[id] = new Athlete
 			{
 				ID = id,
 				Name = name,
