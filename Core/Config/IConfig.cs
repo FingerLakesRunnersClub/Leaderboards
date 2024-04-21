@@ -19,5 +19,6 @@ public interface IConfig
 
 	string CommunityURL { get; }
 	string CommunityKey { get; }
+	ushort CommunityRetryDelay { get; }
 	IDictionary<byte, string> CommunityGroups { get; }
 }

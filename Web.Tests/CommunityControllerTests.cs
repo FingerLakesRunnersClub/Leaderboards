@@ -1,3 +1,4 @@
+using System.Net;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
@@ -5,6 +6,7 @@ using FLRC.Leaderboards.Core.Tests.Community;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
@@ -42,7 +44,7 @@ public sealed class CommunityControllerTests
 	}
 
 	[Fact]
-	public async Task CanAddGroupsToSpecifiedUsers()
+	public async Task RetriesOnFailure()
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
@@ -53,9 +55,7 @@ public sealed class CommunityControllerTests
 		dataService.GetCommunityGroupMembers("dirty-thirties").Returns([]);
 		dataService.GetCommunityGroupMembers("masters").Returns([CommunityData.User5]);
 		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns([]);
-
-		IDictionary<string, string[]> updates = new Dictionary<string, string[]>();
-		await dataService.AddCommunityGroupMembers(Arg.Do<IDictionary<string, string[]>>(d => updates = d));
+		dataService.AddCommunityGroupMembers(Arg.Any<IDictionary<string, string[]>>()).Throws(new HttpRequestException(null, null, HttpStatusCode.TooManyRequests));
 
 		var config = Substitute.For<IConfig>();
 		config.CommunityGroups.Returns(CommunityData.Groups);
@@ -65,12 +65,6 @@ public sealed class CommunityControllerTests
 		await controller.Admin([12, 23, 34]);
 
 		//assert
-		var expected = new Dictionary<string, string[]>
-		{
-			{ "everybody-everybody", ["u3"] },
-			{ "youngins", ["u3"] },
-			{ "dirty-thirties", ["u2"] }
-		};
-		Assert.Equal(expected, updates);
+		await dataService.Received(3).AddCommunityGroupMembers(Arg.Any<IDictionary<string, string[]>>());
 	}
 }

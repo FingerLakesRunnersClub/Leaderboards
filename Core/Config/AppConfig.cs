@@ -21,8 +21,8 @@ public record AppConfig : IConfig
 
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
+	public ushort CommunityRetryDelay { get; }
 	public IDictionary<byte, string> CommunityGroups { get; }
-
 
 	public AppConfig(IConfiguration config)
 	{
