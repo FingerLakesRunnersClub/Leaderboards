@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public record Date : Formatted<DateTime>, IComparable<Date>
+public sealed record Date : Formatted<DateTime>, IComparable<Date>
 {
 	public static readonly DateTime CompetitionStart = new(2021, 1, 1);
 

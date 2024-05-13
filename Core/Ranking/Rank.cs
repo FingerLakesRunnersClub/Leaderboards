@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Ranking;
 
-public record Rank(ushort Value) : Formatted<ushort>(Value), IComparable<Rank>
+public sealed record Rank(ushort Value) : Formatted<ushort>(Value), IComparable<Rank>
 {
 	public override string Display =>
 		Value > 0

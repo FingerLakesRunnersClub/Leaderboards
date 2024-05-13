@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public record Filter(Category Category = null, Team AgeGroup = null)
+public sealed record Filter(Category Category = null, Team AgeGroup = null)
 {
 	public static readonly Filter None = new();
 	public static readonly Filter F = new(Category.F);

@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Metrics;
 
-public record Stars(ushort Value) : Formatted<ushort>(Value), IComparable<Stars>
+public sealed record Stars(ushort Value) : Formatted<ushort>(Value), IComparable<Stars>
 {
 	public override string Display => Value.ToString("N0");
 

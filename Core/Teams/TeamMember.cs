@@ -5,7 +5,7 @@ using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Teams;
 
-public record TeamMember : IComparable<TeamMember>
+public sealed record TeamMember : IComparable<TeamMember>
 {
 	public Athlete Athlete { get; init; }
 

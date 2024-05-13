@@ -2,7 +2,7 @@
 
 namespace FLRC.Leaderboards.Core.Config;
 
-public record AppConfig : IConfig
+public sealed record AppConfig : IConfig
 {
 	public string App { get; }
 	public IFeatureSet Features { get; }

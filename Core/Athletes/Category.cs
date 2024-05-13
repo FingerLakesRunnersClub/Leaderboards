@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public record Category(AgeGradeCalculator.Category Value) : Formatted<AgeGradeCalculator.Category>(Value)
+public sealed record Category(AgeGradeCalculator.Category Value) : Formatted<AgeGradeCalculator.Category>(Value)
 {
 	public static Category F => new(AgeGradeCalculator.Category.F);
 	public static Category M => new(AgeGradeCalculator.Category.M);
