@@ -1,48 +1,36 @@
-using System.Text;
 using FLRC.Leaderboards.Core.Series;
 using Microsoft.Extensions.Configuration;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Series;
 
-public class SeriesSetTests
+public sealed class SeriesSetTests
 {
 	[Fact]
 	public void CanCreateSeriesSetFromConfig()
 	{
 		//arrange
-		const string json = @"{
-			""Series"": [
-				{
-					""ID"": ""100K"",
-					""Name"": ""Test"",
-					""HourLimit"": 10,
-					""Races"": [123, 234]
-				},
-				{
-					""ID"": ""200K"",
-					""Name"": ""Test"",
-					""HourLimit"": 20,
-					""Races"": [123, 234, 345]
-				}
-			]
-		}";
-
-		var data = new MemoryStream(Encoding.UTF8.GetBytes(json));
-		var config = new ConfigurationBuilder().AddJsonStream(data).Build();
+		var config = new ConfigurationBuilder().AddJsonFile("json/series.json").Build();
 
 		//act
 		var set = new SeriesSet(config.GetSection("Series"));
 
 		//assert
-		Assert.Equal(2, set.Count);
+		Assert.Equal(3, set.Count);
 
 		Assert.Equal("100K", set[0].ID);
-		Assert.Equal(10, set[0].HourLimit);
-		Assert.Equal([123, 234], set[0].Races);
+		Assert.Equal("Test 1", set[0].Name);
+		Assert.Equal(20, set[0].HourLimit);
+		Assert.Equal([123, 234, 345, 456], set[0].Races);
 
-		Assert.Equal("200K", set["200K"].ID);
-		Assert.Equal(20, set["200K"].HourLimit);
-		Assert.Equal([123, 234, 345], set["200K"].Races);
+		Assert.Equal("50K v1", set[1].ID);
+		Assert.Equal("Test 2", set[1].Name);
+		Assert.Equal(10, set[1].HourLimit);
+		Assert.Equal([123, 234], set[1].Races);
+
+		Assert.Equal("50K v2", set[2].ID);
+		Assert.Equal("Test 3", set[2].Name);
+		Assert.Equal(10, set[2].HourLimit);
+		Assert.Equal([345, 456], set[2].Races);
 	}
 }
