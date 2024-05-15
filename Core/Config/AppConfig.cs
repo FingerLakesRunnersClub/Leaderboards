@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FLRC.Leaderboards.Core.Series;
+using Microsoft.Extensions.Configuration;
 
 namespace FLRC.Leaderboards.Core.Config;
 
@@ -24,6 +25,9 @@ public sealed record AppConfig : IConfig
 	public ushort CommunityRetryDelay { get; }
 	public IDictionary<byte, string> CommunityGroups { get; }
 
+	public string SeriesTitle { get; }
+	public SeriesSet Series { get; }
+
 	public AppConfig(IConfiguration config)
 	{
 		App = config.GetValue<string>("App");
@@ -44,6 +48,9 @@ public sealed record AppConfig : IConfig
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
+
+		SeriesTitle = config.GetValue<string>("SeriesTitle");
+		Series = new SeriesSet(config.GetSection("Series"));
 	}
 
 	private static Dictionary<string, string> GetStringDictionary(IConfiguration section)

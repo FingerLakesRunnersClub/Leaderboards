@@ -1,3 +1,6 @@
+using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Series;
+
 namespace FLRC.Leaderboards.Core.Config;
 
 public interface IConfig
@@ -21,4 +24,7 @@ public interface IConfig
 	string CommunityKey { get; }
 	ushort CommunityRetryDelay { get; }
 	IDictionary<byte, string> CommunityGroups { get; }
+
+	string SeriesTitle { get; }
+	SeriesSet Series { get; }
 }
