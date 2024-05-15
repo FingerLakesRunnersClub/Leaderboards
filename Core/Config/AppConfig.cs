@@ -48,6 +48,7 @@ public sealed record AppConfig : IConfig
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
+		CommunityRetryDelay = config.GetValue<ushort>("CommunityRetryDelay");
 
 		SeriesTitle = config.GetValue<string>("SeriesTitle");
 		Series = new SeriesSet(config.GetSection("Series"));
