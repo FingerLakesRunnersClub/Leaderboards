@@ -29,7 +29,7 @@
 								<a href="/Awards">Awards</a>
 							</li>
 						}
-						
+
 						@if (Model.Config.Features.MultiAttempt)
 						{
 							<li class="dropdown-item">
@@ -42,6 +42,12 @@
 						<li class="dropdown-item">
 							<a href="/Statistics">Statistics</a>
 						</li>
+						@if (Model.Config.SeriesTitle is not null)
+						{
+							<li class="dropdown-item">
+								<a href="/Series">@Model.Config.SeriesTitle</a>
+							</li>
+						}
 					</ul>
 				</li>
 				<li class="nav-item">
