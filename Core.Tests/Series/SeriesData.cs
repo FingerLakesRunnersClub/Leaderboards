@@ -1,19 +1,11 @@
-using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
-using Microsoft.Extensions.Configuration;
 
 namespace FLRC.Leaderboards.Core.Tests.Series;
 
 public static class SeriesData
 {
-	private static readonly IConfiguration Settings
-		= new ConfigurationBuilder().AddJsonFile("json/series.json").Build();
-
-	public static readonly AppConfig Config
-		= new(Settings);
-
 	public static readonly Course Road1 = new() { ID = 123, Distance = new Distance("25K"), Race = new Race { ID = 123 } };
 	public static readonly Course Road2 = new() { ID = 234, Distance = new Distance("25K"), Race = new Race { ID = 234 } };
 	public static readonly Course Trail1 = new() { ID = 345, Distance = new Distance("25K"), Race = new Race { ID = 345 } };
