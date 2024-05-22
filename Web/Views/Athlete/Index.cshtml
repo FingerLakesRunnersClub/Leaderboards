@@ -2,10 +2,7 @@
 @using FLRC.Leaderboards.Core.Results
 @model AthleteSummaryViewModel
 
-<h2>
-	@Model.Summary.Athlete.Name
-	<small>(@Model.Summary.Athlete.AgeToday&nbsp;@Model.Summary.Athlete.Category?.Display)</small>
-</h2>
+@await Html.PartialAsync("AthleteHeader", Model.Header)
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">

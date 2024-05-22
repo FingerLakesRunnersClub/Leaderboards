@@ -4,6 +4,7 @@ public sealed class SimilarAthletesViewModel : DataTableViewModel
 {
 	public override string Title => "Similar Athletes";
 	public override string ResponsiveBreakpoint => "xl";
-	public Athlete Athlete { get; init; }
+	public AthleteHeader Header { get; init; }
+	public Athlete Athlete => Header.Athlete;
 	public SimilarAthlete[] Matches { get; init; }
 }

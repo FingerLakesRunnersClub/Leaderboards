@@ -139,6 +139,22 @@ dt {
     opacity: 0.5;
 }
 
+#completion-badges {
+	display: inline-flex;
+	align-items: center;
+	margin: 0 0.25rem;
+	gap: 0.5rem;
+}
+
+#completion-badges i {
+    width: 3rem;
+    padding: 0.5rem;
+    text-align: center;
+    background-color: white;
+    border-radius: 1.25rem;
+    box-shadow: 0 0 0.5rem var(--primary-light);
+}
+
 .community .group {
 	width: 2.5rem;
 	margin: 0 0.25rem;

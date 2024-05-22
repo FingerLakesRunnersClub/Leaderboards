@@ -30,9 +30,9 @@ public static class CourseData
 	private static readonly Course SimilarCourse = new() { Distance = new Distance("400m") };
 	public static Result[] SimilarResults =>
 	[
-		new Result { Course = SimilarCourse, Athlete = Athlete1, Duration = new Time(TimeSpan.FromSeconds(100)) },
-		new Result { Course = SimilarCourse, Athlete = Athlete2, Duration = new Time(TimeSpan.FromSeconds(105)) },
-		new Result { Course = SimilarCourse, Athlete = Athlete3, Duration = new Time(TimeSpan.FromSeconds(110)) },
-		new Result { Course = SimilarCourse, Athlete = Athlete4, Duration = new Time(TimeSpan.FromSeconds(96)) }
+		new Result { Course = SimilarCourse, Athlete = Athlete1, StartTime = new Date(DateTime.Parse("2/1/2020")), Duration = new Time(TimeSpan.FromSeconds(100)) },
+		new Result { Course = SimilarCourse, Athlete = Athlete2, StartTime = new Date(DateTime.Parse("2/3/2020")), Duration = new Time(TimeSpan.FromSeconds(105)) },
+		new Result { Course = SimilarCourse, Athlete = Athlete3, StartTime = new Date(DateTime.Parse("2/7/2020")), Duration = new Time(TimeSpan.FromSeconds(110)) },
+		new Result { Course = SimilarCourse, Athlete = Athlete4, StartTime = new Date(DateTime.Parse("2/5/2020")), Duration = new Time(TimeSpan.FromSeconds(96)) }
 	];
 }

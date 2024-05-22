@@ -8,6 +8,7 @@ public sealed record Series
 	public string Name { get; init; }
 	public uint[] Races { get; init; }
 	public byte HourLimit { get; init; }
+	public string BadgeIcon { get; init; }
 
 	public RankedList<SeriesResult> Results { get; init; }
 }
