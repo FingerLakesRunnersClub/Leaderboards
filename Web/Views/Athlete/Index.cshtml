@@ -13,13 +13,13 @@
 		<div class="text-center">
 			<a href="/Athlete/Log/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 				Activity Log
-				<i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
+				<i aria-hidden="true" class="fas fa-arrow-alt-circle-right"></i>
 			</a>
 			@if (Model.Config.Features.MultiAttempt && !Model.Summary.Athlete.Private)
 			{
 				<a href="/Athlete/Similar/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 					Similar Athletes
-					<i aria-hidden="true" class="far fa-arrow-alt-circle-right"></i>
+					<i aria-hidden="true" class="fas fa-arrow-alt-circle-right"></i>
 				</a>
 			}
 		</div>

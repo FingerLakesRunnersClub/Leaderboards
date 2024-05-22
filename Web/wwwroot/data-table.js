@@ -3,17 +3,17 @@ function communityEmoji(stars) {
 				<span class="group">`
 		+ (stars.GroupRun
 			? `<span class="star" title="Group Run">
-					<i class="fa fa-running">️</i>
-					<i class="fa fa-running">️</i>
-					<i class="fa fa-star"></i>
+					<i aria-hidden="true" class="fas fa-running"></i>
+					<i aria-hidden="true" class="fas fa-running"></i>
+					<i aria-hidden="true" class="fas fa-star"></i>
 				</span>`
 			: '')
 		+ `</span>
 			<span class="group">`
 		+ (stars.Story
 			? `<span class="star" title="Story">
-					<i class="far fa-file-alt"></i>
-					<i class="fa fa-star"></i>
+					<i aria-hidden="true" class="far fa-file-alt"></i>
+					<i aria-hidden="true" class="far fa-star"></i>
 				</span>`
 			: '')
 		+ `</span>
