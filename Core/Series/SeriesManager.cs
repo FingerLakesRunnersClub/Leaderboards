@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
