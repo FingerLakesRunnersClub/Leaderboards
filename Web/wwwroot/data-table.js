@@ -45,7 +45,7 @@ new Vue({
 				const v2 = this.sort.field.sort ? this.sort.field.sort(r2) : this.sort.field.value(r2);
 				return v1 > v2 ? 1
 					: (v1 < v2 ? -1
-						: 0);
+						: (this.sort.field.descending ? r2.Rank?.Value - r1.Rank?.Value : r1.Rank?.Value - r2.Rank?.Value));
 			});
 			return this.sort.descending ^ this.sort.field.descending ? sorted.reverse() : sorted;
 		}

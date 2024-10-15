@@ -17,8 +17,7 @@ public sealed class OverallResults
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.Sum(r => r.Points?.Value ?? 0)) : null, g => g.Sum(r => r.Points?.Value));
 
 	public RankedList<Points> MostPoints(byte limit, Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0)) : null, g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0));
-
+		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0)) : null, g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0), g => uint.Min((uint)g.Count(), limit));
 	public RankedList<Miles> MostMiles(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)));
 
@@ -75,13 +74,10 @@ public sealed class OverallResults
 			.Rank();
 
 	private static RankedList<T1> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort)
-		=> RankedList(results, getValue, sort, getValue, _ => 0);
+		=> RankedList(results, getValue, sort, getValue, g => (uint)g.Count());
 
 	private static RankedList<T1> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
 		=> RankedList(results, getValue, sort, getValue, count);
-
-	private static RankedList<T1> RankedList<T1, T2, T3, T4>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, T4> tiebreaker)
-		=> RankedList(results, getValue, sort, tiebreaker, _ => 0);
 
 	private static RankedList<T1> RankedList<T1, T2, T3, T4>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, T4> tiebreaker, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
 	{
