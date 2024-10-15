@@ -10,18 +10,20 @@
 This repository contains the code for the various leaderboard apps that the Finger Lakes Runners Club uses:
 - [FLRC Challenge](https://challenge.fingerlakesrunners.org)
   (
+    [2023 results](https://2023.challenge.fingerlakesrunners.org),
     [2022 results](https://2022.challenge.fingerlakesrunners.org),
     [2021 results](https://2021.challenge.fingerlakesrunners.org)
   )
 - [FLRC Trail Circuit](https://trailcircuit.fingerlakesrunners.org)
   (
+    [2023 results](https://2023.trailcircuit.fingerlakesrunners.org),
     [2022 results](https://2022.trailcircuit.fingerlakesrunners.org),
     [2021 results](https://2021.trailcircuit.fingerlakesrunners.org)
   )
 
 ## Requirements
 
-- [.NET SDK 7](https://dotnet.microsoft.com/download/dotnet/7.0)
+- [.NET SDK 8](https://dotnet.microsoft.com/download/dotnet/8.0)
 
 ## Installation
 
@@ -37,7 +39,7 @@ This repository contains the code for the various leaderboard apps that the Fing
 
 ### Via Docker Compose
 
-- Run `./dcd up` to start both apps simultaneously
+- Run `./dcd up -d --build` to start both apps simultaneously
 - Browse to `http://localhost:5001` for the Challenge, or `http://localhost:5002` for the Trail Circuit
 - Run `docker-compose exec dashboard dotnet test` to run tests before committing/pushing
 

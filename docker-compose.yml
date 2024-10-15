@@ -1,7 +1,6 @@
-version: '3'
-
 services:
   challenge:
+    image: ecoapm/flrc-challenge
     build:
       context: .
       args:
@@ -10,6 +9,7 @@ services:
       - "5001:8080"
     restart: always
   trail-circuit:
+    image: ecoapm/flrc-trail-circuit
     build:
       context: .
       args:
