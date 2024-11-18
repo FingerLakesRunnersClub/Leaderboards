@@ -362,7 +362,7 @@ public sealed class CourseTests
 	}
 
 	[Fact]
-	public void PrivateAthletesAreIncludedInFastest()
+	public void PrivateAthletesAreIncludedInFastestBecauseTeamMembersNeedsIt()
 	{
 		//arrange
 		var results = new[]
@@ -376,6 +376,8 @@ public sealed class CourseTests
 
 		//assert
 		Assert.Equal(CourseData.Private, fastest.First().Result.Athlete);
+		Assert.Equal(Time.Max, fastest.First().Value);
+		Assert.Null(fastest.First().Result.Duration);
 	}
 
 	[Fact]
@@ -444,5 +446,135 @@ public sealed class CourseTests
 
 		//assert
 		Assert.Empty(best);
+	}
+
+	[Fact] public void PrivateAthleteCannotBeInFirstForFastestButNeedsToBeThereForTeamMembers()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 2)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var fastest = course.Fastest();
+
+		//assert
+		Assert.Equal(1, fastest[0].Rank.Value);
+		Assert.Equal(CourseData.Athlete1, fastest[0].Result.Athlete);
+		Assert.Equal(2, fastest[1].Rank.Value);
+		Assert.Equal(CourseData.Private, fastest[1].Result.Athlete);
+	}
+
+	[Fact] public void PrivateAthleteCannotBeInFirstForBestAverage()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)) },
+			new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 2)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var best = course.BestAverage();
+
+		//assert
+		Assert.Single(best);
+		Assert.Equal(1, best[0].Rank.Value);
+		Assert.Equal(CourseData.Athlete1, best[0].Result.Athlete);
+	}
+
+	[Fact] public void PrivateAthleteRunCountContributesTowardsBestAverageMinimum()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 1)) },
+			new Result { Athlete = CourseData.Private, Course = CourseData.Course, StartTime = new Date(new DateTime(2023, 1, 2)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var best = course.BestAverage();
+
+		//assert
+		Assert.Empty(best);
+	}
+
+	[Fact] public void PrivateAthleteCanBeInFirstForMostMiles()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) },
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 2)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var miles = course.MostMiles();
+
+		//assert
+		Assert.Equal(1, miles[0].Rank.Value);
+		Assert.Equal(CourseData.Private, miles[0].Result.Athlete);
+		Assert.Equal(2, miles[1].Rank.Value);
+		Assert.Equal(CourseData.Athlete1, miles[1].Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthleteCanBeInFirstForMostRuns()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) },
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 2)) }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var runs = course.MostRuns();
+
+		//assert
+		Assert.Equal(1, runs[0].Rank.Value);
+		Assert.Equal(CourseData.Private, runs[0].Result.Athlete);
+		Assert.Equal(2, runs[1].Rank.Value);
+		Assert.Equal(CourseData.Athlete1, runs[1].Result.Athlete);
+	}
+
+	[Fact]
+	public void PrivateAthleteCanBeInFirstForCommunityStars()
+	{
+
+		//arrange
+		var results = new[]
+		{
+			new Result { Athlete = CourseData.Athlete1, StartTime = new Date(new DateTime(2023, 1, 1)), Duration = new Time(TimeSpan.FromHours(1)), CommunityStars = { [StarType.GroupRun] = true } },
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)), CommunityStars = { [StarType.Story] = true, [StarType.GroupRun] = true } }
+		};
+		var course = new Course { Results = results, Distance = new Distance("10K")};
+
+		//act
+		var stars = course.CommunityStars();
+
+		//assert
+		Assert.Equal(1, stars[0].Rank.Value);
+		Assert.Equal(CourseData.Private, stars[0].Result.Athlete);
+		Assert.Equal(2, stars[1].Rank.Value);
+		Assert.Equal(CourseData.Athlete1, stars[1].Result.Athlete);
 	}
 }
