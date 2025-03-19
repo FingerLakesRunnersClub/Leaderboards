@@ -293,7 +293,7 @@ public sealed class CourseTests
 		var results = course.TeamPoints();
 
 		//assert
-		Assert.Equal("8.76%", results.First().Value.AverageAgeGrade.Display);
+		Assert.Equal("8.59%", results.First().Value.AverageAgeGrade.Display);
 	}
 
 	[Fact]

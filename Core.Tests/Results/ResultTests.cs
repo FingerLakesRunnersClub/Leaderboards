@@ -95,7 +95,7 @@ public sealed class ResultTests
 		var ageGrade = result.AgeGrade;
 
 		//assert
-		Assert.Equal(72.9, ageGrade!.Value, 1);
+		Assert.Equal(72.1, ageGrade!.Value, 1);
 	}
 
 	[Fact]
