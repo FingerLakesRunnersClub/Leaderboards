@@ -13,7 +13,7 @@ function communityEmoji(stars) {
 		+ (stars.Story
 			? `<span class="star" title="Story">
 					<i aria-hidden="true" class="far fa-file-alt"></i>
-					<i aria-hidden="true" class="far fa-star"></i>
+					<i aria-hidden="true" class="fas fa-star"></i>
 				</span>`
 			: '')
 		+ `</span>
