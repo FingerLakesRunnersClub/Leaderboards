@@ -284,11 +284,12 @@ public sealed class DataService : IDataService
 
 	public async Task AddCommunityGroupMembers(IDictionary<string, string[]> groupAdditions)
 	{
-		var groupTasks = groupAdditions.Select(g => _communityAPI.GetGroup(g.Key));
-		var groupInfo = await Task.WhenAll(groupTasks);
-		var groupIDs = groupInfo.ToDictionary(json => json.GetProperty("name").GetString(), json => json.GetProperty("id").GetUInt16());
-		var memberTasks = groupAdditions.Select(g => _communityAPI.AddMembers(groupIDs[g.Key], g.Value));
-		await Task.WhenAll(memberTasks);
+		foreach (var group in groupAdditions)
+		{
+			var info = await _communityAPI.GetGroup(group.Key);
+			var id = info.GetProperty("id").GetUInt16();
+			await _communityAPI.AddMembers(id, group.Value);
+		}
 	}
 
 	private static User ParseUser(JsonElement json)
