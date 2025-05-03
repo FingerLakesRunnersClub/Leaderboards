@@ -42,29 +42,4 @@ public sealed class CommunityControllerTests
 		Assert.Null(rows.First(r => r.Athlete.Equals(LeaderboardData.Athlete4)).User);
 		Assert.Equal(CommunityData.User5, rows.First(r => r.Athlete.Equals(LeaderboardData.Private)).User);
 	}
-
-	[Fact]
-	public async Task RetriesOnFailure()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAthletes().Returns(LeaderboardData.Athletes);
-		dataService.GetCommunityUsers().Returns(CommunityData.Users);
-		dataService.GetCommunityGroupMembers("everybody-everybody").Returns([CommunityData.User1, CommunityData.User2, CommunityData.User5]);
-		dataService.GetCommunityGroupMembers("youngins").Returns([CommunityData.User1]);
-		dataService.GetCommunityGroupMembers("dirty-thirties").Returns([]);
-		dataService.GetCommunityGroupMembers("masters").Returns([CommunityData.User5]);
-		dataService.GetCommunityGroupMembers("oldies-but-goodies").Returns([]);
-		dataService.AddCommunityGroupMembers(Arg.Any<IDictionary<string, string[]>>()).Throws(new HttpRequestException(null, null, HttpStatusCode.TooManyRequests));
-
-		var config = Substitute.For<IConfig>();
-		config.CommunityGroups.Returns(CommunityData.Groups);
-		var controller = new CommunityController(dataService, config);
-
-		//act
-		await controller.Admin([12, 23, 34]);
-
-		//assert
-		await dataService.Received(3).AddCommunityGroupMembers(Arg.Any<IDictionary<string, string[]>>());
-	}
 }

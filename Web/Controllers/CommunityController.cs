@@ -21,24 +21,14 @@ public sealed class CommunityController : Controller
 		=> View(await GetMemberships());
 
 	[HttpPost]
-	public async Task<ViewResult> Admin(uint[] users, byte tries = 0)
+	public async Task<ViewResult> Admin(uint[] users)
 	{
 		var vm = await GetMemberships();
 		var usersToUpdate = vm.MissingRows.Where(r => users.Contains(r.User.ID)).ToArray();
 		var groupsToUpdate = usersToUpdate.SelectMany(r => r.MissingGroups).Distinct();
 		var mappingsToAdd = groupsToUpdate.ToDictionary(g => g, g => usersToUpdate.Where(r => r.MissingGroups.Contains(g)).Select(r => r.User.Username).ToArray());
 
-		try
-		{
-			if (tries < 3)
-				await _dataService.AddCommunityGroupMembers(mappingsToAdd);
-		}
-		catch (HttpRequestException)
-		{
-			await Task.Delay(_config.CommunityRetryDelay * ++tries);
-			await Admin(users, tries);
-		}
-
+		await _dataService.AddCommunityGroupMembers(mappingsToAdd);
 		return await Admin();
 	}
 
