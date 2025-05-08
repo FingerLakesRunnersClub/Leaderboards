@@ -9,3 +9,8 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ".:/app"
+  track:
+    build:
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ".:/app"

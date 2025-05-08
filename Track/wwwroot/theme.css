@@ -1,0 +1,58 @@
+﻿:root {
+	--primary-dark: #74281c;
+	--primary: #953424;
+	--primary-light: #a63a29;
+	--secondary-dark: #cfdcc6;
+	--secondary: #dfe8d9;
+	--secondary-light: #eff3ec;
+}
+
+.navbar-brand .logo {
+	max-width: min(9rem, 33vw);
+	background: #fffd;
+	border: 0.125rem solid var(--primary);
+	border-radius: min(10%, 0.5rem);
+	top: -2.5rem;
+	rotate: calc(-45deg / 16);
+	filter: sepia(0.25) grayscale(0.5) brightness(1.5);
+}
+
+.navbar-brand::after {
+	content: "1968";
+	font-family: "Noto Sans", serif;
+	color: var(--primary-dark);
+	font-weight: 900;
+	font-size: 3.25rem;
+	font-variation-settings: "wdth" 0.75;
+	filter: blur(calc(1rem / 128));
+	rotate: calc(-45deg / 16);
+	position: absolute;
+	top: -2.5rem;
+	left: 0;
+	padding: 0.875rem 1rem;
+	border: 0.125rem solid var(--primary);
+	border-radius: min(10%, 0.5rem);
+	background:
+		radial-gradient(farthest-side, var(--secondary-light) 20%, var(--primary-dark) 40%, transparent 40%) top left / 1rem 1rem no-repeat,
+		radial-gradient(farthest-side, var(--secondary-light) 20%, var(--primary-dark) 40%, transparent 40%) top right / 1rem 1rem no-repeat,
+		radial-gradient(farthest-side, var(--secondary-light) 20%, var(--primary-dark) 40%, transparent 40%) bottom left / 1rem 1rem no-repeat,
+		radial-gradient(farthest-side, var(--secondary-light) 20%, var(--primary-dark) 40%, transparent 40%) bottom right / 1rem 1rem no-repeat;;
+}
+
+@media screen and (min-width: 576px) {
+	.navbar-brand h1 {
+		position: absolute;
+		width: revert;
+		height: revert;
+		clip: revert;
+		margin: -2rem 10rem;
+	}
+}
+
+@media screen and (max-width: 992px) {
+	.navbar-brand h1 {
+		width: 100%;
+		text-align: right;
+		margin: -4.5rem -3rem;
+	}
+}
