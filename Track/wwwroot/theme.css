@@ -20,15 +20,25 @@
 .navbar-brand::after {
 	content: "1968";
 	font-family: "Noto Sans", serif;
-	color: var(--primary-dark);
+	color: white;
+	text-shadow:
+		-1px 0 1px var(--primary-dark),
+		-1px 1px 1px var(--primary-dark),
+		0 1px 1px var(--primary-dark),
+		1px 1px 1px var(--primary-dark),
+		1px 0 1px var(--primary-dark),
+		1px -1px 1px var(--primary-dark),
+		0 -1px 1px var(--primary-dark),
+		-1px -1px 1px var(--primary-dark);
 	font-weight: 900;
-	font-size: 3.25rem;
+	font-size: min(3.25rem, 11vw);
 	font-variation-settings: "wdth" 0.75;
 	filter: blur(calc(1rem / 128));
 	rotate: calc(-45deg / 16);
 	position: absolute;
-	top: -2.5rem;
 	left: 0;
+	width: min(9rem, 33vw);
+	height: min(6.875rem, 25vw);
 	padding: 0.875rem 1rem;
 	border: 0.125rem solid var(--primary);
 	border-radius: min(10%, 0.5rem);
@@ -40,6 +50,10 @@
 }
 
 @media screen and (min-width: 576px) {
+	.navbar-brand::after {
+		top: -2.5rem;
+	}
+
 	.navbar-brand h1 {
 		position: absolute;
 		width: revert;
