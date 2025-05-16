@@ -2,12 +2,11 @@ name: Deploy
 run-name: Deploy from ${{ github.event_name }} by @${{ github.actor }}
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: [ CI ]
     types:
       - completed
-    branch:
+    branches:
       - main
 
 jobs:

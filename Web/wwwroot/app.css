@@ -67,6 +67,8 @@ footer a, footer a:hover, footer a:focus {
 .dropdown-menu {
     left: revert;
     margin-left: -2rem;
+	max-height: calc(100vh - 8rem);
+	overflow-y: auto;
 }
 
 #about {

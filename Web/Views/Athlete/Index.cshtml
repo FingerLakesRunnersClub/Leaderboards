@@ -48,7 +48,7 @@
 								</dt>
 								<dd class="col-6">
 									@Model.Summary.Fastest[course].Value?.Display
-									(<a href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank?.Display</a>)
+									(<a href="/Course/@course.ID/@course.ShortName/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank?.Display</a>)
 								</dd>
 								<dt class="col-6">
 									Points
@@ -75,7 +75,7 @@
 										@if (Model.Summary.Average[course] != null)
 										{
 											@Model.Summary.Average[course].Value?.Display
-											@:(<a href="/Course/@course.ID/@course.Distance.Display/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
+											@:(<a href="/Course/@course.ID/@course.ShortName/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
 										}
 										else
 										{
