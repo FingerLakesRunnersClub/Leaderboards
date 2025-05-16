@@ -28,6 +28,8 @@ public sealed record AppConfig : IConfig
 	public string SeriesTitle { get; }
 	public SeriesSet Series { get; }
 
+	public string FileSystemResults { get; }
+
 	public AppConfig(IConfiguration config)
 	{
 		App = config.GetValue<string>("App");
@@ -52,6 +54,8 @@ public sealed record AppConfig : IConfig
 
 		SeriesTitle = config.GetValue<string>("SeriesTitle");
 		Series = new SeriesSet(config.GetSection("Series"));
+
+		FileSystemResults = config.GetValue<string>("FileSystemResults");
 	}
 
 	private static Dictionary<string, string> GetStringDictionary(IConfiguration section)

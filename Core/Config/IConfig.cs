@@ -27,4 +27,6 @@ public interface IConfig
 
 	string SeriesTitle { get; }
 	SeriesSet Series { get; }
+
+	string FileSystemResults { get; }
 }

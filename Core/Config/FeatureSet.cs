@@ -9,6 +9,7 @@ public sealed record FeatureSet : IFeatureSet
 	public bool AgeGroupTeams { get; }
 	public bool ShowBadges { get; }
 	public bool CommunityStars { get; }
+	public bool FileSystemResults { get; }
 
 	public FeatureSet(IConfiguration section)
 	{
@@ -17,5 +18,6 @@ public sealed record FeatureSet : IFeatureSet
 		AgeGroupTeams = section.GetValue<bool>(nameof(AgeGroupTeams));
 		ShowBadges = section.GetValue<bool>(nameof(ShowBadges));
 		CommunityStars = section.GetValue<bool>(nameof(CommunityStars));
+		FileSystemResults = section.GetValue<bool>(nameof(FileSystemResults));
 	}
 }
