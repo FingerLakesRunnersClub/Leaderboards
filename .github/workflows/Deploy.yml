@@ -49,7 +49,7 @@ jobs:
         run: ssh-keyscan challenge.fingerlakesrunners.org > ~/.ssh/known_hosts
 
       - name: Pull images
-        run: ssh root@challenge.fingerlakesrunners.org "cd /var/leaderboards && docker-compose pull"
+        run: ssh root@challenge.fingerlakesrunners.org "cd /var/leaderboards && docker compose pull"
 
       - name: Run images
-        run: ssh root@challenge.fingerlakesrunners.org "cd /var/leaderboards && docker-compose up -d"
+        run: ssh root@challenge.fingerlakesrunners.org "cd /var/leaderboards && docker compose up -d"

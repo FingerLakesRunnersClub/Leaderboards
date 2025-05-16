@@ -41,6 +41,6 @@ This repository contains the code for the various leaderboard apps that the Fing
 
 - Run `./dcd up -d --build` to start both apps simultaneously
 - Browse to `http://localhost:5001` for the Challenge, or `http://localhost:5002` for the Trail Circuit
-- Run `docker-compose exec dashboard dotnet test` to run tests before committing/pushing
+- Run `docker compose exec dashboard dotnet test` to run tests before committing/pushing
 
 (`dcd` stands for Docker Compose Dev, and is simple Bash script that translates Docker Compose commands to always use the `dev` config file)
