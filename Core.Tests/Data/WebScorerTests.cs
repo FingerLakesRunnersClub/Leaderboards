@@ -23,7 +23,7 @@ public sealed class WebScorerTests
 		var result = results.First();
 
 		//assert
-		Assert.Equal((ushort) 234, result.Athlete.ID);
+		Assert.Equal((ushort)234, result.Athlete.ID);
 		Assert.Equal("Steve Desmond", result.Athlete.Name);
 		Assert.Equal(26, result.Athlete.Age);
 		Assert.Equal(new DateTime(1985, 02, 16), result.Athlete.DateOfBirth);
@@ -50,7 +50,7 @@ public sealed class WebScorerTests
 		var result = results.First();
 
 		//assert
-		Assert.Equal((ushort) 234, result.Athlete.ID);
+		Assert.Equal((ushort)234, result.Athlete.ID);
 		Assert.Equal("Rob Sutherland", result.Athlete.Name);
 	}
 
@@ -147,7 +147,7 @@ public sealed class WebScorerTests
 		var athlete = source.ParseAthlete(element, ImmutableDictionary<string, string>.Empty);
 
 		//assert
-		Assert.Equal((ushort) 234, athlete.ID);
+		Assert.Equal((ushort)234, athlete.ID);
 		Assert.Equal("Steve Desmond", athlete.Name);
 		Assert.Equal(26, athlete.Age);
 		Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
@@ -167,7 +167,7 @@ public sealed class WebScorerTests
 		var athlete = source.ParseAthlete(element, ImmutableDictionary<string, string>.Empty);
 
 		//assert
-		Assert.Equal((ushort) 234, athlete.ID);
+		Assert.Equal((ushort)234, athlete.ID);
 		Assert.Equal("Steve Desmond", athlete.Name);
 		Assert.Equal(26, athlete.Age);
 		Assert.Equal(AgeGradeCalculator.Category.M, athlete.Category.Value);
@@ -192,8 +192,25 @@ public sealed class WebScorerTests
 		var athlete = source.ParseAthlete(element, aliases);
 
 		//assert
-		Assert.Equal((ushort) 234, athlete.ID);
+		Assert.Equal((ushort)234, athlete.ID);
 		Assert.Equal("Rob Sutherland", athlete.Name);
+	}
+
+	[Fact]
+	public async Task CanParseAthleteWithLastNameFirst()
+	{
+		//arrange
+		var data = await File.ReadAllTextAsync("json/athlete.json");
+		var json = JsonDocument.Parse(data.Replace("Steve Desmond", "Desmond, Steve")).RootElement;
+		var element = json.GetProperty("Racers").EnumerateArray().First();
+		var source = new WebScorer(TestHelpers.Config);
+
+		//act
+		var athlete = source.ParseAthlete(element, ImmutableDictionary<string, string>.Empty);
+
+		//assert
+		Assert.Equal((ushort)234, athlete.ID);
+		Assert.Equal("Steve Desmond", athlete.Name);
 	}
 
 	[Fact]
