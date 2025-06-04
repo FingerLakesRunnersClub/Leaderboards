@@ -6,7 +6,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="AgeGradeCalculator" Version="2.1.0" />
+		<PackageReference Include="AgeGradeCalculator" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.5" />
 	</ItemGroup>
