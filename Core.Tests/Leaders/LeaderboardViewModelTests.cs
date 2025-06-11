@@ -11,7 +11,7 @@ public sealed class LeaderboardViewModelTests
 	public void TitleIsStatic()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel([], LeaderboardResultType.Team);
+		var vm = new LeaderboardViewModel([], LeaderboardResultType.Team, 3);
 
 		//act
 		var title = vm.Title;
@@ -24,7 +24,7 @@ public sealed class LeaderboardViewModelTests
 	public void TeamResultsContainsAllTables()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.Team)
+		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.Team, 3)
 		{
 			Config = TestHelpers.Config
 		};
@@ -43,7 +43,7 @@ public sealed class LeaderboardViewModelTests
 	public void FResultsContainsAllTables()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.F)
+		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.F, 3)
 		{
 			Config = TestHelpers.Config
 		};
@@ -62,7 +62,7 @@ public sealed class LeaderboardViewModelTests
 	public void MResultsContainsAllTables()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.M)
+		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.M, 3)
 		{
 			Config = TestHelpers.Config
 		};
@@ -81,7 +81,7 @@ public sealed class LeaderboardViewModelTests
 	public void OverallResultsContainsAllTables()
 	{
 		//arrange
-		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.Team)
+		var vm = new LeaderboardViewModel(LeaderboardData.Courses, LeaderboardResultType.Team, 3)
 		{
 			Config = TestHelpers.Config
 		};

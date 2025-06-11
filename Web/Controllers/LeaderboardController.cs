@@ -26,7 +26,8 @@ public sealed class LeaderboardController : Controller
 	private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type)
 	{
 		var results = await _dataService.GetAllResults();
-		return new LeaderboardViewModel(results, type)
+		var tableSize = _config.FileSystemResults is not null ? 10 : 3;
+		return new LeaderboardViewModel(results, type, (byte)tableSize)
 		{
 			Config = _config
 		};
