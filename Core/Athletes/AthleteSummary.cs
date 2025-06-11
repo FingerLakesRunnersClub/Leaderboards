@@ -43,6 +43,9 @@ public sealed class AthleteSummary
 		CommunityStars = results.ToDictionary(c => c, c => c.CommunityStars().Find(r => r.Result.Athlete.Equals(athlete)));
 		All = results.ToDictionary(c => c, c => c.Results.Where(r => r.Athlete.Equals(athlete)).ToArray());
 
+		if (_config.FileSystemResults is not null)
+			return;
+
 		var overall = new OverallResults(results);
 		Competitions = new[]
 			{
