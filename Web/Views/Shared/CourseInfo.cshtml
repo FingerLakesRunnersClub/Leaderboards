@@ -2,10 +2,13 @@
 @model CourseResultsViewModel
 
 <div class="float-sm-right mb-1 d-flex justify-content-between">
-	<a class="course-info btn btn-sm btn-outline-dark" href="@Model.Course.Race.URL">
-		<i aria-hidden="true" class="fas fa-info-circle"></i>
-		Course Info
-	</a>
+	@if (Model.Course.Race.URL is not null)
+	{
+		<a class="course-info btn btn-sm btn-outline-dark" href="@Model.Course.Race.URL">
+			<i aria-hidden="true" class="fas fa-info-circle"></i>
+			Course Info
+		</a>
+	}
 	@if (Model.Config.Features.MultiAttempt)
 	{
 		<a class="activity-log btn btn-sm btn-outline-dark ml-2" href="/Log/Index/@Model.Course.ID">
