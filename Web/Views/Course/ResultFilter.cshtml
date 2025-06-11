@@ -30,7 +30,7 @@
 			}
 			else
 			{
-				foreach (var course in Model.Course.Race.Courses)
+				foreach (var course in Model.Course.Race.Courses.Where(c => c.Name != c.Race.Name))
 				{
 					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.ShortName/Fastest/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@course.Distance.Display</a>
 				}
