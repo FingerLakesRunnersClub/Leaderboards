@@ -26,3 +26,5 @@ services:
     ports:
       - "5003:8080"
     restart: always
+    volumes:
+      - "../TrackResults:/TrackResults"
