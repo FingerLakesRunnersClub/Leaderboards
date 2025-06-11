@@ -87,7 +87,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.F,
-				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/F",
+				Link = $"/Course/{course.ID}/{course.ShortName}/{ResultType.Fastest}/F",
 				Rows = new Lazy<LeaderboardRow[]>(() => course.Fastest(Filter.F).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
@@ -98,7 +98,7 @@ public sealed class LeaderboardViewModel : ViewModel
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.M,
-				Link = $"/Course/{course.ID}/{course.Distance.Display}/{ResultType.Fastest}/M",
+				Link = $"/Course/{course.ID}/{course.ShortName}/{ResultType.Fastest}/M",
 				Rows = new Lazy<LeaderboardRow[]>(() => course.Fastest(Filter.M).Take(3)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())

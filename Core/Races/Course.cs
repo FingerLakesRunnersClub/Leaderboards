@@ -13,6 +13,7 @@ public sealed class Course
 	public Race Race { get; init; }
 	public uint ID { get; init; }
 	public string Name => Race.Name + (Race.Courses?.Length > 1 ? $" ({Distance.Display})" : string.Empty);
+	public string ShortName => Distance?.Display ?? Race?.Name;
 	public Distance Distance { get; init; }
 
 	public DateTime LastUpdated { get; set; }

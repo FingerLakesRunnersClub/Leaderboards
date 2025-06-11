@@ -577,4 +577,30 @@ public sealed class CourseTests
 		Assert.Equal(2, stars[1].Rank.Value);
 		Assert.Equal(CourseData.Athlete1, stars[1].Result.Athlete);
 	}
+
+	[Fact]
+	public void ShortNameIsDistanceWhenSet()
+	{
+		//arrange
+		var course = new Course { Race = new Race { Name = "Sprinty" }, Distance = new Distance("60m") };
+
+		//act
+		var shortName = course.ShortName;
+
+		//assert
+		Assert.Equal("60m", shortName);
+	}
+
+	[Fact]
+	public void ShortNameIsRaceNameWhenDistanceNotSet()
+	{
+		//arrange
+		var course = new Course { Race = new Race { Name = "Sprinty" } };
+
+		//act
+		var shortName = course.ShortName;
+
+		//assert
+		Assert.Equal("Sprinty", shortName);
+	}
 }

@@ -25,14 +25,14 @@
 			{
 				foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
 				{
-					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@Model.Course.Distance.Display/@type.Value/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@type.Display</a>
+					<a class="btn btn-sm btn-@style(type.Value)" href="/Course/@Model.Course.ID/@Model.Course.ShortName/@type.Value/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@type.Display</a>
 				}
 			}
 			else
 			{
 				foreach (var course in Model.Course.Race.Courses)
 				{
-					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.Distance.Display/Fastest/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@course.Distance.Display</a>
+					<a class="btn btn-sm btn-@style(course.Distance)" href="/Course/@course.ID/@course.ShortName/Fastest/@Model.Filter.Category?.Value?ag=@Model.Filter.AgeGroup?.Value">@course.Distance.Display</a>
 				}
 			}
 		</div>
@@ -40,7 +40,7 @@
 
 	@if (Model.ResultType.Value is ResultType.Fastest or ResultType.BestAverage)
 	{
-		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.Distance.Display}/{Model.ResultType.Value}".Replace("//", "/");
+		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.ShortName}/{Model.ResultType.Value}".Replace("//", "/");
 		var query = $"?ag={Model.Filter.AgeGroup?.Value}";
 		<section class="mb-4">
 			<div class="btn-group">
