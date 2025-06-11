@@ -8,7 +8,7 @@ public sealed record AppConfig : IConfig
 	public string App { get; }
 	public IFeatureSet Features { get; }
 
-	public IDictionary<uint, string> CourseNames { get; }
+	public IDictionary<uint, string> CourseNames { get; set; }
 	public IDictionary<string, string> Links { get; }
 	public IDictionary<string, string> Competitions { get; }
 	public IDictionary<string, byte> Awards { get; }

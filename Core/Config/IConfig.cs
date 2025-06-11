@@ -8,7 +8,7 @@ public interface IConfig
 	string App { get; }
 	IFeatureSet Features { get; }
 
-	IDictionary<uint, string> CourseNames { get; }
+	IDictionary<uint, string> CourseNames { get; set; }
 	IDictionary<string, string> Links { get; }
 	IDictionary<string, string> Competitions { get; }
 	IDictionary<string, byte> Awards { get; }
