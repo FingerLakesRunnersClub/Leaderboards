@@ -9,4 +9,7 @@ public static partial class Patterns
 
 	[GeneratedRegex("([a-z])([A-Z])")]
 	public static partial Regex CamelCase();
+
+	[GeneratedRegex(@"[/\\]([\d-]+)[/\\]([^\.]+).txt")]
+	public static partial Regex TrackFile();
 }
