@@ -1,9 +1,11 @@
 using System.Collections.Concurrent;
 using System.Text.Json.Serialization;
+using FLRC.AgeGradeCalculator;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
+using Category = FLRC.AgeGradeCalculator.Category;
 
 namespace FLRC.Leaderboards.Core.Results;
 
@@ -18,6 +20,7 @@ public sealed class Result : IComparable<Result>
 	public Athlete Athlete { get; init; }
 	public Date StartTime { get; init; }
 	public Time Duration { get; init; }
+	public Distance Performance { get; init; }
 
 	public Date FinishTime => StartTime != null
 		? new Date(StartTime.Value + (Duration?.Value ?? TimeSpan.Zero))
@@ -35,25 +38,68 @@ public sealed class Result : IComparable<Result>
 			? Athlete.AgeAsOf(StartTime.Value)
 			: Athlete.Age;
 
-	private static readonly ConcurrentDictionary<(AgeGradeCalculator.Category, byte, double, TimeSpan), double> AgeGradeCache = new();
+	private static readonly ConcurrentDictionary<(Category, byte, double, TimeSpan), double> RoadAgeGradeCache = new();
+	private static readonly ConcurrentDictionary<(Category, byte, TrackEvent, TimeSpan), double> TrackAgeGradeCache = new();
+	private static readonly ConcurrentDictionary<(Category, byte, FieldEvent, double), double> FieldAgeGradeCache = new();
 
 	[JsonIgnore]
 	public double? AgeGrade
 	{
 		get
 		{
-			if (Duration is null)
+			if (Duration is null && Performance is null)
 				return null;
-			var category = Athlete.Category?.Value ?? Category.M.Value;
-			var age = AgeOnDayOfRun;
-			var distance = Course.Distance.Meters;
-			var duration = Duration.Value;
-			var key = (category, age, distance, duration);
 
-			return AgeGradeCache.TryGetValue(key, out var ageGrade)
-				? ageGrade
-				: AgeGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, distance, duration);
+			var category = Athlete.Category?.Value ?? Athletes.Category.M.Value;
+			var age = AgeOnDayOfRun;
+
+			return Course.Race?.Type is "Track" or "Field"
+				? TFAgeGrade(category, age)
+				: RoadAgeGrade(category, age);
 		}
+	}
+
+	private double? TFAgeGrade(Category category, byte age)
+		=> Enum.TryParse<TrackEvent>($"_{CourseName}", out var trackEvent) ? TrackAgeGrade(category, age, trackEvent)
+			: Enum.TryParse<FieldEvent>(CourseName.Replace(" ", ""), out var fieldEvent) ? FieldAgeGrade(category, age, fieldEvent)
+			: null;
+
+	private double? RoadAgeGrade(Category category, byte age)
+	{
+		var distance = Course.Distance.Meters;
+		var duration = Duration.Value;
+		var key = (category, age, distance, duration);
+
+		return RoadAgeGradeCache.TryGetValue(key, out var ageGrade)
+			? ageGrade
+			: RoadAgeGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, distance, duration);
+	}
+
+	private double? TrackAgeGrade(Category category, byte age, TrackEvent trackEvent)
+	{
+		var duration = Duration.Value;
+		var key = (category, age, trackEvent, duration);
+
+		try
+		{
+			return TrackAgeGradeCache.TryGetValue(key, out var ageGrade)
+				? ageGrade
+				: TrackAgeGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, trackEvent, duration);
+		}
+		catch (Exception)
+		{
+			return null;
+		}
+	}
+
+	private double? FieldAgeGrade(Category category, byte age, FieldEvent fieldEvent)
+	{
+		var performance = Performance.Meters;
+		var key = (category, age, fieldEvent, performance);
+
+		return FieldAgeGradeCache.TryGetValue(key, out var ageGrade)
+			? ageGrade
+			: FieldAgeGradeCache[key] = AgeGradeCalculator.AgeGradeCalculator.GetAgeGrade(category, age, fieldEvent, performance);
 	}
 
 	public int CompareTo(Result other)

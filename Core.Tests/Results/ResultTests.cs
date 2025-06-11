@@ -77,7 +77,7 @@ public sealed class ResultTests
 	}
 
 	[Fact]
-	public void CanGetAgeGradeForResult()
+	public void CanGetAgeGradeForRoadResult()
 	{
 		//arrage
 		var result = new Result
@@ -99,13 +99,99 @@ public sealed class ResultTests
 	}
 
 	[Fact]
-	public void AgeGradeIsNullWhenDurationIsNull()
+	public void CanGetAgeGradeForTrackResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Duration = new Time(new TimeSpan(0, 4, 30)),
+			Course = new Course { Race = new Race { Name = "1mi", Type = "Track" } },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Equal(82.6, ageGrade!.Value, 1);
+	}
+
+	[Fact]
+	public void CanGetAgeGradeForFieldResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Performance = new Distance("5m"),
+			Course = new Course { Race = new Race { Name = "Long Jump", Type = "Field" } },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Equal(55.9, ageGrade!.Value, 1);
+	}
+
+	[Fact]
+	public void AgeGradeIsNullWhenDurationIsNullForRoadResult()
 	{
 		//arrage
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
 			Course = new Course { Distance = new Distance("10 miles") },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Null(ageGrade);
+	}
+
+	[Fact]
+	public void AgeGradeIsNullWhenDurationIsNullForTrackResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Course = new Course { Race = new Race { Name = "1mi", Type = "Track" } },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Null(ageGrade);
+	}
+
+	[Fact]
+	public void AgeGradeIsNullWhenDurationIsNullForFieldResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Course = new Course { Race = new Race { Name = "Long Jump", Type = "Field" } },
 			Athlete = new Athlete
 			{
 				Age = 20,
