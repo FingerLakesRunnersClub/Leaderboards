@@ -12,16 +12,18 @@ namespace FLRC.Leaderboards.Core.Data;
 public sealed class DataService : IDataService
 {
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
+	private readonly IFileSystemResultsLoader _fsrl;
 	private readonly ICustomInfoAPI _customInfoAPI;
 	private readonly ICommunityAPI _communityAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
-	private readonly IDictionary<uint, Race> _races;
+	private readonly Race[] _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IResultsAPI> resultsAPI, ICustomInfoAPI customInfoAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IFileSystemResultsLoader fsrl, ICustomInfoAPI customInfoAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
 	{
 		_resultsAPI = resultsAPI;
+		_fsrl = fsrl;
 		_customInfoAPI = customInfoAPI;
 		_communityAPI = communityAPI;
 
@@ -29,8 +31,11 @@ public sealed class DataService : IDataService
 		_cacheLength = TimeSpan.FromSeconds(configuration.GetValue<byte?>("APICacheLength") ?? 10);
 
 		_startListID = configuration.GetValue<uint>("StartListRaceID");
-		_races = configuration.GetSection("Races").GetChildren()
-			.ToDictionary(c => c.GetValue<uint>("ID"), GetRace);
+		_races = configuration.GetValue<string>("FileSystemResults") is not null
+			? _fsrl.GetRaces()
+			: configuration.GetSection("Races").GetChildren()
+				.Select(GetRace)
+				.ToArray();
 	}
 
 	private static Race GetRace(IConfigurationSection section)
@@ -116,7 +121,7 @@ public sealed class DataService : IDataService
 
 	public async Task<Course> GetResults(uint id, string distance)
 	{
-		var course = _races.SelectMany(r => r.Value.Courses).First(c => (c.ID == id || c.Race.ID == id) && (distance == null || c.Distance.Display == distance));
+		var course = _races.SelectMany(r => r.Courses).First(c => (c.ID == id || c.Race.ID == id) && (distance == null || c.Distance.Display == distance));
 		if (course.ID == 0)
 			return course;
 
@@ -133,6 +138,13 @@ public sealed class DataService : IDataService
 
 	private async Task UpdateResults(Course course)
 	{
+		if (course.Race.Source == "File")
+		{
+			var results = await _fsrl.GetAllResults();
+			course.Results = results.First(r => r.Race.Date == course.Race.Date && r.Race.Name == course.Race.Name).Results;
+			return;
+		}
+
 		try
 		{
 			var results = await _resultsAPI[course.Race.Source].GetResults(course.ID);
@@ -200,7 +212,7 @@ public sealed class DataService : IDataService
 
 	public async Task<Course[]> GetAllResults()
 	{
-		var tasks = _races.SelectMany(r => r.Value.Courses.Select(c => GetResults(c.ID, c.Distance.Display)));
+		var tasks = _races.SelectMany(r => r.Courses).Distinct().Select(c => GetResults(c.ID, c.Distance?.Display));
 		return await Task.WhenAll(tasks);
 	}
 

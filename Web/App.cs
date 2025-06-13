@@ -1,4 +1,5 @@
-﻿using FLRC.Leaderboards.Core.Community;
+﻿using System.IO.Abstractions;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Series;
@@ -40,6 +41,9 @@ public static class App
 
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();
+
+		services.AddSingleton<IFileSystem, FileSystem>();
+		services.AddSingleton<IFileSystemResultsLoader, FileSystemResultsLoader>();
 
 		services.AddSingleton<ResultsAPI<UltraSignup>>();
 		services.AddSingleton<ResultsAPI<WebScorer>>();
