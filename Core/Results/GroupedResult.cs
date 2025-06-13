@@ -11,13 +11,21 @@ public sealed class GroupedResult : Grouped<Result>
 	}
 
 	public Result Average(Course course, ushort? threshold = null)
-		=> new()
+	{
+		var timedResults = _group.Where(r => r.Duration is not null).ToArray();
+		var average = timedResults.Length > 0
+			? timedResults.OrderBy(r => r.Duration)
+				.Take(threshold ?? timedResults.Length)
+				.Average(r => r.Duration.Value.TotalSeconds)
+			: 0;
+
+		return new Result
 		{
 			Athlete = Key,
 			Course = course,
-			Duration = !Key.Private
-				? new Time(TimeSpan.FromSeconds(_group.OrderBy(r => r.Duration)
-					.Take(threshold ?? _group.Count()).Average(r => r.Duration.Value.TotalSeconds)))
+			Duration = !Key.Private && timedResults.Length > 0
+				? new Time(TimeSpan.FromSeconds(average))
 				: null
 		};
+	}
 }

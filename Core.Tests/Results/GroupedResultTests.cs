@@ -18,6 +18,7 @@ public sealed class GroupedResultTests
 		{
 			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:00")) },
 			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:10")) },
+			new Result { Athlete = athlete, Duration = null },
 			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:20")) },
 			new Result { Athlete = athlete, Duration = new Time(TimeSpan.Parse("1:30")) }
 		};
