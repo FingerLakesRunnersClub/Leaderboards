@@ -186,7 +186,7 @@ public sealed class Course
 			var results = list[rank - 1];
 			var result = getResult(results);
 
-			if (result.AgeGrade >= 100)
+			if (result.AgeGrade > 100)
 				continue;
 
 			var isInFirstPlace = !ranks.Exists(r => r.Value is not null);

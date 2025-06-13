@@ -47,7 +47,7 @@ public sealed class Result : IComparable<Result>
 	{
 		get
 		{
-			if (Duration is null && Performance is null)
+			if (Duration is null && Performance is null || AgeOnDayOfRun is 0)
 				return null;
 
 			var category = Athlete.Category?.Value ?? Athletes.Category.M.Value;
