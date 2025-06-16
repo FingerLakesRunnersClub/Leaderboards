@@ -62,7 +62,7 @@ public sealed class Result : IComparable<Result>
 	private double? TFAgeGrade(Category category, byte age)
 		=> Enum.TryParse<TrackEvent>($"_{CourseName}", out var trackEvent) ? TrackAgeGrade(category, age, trackEvent)
 			: Enum.TryParse<FieldEvent>(CourseName.Replace(" ", ""), out var fieldEvent) ? FieldAgeGrade(category, age, fieldEvent)
-			: null;
+			: RoadAgeGrade(category, age);
 
 	private double? RoadAgeGrade(Category category, byte age)
 	{
