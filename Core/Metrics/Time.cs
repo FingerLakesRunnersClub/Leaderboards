@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Metrics;
 
-public sealed record Time(TimeSpan Value) : Formatted<TimeSpan>(Value), IComparable<Time>
+public record Time(TimeSpan Value) : Formatted<TimeSpan>(Value), IComparable<Time>
 {
 	public override string Display => Value.ToString(Value.TotalHours >= 1 ? @"h\:mm\:ss" : @"m\:ss");
 
