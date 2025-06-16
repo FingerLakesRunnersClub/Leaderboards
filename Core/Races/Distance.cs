@@ -1,19 +1,19 @@
 ﻿namespace FLRC.Leaderboards.Core.Races;
 
-public sealed record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
+public record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
 {
 	public const string DefaultKey = "Default";
 	public const double MetersPerMile = 1609.344;
 	public const double MetersPerMarathon = 42_195;
 	public const double MilesPerMarathon = MetersPerMarathon / MetersPerMile;
 
-	public double Meters { get; } = ParseDistance(Value);
+	public virtual double Meters { get; } = ParseDistance(Value);
 	public double Miles => Meters / MetersPerMile;
 
 
 	public override string Display => Value;
 
-	private static double ParseDistance(string value)
+	protected static double ParseDistance(string value)
 	{
 		if (value.Contains("marathon", StringComparison.InvariantCultureIgnoreCase))
 			return value.Contains("half", StringComparison.InvariantCultureIgnoreCase)

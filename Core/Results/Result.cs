@@ -20,7 +20,7 @@ public sealed class Result : IComparable<Result>
 	public Athlete Athlete { get; init; }
 	public Date StartTime { get; init; }
 	public Time Duration { get; init; }
-	public Distance Performance { get; init; }
+	public Performance Performance { get; init; }
 
 	public Date FinishTime => StartTime != null
 		? new Date(StartTime.Value + (Duration?.Value ?? TimeSpan.Zero))

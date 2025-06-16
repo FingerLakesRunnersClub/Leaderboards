@@ -2,6 +2,7 @@ using System.IO.Abstractions;
 using System.Text.RegularExpressions;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 
@@ -130,7 +131,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 			},
 			StartTime = new Date(course.Race.Date),
 			Duration = isTime ? course.FormatTime(time) : null,
-			Performance = !isTime ? new Distance(performance) : null
+			Performance = !isTime ? new Performance(performance) : null
 		};
 	}
 }

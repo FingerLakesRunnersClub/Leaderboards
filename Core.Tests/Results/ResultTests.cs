@@ -121,13 +121,35 @@ public sealed class ResultTests
 	}
 
 	[Fact]
-	public void CanGetAgeGradeForFieldResult()
+	public void CanGetAgeGradeForMetricFieldResult()
 	{
 		//arrage
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
-			Performance = new Distance("5m"),
+			Performance = new Performance("5m"),
+			Course = new Course { Race = new Race { Name = "Long Jump", Type = "Field" } },
+			Athlete = new Athlete
+			{
+				Age = 20,
+				DateOfBirth = new DateTime(2000, 1, 2)
+			}
+		};
+
+		var ageGrade = result.AgeGrade;
+
+		//assert
+		Assert.Equal(55.9, ageGrade!.Value, 1);
+	}
+
+	[Fact]
+	public void CanGetAgeGradeForImperialFieldResult()
+	{
+		//arrage
+		var result = new Result
+		{
+			StartTime = new Date(new DateTime(2021, 1, 3)),
+			Performance = new Performance("16'5\""),
 			Course = new Course { Race = new Race { Name = "Long Jump", Type = "Field" } },
 			Athlete = new Athlete
 			{
