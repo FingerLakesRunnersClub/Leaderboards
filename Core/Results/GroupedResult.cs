@@ -1,5 +1,4 @@
 using FLRC.Leaderboards.Core.Athletes;
-using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Results;
@@ -24,7 +23,7 @@ public sealed class GroupedResult : Grouped<Result>
 			Athlete = Key,
 			Course = course,
 			Duration = !Key.Private && timedResults.Length > 0
-				? new Time(TimeSpan.FromSeconds(average))
+				? course.FormatTime(TimeSpan.FromSeconds(average))
 				: null
 		};
 	}

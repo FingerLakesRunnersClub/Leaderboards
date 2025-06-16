@@ -66,6 +66,9 @@ public sealed class Result : IComparable<Result>
 
 	private double? RoadAgeGrade(Category category, byte age)
 	{
+		if (Course.Distance is null || Duration is null)
+			return null;
+
 		var distance = Course.Distance.Meters;
 		var duration = Duration.Value;
 		var key = (category, age, distance, duration);

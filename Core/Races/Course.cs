@@ -15,6 +15,7 @@ public sealed class Course
 	public string Name => Race.Name + (Race.Courses?.Length > 1 ? $" ({Distance.Display})" : string.Empty);
 	public string ShortName => Distance?.Display ?? Race?.Name;
 	public Distance Distance { get; init; }
+	public bool ShowDecimals { get; init; }
 
 	public DateTime LastUpdated { get; set; }
 	public int LastHash { get; set; }
@@ -220,8 +221,13 @@ public sealed class Course
 
 	private static Time BehindLeader<T>(Result result, bool isInFirstPlace, Ranked<T> firstPlace)
 		=> isInFirstPlace || result.Duration is null || firstPlace?.Result.Duration is null
-			? new Time(TimeSpan.Zero)
+			? result.Course.FormatTime(TimeSpan.Zero)
 			: result.Behind(firstPlace.Result);
+
+	public Time FormatTime(TimeSpan time)
+		=> ShowDecimals
+			? new SprintTime(time)
+			: new Time(time);
 
 	private static Points Points<T>(Result result, bool isInFirstPlace, Ranked<T> firstPlace)
 		=> result.Duration is not null && (isInFirstPlace || firstPlace?.Result.Duration is not null)

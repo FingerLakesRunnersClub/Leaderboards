@@ -367,7 +367,7 @@ public sealed class CourseTests
 		//arrange
 		var results = new[]
 		{
-			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)) }
+			new Result { Athlete = CourseData.Private, StartTime = new Date(new DateTime(2023, 1, 1)), Course = new Course() }
 		};
 		var course = new Course { Results = results };
 
