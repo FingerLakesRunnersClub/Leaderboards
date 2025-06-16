@@ -239,31 +239,46 @@ public sealed class Course
 			? new AgeGrade(result.AgeGrade.Value)
 			: null;
 
-	public Statistics Statistics() => new()
+	public Statistics Statistics()
 	{
-		Participants = new Dictionary<string, int>
+		var allAthletes = GroupedResults();
+		var fAthletes = GroupedResults(Filter.F);
+		var mAthletes = GroupedResults(Filter.M);
+
+		var allResultCount = _results.Length;
+		var fResultCount = _results.Count(r => r.Athlete.Category == Category.F);
+		var mResultCount = _results.Count(r => r.Athlete.Category == Category.M);
+
+		var averageTotal = allAthletes.Length > 0 ? allAthletes.Average(a => a.Count()) : 0;
+		var fAverage = fAthletes.Length > 0 ? fAthletes.Average(a => a.Count()) : 0;
+		var mAverage = mAthletes.Length > 0 ? mAthletes.Average(a => a.Count()) : 0;
+
+		return new Statistics
 		{
-			{ string.Empty, GroupedResults().Length },
-			{ Category.F.Display, GroupedResults(Filter.F).Length },
-			{ Category.M.Display, GroupedResults(Filter.M).Length }
-		},
-		Runs = new Dictionary<string, int>
-		{
-			{ string.Empty, _results.Length },
-			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) },
-			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) }
-		},
-		Miles = new Dictionary<string, double>
-		{
-			{ string.Empty, _results.Length * Distance.Miles },
-			{ Category.F.Display, _results.Count(r => r.Athlete.Category == Category.F) * Distance.Miles },
-			{ Category.M.Display, _results.Count(r => r.Athlete.Category == Category.M) * Distance.Miles }
-		},
-		Average = new Dictionary<string, double>
-		{
-			{ string.Empty, GroupedResults().Length != 0 ? GroupedResults().Average(a => a.Count()) : 0 },
-			{ Category.F.Display, GroupedResults(Filter.F).Length != 0 ? GroupedResults(Filter.F).Average(a => a.Count()) : 0 },
-			{ Category.M.Display, GroupedResults(Filter.M).Length != 0 ? GroupedResults(Filter.M).Average(a => a.Count()) : 0 }
-		}
-	};
+			Participants = new Dictionary<string, int>
+			{
+				{ string.Empty, allAthletes.Length },
+				{ Category.F.Display, fAthletes.Length },
+				{ Category.M.Display, mAthletes.Length }
+			},
+			Runs = new Dictionary<string, int>
+			{
+				{ string.Empty, allResultCount },
+				{ Category.F.Display, fResultCount },
+				{ Category.M.Display, mResultCount }
+			},
+			Miles = new Dictionary<string, double>
+			{
+				{ string.Empty, allResultCount * Distance?.Miles ?? 0 },
+				{ Category.F.Display, fResultCount * Distance?.Miles ?? 0 },
+				{ Category.M.Display, mResultCount * Distance?.Miles ?? 0 }
+			},
+			Average = new Dictionary<string, double>
+			{
+				{ string.Empty, allAthletes.Length != 0 ? averageTotal : 0 },
+				{ Category.F.Display, fAthletes.Length != 0 ? fAverage : 0 },
+				{ Category.M.Display, mAthletes.Length != 0 ? mAverage : 0 }
+			}
+		};
+	}
 }
