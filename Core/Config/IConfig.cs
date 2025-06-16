@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Series;
 
 namespace FLRC.Leaderboards.Core.Config;

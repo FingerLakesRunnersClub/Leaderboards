@@ -1,4 +1,3 @@
-using System.Net;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
@@ -6,7 +5,6 @@ using FLRC.Leaderboards.Core.Tests.Community;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
-using NSubstitute.ExceptionExtensions;
 using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
