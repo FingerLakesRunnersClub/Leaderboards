@@ -26,7 +26,13 @@ public sealed class CourseController : Controller
 		return View(await GetResults(id, name, ResultType.Fastest, filter, c => c.Fastest(filter)));
 	}
 
-	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null)
+	public async Task<ViewResult> Farthest(uint id, string name, string category = null, byte? ag = null)
+	{
+		var filter = new Filter { Category = Category.Parse(category), AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
+		return View(await GetResults(id, name, ResultType.Farthest, filter, c => c.Farthest(filter)));
+	}
+
+	public async Task<ViewResult> BestAverage(uint id, string name, string category = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category) };
 		return View(await GetResults(id, name, ResultType.BestAverage, filter, c => c.BestAverage(filter)));

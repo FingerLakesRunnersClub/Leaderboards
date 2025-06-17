@@ -38,7 +38,7 @@
 		</div>
 	</section>
 
-	@if (Model.ResultType.Value is ResultType.Fastest or ResultType.BestAverage)
+	@if (Model.ResultType.Value is ResultType.Fastest or ResultType.Farthest or ResultType.BestAverage)
 	{
 		var resultsURL = $"/Course/{Model.Course.ID}/{Model.Course.ShortName}/{Model.ResultType.Value}".Replace("//", "/");
 		var query = $"?ag={Model.Filter.AgeGroup?.Value}";

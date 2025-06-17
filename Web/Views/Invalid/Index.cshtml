@@ -17,7 +17,7 @@
                     <tr>
                         <th scope="col">Athlete</th>
                         <th scope="col">Date</th>
-                        <th scope="col">Time</th>
+                        <th scope="col">@course.EventMetric</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,7 @@
                         <tr>
                             <td>@result.Athlete.Name</td>
                             <td>@result.StartTime.Display</td>
-                            <td>@result.Duration?.Display</td>
+                            <td>@(result.Duration?.Display ?? result.Performance?.Display)</td>
                         </tr>
                     }
                 </tbody>

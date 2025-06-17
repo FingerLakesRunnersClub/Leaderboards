@@ -78,14 +78,15 @@ public sealed class LeaderboardViewModel : ViewModel
 	}
 
 	public IDictionary<Course, LeaderboardTable[]> CourseResults
-		=> _courses.ToDictionary(c => c, c => LeaderboardTables(c, _tableSize).Where(t => Config.Features.MultiAttempt ? _leaderboardFilter(t) : t.ResultType.Value == ResultType.Fastest)
+		=> _courses.ToDictionary(c => c, c => LeaderboardTables(c, _tableSize).Where(t => Config.Features.MultiAttempt ? _leaderboardFilter(t) : t.ResultType.Value is ResultType.Fastest or ResultType.Farthest)
+			.Where(t => t.Rows.Value.Length > 0)
 			.ToArray());
 
 	private static LeaderboardTable[] LeaderboardTables(Course course, byte tableSize)
 		=> [
 			new()
 			{
-				Title = "Fastest (F)",
+				Title = $"{course.EventSuperlative} (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.F,
@@ -96,12 +97,34 @@ public sealed class LeaderboardViewModel : ViewModel
 			},
 			new()
 			{
-				Title = "Fastest (M)",
+				Title = $"{course.EventSuperlative} (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = Filter.M,
 				Link = $"/Course/{course.ID}/{course.ShortName}/{ResultType.Fastest}/M",
 				Rows = new Lazy<LeaderboardRow[]>(() => course.Fastest(Filter.M).Take(tableSize)
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
+					.ToArray())
+			},
+			new()
+			{
+				Title = $"{course.EventSuperlative} (F)",
+				Course = course,
+				ResultType = new FormattedResultType(ResultType.Farthest),
+				Filter = Filter.F,
+				Link = $"/Course/{course.ID}/{course.ShortName}/{ResultType.Farthest}/F",
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Farthest(Filter.F).Take(tableSize)
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
+					.ToArray())
+			},
+			new()
+			{
+				Title = $"{course.EventSuperlative} (M)",
+				Course = course,
+				ResultType = new FormattedResultType(ResultType.Farthest),
+				Filter = Filter.M,
+				Link = $"/Course/{course.ID}/{course.ShortName}/{ResultType.Farthest}/M",
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Farthest(Filter.M).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},

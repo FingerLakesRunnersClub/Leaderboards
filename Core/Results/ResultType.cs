@@ -6,5 +6,6 @@ public enum ResultType
 	BestAverage,
 	MostRuns,
 	Community,
-	Team
+	Team,
+	Farthest
 }
