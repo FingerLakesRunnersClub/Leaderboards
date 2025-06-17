@@ -47,7 +47,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		{
 			ID = name.GetID(),
 			Name = name,
-			Date = DateTime.Parse(date),
+			Date = DateTime.SpecifyKind(DateTime.Parse(date), DateTimeKind.Local),
 			Type = "Track",
 			Source = "File"
 		};
@@ -87,7 +87,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 	private Course GetCourse(string file)
 	{
 		var lines = file.Split(Environment.NewLine);
-		var date = DateTime.Parse(lines[0].Trim());
+		var date = DateTime.SpecifyKind(DateTime.Parse(lines[0].Trim()), DateTimeKind.Local);
 		var name = lines[1].Trim();
 
 		var race = _cachedRaces.First(r => r.Date == date && r.Name == name);

@@ -19,6 +19,19 @@ public sealed class DateTests
 	}
 
 	[Fact]
+	public void RemovesMidnight()
+	{
+		//arrange
+		var date = new Date(new DateTime(2012, 3, 4, 0, 0, 0, DateTimeKind.Local));
+
+		//act
+		var display = date.Display;
+
+		//assert
+		Assert.Equal("3/4/12", display);
+	}
+
+	[Fact]
 	public void CanHandleDST()
 	{
 		//arrange
