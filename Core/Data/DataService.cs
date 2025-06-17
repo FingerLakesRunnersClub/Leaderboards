@@ -119,9 +119,9 @@ public sealed class DataService : IDataService
 		}
 	}
 
-	public async Task<Course> GetResults(uint id, string distance)
+	public async Task<Course> GetResults(uint id, string name)
 	{
-		var course = _races.SelectMany(r => r.Courses).First(c => (c.ID == id || c.Race.ID == id) && (distance == null || c.Distance.Display == distance));
+		var course = _races.SelectMany(r => r.Courses).First(c => (c.ID == id || c.Race.ID == id) && (name is null || name == c.ShortName));
 		if (course.ID == 0)
 			return course;
 
@@ -212,7 +212,7 @@ public sealed class DataService : IDataService
 
 	public async Task<Course[]> GetAllResults()
 	{
-		var tasks = _races.SelectMany(r => r.Courses).Distinct().Select(c => GetResults(c.ID, c.Distance?.Display));
+		var tasks = _races.SelectMany(r => r.Courses).Distinct().Select(c => GetResults(c.ID, c.ShortName));
 		return await Task.WhenAll(tasks);
 	}
 

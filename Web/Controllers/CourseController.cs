@@ -20,27 +20,27 @@ public sealed class CourseController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Fastest(uint id, string distance, string category = null, byte? ag = null)
+	public async Task<ViewResult> Fastest(uint id, string name, string category = null, byte? ag = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category), AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
-		return View(await GetResults(id, distance, ResultType.Fastest, filter, c => c.Fastest(filter)));
+		return View(await GetResults(id, name, ResultType.Fastest, filter, c => c.Fastest(filter)));
 	}
 
 	public async Task<ViewResult> BestAverage(uint id, string distance, string category = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category) };
-		return View(await GetResults(id, distance, ResultType.BestAverage, filter, c => c.BestAverage(filter)));
+		return View(await GetResults(id, name, ResultType.BestAverage, filter, c => c.BestAverage(filter)));
 	}
 
-	public async Task<ViewResult> MostRuns(uint id, string distance)
-		=> View(await GetResults(id, distance, ResultType.MostRuns, Filter.None, c => c.MostRuns(Filter.None)));
+	public async Task<ViewResult> MostRuns(uint id, string name)
+		=> View(await GetResults(id, name, ResultType.MostRuns, Filter.None, c => c.MostRuns(Filter.None)));
 
-	public async Task<ViewResult> Community(uint id, string distance)
-		=> View(await GetResults(id, distance, ResultType.Community, Filter.None, c => c.CommunityStars(Filter.None)));
+	public async Task<ViewResult> Community(uint id, string name)
+		=> View(await GetResults(id, name, ResultType.Community, Filter.None, c => c.CommunityStars(Filter.None)));
 
-	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string distance, ResultType resultType, Filter filter, Func<Course, RankedList<T>> results)
+	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string name, ResultType resultType, Filter filter, Func<Course, RankedList<T>> results)
 	{
-		var course = await _dataService.GetResults(courseID, distance);
+		var course = await _dataService.GetResults(courseID, name);
 		return new CourseResultsViewModel<T>
 		{
 			Config = _config,
@@ -51,12 +51,12 @@ public sealed class CourseController : Controller
 		};
 	}
 
-	public async Task<ViewResult> Team(uint id, string distance)
-		=> View(await GetTeamResults(id, distance));
+	public async Task<ViewResult> Team(uint id, string name)
+		=> View(await GetTeamResults(id, name));
 
-	private async Task<CourseResultsViewModel<TeamResults>> GetTeamResults(uint courseID, string distance)
+	private async Task<CourseResultsViewModel<TeamResults>> GetTeamResults(uint courseID, string name)
 	{
-		var course = await _dataService.GetResults(courseID, distance);
+		var course = await _dataService.GetResults(courseID, name);
 		return new CourseResultsViewModel<TeamResults>
 		{
 			Config = _config,

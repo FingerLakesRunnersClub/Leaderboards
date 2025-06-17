@@ -9,7 +9,7 @@ public interface IDataService
 	Task<Athlete> GetAthlete(uint id);
 	Task<IDictionary<uint, Athlete>> GetAthletes();
 
-	Task<Course> GetResults(uint id, string distance);
+	Task<Course> GetResults(uint id, string name);
 	Task<Course[]> GetAllResults();
 
 	Task<Athlete[]> GetGroupMembers(string id);

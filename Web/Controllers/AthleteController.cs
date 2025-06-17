@@ -26,7 +26,7 @@ public sealed class AthleteController : Controller
 
 	public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
 
-	public async Task<ViewResult> Course(uint id, uint courseID, string distance) => View(await GetResults(id, courseID, distance));
+	public async Task<ViewResult> Course(uint id, uint courseID, string name) => View(await GetResults(id, courseID, name));
 
 	public async Task<ViewResult> Log(uint id) => View(await GetLog(id));
 
@@ -51,10 +51,10 @@ public sealed class AthleteController : Controller
 		};
 	}
 
-	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID, string distance)
+	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID, string name)
 	{
 		var results = await _dataService.GetAllResults();
-		var course = await _dataService.GetResults(courseID, distance);
+		var course = await _dataService.GetResults(courseID, name);
 		var myResults = course.Results.Where(r => r.Athlete.ID == id).ToArray();
 
 		return new AthleteCourseResultsViewModel

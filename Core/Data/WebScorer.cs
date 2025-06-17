@@ -37,7 +37,7 @@ public sealed class WebScorer : IDataSource
 					|| r.GetProperty("UserId").GetUInt32() > 0)
 	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
 	               || r.GetProperty("Distance").GetString() == Distance.DefaultKey
-	               || r.GetProperty("Distance").GetString() == course.Distance.Display)
+	               || r.GetProperty("Distance").GetString() == course.ShortName)
 			)
 			.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))
 			.Where(r => r.Duration is null || r.Duration.Value >= MinimumDuration)
