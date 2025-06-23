@@ -27,6 +27,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		_cachedRaces ??= _fs.Directory
 			.GetFiles(_config.FileSystemResults, "*.txt", SearchOption.AllDirectories)
 			.Select(p => RegexPattern.Match(p))
+			.Where(ShouldIncludeEvent)
 			.Select(GetRace)
 			.OrderBy(r => r.Courses[0].Distance?.Meters ?? Distance.MetersPerMarathon)
 			.ToArray();
@@ -37,6 +38,9 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 
 		return _cachedRaces.GroupBy(r => r.ID).Select(r => r.MaxBy(r2 => r2.Courses.Sum(c => c.Results.Length))).ToArray();
 	}
+
+	private static bool ShouldIncludeEvent(Match info)
+		=> info.Groups[2].Value is not ("55m" or "300m" or "600m");
 
 	private static Race GetRace(Match info)
 	{
