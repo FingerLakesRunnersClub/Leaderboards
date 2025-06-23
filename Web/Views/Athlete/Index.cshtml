@@ -36,7 +36,7 @@
 					@if (!Model.Summary.Athlete.Private && Model.Summary.Fastest[course] == null)
 					{
 						<div class="alert alert-danger">
-							There is an invalid result for this course.
+							There is an invalid result for this @Model.Config.CourseLabel.
 							Please check the the <a href="/Invalid">Invalid Results</a> page,
 							and correct any errors by using the timing app or contacting the Race Director.
 						</div>

@@ -3,7 +3,7 @@
 @using System.Text.Json
 @model CourseResultsViewModel<TeamResults>
 
-<h2>Course Results</h2>
+<h2>@Model.Config.CourseLabel Results</h2>
 <div class="card card-highlighted">
     <div class="card-body">
         @await Html.PartialAsync("CourseInfo", Model)

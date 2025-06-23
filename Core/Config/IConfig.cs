@@ -5,6 +5,7 @@ namespace FLRC.Leaderboards.Core.Config;
 public interface IConfig
 {
 	string App { get; }
+	string CourseLabel { get; }
 	IFeatureSet Features { get; }
 
 	IDictionary<uint, string> CourseNames { get; set; }

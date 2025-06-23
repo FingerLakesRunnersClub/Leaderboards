@@ -6,6 +6,7 @@ namespace FLRC.Leaderboards.Core.Config;
 public sealed record AppConfig : IConfig
 {
 	public string App { get; }
+	public string CourseLabel { get; }
 	public IFeatureSet Features { get; }
 
 	public IDictionary<uint, string> CourseNames { get; set; }
@@ -33,6 +34,7 @@ public sealed record AppConfig : IConfig
 	public AppConfig(IConfiguration config)
 	{
 		App = config.GetValue<string>("App");
+		CourseLabel = config.GetValue<string>("CourseLabel");
 		Features = new FeatureSet(config.GetSection("Features"));
 		CourseNames = config.GetSection("Races").GetChildren().ToDictionary(c => c.GetValue<uint>("ID"), c => c.GetValue<string>("Name"));
 		Links = GetStringDictionary(config.GetSection("Links"));

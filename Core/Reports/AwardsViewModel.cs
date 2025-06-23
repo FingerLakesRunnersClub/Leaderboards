@@ -69,7 +69,7 @@ public sealed class AwardsViewModel : ViewModel
 			{
 				Name = $"{r.Result.CourseName} {title}",
 				Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/{type}",
-				Value = Config.Awards["Course"],
+				Value = Config.Awards[Config.CourseLabel],
 				Athlete = r.Result.Athlete
 			})
 			.ToArray();

@@ -15,7 +15,7 @@
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
                 { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
                 { name: 'Total Miles', center: true, value: r => r.Value.Display, sort: r => r.Value.Value, descending: true },
-                { name: 'Courses Run', center: true, value: r => r.Count, descending: true }
+                { name: '@(Model.Config.CourseLabel)s Run', center: true, value: r => r.Count, descending: true }
             ];
 
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));

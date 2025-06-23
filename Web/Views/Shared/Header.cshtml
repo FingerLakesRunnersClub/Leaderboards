@@ -52,7 +52,7 @@
 				</li>
 				<li class="nav-item">
 					<a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(this, event);">
-						Races
+						@(Model.Config.CourseLabel)s
 					</a>
 					<ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
 						@foreach (var course in Model.Config.CourseNames)

@@ -14,7 +14,7 @@
                 { name: 'Name', value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
                 { name: 'Total Points', center: true, value: r => r.Value.Display, sort: r => r.Value.Value, descending: true },
-	            { name: 'Courses Run', center: true, value: r => r.Count,  descending: true },
+	            { name: '@(Model.Config.CourseLabel)s Run', center: true, value: r => r.Count,  descending: true },
                 { name: 'Average Age Grade', center: true, value: r => r.AgeGrade.Display, sort: r => r.AgeGrade.Value, descending: true },
             ];
 

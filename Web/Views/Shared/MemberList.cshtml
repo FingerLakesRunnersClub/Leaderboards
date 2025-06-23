@@ -13,7 +13,7 @@
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age },
                 { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
 				{ name: 'Score', center: true, value: r => r.Value.Score.Display, sort: r => r.Value.Score.Value, descending: true },
-				{ name: 'Courses Run', center: true, value: r => r.Value.Courses, sort: r => r.Value.Courses, descending: true },
+				{ name: '@(Model.Config.CourseLabel)s Run', center: true, value: r => r.Value.Courses, sort: r => r.Value.Courses, descending: true },
                 { name: 'Age Grade', center: true, value: r => r.Value.AgeGrade?.Display, sort: r => r.Value.AgeGrade?.Value, descending: true },
                 { name: 'Total Runs', center: true, value: r => r.Value.Runs, descending: true },
                 { name: 'Total Miles', center: true, value: r => r.Value.Miles.Display, sort: r => r.Value.Miles.Value, descending: true }

@@ -34,7 +34,7 @@
 					<th>Athlete</th>
 					@if (Model.Course == null)
 					{
-						<th>Course</th>
+						<th>@Model.Config.CourseLabel</th>
 					}
 					<th class="text-right">Time</th>
 					@if (Model.Config.Features.CommunityStars)
