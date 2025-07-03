@@ -10,6 +10,7 @@ public sealed class Race
 	public DateTime Date { get; init; }
 	public string Source { get; init; }
 	public string URL { get; init; }
+	public bool AllowInvalid { get; init; }
 
 	public ushort CommunityID { get; init; }
 

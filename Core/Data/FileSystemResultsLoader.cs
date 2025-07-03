@@ -51,7 +51,8 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 			Name = name,
 			Date = DateTime.SpecifyKind(DateTime.Parse(date), DateTimeKind.Local),
 			Type = "Track",
-			Source = "File"
+			Source = "File",
+			AllowInvalid = true
 		};
 
 		var distance = new Distance(race.Name);

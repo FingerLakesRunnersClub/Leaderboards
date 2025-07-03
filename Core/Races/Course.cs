@@ -190,12 +190,12 @@ public sealed class Course
 	}
 
 	private RankedList<T> Rank<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
-		=> RankedList(GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort);
+		=> RankedList(GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort, Race?.AllowInvalid ?? false);
 
 	private RankedList<T> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
-		=> RankedList(GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
+		=> RankedList(GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort, Race?.AllowInvalid ?? false);
 
-	private static RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
+	private static RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue, bool allowInvalid)
 	{
 		var ranks = new RankedList<T>();
 		byte skippedRanks = 0;
@@ -206,7 +206,7 @@ public sealed class Course
 			var results = list[rank - 1];
 			var result = getResult(results);
 
-			if (result.AgeGrade > 100)
+			if (result.AgeGrade > 100 && !allowInvalid)
 			{
 				skippedRanks++;
 				continue;
