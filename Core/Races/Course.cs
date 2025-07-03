@@ -198,6 +198,7 @@ public sealed class Course
 	private static RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
 	{
 		var ranks = new RankedList<T>();
+		byte skippedRanks = 0;
 
 		var list = sorted.ThenBy(rs => getResult(rs).Duration ?? Time.Max).ToArray();
 		for (ushort rank = 1; rank <= list.Length; rank++)
@@ -206,7 +207,10 @@ public sealed class Course
 			var result = getResult(results);
 
 			if (result.AgeGrade > 100)
+			{
+				skippedRanks++;
 				continue;
+			}
 
 			var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
 			var value = getValue(results);
@@ -217,7 +221,7 @@ public sealed class Course
 			var rankedResult = new Ranked<T>
 			{
 				All = ranks,
-				Rank = Rank(isInFirstPlace, lastPlace, value, rank),
+				Rank = Rank(isInFirstPlace, lastPlace, value, (ushort)(rank - skippedRanks)),
 				Result = result,
 				Value = value,
 				Count = (uint) results.Count(),

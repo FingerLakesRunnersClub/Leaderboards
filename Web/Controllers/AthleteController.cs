@@ -95,7 +95,7 @@ public sealed class AthleteController : Controller
 
 	private static Rank Rank(Result result, ushort rank, RankedList<Time> ranks)
 		=> result.Athlete.Private ? null
-			: result.AgeGrade >= 100 ? new Rank(0)
+			: result.AgeGrade > 100 ? new Rank(0)
 			: !ranks.Exists(r => r.Rank.Value > 0) ? new Rank(1)
 			: ranks.Any() && ranks[^1].Value == result.Duration ? ranks.Last().Rank
 			: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0)));

@@ -24,7 +24,7 @@ public sealed class InvalidController : Controller
 		var invalid = results.ToDictionary(c => c,
 			c => c.GroupedResults()
 				.Select(g => g.OrderBy(r => r.Duration).First())
-				.Where(r => r.AgeGrade >= 100)
+				.Where(r => r.AgeGrade > 100)
 				.ToArray());
 
 		return new InvalidViewModel
