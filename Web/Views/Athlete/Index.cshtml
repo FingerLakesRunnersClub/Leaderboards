@@ -47,7 +47,7 @@
 							@if (!Model.Summary.Athlete.Private)
 							{
 								<dt class="col-6">
-									@(Model.Config.Features.MultiAttempt ? "Fastest" : string.Empty) Time
+									@(Model.Config.Features.MultiAttempt ? "Fastest" : string.Empty) @(course.EventMetric)
 								</dt>
 								<dd class="col-6">
 									@Model.Summary.Fastest[course].Value?.Display
