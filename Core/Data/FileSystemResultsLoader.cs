@@ -40,7 +40,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 	private static bool ShouldIncludeEvent(Match info)
 		=> info.Groups[2].Value is not ("55m" or "300m" or "600m");
 
-	private static Race GetRace(Match info)
+	private Race GetRace(Match info)
 	{
 		var name = info.Groups[2].Value;
 		var date = info.Groups[1].Value;
@@ -52,7 +52,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 			Date = DateTime.SpecifyKind(DateTime.Parse(date), DateTimeKind.Local),
 			Type = "Track",
 			Source = "File",
-			AllowInvalid = true
+			AllowInvalid = !_config.Features.SelfTiming
 		};
 
 		var distance = new Distance(race.Name);
