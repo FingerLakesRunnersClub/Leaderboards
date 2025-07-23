@@ -23,7 +23,7 @@ public sealed class InvalidController : Controller
 		var results = await _dataService.GetAllResults();
 		var invalid = results.ToDictionary(c => c,
 			c => c.GroupedResults()
-				.Select(g => g.OrderBy(r => r.Duration).First())
+				.Select(g => c.IsFieldEvent ? g.OrderByDescending(r => r.Performance).First() : g.OrderBy(r => r.Duration).First())
 				.Where(r => r.AgeGrade > 100)
 				.ToArray());
 

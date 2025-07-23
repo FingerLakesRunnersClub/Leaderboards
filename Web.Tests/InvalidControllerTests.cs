@@ -19,6 +19,7 @@ public sealed class InvalidControllerTests
 		var dataService = Substitute.For<IDataService>();
 		var course = new Course
 		{
+			Race = new Race(),
 			Distance = new Distance("10K"),
 			Results = CourseData.Results
 		};
@@ -50,6 +51,7 @@ public sealed class InvalidControllerTests
 		results.Add(badResult);
 		var course = new Course
 		{
+			Race = new Race(),
 			Distance = new Distance("10K"),
 			Results = results.ToArray()
 		};
