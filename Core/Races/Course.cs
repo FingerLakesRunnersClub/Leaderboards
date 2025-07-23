@@ -18,9 +18,9 @@ public sealed class Course
 	public Distance Distance { get; init; }
 	public bool ShowDecimals { get; init; }
 
+	public bool IsFieldEvent => Enum.TryParse<FieldEvent>(Name.ToFieldEvent(), out _);
 	public string EventMetric => IsFieldEvent ? FieldEventMetric : "Time";
 	public string EventSuperlative => IsFieldEvent ? FieldEventSuperlative : "Fastest";
-	private bool IsFieldEvent => Enum.TryParse<FieldEvent>(Name.ToFieldEvent(), out _);
 
 	private string FieldEventMetric => Name is "High Jump" or "Pole Vault" ? "Height" : "Distance";
 	private string FieldEventSuperlative => Name is "High Jump" or "Pole Vault" ? "Highest" : "Farthest";

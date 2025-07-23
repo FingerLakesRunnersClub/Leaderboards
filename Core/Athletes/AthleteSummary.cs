@@ -12,6 +12,7 @@ public sealed class AthleteSummary
 {
 	public Athlete Athlete { get; }
 	public IDictionary<Course, Ranked<Time>> Fastest { get; }
+	public IDictionary<Course, Ranked<Performance>> Farthest { get; }
 	public IDictionary<Course, Ranked<Time>> Average { get; }
 	public IDictionary<Course, Ranked<ushort>> Runs { get; }
 	public Dictionary<Course, Ranked<Stars>> CommunityStars { get; }
@@ -26,6 +27,7 @@ public sealed class AthleteSummary
 	public Ranked<TeamResults> TeamResults { get; }
 
 	public int TotalResults { get; }
+
 	private readonly Course[] _results;
 	private readonly IConfig _config;
 
@@ -38,6 +40,7 @@ public sealed class AthleteSummary
 		Athlete = athlete;
 		var filter = new Filter(athlete.Category);
 		Fastest = results.ToDictionary(c => c, c => c.Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete)));
+		Farthest = results.ToDictionary(c => c, c => c.Farthest(filter).Find(r => r.Result.Athlete.Equals(athlete)));
 		Average = results.ToDictionary(c => c, c => c.BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete)));
 		Runs = results.ToDictionary(c => c, c => c.MostRuns().Find(r => r.Result.Athlete.Equals(athlete)));
 		CommunityStars = results.ToDictionary(c => c, c => c.CommunityStars().Find(r => r.Result.Athlete.Equals(athlete)));

@@ -33,7 +33,7 @@
 			<div class="card-highlighted card mb-3">
 				<div class="card-body no-activity-log">
 					@await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
-					@if (!Model.Summary.Athlete.Private && Model.Summary.Fastest[course] == null)
+					@if (!Model.Summary.Athlete.Private && Model.Summary.Fastest[course] == null && Model.Summary.Farthest[course] == null)
 					{
 						<div class="alert alert-danger">
 							There is an invalid result for this @Model.Config.CourseLabel.
@@ -46,24 +46,31 @@
 						<dl class="row mb-0 mt-3">
 							@if (!Model.Summary.Athlete.Private)
 							{
+								var defaultView = course.IsFieldEvent ? "Farthest" : "Fastest";
+								var fastest = Model.Summary.Fastest[course];
+								var farthest = Model.Summary.Farthest[course];
+								var value = course.IsFieldEvent ? farthest.Value?.Display : fastest.Value?.Display;
+								var rank = course.IsFieldEvent ? farthest.Rank?.Display : fastest.Rank?.Display;
+								var points = course.IsFieldEvent ? farthest.Points?.Display : fastest.Points?.Display;
+								var ageGrade = course.IsFieldEvent ? farthest.AgeGrade?.Display : fastest.AgeGrade?.Display;
 								<dt class="col-6">
-									@(Model.Config.Features.MultiAttempt ? "Fastest" : string.Empty) @(course.EventMetric)
+									@(Model.Config.Features.MultiAttempt ? defaultView : string.Empty) @(course.EventMetric)
 								</dt>
 								<dd class="col-6">
-									@Model.Summary.Fastest[course].Value?.Display
-									(<a href="/Course/@course.ID/@course.ShortName/Fastest/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Fastest[course].Rank?.Display</a>)
+									@value
+									(<a href="/Course/@course.ID/@course.ShortName/@defaultView/@Model.Summary.Athlete.Category?.Value">@rank</a>)
 								</dd>
 								<dt class="col-6">
 									Points
 								</dt>
 								<dd class="col-6">
-									@Model.Summary.Fastest[course].Points?.Display
+									@points
 								</dd>
 								<dt class="col-6">
 									Age Grade
 								</dt>
 								<dd class="col-6">
-									@Model.Summary.Fastest[course].AgeGrade?.Display
+									@ageGrade
 								</dd>
 							}
 
