@@ -1,5 +1,6 @@
 {
   "Features": {
+	"GenerateAthleteID": true,
 	"MultiAttempt": false,
 	"CommunityStars": true
   },

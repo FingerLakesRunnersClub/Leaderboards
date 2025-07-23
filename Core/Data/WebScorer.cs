@@ -33,7 +33,7 @@ public sealed class WebScorer : IDataSource
 	private Result[] ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
-	            && (!_config.Features.MultiAttempt
+	            && (_config.Features.GenerateAthleteID
 					|| r.GetProperty("UserId").GetUInt32() > 0)
 	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
 	               || r.GetProperty("Distance").GetString() == Distance.DefaultKey
