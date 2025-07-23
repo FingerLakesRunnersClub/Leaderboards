@@ -186,6 +186,7 @@ public sealed class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
+			Race = new Race(),
 			Distance = new Distance("10 miles"),
 			Results =
 			[
@@ -217,6 +218,7 @@ public sealed class AthleteControllerTests
 		var course = new Course
 		{
 			ID = 234,
+			Race = new Race(),
 			Distance = new Distance("10 miles"),
 			Results =
 			[

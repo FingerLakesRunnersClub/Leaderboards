@@ -26,7 +26,16 @@ public sealed class AthleteController : Controller
 
 	public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
 
-	public async Task<ViewResult> Course(uint id, uint courseID, string name) => View(await GetResults(id, courseID, name));
+	public async Task<ViewResult> Course(uint id, uint courseID, string name)
+	{
+		var allResults = await _dataService.GetAllResults();
+		var badges = GetBadges(id, allResults);
+		var course = await _dataService.GetResults(courseID, name);
+
+		return course.IsFieldEvent
+			? View("FieldEvent", GetFieldEventViewModel(id, course, await badges))
+			: View(GetRunViewModel(id, course, await badges));
+	}
 
 	public async Task<ViewResult> Log(uint id) => View(await GetLog(id));
 
@@ -51,10 +60,8 @@ public sealed class AthleteController : Controller
 		};
 	}
 
-	private async Task<AthleteCourseResultsViewModel> GetResults(uint id, uint courseID, string name)
+	private AthleteCourseResultsViewModel GetRunViewModel(uint id, Course course, IDictionary<string, string> badges)
 	{
-		var results = await _dataService.GetAllResults();
-		var course = await _dataService.GetResults(courseID, name);
 		var myResults = course.Results.Where(r => r.Athlete.ID == id).ToArray();
 
 		return new AthleteCourseResultsViewModel
@@ -63,15 +70,33 @@ public sealed class AthleteController : Controller
 			Header = new AthleteHeader
 			{
 				Athlete = myResults[0].Athlete,
-				BadgeIcons = await GetBadges(id, results),
+				BadgeIcons = badges,
 				ShowLink = true
 			},
 			Course = course,
-			RankedResults = Rank(myResults)
+			RankedResults = RankRun(myResults)
 		};
 	}
 
-	private static RankedList<Time> Rank(Result[] results)
+	private AthleteFieldEventResultsViewModel GetFieldEventViewModel(uint id, Course course, IDictionary<string, string> badges)
+	{
+		var myResults = course.Results.Where(r => r.Athlete.ID == id).ToArray();
+
+		return new AthleteFieldEventResultsViewModel()
+		{
+			Config = _config,
+			Header = new AthleteHeader
+			{
+				Athlete = myResults[0].Athlete,
+				BadgeIcons = badges,
+				ShowLink = true
+			},
+			Course = course,
+			RankedResults = RankFieldEvent(myResults)
+		};
+	}
+
+	private static RankedList<Time> RankRun(Result[] results)
 	{
 		var ranks = new RankedList<Time>();
 
@@ -83,7 +108,7 @@ public sealed class AthleteController : Controller
 			ranks.Add(new Ranked<Time>
 			{
 				All = ranks,
-				Rank = Rank(result, rank, ranks),
+				Rank = RankRun(result, rank, ranks),
 				Result = result,
 				Value = result.Duration,
 				AgeGrade = AgeGrade(result)
@@ -93,11 +118,41 @@ public sealed class AthleteController : Controller
 		return ranks;
 	}
 
-	private static Rank Rank(Result result, ushort rank, RankedList<Time> ranks)
+	private static RankedList<Performance> RankFieldEvent(Result[] results)
+	{
+		var ranks = new RankedList<Performance>();
+
+		var sorted = results.OrderBy(r => r.Performance ?? Performance.Zero).ToArray();
+		for (ushort rank = 1; rank <= sorted.Length; rank++)
+		{
+			var result = sorted[rank - 1];
+
+			ranks.Add(new Ranked<Performance>
+			{
+				All = ranks,
+				Rank = RankFieldEvent(result, rank, ranks),
+				Result = result,
+				Value = result.Performance,
+				AgeGrade = AgeGrade(result)
+			});
+		}
+
+		return ranks;
+	}
+
+	private static Rank RankRun(Result result, ushort rank, RankedList<Time> ranks)
 		=> result.Athlete.Private ? null
 			: result.AgeGrade > 100 ? new Rank(0)
 			: !ranks.Exists(r => r.Rank.Value > 0) ? new Rank(1)
 			: ranks.Any() && ranks[^1].Value == result.Duration ? ranks.Last().Rank
+			: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0)));
+
+
+	private static Rank RankFieldEvent(Result result, ushort rank, RankedList<Performance> ranks)
+		=> result.Athlete.Private ? null
+			: result.AgeGrade > 100 ? new Rank(0)
+			: !ranks.Exists(r => r.Rank.Value > 0) ? new Rank(1)
+			: ranks.Any() && ranks[^1].Value == result.Performance ? ranks.Last().Rank
 			: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0)));
 
 	private static AgeGrade AgeGrade(Result result)
@@ -105,7 +160,7 @@ public sealed class AthleteController : Controller
 			? new AgeGrade(result.AgeGrade.Value)
 			: null;
 
-	private static SimilarAthlete[] Rank(SimilarAthlete[] matches)
+	private static SimilarAthlete[] RankMatches(SimilarAthlete[] matches)
 	{
 		var ordered = matches.OrderByDescending(r => r.Score).ToArray();
 		for (var x = 0; x < ordered.Length; x++)
@@ -143,7 +198,7 @@ public sealed class AthleteController : Controller
 				BadgeIcons = await GetBadges(id, courses),
 				ShowLink = true
 			},
-			Results = Rank(results)
+			Results = RankRun(results)
 		};
 	}
 
@@ -162,7 +217,7 @@ public sealed class AthleteController : Controller
 				BadgeIcons = await GetBadges(id, results),
 				ShowLink = true
 			},
-			Matches = Rank(my.SimilarAthletes())
+			Matches = RankMatches(my.SimilarAthletes())
 		};
 	}
 }
