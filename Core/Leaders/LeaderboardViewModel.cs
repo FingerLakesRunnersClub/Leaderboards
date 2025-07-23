@@ -78,7 +78,7 @@ public sealed class LeaderboardViewModel : ViewModel
 	}
 
 	public IDictionary<Course, LeaderboardTable[]> CourseResults
-		=> _courses.ToDictionary(c => c, c => LeaderboardTables(c, _tableSize).Where(t => Config.Features.MultiAttempt ? _leaderboardFilter(t) : t.ResultType.Value is ResultType.Fastest or ResultType.Farthest)
+		=> _courses.ToDictionary(c => c, c => LeaderboardTables(c, _tableSize).Where(t => Config.Features.MultiAttemptCompetitions ? _leaderboardFilter(t) : t.ResultType.Value is ResultType.Fastest or ResultType.Farthest)
 			.Where(t => t.Rows.Value.Length > 0)
 			.ToArray());
 

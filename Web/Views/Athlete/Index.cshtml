@@ -8,14 +8,14 @@
 	<div class="card-body">
 		@if (Model.Config.FileSystemResults is null)
 		{
-			@await Html.PartialAsync("Overall-" + (Model.Config.Features.MultiAttempt ? "MultiAttempt" : "Competitions"), Model)
+			@await Html.PartialAsync("Overall-" + (Model.Config.Features.MultiAttemptCompetitions ? "MultiAttempt" : "Competitions"), Model)
 		}
 		<div class="text-center">
 			<a href="/Athlete/Log/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 				Activity Log
 				<i aria-hidden="true" class="fas fa-arrow-alt-circle-right"></i>
 			</a>
-			@if (Model.Config.Features.MultiAttempt && !Model.Summary.Athlete.Private)
+			@if (Model.Config.Features.MultiAttemptCompetitions && !Model.Summary.Athlete.Private)
 			{
 				<a href="/Athlete/Similar/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
 					Similar Athletes
@@ -67,7 +67,7 @@
 								</dd>
 							}
 
-							@if (Model.Config.Features.MultiAttempt)
+							@if (Model.Config.Features.MultiAttemptCompetitions)
 							{
 								@if (!Model.Summary.Athlete.Private)
 								{
@@ -109,7 +109,7 @@
 				@if (Model.Config.Features.MultiAttempt)
 				{
 					<div class="card-footer">
-						<a href="/Athlete/@Model.Summary.Athlete.ID/Course/@course.ID">View All Runs</a>
+						<a href="/Athlete/@Model.Summary.Athlete.ID/Course/@course.ID">View All Efforts</a>
 					</div>
 				}
 			</div>

@@ -27,7 +27,7 @@
 	</div>
 }
 <h2 class="mt-3">@Model.Config.CourseLabel Leaders</h2>
-@if (Model.Config.Features.MultiAttempt)
+@if (Model.Config.Features.MultiAttemptCompetitions)
 {
 	<div class="btn-group mb-2">
 		@foreach (var type in Enum.GetValues<LeaderboardResultType>())

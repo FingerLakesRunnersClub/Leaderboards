@@ -2,6 +2,7 @@
   "CourseLabel": "Course",
   "Features": {
 	"MultiAttempt": true,
+	"MultiAttemptCompetitions": true,
 	"CommunityStars": true
   },
   "CustomFields": {

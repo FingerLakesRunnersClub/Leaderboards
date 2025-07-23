@@ -6,6 +6,7 @@ public sealed record FeatureSet : IFeatureSet
 {
 	public bool GenerateAthleteID { get; }
 	public bool MultiAttempt { get; }
+	public bool MultiAttemptCompetitions { get; }
 	public bool AgeGroupTeams { get; }
 	public bool ShowBadges { get; }
 	public bool CommunityStars { get; }
@@ -15,6 +16,7 @@ public sealed record FeatureSet : IFeatureSet
 	{
 		GenerateAthleteID = section.GetValue<bool>(nameof(GenerateAthleteID));
 		MultiAttempt = section.GetValue<bool>(nameof(MultiAttempt));
+		MultiAttemptCompetitions = section.GetValue<bool>(nameof(MultiAttemptCompetitions));
 		AgeGroupTeams = section.GetValue<bool>(nameof(AgeGroupTeams));
 		ShowBadges = section.GetValue<bool>(nameof(ShowBadges));
 		CommunityStars = section.GetValue<bool>(nameof(CommunityStars));

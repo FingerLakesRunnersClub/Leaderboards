@@ -21,7 +21,7 @@
 <form class="float-left">
 	<section class="mb-3 mt-2">
 		<div class="btn-group d-flex flex-wrap">
-			@if (Model.Config.Features.MultiAttempt)
+			@if (Model.Config.Features.MultiAttemptCompetitions)
 			{
 				foreach (var type in Enum.GetValues<ResultType>().Select(t => new FormattedResultType(t)))
 				{
