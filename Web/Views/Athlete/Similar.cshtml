@@ -25,14 +25,14 @@
 
         <script>
             const fields = [
-                { name: "Rank", center: true, value: r => r.Rank.Value },
-                { name: "Name", value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
-                { name: "Age", center: true, value: r => r.Athlete.Age },
-                { name: "Category", center: true, value: r => r.Athlete.Category?.Display, sort: r => r.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
-                { name: "Fastest Pace", center: true, value: r => r.FastestPercent?.Display ?? '(no data)', sort: r => r.FastestPercent?.Value ?? 100 },
-                { name: "Average Pace", center: true, value: r => r.AveragePercent?.Display ?? '(no data)', sort: r => r.AveragePercent?.Value ?? 100 },
-                { name: "Similarity", center: true, value: r => r.Similarity.Display, sort: r => r.Similarity.Value, descending: true },
-                { name: "Overlap", center: true, value: r => r.Overlap.Display, sort: r => r.Overlap.Value, descending: true }
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', value: r => r.Athlete.Name, link: r => `/Athlete/Index/${r.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Athlete.Age },
+                { name: 'Category', center: true, value: r => r.Athlete.Category?.Display, sort: r => r.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
+                { name: 'Fastest Pace', center: true, value: r => r.FastestPercent?.Display ?? '(no data)', sort: r => r.FastestPercent?.Value ?? 100 },
+                { name: 'Average Pace', center: true, value: r => r.AveragePercent?.Display ?? '(no data)', sort: r => r.AveragePercent?.Value ?? 100 },
+                { name: 'Similarity', center: true, value: r => r.Similarity.Display, sort: r => r.Similarity.Value, descending: true },
+                { name: 'Overlap', center: true, value: r => r.Overlap.Display, sort: r => r.Overlap.Value, descending: true }
             ];
 
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.Matches));
