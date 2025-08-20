@@ -48,7 +48,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		var race = new Race
 		{
 			ID = name.GetID(),
-			Name = name,
+			Name = GetRaceName(name),
 			Date = DateTime.SpecifyKind(DateTime.Parse(date), DateTimeKind.Local),
 			Type = "Track",
 			Source = "File",
@@ -68,6 +68,16 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		return race;
 	}
 
+	private static string GetRaceName(string filename)
+		=> filename.EndsWith("mH")
+			? filename.Replace("mH", "m Hurdles")
+			: filename;
+
+	private static string GetFileName(string raceName)
+		=> raceName.EndsWith("m Hurdles")
+			? raceName.Replace("m Hurdles", "mH")
+			: raceName;
+
 	private static bool ShouldShowDecimals(Distance distance)
 		=> distance.Meters is > 0 and <= 5000;
 
@@ -78,7 +88,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		if (_allResults is not null)
 			return _allResults;
 
-		var paths = _cachedRaces.Select(r => Path.Combine(_config.FileSystemResults, r.Date.ToString("yyyy-MM-dd"), $"{r.Name}.txt"));
+		var paths = _cachedRaces.Select(r => Path.Combine(_config.FileSystemResults, r.Date.ToString("yyyy-MM-dd"), $"{GetFileName(r.Name)}.txt"));
 		var tasks = paths
 			.Select(async path => await _fs.File.ReadAllTextAsync(path))
 			.Select(async task => GetCourse(await task));
@@ -93,7 +103,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		var date = DateTime.SpecifyKind(DateTime.Parse(lines[0].Trim()), DateTimeKind.Local);
 		var name = lines[1].Trim();
 
-		var race = _cachedRaces.First(r => r.Date == date && r.Name == name);
+		var race = _cachedRaces.First(r => r.Date == date && r.Name == GetRaceName(name));
 		var distance = new Distance(name);
 
 		var course = new Course
