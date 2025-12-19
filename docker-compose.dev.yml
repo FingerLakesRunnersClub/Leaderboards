@@ -1,9 +1,12 @@
 services:
+  db:
+    environment:
+      - POSTGRES_PASSWORD=F0r3v3r
   challenge:
     build:
       dockerfile: Dockerfile.dev
     volumes:
-    - ".:/app"
+      - ".:/app"
   trail-circuit:
     build:
       dockerfile: Dockerfile.dev
