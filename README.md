@@ -23,7 +23,7 @@ This repository contains the code for the various leaderboard apps that the Fing
 
 ## Requirements
 
-- [.NET SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
 
 ## Installation
 
