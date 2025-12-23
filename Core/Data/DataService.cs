@@ -138,9 +138,11 @@ public sealed class DataService : IDataService
 
 	private async Task UpdateResults(Course course)
 	{
+		var aliases = GetAliases();
+
 		if (course.Race.Source == "File")
 		{
-			var results = await _fsrl.GetAllResults();
+			var results = await _fsrl.GetAllResults(await aliases);
 			course.Results = results.First(r => r.Race.Date == course.Race.Date && r.Race.Name == course.Race.Name).Results;
 			return;
 		}
@@ -152,7 +154,6 @@ public sealed class DataService : IDataService
 
 			if (resultsHash != course.LastHash)
 			{
-				var aliases = GetAliases();
 				course.Results = _resultsAPI[course.Race.Source].Source.ParseCourse(course, results, await aliases);
 				course.LastHash = resultsHash;
 			}

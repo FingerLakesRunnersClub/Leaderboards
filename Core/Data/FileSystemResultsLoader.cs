@@ -83,7 +83,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 
 	private Course[] _allResults;
 
-	public async Task<Course[]> GetAllResults()
+	public async Task<Course[]> GetAllResults(IDictionary<string, string> aliases)
 	{
 		if (_allResults is not null)
 			return _allResults;
@@ -91,13 +91,13 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		var paths = _cachedRaces.Select(r => Path.Combine(_config.FileSystemResults, r.Date.ToString("yyyy-MM-dd"), $"{GetFileName(r.Name)}.txt"));
 		var tasks = paths
 			.Select(async path => await _fs.File.ReadAllTextAsync(path))
-			.Select(async task => GetCourse(await task));
+			.Select(async task => GetCourse(await task, aliases));
 		var courses = await Task.WhenAll(tasks);
 		var events = courses.GroupBy(c => c.Name);
 		return _allResults = events.Select(g => new Course { ID = g.First().ID, Race = g.First().Race, ShowDecimals = g.First().ShowDecimals, Results = g.SelectMany(r => r.Results).OrderBy(r => r.Duration).ToArray() }).ToArray();
 	}
 
-	private Course GetCourse(string file)
+	private Course GetCourse(string file, IDictionary<string, string> aliases)
 	{
 		var lines = file.Split(Environment.NewLine);
 		var date = DateTime.SpecifyKind(DateTime.Parse(lines[0].Trim()), DateTimeKind.Local);
@@ -114,7 +114,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 			ShowDecimals = ShouldShowDecimals(distance)
 		};
 
-		course.Results = lines.Skip(5).SkipLast(1).Select(l => ResultFileReader.ParseResult(course, l)).ToArray();
+		course.Results = lines.Skip(5).SkipLast(1).Select(l => ResultFileReader.ParseResult(course, l, aliases)).ToArray();
 		return course;
 	}
 }

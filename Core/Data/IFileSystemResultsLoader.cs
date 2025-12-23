@@ -5,5 +5,5 @@ namespace FLRC.Leaderboards.Core.Data;
 public interface IFileSystemResultsLoader
 {
 	Race[] GetRaces();
-	Task<Course[]> GetAllResults();
+	Task<Course[]> GetAllResults(IDictionary<string, string> aliases);
 }

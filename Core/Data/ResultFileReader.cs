@@ -7,7 +7,7 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public static class ResultFileReader
 {
-	public static Result ParseResult(Course course, string line)
+	public static Result ParseResult(Course course, string line, IDictionary<string, string> aliases)
 	{
 		var name = line[2..34].Trim();
 		var age = line[52..54].Trim();
@@ -20,6 +20,9 @@ public static class ResultFileReader
 			_ => performance
 		};
 		var isTime = TimeSpan.TryParse(formatted, out var time);
+
+		if (aliases.TryGetValue(name, out var alias))
+			name = alias;
 
 		return new Result
 		{
