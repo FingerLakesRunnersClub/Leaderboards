@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Core.Athletes;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public class Grouped<T> : IGrouping<Athlete, T>, IComparable<Grouped<T>>
+public abstract class Grouped<T> : IGrouping<Athlete, T>, IComparable<Grouped<T>>
 {
 	protected readonly IGrouping<Athlete, T> _group;
 

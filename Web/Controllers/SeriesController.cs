@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class SeriesController : Controller
+public sealed class SeriesController : Controller
 {
 	private readonly ISeriesManager _seriesManager;
 	private readonly IConfig _config;

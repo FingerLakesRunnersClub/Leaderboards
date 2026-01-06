@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
 
-public class SeriesControllerTests
+public sealed class SeriesControllerTests
 {
 	[Fact]
 	public async Task SelectsCorrectSeries()

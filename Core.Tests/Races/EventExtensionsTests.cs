@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Races;
 
-public class EventExtensionsTests
+public sealed class EventExtensionsTests
 {
 	[Fact]
 	public void CanParseTrackEvent()

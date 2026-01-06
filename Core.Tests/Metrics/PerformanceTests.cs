@@ -3,7 +3,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Metrics;
 
-public class PerformanceTests
+public sealed class PerformanceTests
 {
 	[Fact]
 	public void ConvertsToMetersCorrectly()

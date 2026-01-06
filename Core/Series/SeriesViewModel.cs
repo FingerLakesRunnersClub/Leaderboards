@@ -2,7 +2,7 @@ using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Series;
 
-public class SeriesViewModel : DataTableViewModel
+public sealed class SeriesViewModel : DataTableViewModel
 {
 	public override string Title => Series.Name;
 

@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Data;
 
-public class ResultFileReaderTests
+public sealed class ResultFileReaderTests
 {
 	[Fact]
 	public void CanParseLongDistances()
