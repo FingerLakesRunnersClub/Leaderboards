@@ -36,10 +36,8 @@ public sealed class AppTests
 		var serviceProvider = services.BuildServiceProvider();
 		var app = new ApplicationBuilder(serviceProvider);
 
-		var env = Substitute.For<IHostEnvironment>();
-
 		//act
-		App.Configure(app, env);
+		App.Configure(app);
 
 		//assert
 		Assert.NotEmpty(app.Properties);
