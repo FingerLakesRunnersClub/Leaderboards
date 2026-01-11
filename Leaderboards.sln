@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrailCircuit", "TrailCircui
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Track", "Track\Track.csproj", "{27D468E3-2AF1-42F2-BFEB-C18AAF5546F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", "{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,18 @@ Global
 		{27D468E3-2AF1-42F2-BFEB-C18AAF5546F3}.Release|x64.Build.0 = Release|Any CPU
 		{27D468E3-2AF1-42F2-BFEB-C18AAF5546F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{27D468E3-2AF1-42F2-BFEB-C18AAF5546F3}.Release|x86.Build.0 = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|x64.Build.0 = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Debug|x86.Build.0 = Debug|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|x64.ActiveCfg = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|x64.Build.0 = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|x86.ActiveCfg = Release|Any CPU
+		{1E6AD31A-96CF-4F58-B320-7B0D12E1D447}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

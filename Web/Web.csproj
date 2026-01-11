@@ -10,6 +10,7 @@
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<ProjectReference Include="../Core/Core.csproj" />
+		<ProjectReference Include="../Data/Data.csproj" />
 		<None Include="wwwroot/**" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 </Project>
