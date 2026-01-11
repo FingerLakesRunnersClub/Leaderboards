@@ -3,6 +3,7 @@
 		<TargetFramework>net10.0</TargetFramework>
 		<RootNamespace>FLRC.Leaderboards.Track</RootNamespace>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
