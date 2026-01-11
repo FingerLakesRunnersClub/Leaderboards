@@ -3,6 +3,7 @@ services:
     image: postgres:18
     ports:
       - "5432:5432"
+    restart: always
   challenge:
     image: ecoapm/flrc-challenge
     build:
