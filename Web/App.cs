@@ -90,10 +90,12 @@ public static class App
 
 		app.UseEndpoints(endpoints =>
 		{
+			endpoints.MapAreaControllerRoute("Admin", "Admin", "/Admin/{controller=Home}/{action=Index}/{id?}");
 			endpoints.MapControllerRoute("Leaderboard", "{controller=Leaderboard}/{action=Index}/{id?}");
 			endpoints.MapControllerRoute("Athlete", "{controller}/{id}/{action}/{courseID}/{name?}");
 			endpoints.MapControllerRoute("Course", "{controller}/{id}/{name}/{action}/{category?}");
 			endpoints.MapControllerRoute("Default", "{controller}/{id}/{action}");
+			endpoints.MapDefaultControllerRoute();
 		});
 	}
 

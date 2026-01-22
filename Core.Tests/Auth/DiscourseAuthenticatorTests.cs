@@ -1,4 +1,3 @@
-using System.Text;
 using FLRC.Leaderboards.Core.Auth;
 using Xunit;
 

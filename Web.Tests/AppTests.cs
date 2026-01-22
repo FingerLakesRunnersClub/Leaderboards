@@ -1,8 +1,6 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using NSubstitute;
 using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests;
