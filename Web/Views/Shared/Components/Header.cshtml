@@ -1,12 +1,12 @@
-﻿@using FLRC.Leaderboards.Core
-@model ViewModel
+﻿@using FLRC.Leaderboards.Core.Config
+@model IConfig
 
 <header>
 	<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white box-shadow mb-4">
 		<div class="container">
 			<a class="navbar-brand" href="/">
 				<img class="logo" src="~/logo.png" alt="FLRC logo"/>
-				<h1 class="sr-only">@Model.Config.App</h1>
+				<h1 class="sr-only">@Model.App</h1>
 			</a>
 			<ul class="primary-nav nav justify-content-center">
 				<li class="nav-item">
@@ -17,20 +17,20 @@
 						Reports
 					</a>
 					<ul id="reports" class="dropdown-menu" onclick="event.stopPropagation();">
-						@if (Model.Config.Features.MultiAttempt)
+						@if (Model.Features.MultiAttempt)
 						{
 							<li class="dropdown-item">
 								<a href="/Log">Activity Log</a>
 							</li>
 						}
-						@if (Model.Config.Awards.Any())
+						@if (Model.Awards.Any())
 						{
 							<li class="dropdown-item">
 								<a href="/Awards">Awards</a>
 							</li>
 						}
 
-						@if (Model.Config.Features.MultiAttemptCompetitions)
+						@if (Model.Features.MultiAttemptCompetitions)
 						{
 							<li class="dropdown-item">
 								<a href="/Completed">Completions</a>
@@ -42,20 +42,20 @@
 						<li class="dropdown-item">
 							<a href="/Statistics">Statistics</a>
 						</li>
-						@if (Model.Config.SeriesTitle is not null)
+						@if (Model.SeriesTitle is not null)
 						{
 							<li class="dropdown-item">
-								<a href="/Series">@Model.Config.SeriesTitle</a>
+								<a href="/Series">@Model.SeriesTitle</a>
 							</li>
 						}
 					</ul>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link text-dark dropdown-toggle" href="#" onclick="return toggleDropdown(this, event);">
-						@(Model.Config.CourseLabel)s
+						@(Model.CourseLabel)s
 					</a>
 					<ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
-						@foreach (var course in Model.Config.CourseNames)
+						@foreach (var course in Model.CourseNames)
 						{
 							<li class="dropdown-item">
 								<a href="/Course/@course.Key/Fastest">@course.Value</a>
@@ -68,7 +68,7 @@
 						About
 					</a>
 					<ul id="about" class="dropdown-menu" onclick="event.stopPropagation();">
-						@foreach (var link in Model.Config.Links)
+						@foreach (var link in Model.Links)
 						{
 							<li class="dropdown-item">
 								<a href="@link.Value">@link.Key</a>
