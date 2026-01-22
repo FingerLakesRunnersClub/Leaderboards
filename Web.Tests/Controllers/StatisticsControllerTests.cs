@@ -6,7 +6,7 @@ using FLRC.Leaderboards.Web.Controllers;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Web.Tests;
+namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
 public sealed class StatisticsControllerTests
 {

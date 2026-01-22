@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http.Features;
 using NSubstitute;
 using Xunit;
 
-namespace FLRC.Leaderboards.Web.Tests;
+namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
 public sealed class ErrorControllerTests
 {
