@@ -7,6 +7,7 @@ using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Series;
 using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Migrations;
+using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
@@ -77,6 +78,7 @@ public static class App
 			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
+		services.AddScoped<ISeriesService, SeriesService>();
 	}
 
 	public static void Configure(IApplicationBuilder app)
@@ -119,7 +121,7 @@ public static class App
 				return;
 
 			var connection = new NpgsqlConnection(connectionString);
-			services.AddDbContext<DB, DB>(o => o.UseNpgsql(connection).UseLowerCaseNamingConvention());
+			services.AddDbContext<DB>(o => o.UseNpgsql(connection).UseLowerCaseNamingConvention());
 			services.AddScoped<IDbConnection>(_ => connection);
 		}
 	}

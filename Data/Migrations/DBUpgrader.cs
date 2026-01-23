@@ -4,7 +4,6 @@ using DbUp;
 using DbUp.Builder;
 using DbUp.Engine.Output;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 
 namespace FLRC.Leaderboards.Data.Migrations;
 
@@ -39,7 +38,7 @@ public class DBUpgrader
 		var scriptsToExecute = upgrader.GetScriptsToExecute()
 			.Select(s => s.Name)
 			.ToArray();
-		_logger.Log(LogLevel.Information, "Starting database migrations: {scripts}", Strings.Join(scriptsToExecute, ", "));
+		_logger.Log(LogLevel.Information, "Starting database migrations: {scripts}", string.Join(", ", scriptsToExecute));
 
 		var result = upgrader.PerformUpgrade();
 

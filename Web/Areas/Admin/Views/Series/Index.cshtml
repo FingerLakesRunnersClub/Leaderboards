@@ -1,0 +1,45 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Series[]>
+
+<a class="btn btn-light float-right" href="/Admin">
+	<i class="fas fa-chevron-left"></i>
+	Back to Admin Menu
+</a>
+<h2>Series Management</h2>
+
+<article class="card card-highlighted">
+	<section class="card-header">
+
+		<table class="table table-bordered table-striped">
+			<thead>
+			<tr>
+				<th>Key</th>
+				<th>Name</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var series in Model.Data)
+			{
+				<tr>
+					<th scope="row">
+						<a href="/Admin/Series/Edit/@series.ID">
+							@series.Key
+						</a>
+					</th>
+					<td>
+						@series.Name
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+
+		<a href="/Admin/Series/Add" class="btn btn-light">
+			<i class="fas fa-plus-circle"></i>
+			Add New Series
+		</a>
+
+	</section>
+</article>

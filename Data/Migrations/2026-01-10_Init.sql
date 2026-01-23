@@ -15,9 +15,9 @@ CREATE TABLE Settings
 
 CREATE TABLE Features
 (
-	SeriesID UUID NOT NULL REFERENCES Series (ID),
-	Key      TEXT NOT NULL,
-	Value    BIT  NOT NULL,
+	SeriesID UUID    NOT NULL REFERENCES Series (ID),
+	Key      TEXT    NOT NULL,
+	Value    BOOLEAN NOT NULL,
 	PRIMARY KEY (SeriesID, Key)
 );
 
@@ -28,14 +28,13 @@ CREATE TABLE Iterations
 	Name      TEXT NOT NULL,
 	StartDate DATE,
 	EndDate   DATE,
-	UNIQUE (SeriesID, Name),
-	INDEX (StartDate, EndDate)
+	UNIQUE (SeriesID, Name)
 );
 
 CREATE TABLE Races
 (
 	ID   UUID NOT NULL PRIMARY KEY,
-	Name TEXT NOT NULL INDEX,
+	Name TEXT NOT NULL,
 	Type TEXT NOT NULL
 );
 
@@ -56,16 +55,15 @@ CREATE TABLE Courses
 
 CREATE TABLE Challenges
 (
-	ID          UUID NOT NULL PRIMARY KEY,
-	IterationID UUID NOT NULL REFERENCES Iteration (ID),
-	Name        TEXT NOT NULL,
-	IsOfficial  BIT  NOT NULL INDEX,
-	IsPublic    BIT  NOT NULL INDEX,
+	ID          UUID    NOT NULL PRIMARY KEY,
+	IterationID UUID    NOT NULL REFERENCES Iterations (ID),
+	Name        TEXT    NOT NULL,
+	IsOfficial  BOOLEAN NOT NULL,
+	IsPublic    BOOLEAN NOT NULL,
 	StartDate   DATE,
 	EndDate     DATE,
-	TimeLimit   TIME,
-	UNIQUE (SeriesID, Name),
-	INDEX (StartDate, EndDate)
+	TimeLimit   SMALLINT,
+	UNIQUE (IterationID, Name)
 );
 
 CREATE TABLE ChallengeCourses
@@ -77,11 +75,11 @@ CREATE TABLE ChallengeCourses
 
 CREATE TABLE Athletes
 (
-	ID          UUID NOT NULL PRIMARY KEY,
-	Name        TEXT NOT NULL INDEX,
-	Category    CHAR NOT NULL INDEX,
-	DateOfBirth DATE NOT NULL INDEX,
-	IsPrivate   BIT  NOT NULL INDEX
+	ID          UUID    NOT NULL PRIMARY KEY,
+	Name        TEXT    NOT NULL,
+	Category    CHAR    NOT NULL,
+	DateOfBirth DATE    NOT NULL,
+	IsPrivate   BOOLEAN NOT NULL
 );
 
 CREATE TABLE Results
@@ -90,7 +88,7 @@ CREATE TABLE Results
 	CourseID  UUID      NOT NULL REFERENCES Courses (ID),
 	AthleteID UUID      NOT NULL REFERENCES Athletes (ID),
 	StartTime TIMESTAMP NOT NULL,
-	Duration  INT       NOT NULL INDEX,
+	Duration  INT       NOT NULL,
 	UNIQUE (AthleteID, StartTime)
 );
 

@@ -5,8 +5,8 @@ public sealed record Setting : Setting<string>;
 public abstract record Setting<T>
 {
 	public required Guid SeriesID { get; init; }
-	public required string Name { get; init; }
+	public required string Key { get; init; }
 	public required T Value { get; init; }
 
-	public required Series Series { get; init; }
+	public Series Series { get; init; } = null!;
 }

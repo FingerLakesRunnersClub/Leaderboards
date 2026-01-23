@@ -1,0 +1,57 @@
+@using FLRC.Leaderboards.Core.Config
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Series>
+
+<h2>@Model.Title</h2>
+<article class="card card-highlighted">
+	<form method="post" class="card-body">
+		<h3>Details</h3>
+		<section class="row">
+			<div class="form-group col-md-4">
+				<label for="key">Key</label>
+				<input type="text" id="key" name="Key" required pattern="[\w\d-]+" value="@Model.Data.Key" class="form-control"/>
+				<small class="form-text text-muted">The URL key identifying the series, alphanumerics and hyphens only</small>
+			</div>
+
+			<div class="form-group col-md-8">
+				<label for="name">Name</label>
+				<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+				<small class="form-text text-muted">The display name for the series</small>
+			</div>
+		</section>
+
+		<section class="row">
+			<div class="col-md-6">
+				<h4>Features</h4>
+				<div class="form-group">
+					@foreach (var feature in typeof(IFeatureSet).GetProperties())
+					{
+						var isChecked = Model.Data.Features.FirstOrDefault(f => f.Key == feature.Name)?.Value ?? false;
+						<div class="form-check">
+							<input type="checkbox" id="@feature.Name" name="Features[@feature.Name]" @(isChecked ? "checked" : "") value="true" class="form-check-input"/>
+							<input type="hidden" name="Features[@feature.Name]" value="false"/>
+							<label for="@feature.Name" class="form-check-label">@feature.Name</label>
+						</div>
+					}
+				</div>
+			</div>
+
+			<div class="col-md-6">
+				<h4>Settings</h4>
+				@foreach (var setting in typeof(IConfig).GetProperties().Where(p => p.PropertyType == typeof(string)))
+				{
+					var value = Model.Data.Settings.FirstOrDefault(f => f.Key == setting.Name)?.Value;
+					<div class="form-group">
+						<label for="@setting.Name">@setting.Name</label>
+						<input type="text" id="@setting.Name" name="Settings[@setting.Name]" value="@value" class="form-control"/>
+					</div>
+				}
+			</div>
+		</section>
+
+		<button type="submit" class="btn btn-primary">Save Changes</button>
+		<a href="/Admin/Series" class="btn btn-light">Cancel</a>
+	</form>
+</article>
