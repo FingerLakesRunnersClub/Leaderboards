@@ -1,3 +1,3 @@
 ﻿using FLRC.Leaderboards.Web;
 
-await App.Run(args);
+await App.Run("track", args);

@@ -18,8 +18,9 @@ namespace FLRC.Leaderboards.Web;
 
 public static class App
 {
-	public static async Task Run(string[] args)
+	public static async Task Run(string context, string[] args)
 	{
+		AppContext.SetData("Context", context);
 		var options = new WebApplicationOptions
 		{
 			Args = args,
