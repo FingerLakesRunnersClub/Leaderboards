@@ -1,0 +1,51 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<IGrouping<Series, Iteration>[]>
+
+<a class="btn btn-light float-right" href="/Admin">
+	<i class="fas fa-chevron-left"></i>
+	Back to Admin Menu
+</a>
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	@foreach (var group in Model.Data)
+	{
+		<section class="card-body">
+			<a href="/Admin/Iterations/Add/@group.Key.ID" class="btn btn-light float-right">
+				<i class="fas fa-plus-circle"></i>
+				Add Iteration
+			</a>
+			<h3>@group.Key.Name</h3>
+
+			<table class="table table-bordered table-striped">
+				<thead>
+				<tr>
+					<th scope="col">Name</th>
+					<th scope="col">Starts</th>
+					<th scope="col">Ends</th>
+				</tr>
+				</thead>
+				<tbody>
+				@foreach (var iteration in group)
+				{
+					<tr>
+						<th scope="row">
+							<a href="/Admin/Iterations/Edit/@iteration.ID">
+								@iteration.Name
+							</a>
+						</th>
+						<td>
+							@iteration.StartDate
+						</td>
+						<td>
+							@iteration.EndDate
+						</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+		</section>
+	}
+</article>

@@ -78,6 +78,7 @@ public static class App
 			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
+		services.AddScoped<IIterationService, IterationService>();
 		services.AddScoped<ISeriesService, SeriesService>();
 	}
 

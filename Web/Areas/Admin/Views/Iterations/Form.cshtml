@@ -1,0 +1,30 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Iteration>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<form method="post" class="card-body">
+		<section class="form-group">
+			<label for="name">Name</label>
+			<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+		</section>
+
+		<section class="row">
+			<div class="form-group col-sm-6 col-md-4 col-lg-3">
+				<label for="start-date">Start Date</label>
+				<input type="date" id="start-date" name="StartDate" required value="@Model.Data.StartDate?.ToString("yyyy-MM-dd")" class="form-control"/>
+			</div>
+
+			<div class="form-group col-sm-6 col-md-4 col-lg-3">
+				<label for="end-date">End Date</label>
+				<input type="date" id="end-date" name="EndDate" required value="@Model.Data.EndDate?.ToString("yyyy-MM-dd")" class="form-control"/>
+			</div>
+		</section>
+
+		<button type="submit" class="btn btn-primary">Save Changes</button>
+		<a href="/Admin/Iterations" class="btn btn-light">Cancel</a>
+	</form>
+</article>

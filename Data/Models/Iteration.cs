@@ -2,13 +2,13 @@ namespace FLRC.Leaderboards.Data.Models;
 
 public sealed record Iteration
 {
-	public required Guid ID { get; init; }
-	public required Guid SeriesID { get; init; }
-	public required string Name { get; init; }
-	public DateOnly? StartDate { get; init; }
-	public DateOnly? EndDate { get; init; }
+	public Guid ID { get; set; }
+	public Guid SeriesID { get; set; }
+	public string Name { get; set; } = null!;
+	public DateOnly? StartDate { get; set; }
+	public DateOnly? EndDate { get; set; }
 
-	public required Series Series { get; init; }
+	public Series Series { get; init; } = null!;
 	public Race[] Races { get; init; } = [];
 	public Challenge[] Challenges { get; init; } = [];
 }
