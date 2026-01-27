@@ -5,7 +5,7 @@ services:
       - "5432:5432"
     restart: always
     environment:
-      POSTGRES_DB: Leaderboard
+      POSTGRES_DB: Leaderboards
     volumes:
       - data:/var/lib/postgresql/data
   challenge:
