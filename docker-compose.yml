@@ -4,6 +4,10 @@ services:
     ports:
       - "5432:5432"
     restart: always
+    environment:
+      POSTGRES_DB: Leaderboard
+    volumes:
+      - data:/var/lib/postgresql/data
   challenge:
     image: ecoapm/flrc-challenge
     build:
@@ -33,3 +37,6 @@ services:
     restart: always
     volumes:
       - "../TrackResults:/TrackResults"
+
+volumes:
+  data:
