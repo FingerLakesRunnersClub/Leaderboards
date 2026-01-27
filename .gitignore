@@ -352,3 +352,5 @@ MigrationBackup/
 .vscode/
 .idea/
 coverage/
+
+docker-compose.override.yml
