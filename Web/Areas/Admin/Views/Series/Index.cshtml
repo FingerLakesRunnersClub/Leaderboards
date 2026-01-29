@@ -3,20 +3,16 @@
 
 @model ViewModel<Series[]>
 
-<a class="btn btn-light float-right" href="/Admin">
-	<i class="fas fa-chevron-left"></i>
-	Back to Admin Menu
-</a>
-<h2>Series Management</h2>
+@await Html.PartialAsync("../AdminHeader")
 
 <article class="card card-highlighted">
-	<section class="card-header">
+	<section class="card-body">
 
 		<table class="table table-bordered table-striped">
 			<thead>
 			<tr>
-				<th>Key</th>
-				<th>Name</th>
+				<th scope="col">Key</th>
+				<th scope="col">Name</th>
 			</tr>
 			</thead>
 			<tbody>
