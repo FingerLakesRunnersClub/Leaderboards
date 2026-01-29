@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class IterationControllerTests
+public class IterationsControllerTests
 {
 	[Fact]
 	public async Task CanGetIterationsList()
