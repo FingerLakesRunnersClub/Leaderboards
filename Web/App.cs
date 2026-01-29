@@ -79,6 +79,7 @@ public static class App
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
 		services.AddScoped<IIterationService, IterationService>();
+		services.AddScoped<IRaceService, RaceService>();
 		services.AddScoped<ISeriesService, SeriesService>();
 	}
 

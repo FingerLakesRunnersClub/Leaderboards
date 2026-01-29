@@ -2,10 +2,10 @@ namespace FLRC.Leaderboards.Data.Models;
 
 public sealed record Race
 {
-	public required Guid ID { get; init; }
-	public required string Name { get; init; }
-	public required string Type { get; init; }
+	public Guid ID { get; set; }
+	public string Name { get; set; } = null!;
+	public string Type { get; set; } = null!;
 
-	public Iteration[] Iterations { get; init; } = [];
-	public Course[] Courses { get; init; } = [];
+	public ICollection<Iteration> Iterations { get; init; } = [];
+	public ICollection<Course> Courses { get; init; } = [];
 }

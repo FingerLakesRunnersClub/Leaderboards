@@ -1,0 +1,48 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Race>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<form method="post" class="card-body">
+		<section class="row">
+			<div class="form-group col-sm-7 col-md-6 col-lg-5 col-xl-4">
+				<label for="name">Name</label>
+				<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+			</div>
+			<div class="form-group col-sm-5 col-md-4 col-lg-3 col-xl-2">
+				<label for="type">Type</label>
+				<select id="type" name="Type" required class="form-control">
+					@foreach (var type in Enum.GetNames<FLRC.Leaderboards.Core.Races.CourseType>())
+					{
+						<option value="@type" @(type == Model.Data.Type ? "selected" : "")>
+							@type
+						</option>
+					}
+				</select>
+			</div>
+		</section>
+
+		<h4>Courses</h4>
+		<table class="table col-sm-8 col-md-6 col-lg-4 col-xl-3
+">
+			<thead>
+			<tr>
+				<th scope="col" class="text-right">Distance</th>
+				<th scope="col">Units</th>
+			</tr>
+			</thead>
+			@foreach (var course in Model.Data.Courses)
+			{
+				@await Html.PartialAsync("CourseForm", course)
+			}
+
+			@await Html.PartialAsync("CourseForm", new Course())
+		</table>
+
+		<button type="submit" class="btn btn-primary">Save Changes</button>
+		<a href="/Admin/Races" class="btn btn-light">Cancel</a>
+	</form>
+</article>

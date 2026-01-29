@@ -1,0 +1,39 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Race[]>
+
+@await Html.PartialAsync("../AdminHeader")
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<a href="/Admin/Races/Add" class="btn btn-light float-right mb-3">
+			<i class="fas fa-plus-circle"></i>
+			Add Race
+		</a>
+
+		<table class="table table-bordered table-striped">
+			<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Type</th>
+				<th scope="col">Courses</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var race in Model.Data)
+			{
+				<tr>
+					<th scope="row">
+						<a href="/Admin/Races/Edit/@race.ID">
+							@race.Name
+						</a>
+					</th>
+					<td>@race.Type</td>
+					<td>@string.Join(", ", race.Courses.Select(c => $"{c.Distance:#0.##} {c.Units}"))</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</section>
+</article>

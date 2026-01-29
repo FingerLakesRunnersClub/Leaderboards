@@ -49,8 +49,8 @@ CREATE TABLE Courses
 (
 	ID       UUID          NOT NULL PRIMARY KEY,
 	RaceID   UUID          NOT NULL REFERENCES Races (ID),
-	Distance NUMERIC(6, 3) NOT NULL,
-	Units    CHAR(2)       NOT NULL
+	Distance NUMERIC(5, 2) NOT NULL,
+	Units    TEXT          NOT NULL
 );
 
 CREATE TABLE Challenges

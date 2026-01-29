@@ -1,0 +1,28 @@
+@using FLRC.Leaderboards.Data.Models
+
+@model Course
+
+@{
+	var id = Model.ID;
+	var isNew = id == Guid.Empty;
+	var required = !isNew ? "required" : "";
+	var value = !isNew ? Model.Distance.ToString("##.##") : "";
+}
+
+<tr>
+	<td>
+		<input type="text" inputmode="numeric" id="course-@id-distance" name="Courses[@id].Distance" @required value="@value" class="form-control text-right"/>
+	</td>
+
+	<td>
+		<select id="course-@id-units" name="Courses[@id].Units" @required class="form-control">
+			<option></option>
+			@foreach (var unit in Enum.GetNames<FLRC.Leaderboards.Core.Races.DistanceUnit>())
+			{
+				<option value="@unit" @(unit == Model.Units ? "selected" : "")>
+					@unit
+				</option>
+			}
+		</select>
+	</td>
+</tr>

@@ -2,12 +2,12 @@ namespace FLRC.Leaderboards.Data.Models;
 
 public sealed record Course
 {
-	public required Guid ID { get; init; }
-	public required Guid RaceID { get; init; }
-	public required decimal Distance { get; init; }
-	public required string Units { get; init; }
+	public Guid ID { get; set; }
+	public Guid RaceID { get; set; }
+	public decimal Distance { get; set; }
+	public string Units { get; set; } = null!;
 
-	public required Race Race { get; init; }
-	public Result[] Results { get; init; } = [];
-	public Challenge[] Challenges { get; init; } = [];
+	public Race Race { get; init; } = null!;
+	public ICollection<Result> Results { get; init; } = [];
+	public ICollection<Challenge> Challenges { get; init; } = [];
 }
