@@ -37,7 +37,7 @@ public class RacesControllerTests
 		var result = controller.Add();
 
 		//assert
-		var model = result.Model as ViewModel<Race>;
+		var model = result.Model as Core.ViewModel;
 		Assert.Equal("Add Race", model!.Title);
 	}
 
@@ -69,7 +69,7 @@ public class RacesControllerTests
 		var result = await controller.Edit(Guid.NewGuid());
 
 		//assert
-		var model = result.Model as ViewModel<Race>;
+		var model = result.Model as Core.ViewModel;
 		Assert.Equal("Edit Test Race", model!.Title);
 	}
 

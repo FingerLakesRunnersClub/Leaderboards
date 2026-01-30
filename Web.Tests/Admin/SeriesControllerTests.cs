@@ -36,7 +36,7 @@ public class SeriesControllerTests
 		var result = controller.Add();
 
 		//assert
-		var model = result.Model as ViewModel<Series>;
+		var model = result.Model as Core.ViewModel;
 		Assert.Equal("Add Series", model!.Title);
 	}
 
@@ -69,7 +69,7 @@ public class SeriesControllerTests
 		var result = await controller.Edit(Guid.NewGuid());
 
 		//assert
-		var model = result!.Model as ViewModel<Series>;
+		var model = result!.Model as Core.ViewModel;
 		Assert.Equal("Edit Series", model!.Title);
 	}
 
