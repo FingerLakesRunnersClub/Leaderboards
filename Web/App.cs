@@ -78,6 +78,7 @@ public static class App
 			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
+
 		services.AddScoped<IIterationService, IterationService>();
 		services.AddScoped<IRaceService, RaceService>();
 		services.AddScoped<ISeriesService, SeriesService>();
@@ -90,7 +91,9 @@ public static class App
 
 		app.UseStaticFiles();
 		app.UseRouting();
+
 		app.UseAuthentication();
+		app.UseAuthorization();
 
 		app.UseEndpoints(endpoints =>
 		{
@@ -114,6 +117,8 @@ public static class App
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
 			var authenticator = new DiscourseAuthenticator("https://forum.fingerlakesrunners.org", authSecret);
 			services.AddSingleton<IDiscourseAuthenticator>(authenticator);
+
+			services.AddAuthorization();
 		}
 
 		private void AddDatabase()

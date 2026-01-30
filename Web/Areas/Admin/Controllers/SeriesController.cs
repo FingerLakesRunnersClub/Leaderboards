@@ -4,8 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-public sealed class SeriesController(ISeriesService seriesService) : Controller
+public sealed class SeriesController(ISeriesService seriesService) : AdminController
 {
 	public async Task<ViewResult> Index()
 	{

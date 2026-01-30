@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-public class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : Controller
+public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : AdminController
 {
 	public async Task<ViewResult> Index()
 	{
@@ -26,10 +25,10 @@ public class IterationsController(ISeriesService seriesService, IIterationServic
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Add(Guid id, Iteration iteration, Guid[] races)
+	public async Task<RedirectToActionResult> Add(Guid id, Iteration iteration, Guid[] races)
 	{
 		await iterationService.AddIteration(id, iteration, races);
-		return Redirect("/Admin/Iterations");
+		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]
@@ -43,10 +42,10 @@ public class IterationsController(ISeriesService seriesService, IIterationServic
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Edit(Guid id, Iteration updated, Guid[] races)
+	public async Task<RedirectToActionResult> Edit(Guid id, Iteration updated, Guid[] races)
 	{
 		var iteration = await iterationService.GetIteration(id);
 		await iterationService.UpdateIteration(iteration, updated, races);
-		return Redirect("/Admin/Iterations");
+		return RedirectToAction(nameof(Index));
 	}
 }

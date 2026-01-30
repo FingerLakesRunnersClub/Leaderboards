@@ -1,3 +1,3 @@
 using FLRC.Leaderboards.Web;
 
-await App.Run("trailcircuit", args);
+await App.Run("TrailCircuit", args);

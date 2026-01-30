@@ -19,7 +19,7 @@ public sealed class DiscourseAuthenticator : IDiscourseAuthenticator
 
 	public string GetLoginURL(string currentHost)
 	{
-		var returnURL = $"{currentHost}/auth/redirect";
+		var returnURL = $"{currentHost}/Account/Redirect";
 		var nonce = Guid.NewGuid();
 
 		var payload = $"nonce={nonce}&return_sso_url={returnURL}";

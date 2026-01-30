@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
 
@@ -10,10 +11,15 @@ public sealed class SeriesService(DB db) : ISeriesService
 		=> await db.Set<Series>().OrderBy(s => s.Key).ToArrayAsync();
 
 	public async Task<Series> GetSeries(Guid id)
-		=> await db.Set<Series>()
+		=> await _series.FirstAsync(s => s.ID == id);
+
+	public async Task<Series> FindSeries(string key)
+		=> await _series.FirstAsync(s => s.Key == key);
+
+	private readonly IIncludableQueryable<Series, ICollection<Setting>> _series
+		= db.Set<Series>()
 			.Include(s => s.Features)
-			.Include(s => s.Settings)
-			.FirstAsync(s => s.ID == id);
+			.Include(s => s.Settings);
 
 	public async Task AddSeries(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{

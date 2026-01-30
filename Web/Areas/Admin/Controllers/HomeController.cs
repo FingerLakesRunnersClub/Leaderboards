@@ -2,8 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-public class HomeController : Controller
+public sealed class HomeController : AdminController
 {
 	public ViewResult Index()
 	{
