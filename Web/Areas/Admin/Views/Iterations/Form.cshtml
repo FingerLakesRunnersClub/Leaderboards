@@ -1,28 +1,60 @@
-@using FLRC.Leaderboards.Data.Models
 @using FLRC.Leaderboards.Web.Areas.Admin
+@using FLRC.Leaderboards.Web.Areas.Admin.ViewModels
 
-@model ViewModel<Iteration>
+@model ViewModel<IterationForm>
 
 <h2>@Model.Title</h2>
+
+@{
+	var selectedRaceIDs = Model.Data.Iteration.Races.Select(r => r.ID).ToArray();
+}
 
 <article class="card card-highlighted">
 	<form method="post" class="card-body">
 		<section class="form-group">
 			<label for="name">Name</label>
-			<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+			<input type="text" id="name" name="Name" required value="@Model.Data.Iteration.Name" class="form-control"/>
 		</section>
 
 		<section class="row">
 			<div class="form-group col-sm-6 col-md-4 col-lg-3">
 				<label for="start-date">Start Date</label>
-				<input type="date" id="start-date" name="StartDate" required value="@Model.Data.StartDate?.ToString("yyyy-MM-dd")" class="form-control"/>
+				<input type="date" id="start-date" name="StartDate" required value="@Model.Data.Iteration.StartDate?.ToString("yyyy-MM-dd")" class="form-control"/>
 			</div>
 
 			<div class="form-group col-sm-6 col-md-4 col-lg-3">
 				<label for="end-date">End Date</label>
-				<input type="date" id="end-date" name="EndDate" required value="@Model.Data.EndDate?.ToString("yyyy-MM-dd")" class="form-control"/>
+				<input type="date" id="end-date" name="EndDate" required value="@Model.Data.Iteration.EndDate?.ToString("yyyy-MM-dd")" class="form-control"/>
 			</div>
 		</section>
+
+		<h4>Races</h4>
+		<table class="table table-striped table-bordered col-md-10 col-lg-8 col-xl-6">
+			<thead>
+			<tr>
+				<th scope="col"></th>
+				<th scope="col">Name</th>
+				<th scope="col">Courses</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var race in Model.Data.Races)
+			{
+				var isChecked = selectedRaceIDs.Contains(race.ID);
+				<tr>
+					<td class="form-check">
+						<input type="checkbox" id="race-@race.ID" name="Races" @(isChecked ? "checked" : "") value="@race.ID"/>
+					</td>
+					<th scope="row">
+						<label for="race-@race.ID" class="form-check-label">@race.Name</label>
+					</th>
+					<td>
+						@race.Distances
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
 
 		<button type="submit" class="btn btn-primary">Save Changes</button>
 		<a href="/Admin/Iterations" class="btn btn-light">Cancel</a>

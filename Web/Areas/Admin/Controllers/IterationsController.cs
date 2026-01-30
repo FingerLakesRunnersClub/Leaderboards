@@ -1,11 +1,12 @@
 using FLRC.Leaderboards.Data.Models;
 using FLRC.Leaderboards.Web.Areas.Admin.Services;
+using FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class IterationsController(ISeriesService seriesService, IIterationService iterationService) : Controller
+public class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : Controller
 {
 	public async Task<ViewResult> Index()
 	{
@@ -18,14 +19,16 @@ public class IterationsController(ISeriesService seriesService, IIterationServic
 	public async Task<ViewResult> Add(Guid id)
 	{
 		var series = await seriesService.GetSeries(id);
-		var vm = new ViewModel<Iteration>($"Add Iteration to {series.Name}", new Iteration());
+		var races = await raceService.GetAllRaces();
+		var form = new IterationForm { Iteration = new Iteration(), Races = races };
+		var vm = new ViewModel<IterationForm>($"Add Iteration to {series.Name}", form);
 		return View("Form", vm);
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Add(Guid id, Iteration iteration)
+	public async Task<RedirectResult> Add(Guid id, Iteration iteration, Guid[] races)
 	{
-		await iterationService.AddIteration(id, iteration);
+		await iterationService.AddIteration(id, iteration, races);
 		return Redirect("/Admin/Iterations");
 	}
 
@@ -33,15 +36,17 @@ public class IterationsController(ISeriesService seriesService, IIterationServic
 	public async Task<ViewResult> Edit(Guid id)
 	{
 		var iteration = await iterationService.GetIteration(id);
-		var vm = new ViewModel<Iteration>($"Edit {iteration.Series.Name} {iteration.Name}", iteration);
+		var races = await raceService.GetAllRaces();
+		var form = new IterationForm { Iteration = iteration, Races = races };
+		var vm = new ViewModel<IterationForm>($"Edit {iteration.Series.Name} {iteration.Name}", form);
 		return View("Form", vm);
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Edit(Guid id, Iteration updated)
+	public async Task<RedirectResult> Edit(Guid id, Iteration updated, Guid[] races)
 	{
 		var iteration = await iterationService.GetIteration(id);
-		await iterationService.UpdateIteration(iteration, updated);
+		await iterationService.UpdateIteration(iteration, updated, races);
 		return Redirect("/Admin/Iterations");
 	}
 }
