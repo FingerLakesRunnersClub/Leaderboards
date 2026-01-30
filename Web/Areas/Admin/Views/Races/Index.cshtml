@@ -30,7 +30,7 @@
 						</a>
 					</th>
 					<td>@race.Type</td>
-					<td>@string.Join(", ", race.Courses.Select(c => $"{c.Distance:#0.##} {c.Units}"))</td>
+					<td>@race.Distances</td>
 				</tr>
 			}
 			</tbody>

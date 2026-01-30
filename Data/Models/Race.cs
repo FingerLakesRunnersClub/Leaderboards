@@ -8,4 +8,6 @@ public sealed record Race
 
 	public ICollection<Iteration> Iterations { get; init; } = [];
 	public ICollection<Course> Courses { get; init; } = [];
+
+	public string Distances => string.Join(", ", Courses.Select(c => $"{c.Distance:#0.##} {c.Units}"));
 }

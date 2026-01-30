@@ -6,7 +6,7 @@
 	var id = Model.ID;
 	var isNew = id == Guid.Empty;
 	var required = !isNew ? "required" : "";
-	var value = !isNew ? Model.Distance.ToString("##.##") : "";
+	var value = !isNew ? Model.Distance.ToString("#0.##") : "";
 }
 
 <tr>
