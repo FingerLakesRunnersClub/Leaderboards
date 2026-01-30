@@ -18,7 +18,7 @@ public class DB(DbContextOptions<DB> options) : DbContext(options)
 		build.Entity<Feature>().Table("Features").HasKey(s => new { s.SeriesID, Name = s.Key });
 
 		var anIteration = build.Entity<Iteration>().Table("Iterations");
-		anIteration.HasMany(i => i.Races).WithMany(c => c.Iterations).UsingEntity<RaceIteration>();
+		anIteration.HasMany(i => i.Races).WithMany(c => c.Iterations).UsingEntity<RaceIteration>().Table("RaceIterations");
 		anIteration.HasMany(i => i.Challenges).WithOne(c => c.Iteration);
 
 		var aRace = build.Entity<Race>().Table("Races");

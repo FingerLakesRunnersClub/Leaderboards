@@ -9,6 +9,6 @@ public sealed record Iteration
 	public DateOnly? EndDate { get; set; }
 
 	public Series Series { get; init; } = null!;
-	public Race[] Races { get; init; } = [];
-	public Challenge[] Challenges { get; init; } = [];
+	public ICollection<Race> Races { get; init; } = [];
+	public ICollection<Challenge> Challenges { get; init; } = [];
 }
