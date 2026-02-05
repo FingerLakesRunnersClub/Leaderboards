@@ -8,4 +8,5 @@ public interface ISeriesService
 	Task<Series> GetSeries(Guid id);
 	Task AddSeries(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings);
 	Task UpdateSeries(Series series, Series updated, IDictionary<string, bool> features, IDictionary<string, string> settings);
+	Task<Series> FindSeries(string key);
 }

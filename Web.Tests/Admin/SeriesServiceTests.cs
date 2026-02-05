@@ -45,6 +45,25 @@ public class SeriesServiceTests
 	}
 
 	[Fact]
+	public async Task CanFindSeries()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new SeriesService(db);
+
+		var s1 = new Series { ID = Guid.NewGuid(), Key = "Test1", Name = "Test 1" };
+		var s2 = new Series { ID = Guid.NewGuid(), Key = "Test2", Name = "Test 2" };
+		await db.AddRangeAsync(s1, s2);
+		await db.SaveChangesAsync();
+
+		//act
+		var series = await service.FindSeries("Test1");
+
+		//assert
+		Assert.Equal("Test 1", series.Name);
+	}
+
+	[Fact]
 	public async Task CanAddSeries()
 	{
 		//arrange
