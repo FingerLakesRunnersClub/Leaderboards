@@ -12,7 +12,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
-public sealed class AuthControllerTests
+public sealed class AccountControllerTests
 {
 	private static ControllerContext DefaultContext() => new() { HttpContext = new DefaultHttpContext { Request = { Scheme = "https", Host = new HostString("localhost") } } };
 
@@ -24,7 +24,7 @@ public sealed class AuthControllerTests
 		auth.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
 
 		var context = Substitute.For<IHttpContextAccessor>();
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		var result = controller.Login();
@@ -43,14 +43,13 @@ public sealed class AuthControllerTests
 		var context = Substitute.For<IHttpContextAccessor>();
 		context.HttpContext = new DefaultHttpContext { User = new GenericPrincipal(new ClaimsIdentity([new Claim("name", "Steve Desmond")]), []) };
 
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		var result = controller.Info();
 
 		//assert
-		var content = result as ContentResult;
-		var json = JsonDocument.Parse(content!.Content!);
+		var json = JsonDocument.Parse(result!.Content!);
 		Assert.Equal("Steve Desmond", json.RootElement.GetProperty("name").GetString());
 	}
 
@@ -60,14 +59,13 @@ public sealed class AuthControllerTests
 		//arrange
 		var auth = Substitute.For<IDiscourseAuthenticator>();
 		var context = Substitute.For<IHttpContextAccessor>();
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		var result = controller.Info();
 
 		//assert
-		var content = result as ContentResult;
-		Assert.Equal("{}", content!.Content);
+		Assert.Equal("{}", result!.Content);
 	}
 
 	[Fact]
@@ -82,7 +80,7 @@ public sealed class AuthControllerTests
 		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
 		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
 
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		await controller.Redirect("test", "123");
@@ -103,7 +101,7 @@ public sealed class AuthControllerTests
 		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
 		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
 
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		await controller.Redirect("test", "123");
@@ -123,7 +121,7 @@ public sealed class AuthControllerTests
 		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
 		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
 
-		var controller = new AuthController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
 
 		//act
 		await controller.Logout();
