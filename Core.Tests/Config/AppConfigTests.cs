@@ -1,8 +1,8 @@
-﻿using Xunit;
+using Xunit;
 
-namespace FLRC.Leaderboards.Core.Tests;
+namespace FLRC.Leaderboards.Core.Tests.Config;
 
-public sealed class ConfigTests
+public sealed class AppConfigTests
 {
 	[Fact]
 	public void CanGetCourseNames()
