@@ -1,3 +1,3 @@
 using FLRC.Leaderboards.Web;
 
-await App.Run("Challenge", args);
+await new App("Challenge").Run(args);
