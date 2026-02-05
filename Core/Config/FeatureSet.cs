@@ -4,6 +4,7 @@ namespace FLRC.Leaderboards.Core.Config;
 
 public sealed record FeatureSet : IFeatureSet
 {
+	public bool EnableAuth { get; }
 	public bool GenerateAthleteID { get; }
 	public bool MultiAttempt { get; }
 	public bool MultiAttemptCompetitions { get; }
@@ -16,6 +17,7 @@ public sealed record FeatureSet : IFeatureSet
 
 	public FeatureSet(IConfiguration section)
 	{
+		EnableAuth = section.GetValue<bool>(nameof(EnableAuth));
 		GenerateAthleteID = section.GetValue<bool>(nameof(GenerateAthleteID));
 		MultiAttempt = section.GetValue<bool>(nameof(MultiAttempt));
 		MultiAttemptCompetitions = section.GetValue<bool>(nameof(MultiAttemptCompetitions));
