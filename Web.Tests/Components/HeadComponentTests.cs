@@ -1,7 +1,9 @@
 using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using FLRC.Leaderboards.Web.Components;
 using FLRC.Leaderboards.Web.ViewModels;
-using Microsoft.Extensions.Configuration;
+using NSubstitute;
 using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Components;
@@ -9,16 +11,17 @@ namespace FLRC.Leaderboards.Web.Tests.Components;
 public sealed class HeadComponentTests
 {
 	[Fact]
-	public void CanRenderComponent()
+	public async Task CanRenderComponent()
 	{
 		//arrange
-		var settings = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
-		var config = new AppConfig(settings);
+		var seriesService = Substitute.For<ISeriesService>();
+		seriesService.FindSeries("test").Returns(new Series());
 
-		var component = new HeadComponent(config);
+		var context = new AppContextProvider("test");
+		var component = new HeadComponent(seriesService, context);
 
 		//act
-		var result = component.Invoke("test page");
+		var result = await component.InvokeAsync("test page");
 
 		//assert
 		var model = (HeadViewModel)result.ViewData!.Model;
