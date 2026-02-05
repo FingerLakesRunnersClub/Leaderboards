@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Data.Migrations;
 
-public class LoggerUpgradeLog : IUpgradeLog
+public sealed class LoggerUpgradeLog : IUpgradeLog
 {
 	private readonly ILogger _log;
 

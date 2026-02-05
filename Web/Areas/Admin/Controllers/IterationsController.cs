@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : Controller
+public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : Controller
 {
 	public async Task<ViewResult> Index()
 	{

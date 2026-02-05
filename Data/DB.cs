@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FLRC.Leaderboards.Data;
 
-public class DB(DbContextOptions<DB> options) : DbContext(options)
+public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 {
 	protected override void OnModelCreating(ModelBuilder build)
 	{

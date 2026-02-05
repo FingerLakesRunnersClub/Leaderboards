@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class HomeControllerTests
+public sealed class HomeControllerTests
 {
 	[Fact]
 	public void CanRenderAdminMenu()

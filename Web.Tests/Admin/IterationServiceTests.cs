@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class IterationServiceTests
+public sealed class IterationServiceTests
 {
 	[Fact]
 	public async Task CanGetAllIterations()

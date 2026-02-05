@@ -7,7 +7,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class RacesControllerTests
+public sealed class RacesControllerTests
 {
 	[Fact]
 	public async Task CanGetRaceList()

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Web;
 
-public class App(string context)
+public sealed class App(string context)
 {
 	public async Task Run(string[] args)
 	{
@@ -93,7 +93,7 @@ public class App(string context)
 		});
 	}
 
-	private void Initialize(IApplicationBuilder app)
+	private static void Initialize(IApplicationBuilder app)
 	{
 		var connection = app.ApplicationServices.GetService<IDbConnection>();
 		if (connection is null)

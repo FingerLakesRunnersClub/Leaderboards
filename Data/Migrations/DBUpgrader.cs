@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Data.Migrations;
 
-public class DBUpgrader
+public sealed class DBUpgrader
 {
 	private const string TableName = "_Migrations";
 

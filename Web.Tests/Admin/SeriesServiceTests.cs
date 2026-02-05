@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class SeriesServiceTests
+public sealed class SeriesServiceTests
 {
 	[Fact]
 	public async Task CanGetAllSeries()

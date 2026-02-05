@@ -4,7 +4,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Admin;
 
-public class RaceServiceTests
+public sealed class RaceServiceTests
 {
 	[Fact]
 	public async Task CanGetAllRaces()
