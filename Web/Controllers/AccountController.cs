@@ -1,18 +1,18 @@
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Auth;
-using Microsoft.AspNetCore.Authentication;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AccountController(IDiscourseAuthenticator auth, IHttpContextAccessor contextAccessor) : ControllerBase
+public sealed class AccountController(IAuthService authService, IDiscourseAuthenticator auth, IHttpContextAccessor contextAccessor) : ControllerBase
 {
 	public ContentResult Info()
 	{
-		var fields = contextAccessor.HttpContext!.User.Claims.ToDictionary(c => c.Type, c => c.Value);
+		var user = authService.GetCurrentUser();
+		var fields = user.Claims.ToDictionary(c => c.Type, c => c.Value);
 		return new ContentResult
 		{
 			Content = JsonSerializer.Serialize(fields),
@@ -20,9 +20,11 @@ public sealed class AccountController(IDiscourseAuthenticator auth, IHttpContext
 		};
 	}
 
+
 	public RedirectResult Login()
 	{
-		var currentHost = $"{Request.Scheme}://{Request.Host}";
+		var request = contextAccessor.HttpContext!.Request;
+		var currentHost = $"{request.Scheme}://{request.Host}";
 		var url = auth.GetLoginURL(currentHost);
 		return base.Redirect(url);
 	}
@@ -34,15 +36,15 @@ public sealed class AccountController(IDiscourseAuthenticator auth, IHttpContext
 			return Unauthorized();
 
 		var response = auth.ParseResponse(sso);
-		var identity = new GenericIdentity(response["username"]);
+		var identity = new ClaimsIdentity("SSO");
 		identity.AddClaims(response.Select(r => new Claim(r.Key, r.Value)));
-		await contextAccessor.HttpContext!.SignInAsync(new ClaimsPrincipal(identity));
+		await authService.LogIn(identity);
 		return RedirectToAction(nameof(Info));
 	}
 
 	public async Task<RedirectResult> Logout()
 	{
-		await contextAccessor.HttpContext!.SignOutAsync();
+		await authService.LogOut();
 		return Redirect("/");
 	}
 }

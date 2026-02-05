@@ -1,6 +1,7 @@
 using System.Data;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Data;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ public static class AppExtensions
 			var authenticator = new DiscourseAuthenticator("https://forum.fingerlakesrunners.org", authSecret);
 			services.AddSingleton<IDiscourseAuthenticator>(authenticator);
 
+			services.AddSingleton<IAuthService, AuthService>();
 			services.AddAuthorization();
 		}
 

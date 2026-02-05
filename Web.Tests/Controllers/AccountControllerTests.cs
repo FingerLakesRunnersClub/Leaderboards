@@ -3,10 +3,9 @@ using System.Security.Principal;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Web.Controllers;
-using Microsoft.AspNetCore.Authentication;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using NSubstitute;
 using Xunit;
 
@@ -14,17 +13,18 @@ namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
 public sealed class AccountControllerTests
 {
-	private static ControllerContext DefaultContext() => new() { HttpContext = new DefaultHttpContext { Request = { Scheme = "https", Host = new HostString("localhost") } } };
-
 	[Fact]
 	public void LoginRedirectsToAuthPage()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
-		auth.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
+		var authService = Substitute.For<IAuthService>();
 
-		var context = Substitute.For<IHttpContextAccessor>();
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
+
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		var result = controller.Login();
@@ -37,13 +37,15 @@ public sealed class AccountControllerTests
 	public void InfoProvidesUserDetails()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
-		auth.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
+		var authService = Substitute.For<IAuthService>();
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("name", "Steve Desmond")])));
 
-		var context = Substitute.For<IHttpContextAccessor>();
-		context.HttpContext = new DefaultHttpContext { User = new GenericPrincipal(new ClaimsIdentity([new Claim("name", "Steve Desmond")]), []) };
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
 
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		var result = controller.Info();
@@ -57,9 +59,11 @@ public sealed class AccountControllerTests
 	public void InfoIsEmptyWhenNotLoggedIn()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
-		var context = Substitute.For<IHttpContextAccessor>();
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		var authService = Substitute.For<IAuthService>();
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		var result = controller.Info();
@@ -72,61 +76,56 @@ public sealed class AccountControllerTests
 	public async Task RedirectPerformsLogin()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
-		auth.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+		var authService = Substitute.For<IAuthService>();
 
-		var context = Substitute.For<IHttpContextAccessor>();
-		var authService = Substitute.For<IAuthenticationService>();
-		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
-		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		await controller.Redirect("test", "123");
 
 		//assert
-		await authService.Received().SignInAsync(Arg.Any<HttpContext>(), Arg.Any<string>(), Arg.Any<ClaimsPrincipal>(), Arg.Any<AuthenticationProperties>());
+		await authService.Received().LogIn(Arg.Any<IIdentity>());
 	}
 
 	[Fact]
 	public async Task RedirectDoesNotAttemptLoginOnValidationFailure()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
-		auth.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+		var authService = Substitute.For<IAuthService>();
 
-		var context = Substitute.For<IHttpContextAccessor>();
-		var authService = Substitute.For<IAuthenticationService>();
-		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
-		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		await controller.Redirect("test", "123");
 
 		//assert
-		await authService.DidNotReceive().SignInAsync(Arg.Any<HttpContext>(), Arg.Any<string>(), Arg.Any<ClaimsPrincipal>(), Arg.Any<AuthenticationProperties>());
+		await authService.DidNotReceive().LogIn(Arg.Any<IIdentity>());
 	}
 
 	[Fact]
 	public async Task LogoutSignsOutUser()
 	{
 		//arrange
-		var auth = Substitute.For<IDiscourseAuthenticator>();
+		var authService = Substitute.For<IAuthService>();
+		var discourse = Substitute.For<IDiscourseAuthenticator>();
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 
-		var context = Substitute.For<IHttpContextAccessor>();
-		var authService = Substitute.For<IAuthenticationService>();
-		context.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(authService);
-		context.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
-
-		var controller = new AccountController(auth, context) { ControllerContext = DefaultContext() };
+		var controller = new AccountController(authService, discourse, contextAccessor);
 
 		//act
 		await controller.Logout();
 
 		//assert
-		await authService.Received().SignOutAsync(Arg.Any<HttpContext>(), Arg.Any<string>(), Arg.Any<AuthenticationProperties>());
+		await authService.Received().LogOut();
 	}
 }
