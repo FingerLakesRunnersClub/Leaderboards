@@ -2,10 +2,10 @@ namespace FLRC.Leaderboards.Data.Models;
 
 public sealed record LinkedAccount
 {
-	public required Guid ID { get; init; }
-	public required Guid AthleteID { get; init; }
-	public required string Type { get; init; }
-	public required string Value { get; init; }
+	public Guid ID { get; init; }
+	public Guid AthleteID { get; init; }
+	public string Type { get; init; } = null!;
+	public string Value { get; init; } = null!;
 
-	public required Athlete Athlete { get; init; }
+	public Athlete Athlete { get; init; } = null!;
 }

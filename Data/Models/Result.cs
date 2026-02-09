@@ -2,12 +2,12 @@ namespace FLRC.Leaderboards.Data.Models;
 
 public sealed record Result
 {
-	public required Guid ID { get; init; }
-	public required Guid CourseID { get; init; }
-	public required Guid AthleteID { get; init; }
-	public required DateTime StartTime { get; init; }
-	public required int Duration { get; init; }
+	public Guid ID { get; init; }
+	public Guid CourseID { get; init; }
+	public Guid AthleteID { get; init; }
+	public DateTime StartTime { get; init; }
+	public TimeSpan Duration { get; init; }
 
-	public required Course Course { get; init; }
-	public required Athlete Athlete { get; init; }
+	public Course Course { get; init; } = null!;
+	public Athlete Athlete { get; init; } = null!;
 }

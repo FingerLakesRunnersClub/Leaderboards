@@ -27,6 +27,9 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		var aCourse = build.Entity<Course>().Table("Courses");
 		aCourse.HasMany(c => c.Results).WithOne(r => r.Course);
 
+		var aResult = build.Entity<Result>().Table("Results");
+		aResult.Property(r => r.Duration).HasConversion(ts => (int)ts.TotalMilliseconds, ms => TimeSpan.FromMilliseconds(ms));
+
 		var aChallenge = build.Entity<Challenge>().Table("Challenges");
 		aChallenge.HasMany(c => c.Courses).WithMany(c => c.Challenges).UsingEntity<ChallengeCourse>();
 
