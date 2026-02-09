@@ -44,7 +44,7 @@
 					var value = Model.Data.Settings.FirstOrDefault(f => f.Key == setting.Name)?.Value;
 					<div class="form-group">
 						<label for="@setting.Name">@setting.Name</label>
-						<input type="text" id="@setting.Name" name="Settings[@setting.Name]" value="@value" class="form-control"/>
+						<input type="text" id="@setting.Name" name="Settings[@setting.Name]" required value="@value" class="form-control"/>
 					</div>
 				}
 			</div>

@@ -8,9 +8,11 @@
 		@if (Model.MissingRows.Any())
 		{
 			<form method="post" action="">
-				<input type="submit" value="Sync" class="btn btn-success float-right"/>
-                <h3 id="missing-groups">Athletes Missing Community Groups</h3>
-                <table aria-labelledby="missing-groups" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
+				<button type="submit" class="btn btn-success float-right">
+					Sync
+				</button>
+				<h3 id="missing-groups">Athletes Missing Community Groups</h3>
+				<table aria-labelledby="missing-groups" class="table table-bordered table-striped table-hover table-sm table-responsive-md">
 					<thead>
 					<tr>
 						<th scope="col" class="text-center">Add</th>
