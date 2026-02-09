@@ -37,7 +37,7 @@ public sealed class WebScorer : IDataSource
 					|| r.GetProperty("UserId").GetUInt32() > 0)
 	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
 	               || r.GetProperty("Distance").GetString() == Distance.DefaultKey
-	               || r.GetProperty("Distance").GetString() == course.ShortName)
+	               || r.GetProperty("Distance").GetString() == course?.ShortName)
 			)
 			.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))
 			.Where(r => r.Duration is null || r.Duration.Value >= MinimumDuration)
@@ -66,7 +66,7 @@ public sealed class WebScorer : IDataSource
 			var split = name.Split(',', 2);
 			name = $"{split[1].Trim()} {split[0].Trim()}";
 		}
-		if (aliases.TryGetValue(name, out var alias))
+		if (aliases is not null && aliases.TryGetValue(name, out var alias))
 		{
 			name = alias;
 		}
