@@ -27,7 +27,7 @@ public sealed class UltraSignup : IDataSource
 			{
 				Course = course,
 				Athlete = ParseAthlete(j, aliases),
-				StartTime = new Date(course.Race.Date),
+				StartTime = course is not null ? new Date(course.Race.Date) : null,
 				Duration = ParseDuration(j.GetProperty("time").GetString())
 			}).ToArray();
 
@@ -39,7 +39,7 @@ public sealed class UltraSignup : IDataSource
 	public Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases)
 	{
 		var name = element.GetProperty("firstname").GetString() + " " + element.GetProperty("lastname").GetString();
-		if (aliases.TryGetValue(name, out var alias))
+		if (aliases is not null && aliases.TryGetValue(name, out var alias))
 		{
 			name = alias;
 		}
