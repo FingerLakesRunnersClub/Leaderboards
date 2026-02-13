@@ -14,9 +14,6 @@ public sealed record AppConfig : IConfig
 	public IDictionary<string, string> Competitions { get; }
 	public IDictionary<string, byte> Awards { get; }
 
-	public string BirthdateField { get; }
-	public string PrivateField { get; }
-
 	public string AliasAPI { get; }
 	public string GroupAPI { get; }
 	public string PersonalAPI { get; }
@@ -40,10 +37,6 @@ public sealed record AppConfig : IConfig
 		Links = GetStringDictionary(config.GetSection("Links"));
 		Competitions = GetStringDictionary(config.GetSection("Competitions"));
 		Awards = GetByteDictionary(config.GetSection("Awards"));
-
-		var customFields = config.GetSection("CustomFields");
-		BirthdateField = customFields.GetValue<string>("Birthdate");
-		PrivateField = customFields.GetValue<string>("Private");
 
 		AliasAPI = config.GetValue<string>("AliasAPI");
 		GroupAPI = config.GetValue<string>("GroupAPI");

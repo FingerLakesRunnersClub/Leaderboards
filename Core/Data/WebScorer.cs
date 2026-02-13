@@ -96,15 +96,13 @@ public sealed class WebScorer : IDataSource
 		};
 	}
 
-	private DateTime? GetDOB(JsonElement element)
-		=> _config.BirthdateField is not null
-		   && DateTime.TryParse(element.GetProperty(_config.BirthdateField).GetString(), out var dob)
+	private static DateTime? GetDOB(JsonElement element)
+		=> element.TryGetProperty("Info1", out var prop) && DateTime.TryParse(prop.GetString(), out var dob)
 			? dob
 			: null;
 
-	private bool IsPrivate(JsonElement element)
-		=> _config.PrivateField is not null
-		   && element.GetProperty(_config.PrivateField).GetString() == "Y";
+	private static bool IsPrivate(JsonElement element)
+		=> element.TryGetProperty("Info2", out var prop) && prop.GetString() == "Y";
 
 	private static Date ParseStart(string value)
 	{

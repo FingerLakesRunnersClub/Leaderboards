@@ -4,10 +4,6 @@
 	"MultiAttempt": false,
 	"CommunityStars": true
   },
-  "CustomFields": {
-	"Birthdate": "DOB",
-	"Private": "Private"
-  },
   "Competitions": [
 	{
 	  "Points/F": "Most Points (F)"

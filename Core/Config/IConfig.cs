@@ -13,9 +13,6 @@ public interface IConfig
 	IDictionary<string, string> Competitions { get; }
 	IDictionary<string, byte> Awards { get; }
 
-	string BirthdateField { get; }
-	string PrivateField { get; }
-
 	string AliasAPI { get; }
 	string GroupAPI { get; }
 	string PersonalAPI { get; }
