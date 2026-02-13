@@ -43,4 +43,8 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 
 	public int CompareTo(Distance other)
 		=> Meters.CompareTo(other.Meters);
+
+	public virtual bool Equals(Distance other) => CompareTo(other) == 0;
+
+	public override int GetHashCode() => HashCode.Combine(base.GetHashCode(), Meters);
 }

@@ -54,4 +54,37 @@ public sealed class DistanceTests
 		Assert.Equal(1, c2);
 		Assert.Equal(0, c3);
 	}
+
+	[Fact]
+	public void DistancesAreEqualWhenMetersMatch()
+	{
+		//arrange
+		var d1 = new Distance("1km");
+		var d2 = new Distance("1K");
+		var d3 = new Distance("1000m");
+
+		//act
+		var e1 = d1.Equals(d2);
+		var e2 = d2.Equals(d3);
+		var e3 = d1.Equals(d3);
+
+		//assert
+		Assert.True(e1);
+		Assert.True(e2);
+		Assert.True(e3);
+	}
+
+	[Fact]
+	public void DistancesAreNotEqualWhenMetersDoNotMatch()
+	{
+		//arrange
+		var d1 = new Distance("13.1mi");
+		var d2 = new Distance("Half Marathon");
+
+		//act
+		var equal = d1.Equals(d2);
+
+		//assert
+		Assert.False(equal);
+	}
 }
