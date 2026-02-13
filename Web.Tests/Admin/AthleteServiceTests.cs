@@ -80,4 +80,47 @@ public sealed class AthleteServiceTests
 		//assert
 		Assert.Equal("Test", db.Set<Athlete>().Single().Name);
 	}
+
+	[Fact]
+	public async Task CanUpdateAthlete()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-01-01")};
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		var updated = new Athlete { ID = athlete.ID, Name = "Test 2", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
+		await service.UpdateAthlete(athlete, updated);
+
+		//assert
+		var result = db.Set<Athlete>().Single();
+		Assert.Equal("Test 2", result.Name);
+		Assert.Equal("02/16/1985", result.DateOfBirth.ToString("MM/dd/yyyy"));
+		Assert.True(result.IsPrivate);
+	}
+
+	[Fact]
+	public async Task UpdateDoesNotRemoveExistingData()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
+		await db.AddAsync(athlete);
+
+		//act
+		var updated = new Athlete { ID = athlete.ID, Name = "Test 2" };
+		await service.UpdateAthlete(athlete, updated);
+
+		//assert
+		var result = db.Set<Athlete>().Single();
+		Assert.Equal("Test 2", result.Name);
+		Assert.Equal("02/16/1985", result.DateOfBirth.ToString("MM/dd/yyyy"));
+		Assert.True(result.IsPrivate);
+	}
 }

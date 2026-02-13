@@ -25,4 +25,14 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.AddAsync(athlete);
 		await db.SaveChangesAsync();
 	}
+
+	public async Task UpdateAthlete(Athlete athlete, Athlete updated)
+	{
+		athlete.Name = updated.Name;
+		athlete.Category = updated.Category == Athlete.UnknownCategory ? athlete.Category : updated.Category;
+		athlete.DateOfBirth = updated.DateOfBirth == Athlete.UnknownDOB ? athlete.DateOfBirth : updated.DateOfBirth;
+		athlete.IsPrivate = updated.IsPrivate || athlete.IsPrivate;
+
+		await db.SaveChangesAsync();
+	}
 }
