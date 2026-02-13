@@ -13,6 +13,8 @@ public sealed class WebScorer : IDataSource
 	private readonly IConfig _config;
 	public string Name => nameof(WebScorer);
 
+	public const string DefaultDistance = "Default";
+
 	public string URL(uint courseID)
 		=> $"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}";
 
@@ -36,7 +38,7 @@ public sealed class WebScorer : IDataSource
 	            && (_config.Features.GenerateAthleteID
 					|| r.GetProperty("UserId").GetUInt32() > 0)
 	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
-	               || r.GetProperty("Distance").GetString() == Distance.DefaultKey
+	               || r.GetProperty("Distance").GetString() == DefaultDistance
 	               || r.GetProperty("Distance").GetString() == course?.ShortName)
 			)
 			.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))

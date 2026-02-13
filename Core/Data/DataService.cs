@@ -51,7 +51,7 @@ public sealed class DataService : IDataService
 			{
 				Race = race,
 				ID = uint.Parse(c.Value ?? "0"),
-				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == Distance.DefaultKey ? section.GetValue<string>("Distance") : c.Key)
+				Distance = new Distance(string.IsNullOrWhiteSpace(c.Key) || c.Key == WebScorer.DefaultDistance ? section.GetValue<string>("Distance") : c.Key)
 			})
 			.OrderBy(c => c.Distance)
 			.ToArray();

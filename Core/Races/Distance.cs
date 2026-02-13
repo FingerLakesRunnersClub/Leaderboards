@@ -2,7 +2,6 @@
 
 public record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
 {
-	public const string DefaultKey = "Default";
 	public const double MetersPerMile = 1609.344;
 	public const double MetersPerMarathon = 42_195;
 	public const double MilesPerMarathon = MetersPerMarathon / MetersPerMile;
