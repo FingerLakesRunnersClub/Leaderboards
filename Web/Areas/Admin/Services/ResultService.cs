@@ -16,7 +16,8 @@ public sealed class ResultService(DB db) : IResultService
 
 	public async Task Import(Result[] results)
 	{
-		await db.Set<Result>().AddRangeAsync(results);
+		var newResults = results.Where(newR => !db.Set<Result>().Any(r => r.AthleteID == newR.AthleteID && r.CourseID == newR.CourseID && r.StartTime == newR.StartTime && r.Duration == newR.Duration));
+		await db.Set<Result>().AddRangeAsync(newResults);
 		await db.SaveChangesAsync();
 	}
 }
