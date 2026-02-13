@@ -10,4 +10,6 @@ public sealed record Course
 	public Race Race { get; init; } = null!;
 	public ICollection<Result> Results { get; init; } = [];
 	public ICollection<Challenge> Challenges { get; init; } = [];
+
+	public string DistanceDisplay => $"{Distance:#0.##} {Units}";
 }
