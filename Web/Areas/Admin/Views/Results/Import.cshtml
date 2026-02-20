@@ -1,0 +1,44 @@
+@using FLRC.Leaderboards.Web.Areas.Admin
+@using FLRC.Leaderboards.Web.Areas.Admin.ViewModels
+
+@model ViewModel<ResultImportForm>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<form method="post" class="card-body">
+		<section class="row">
+			<div class="form-group col-sm-6">
+			<label for="course">Course</label>
+			<select id="course" name="CourseID" required class="form-control">
+				@foreach (var course in Model.Data.Races.SelectMany(r => r.Courses))
+				{
+					<option value="@course.ID">
+						@course.Race.Name (@course.DistanceDisplay)
+					</option>
+				}
+			</select>
+			</div>
+
+			<div class="form-group col-sm-6 col-md-3">
+				<label for="source">Source</label>
+				<select id="source" name="Source" required class="form-control">
+					@foreach (var source in Model.Data.Sources)
+					{
+						<option value="@source">
+							@source
+						</option>
+					}
+				</select>
+			</div>
+
+			<div class="form-group col-sm-6 col-md-3">
+				<label for="externalID">External ID</label>
+				<input type="text" inputmode="numeric" id="externalID" name="ExternalID" required class="form-control"/>
+			</div>
+		</section>
+
+		<button type="submit" class="btn btn-primary">Import Results</button>
+		<a href="/Admin" class="btn btn-light">Cancel</a>
+	</form>
+</article>

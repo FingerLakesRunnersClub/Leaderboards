@@ -1,0 +1,11 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+
+@model ViewModel<Result[]>
+
+@foreach (var result in Model.Data)
+{
+	<p>
+		@result.Duration
+	</p>
+}

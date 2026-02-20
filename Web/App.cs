@@ -65,9 +65,15 @@ public sealed class App(string context)
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
 
+		services.AddScoped<IAthleteService, AthleteService>();
+		services.AddScoped<ICourseService, CourseService>();
 		services.AddScoped<IIterationService, IterationService>();
 		services.AddScoped<IRaceService, RaceService>();
+		services.AddScoped<IResultService, ResultService>();
 		services.AddScoped<ISeriesService, SeriesService>();
+
+		services.AddScoped<IImportManager, ImportManager>();
+		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
 	}
 
 
