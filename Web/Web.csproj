@@ -6,7 +6,6 @@
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 		<RazorCompileOnBuild>true</RazorCompileOnBuild>
 	</PropertyGroup>
-
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
 		<ProjectReference Include="../Core/Core.csproj" />

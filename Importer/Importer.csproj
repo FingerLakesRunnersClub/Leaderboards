@@ -1,5 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
@@ -7,11 +6,9 @@
 		<Nullable>enable</Nullable>
 		<RootNamespace>FLRC.Leaderboards.Importer</RootNamespace>
 	</PropertyGroup>
-
 	<ItemGroup>
-		<None Include="*.json" CopyToOutputDirectory="PreserveNewest"/>
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.0"/>
-		<ProjectReference Include="..\Web\Web.csproj"/>
+		<None Include="*.json" CopyToOutputDirectory="PreserveNewest" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.0" />
+		<ProjectReference Include="..\Web\Web.csproj" />
 	</ItemGroup>
-
 </Project>
