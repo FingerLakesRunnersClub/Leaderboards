@@ -26,12 +26,17 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.SaveChangesAsync();
 	}
 
+	private static readonly LinkedAccountComparer LinkedAccountComparer = new();
+
 	public async Task UpdateAthlete(Athlete athlete, Athlete updated)
 	{
 		athlete.Name = updated.Name;
 		athlete.Category = updated.Category == Athlete.UnknownCategory ? athlete.Category : updated.Category;
 		athlete.DateOfBirth = updated.DateOfBirth == Athlete.UnknownDOB ? athlete.DateOfBirth : updated.DateOfBirth;
 		athlete.IsPrivate = updated.IsPrivate || athlete.IsPrivate;
+
+		foreach (var account in updated.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccountComparer))
+			athlete.LinkedAccounts.Add(account);
 
 		await db.SaveChangesAsync();
 	}

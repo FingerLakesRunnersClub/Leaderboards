@@ -123,4 +123,23 @@ public sealed class AthleteServiceTests
 		Assert.Equal("02/16/1985", result.DateOfBirth.ToString("MM/dd/yyyy"));
 		Assert.True(result.IsPrivate);
 	}
+
+	[Fact]
+	public async Task UpdateAddsNewLinkedAccounts()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
+		await db.AddAsync(athlete);
+
+		//act
+		var updated = new Athlete { ID = athlete.ID, Name = "Test 2", LinkedAccounts = [new LinkedAccount { Type = "t1", Value = "v1" }]};
+		await service.UpdateAthlete(athlete, updated);
+
+		//assert
+		var result = db.Set<Athlete>().Single();
+		Assert.NotEmpty(result.LinkedAccounts);
+	}
 }
