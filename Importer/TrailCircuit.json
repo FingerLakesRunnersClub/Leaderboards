@@ -1,0 +1,581 @@
+[
+	{
+		"Type": "WebScorer",
+		"ExternalID": 379806,
+		"Name": "Super Frosty Loomis",
+		"Distance": "5K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 379806,
+		"Name": "Super Frosty Loomis",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 390385,
+		"Name": "Thom B Trail Runs",
+		"Distance": "8.5 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 390385,
+		"Name": "Thom B Trail Runs",
+		"Distance": "17 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 390385,
+		"Name": "Thom B Trail Runs",
+		"Distance": "26.2 mile"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "5K",
+		"ExternalID": 120354,
+		"Date": "2025-06-01"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "6.66 miles",
+		"ExternalID": 120353,
+		"Date": "2025-06-01"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "Half Marathon",
+		"ExternalID": 120352,
+		"Date": "2025-06-01"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "25K",
+		"ExternalID": 122062,
+		"Date": "2025-07-05"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50K",
+		"ExternalID": 122061,
+		"Date": "2025-07-05"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50 miles",
+		"ExternalID": 122060,
+		"Date": "2025-07-05"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 396159,
+		"Name": "Tortoise & Hare"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 399232,
+		"Name": "Forest Frolic",
+		"Distance": "7k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 399232,
+		"Name": "Forest Frolic",
+		"Distance": "15k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 400452,
+		"Name": "Forge the Gorge",
+		"Distance": "3 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 400452,
+		"Name": "Forge the Gorge",
+		"Distance": "8 miles"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 123290,
+		"Name": "Monster Marathon",
+		"Distance": "Half Marathon",
+		"Date": "2025-08-24"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 123289,
+		"Name": "Monster Marathon",
+		"Distance": "Marathon",
+		"Date": "2025-08-24"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 409644,
+		"Name": "Danby Down and Dirty",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 409644,
+		"Name": "Danby Down and Dirty",
+		"Distance": "23K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 352621,
+		"Name": "Thom B Trail Runs",
+		"Distance": "8.5 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 352621,
+		"Name": "Thom B Trail Runs",
+		"Distance": "17 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 352621,
+		"Name": "Thom B Trail Runs",
+		"Distance": "26.2 mile"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "5K",
+		"ExternalID": 109873,
+		"Date": "2024-06-02"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "6.66 miles",
+		"ExternalID": 109872,
+		"Date": "2024-06-02"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "Half Marathon",
+		"ExternalID": 109871,
+		"Date": "2024-06-02"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "25K",
+		"ExternalID": 111586,
+		"Date": "2024-06-29"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50K",
+		"ExternalID": 111585,
+		"Date": "2024-06-29"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50 miles",
+		"ExternalID": 111584,
+		"Date": "2024-06-29"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 358072,
+		"Name": "Tortoise & Hare"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 359981,
+		"Name": "Forest Frolic",
+		"Distance": "7k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 359981,
+		"Name": "Forest Frolic",
+		"Distance": "15k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 361247,
+		"Name": "Forge the Gorge",
+		"Distance": "3 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 361247,
+		"Name": "Forge the Gorge",
+		"Distance": "8 miles"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 112072,
+		"Name": "Monster Marathon",
+		"Distance": "Half Marathon",
+		"Date": "2024-09-01"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 112071,
+		"Name": "Monster Marathon",
+		"Distance": "Marathon",
+		"Date": "2024-09-01"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 369381,
+		"Name": "Danby Down and Dirty",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 369381,
+		"Name": "Danby Down and Dirty",
+		"Distance": "23K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 315570,
+		"Name": "Thom B Trail Runs",
+		"Distance": "8.5 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 315570,
+		"Name": "Thom B Trail Runs",
+		"Distance": "17 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 315570,
+		"Name": "Thom B Trail Runs",
+		"Distance": "26.2 mile"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "5K",
+		"ExternalID": 98889,
+		"Date": "2023-06-04"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "6.66 miles",
+		"ExternalID": 98830,
+		"Date": "2023-06-04"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "Half Marathon",
+		"ExternalID": 98890,
+		"Date": "2023-06-04"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "25K",
+		"ExternalID": 100974,
+		"Date": "2023-06-24"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50K",
+		"ExternalID": 100973,
+		"Date": "2023-06-24"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50 miles",
+		"ExternalID": 100972,
+		"Date": "2023-06-24"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 322650,
+		"Name": "Tortoise & Hare"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 320746,
+		"Name": "Forest Frolic",
+		"Distance": "7k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 320746,
+		"Name": "Forest Frolic",
+		"Distance": "15k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 324023,
+		"Name": "Forge the Gorge",
+		"Distance": "3 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 324023,
+		"Name": "Forge the Gorge",
+		"Distance": "8 miles"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 101098,
+		"Name": "Monster Marathon",
+		"Distance": "Half Marathon",
+		"Date": "2023-09-03"
+	},
+	{
+		"Type": "UltraSignup",
+		"ExternalID": 101097,
+		"Name": "Monster Marathon",
+		"Distance": "Marathon",
+		"Date": "2023-09-03"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 332337,
+		"Name": "Danby Down and Dirty",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 332337,
+		"Name": "Danby Down and Dirty",
+		"Distance": "23K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 267874,
+		"Name": "Super Frosty Loomis",
+		"Distance": "5K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 267874,
+		"Name": "Super Frosty Loomis",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 277335,
+		"Name": "Thom B Trail Runs",
+		"Distance": "8.5 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 277335,
+		"Name": "Thom B Trail Runs",
+		"Distance": "17 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 277335,
+		"Name": "Thom B Trail Runs",
+		"Distance": "26.2 mile"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "6.66 miles",
+		"ExternalID": 88205,
+		"Date": "2022-06-05"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "25K",
+		"ExternalID": 89043,
+		"Date": "2022-07-02"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50K",
+		"ExternalID": 89042,
+		"Date": "2022-07-02"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50 miles",
+		"ExternalID": 89041,
+		"Date": "2022-07-02"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 280486,
+		"Name": "Tortoise & Hare"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 284781,
+		"Name": "Forest Frolic",
+		"Distance": "7k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 284781,
+		"Name": "Forest Frolic",
+		"Distance": "15k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 286003,
+		"Name": "Forge the Gorge",
+		"Distance": "3 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 286003,
+		"Name": "Forge the Gorge",
+		"Distance": "8 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 287924,
+		"Name": "Monster Marathon",
+		"Distance": "Half Marathon"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 287924,
+		"Name": "Monster Marathon",
+		"Distance": "Marathon"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 291644,
+		"Name": "Danby Down and Dirty",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 291644,
+		"Name": "Danby Down and Dirty",
+		"Distance": "23K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 232714,
+		"Name": "Super Frosty Loomis",
+		"Distance": "5K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 232714,
+		"Name": "Super Frosty Loomis",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 242052,
+		"Name": "Thom B Trail Runs",
+		"Distance": "8.5 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 242052,
+		"Name": "Thom B Trail Runs",
+		"Distance": "17 mile"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 242052,
+		"Name": "Thom B Trail Runs",
+		"Distance": "26.2 mile"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Lucifer's Crossing",
+		"Distance": "6.66 miles",
+		"ExternalID": 82016,
+		"Date": "2021-05-29"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "25K",
+		"ExternalID": 85119,
+		"Date": "2021-07-03"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50K",
+		"ExternalID": 85118,
+		"Date": "2021-07-03"
+	},
+	{
+		"Type": "UltraSignup",
+		"Name": "Finger Lakes 50s",
+		"Distance": "50 miles",
+		"ExternalID": 85117,
+		"Date": "2021-07-03"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 243491,
+		"Name": "Tortoise & Hare"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 249279,
+		"Name": "Forest Frolic",
+		"Distance": "7k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 249279,
+		"Name": "Forest Frolic",
+		"Distance": "15k"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 250307,
+		"Name": "Forge the Gorge",
+		"Distance": "3.5 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 250307,
+		"Name": "Forge the Gorge",
+		"Distance": "7 miles"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 254294,
+		"Name": "Monster Marathon",
+		"Distance": "Half Marathon"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 254294,
+		"Name": "Monster Marathon",
+		"Distance": "Marathon"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 255964,
+		"Name": "Danby Down and Dirty",
+		"Distance": "10K"
+	},
+	{
+		"Type": "WebScorer",
+		"ExternalID": 255964,
+		"Name": "Danby Down and Dirty",
+		"Distance": "23K"
+	}
+]

@@ -1,0 +1,277 @@
+[
+	{
+		"Name": "2025 Participants",
+		"Type": "WebScorer",
+		"ExternalID": 386059
+	},
+	{
+		"Name": "Sweet 1600",
+		"Type": "WebScorer",
+		"ExternalID": 386605
+	},
+	{
+		"Name": "Mulholland Waterfalls",
+		"Type": "WebScorer",
+		"ExternalID": 386607
+	},
+	{
+		"Name": "Lakefront Loops 5K",
+		"Type": "WebScorer",
+		"ExternalID": 386606
+	},
+	{
+		"Name": "Cayuga Cliffs",
+		"Type": "WebScorer",
+		"ExternalID": 386608
+	},
+	{
+		"Name": "Fall Creek Trails",
+		"Type": "WebScorer",
+		"ExternalID": 386609
+	},
+	{
+		"Name": "Town & Gown Up & Down",
+		"Type": "WebScorer",
+		"ExternalID": 386610
+	},
+	{
+		"Name": "Abbott Ascent",
+		"Type": "WebScorer",
+		"ExternalID": 386611
+	},
+	{
+		"Name": "Black Diamond Cass to Gorge",
+		"Type": "WebScorer",
+		"ExternalID": 386612
+	},
+	{
+		"Name": "Triple Hump",
+		"Type": "WebScorer",
+		"ExternalID": 386613
+	},
+	{
+		"Name": "North Country Half",
+		"Type": "WebScorer",
+		"ExternalID": 386614
+	},
+	{
+		"Name": "2024 Participants",
+		"Type": "WebScorer",
+		"ExternalID": 346590
+	},
+	{
+		"Name": "Sweet 1600",
+		"Type": "WebScorer",
+		"ExternalID": 348512
+	},
+	{
+		"Name": "Duck Trails",
+		"Type": "WebScorer",
+		"ExternalID": 348502
+	},
+	{
+		"Name": "Lakefront Loops 5K",
+		"Type": "WebScorer",
+		"ExternalID": 348503
+	},
+	{
+		"Name": "Lindsay-Parsons",
+		"Type": "WebScorer",
+		"ExternalID": 348504
+	},
+	{
+		"Name": "FH Fox",
+		"Type": "WebScorer",
+		"ExternalID": 348505
+	},
+	{
+		"Name": "Valley Views",
+		"Type": "WebScorer",
+		"ExternalID": 348506
+	},
+	{
+		"Name": "Treman Trailipop",
+		"Type": "WebScorer",
+		"ExternalID": 348507
+	},
+	{
+		"Name": "Hammond Hill Hoctathon",
+		"Type": "WebScorer",
+		"ExternalID": 348508
+	},
+	{
+		"Name": "Run Rabbit Run",
+		"Type": "WebScorer",
+		"ExternalID": 348509
+	},
+	{
+		"Name": "Freeville Fly-In",
+		"Type": "WebScorer",
+		"ExternalID": 348510
+	},
+	{
+		"Name": "2023 Participants",
+		"Type": "WebScorer",
+		"ExternalID": 308700
+	},
+	{
+		"Name": "Sweet 1600",
+		"Type": "WebScorer",
+		"ExternalID": 311086
+	},
+	{
+		"Name": "Ellis Hollow Creek Crossings",
+		"Type": "WebScorer",
+		"ExternalID": 310931
+	},
+	{
+		"Name": "Lakefront Loops 5K",
+		"Type": "WebScorer",
+		"ExternalID": 310933
+	},
+	{
+		"Name": "Lime Hollow",
+		"Type": "WebScorer",
+		"ExternalID": 310934
+	},
+	{
+		"Name": "Cornell Scenic Circuit",
+		"Type": "WebScorer",
+		"ExternalID": 310936
+	},
+	{
+		"Name": "Six Mile Creek",
+		"Type": "WebScorer",
+		"ExternalID": 310935
+	},
+	{
+		"Name": "Black Diamond Park to Park",
+		"Type": "WebScorer",
+		"ExternalID": 310938
+	},
+	{
+		"Name": "Blueberry Patch",
+		"Type": "WebScorer",
+		"ExternalID": 310937
+	},
+	{
+		"Name": "Ludlowville Loop",
+		"Type": "WebScorer",
+		"ExternalID": 310939
+	},
+	{
+		"Name": "Dryden Lake Lollipop",
+		"Type": "WebScorer",
+		"ExternalID": 310940
+	},
+	{
+		"Name": "2022 Participants",
+		"Type": "WebScorer",
+		"ExternalID": 271794
+	},
+	{
+		"Name": "Sweet 1600",
+		"Type": "WebScorer",
+		"ExternalID": 273395
+	},
+	{
+		"Name": "Lansing Center Trail",
+		"Type": "WebScorer",
+		"ExternalID": 273396
+	},
+	{
+		"Name": "Beebe Lake",
+		"Type": "WebScorer",
+		"ExternalID": 273397
+	},
+	{
+		"Name": "Taughannock Rim & Falls",
+		"Type": "WebScorer",
+		"ExternalID": 273398
+	},
+	{
+		"Name": "Long Loomis",
+		"Type": "WebScorer",
+		"ExternalID": 273399
+	},
+	{
+		"Name": "Inlet Shore Trail",
+		"Type": "WebScorer",
+		"ExternalID": 273400
+	},
+	{
+		"Name": "East Hill Dryden Rail Trail",
+		"Type": "WebScorer",
+		"ExternalID": 273401
+	},
+	{
+		"Name": "Jim Schug Trail",
+		"Type": "WebScorer",
+		"ExternalID": 273402
+	},
+	{
+		"Name": "Brookton Hill & Dale",
+		"Type": "WebScorer",
+		"ExternalID": 273403
+	},
+	{
+		"Name": "Lick Brook & Treman FLT",
+		"Type": "WebScorer",
+		"ExternalID": 273404
+	},
+	{
+		"Name": "2021 Participants",
+		"Type": "WebScorer",
+		"ExternalID": 230581
+	},
+	{
+		"Name": "East Hill Rec Way",
+		"Type": "WebScorer",
+		"ExternalID": 233198
+	},
+	{
+		"Name": "Cornell Botanic Gardens",
+		"Type": "WebScorer",
+		"ExternalID": 235658
+	},
+	{
+		"Name": "Waterfront Trail",
+		"Type": "WebScorer",
+		"ExternalID": 235665
+	},
+	{
+		"Name": "Tortoise & Hare",
+		"Type": "WebScorer",
+		"ExternalID": 237535
+	},
+	{
+		"Name": "Danby Down & Dirty",
+		"Type": "WebScorer",
+		"ExternalID": 237533
+	},
+	{
+		"Name": "South Hill Rec Way",
+		"Type": "WebScorer",
+		"ExternalID": 236137
+	},
+	{
+		"Name": "Thom B. Trail Run",
+		"Type": "WebScorer",
+		"ExternalID": 237534
+	},
+	{
+		"Name": "Forest Frolic",
+		"Type": "WebScorer",
+		"ExternalID": 237877
+	},
+	{
+		"Name": "Black Diamond Trail",
+		"Type": "WebScorer",
+		"ExternalID": 236033
+	},
+	{
+		"Name": "Pseudo Skunk Cabbage",
+		"Type": "WebScorer",
+		"ExternalID": 233928
+	}
+]
