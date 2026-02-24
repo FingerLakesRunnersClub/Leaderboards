@@ -74,6 +74,23 @@ public sealed class LegacyDataConverterTests
 	}
 
 	[Fact]
+	public async Task CanMatchAthleteByAge()
+	{
+		//arrange
+		var athleteService = Substitute.For<IAthleteService>();
+		var converter = new LegacyDataConverter(athleteService);
+
+		var date = DateTime.Parse("1/1/2020");
+		athleteService.Find("A1", 20, date).Returns(new Athlete { Name = "New1" });
+
+		//act
+		var athlete = await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1, date);
+
+		//assert
+		Assert.Equal("New1", athlete.Name);
+	}
+
+	[Fact]
 	public async Task AddsNewAthleteOnImport()
 	{
 		//arrange

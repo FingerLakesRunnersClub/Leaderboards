@@ -43,6 +43,42 @@ public sealed class AthleteServiceTests
 	}
 
 	[Fact]
+	public async Task CanFindAthleteByNameAndAge()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var id = Guid.NewGuid();
+		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3)});
+		await db.SaveChangesAsync();
+
+		//act
+		var athlete = await service.Find("Test", 41, new DateTime(2026, 02, 16));
+
+		//assert
+		Assert.Equal(id, athlete.ID);
+	}
+
+	[Fact]
+	public async Task CanFindAthleteByNameAndApproximateAge()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var id = Guid.NewGuid();
+		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3)});
+		await db.SaveChangesAsync();
+
+		//act
+		var athlete = await service.Find("Test", 40, new DateTime(2026, 2, 1));
+
+		//assert
+		Assert.Equal(id, athlete.ID);
+	}
+
+	[Fact]
 	public async Task CanFindAthleteByLinkedAccount()
 	{
 		//arrange

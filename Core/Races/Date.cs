@@ -4,6 +4,8 @@ namespace FLRC.Leaderboards.Core.Races;
 
 public sealed record Date : Formatted<DateTime>, IComparable<Date>
 {
+	public const double DaysPerYear = 365.2425;
+
 	public static readonly DateTime CompetitionStart = new(2021, 1, 1);
 
 	[JsonIgnore]

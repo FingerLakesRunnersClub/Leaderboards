@@ -16,7 +16,7 @@ public sealed class Athlete : IEquatable<Athlete>
 	[JsonIgnore] public DateTime? DateOfBirth { get; init; }
 
 	public byte AgeAsOf(DateTime date) => DateOfBirth.HasValue
-		? (byte) (date.Subtract(DateOfBirth.Value).TotalDays / 365.2425)
+		? (byte) (date.Subtract(DateOfBirth.Value).TotalDays / Date.DaysPerYear)
 		: Age;
 
 	public Team Team

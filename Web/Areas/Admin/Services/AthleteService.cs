@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Models;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,9 @@ public sealed class AthleteService(DB db) : IAthleteService
 
 	public async Task<Athlete> Find(string name, DateOnly dob)
 		=> await _athletes.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth == dob);
+
+	public async Task<Athlete> Find(string name, byte age, DateTime onDate)
+		=> await _athletes.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth != Athlete.UnknownDOB && (byte)((onDate - new DateTime(a.DateOfBirth.Year, a.DateOfBirth.Month, a.DateOfBirth.Day).ToUniversalTime()).TotalDays / Date.DaysPerYear) == age);
 
 	public async Task AddAthlete(Athlete athlete)
 	{

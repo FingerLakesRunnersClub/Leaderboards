@@ -18,22 +18,27 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 
 	private async Task<Result> ConvertResult(Guid courseID, string source, Core.Results.Result result, DateTime? dateOverride)
 	{
-		var athlete = await GetAthlete(source, result.Athlete);
+		var date = (dateOverride ?? result.StartTime.Value).ToUniversalTime();
+		var athlete = await GetAthlete(source, result.Athlete, date);
 		return new Result
 		{
 			ID = Guid.NewGuid(),
 			AthleteID = athlete.ID,
 			CourseID = courseID,
-			StartTime = (dateOverride ?? result.StartTime.Value).ToUniversalTime(),
+			StartTime = date,
 			Duration = result.Duration.Value
 		};
 	}
 
-	public async Task<Athlete> GetAthlete(string source, Core.Athletes.Athlete legacyAthlete)
+	public async Task<Athlete> GetAthlete(string source, Core.Athletes.Athlete legacyAthlete, DateTime? date = null)
 	{
 		var athlete = await athleteService.Find(source, legacyAthlete.ID.ToString());
+
 		if (athlete is null && legacyAthlete.DateOfBirth.HasValue)
 			athlete = await athleteService.Find(legacyAthlete.Name, DateOnly.FromDateTime(legacyAthlete.DateOfBirth.Value));
+
+		if (athlete is null && date.HasValue && legacyAthlete.Age > 0)
+			athlete = await athleteService.Find(legacyAthlete.Name, legacyAthlete.Age, date.Value);
 
 		var newAthlete = ConvertLegacyAthlete(source, legacyAthlete);
 		var newLink = newAthlete.LinkedAccounts.Single();
