@@ -10,7 +10,9 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 		foreach (var legacyResult in legacyResults.Where(r => r.Duration is not null))
 		{
 			var result = await ConvertResult(courseID, source, legacyResult, dateOverride);
-			results.Add(result);
+
+			if (!results.Any(r => r.AthleteID == result.AthleteID && r.StartTime == result.StartTime && r.Duration == result.Duration))
+				results.Add(result);
 		}
 
 		return results.ToArray();

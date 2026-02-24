@@ -89,7 +89,7 @@ CREATE TABLE Results
 	AthleteID UUID      NOT NULL REFERENCES Athletes (ID),
 	StartTime TIMESTAMP NOT NULL,
 	Duration  INT       NOT NULL,
-	UNIQUE (AthleteID, StartTime)
+	UNIQUE (AthleteID, StartTime, Duration)
 );
 
 CREATE TABLE LinkedAccounts
