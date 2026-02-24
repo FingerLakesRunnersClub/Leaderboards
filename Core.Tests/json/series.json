@@ -4,19 +4,30 @@
 			"ID": "100K",
 			"Name": "Test 1",
 			"HourLimit": 20,
-			"Races": [ 123, 234, 345, 456 ]
+			"Races": [
+				123,
+				234,
+				345,
+				456
+			]
 		},
 		{
 			"ID": "50K v1",
 			"Name": "Test 2",
 			"HourLimit": 10,
-			"Races": [ 123, 234 ]
+			"Races": [
+				123,
+				234
+			]
 		},
 		{
 			"ID": "50K v2",
 			"Name": "Test 3",
 			"HourLimit": 10,
-			"Races": [ 345, 456 ]
+			"Races": [
+				345,
+				456
+			]
 		}
 	]
 }

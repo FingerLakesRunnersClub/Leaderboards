@@ -41,7 +41,6 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			athlete = await athleteService.Find(legacyAthlete.Name, legacyAthlete.Age, date.Value);
 
 		var newAthlete = ConvertLegacyAthlete(source, legacyAthlete);
-		var newLink = newAthlete.LinkedAccounts.Single();
 		if (athlete is null)
 		{
 			athlete = newAthlete;
@@ -50,7 +49,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 
 		if ((athlete.DateOfBirth == Athlete.UnknownDOB && newAthlete.DateOfBirth != Athlete.UnknownDOB)
 		    || (athlete.Category == Athlete.UnknownCategory && newAthlete.Category != Athlete.UnknownCategory)
-		    || !athlete.LinkedAccounts.Any(a => a.Type == newLink.Type && a.Value == newLink.Value))
+		    || newAthlete.LinkedAccounts.Any(account => !athlete.LinkedAccounts.Contains(account, AthleteService.LinkedAccountComparer)))
 			await athleteService.UpdateAthlete(athlete, newAthlete);
 
 		return athlete;
@@ -64,6 +63,9 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			DateOfBirth = athlete.DateOfBirth.HasValue ? DateOnly.FromDateTime(athlete.DateOfBirth.Value) : Athlete.UnknownDOB,
 			Category = athlete.Category?.Display[0] ?? Athlete.UnknownCategory,
 			IsPrivate = athlete.Private,
-			LinkedAccounts = [new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString() }]
+			LinkedAccounts = new[] {
+				new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString() },
+				new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email }
+			}.Where(a => !string.IsNullOrWhiteSpace(a.Value)).ToArray()
 		};
 }

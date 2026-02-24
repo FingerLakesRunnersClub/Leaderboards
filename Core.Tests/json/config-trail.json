@@ -1,62 +1,62 @@
 {
-  "Features": {
-	"GenerateAthleteID": true,
-	"MultiAttempt": false,
-	"CommunityStars": true
-  },
-  "Competitions": [
-	{
-	  "Points/F": "Most Points (F)"
+	"Features": {
+		"GenerateAthleteID": true,
+		"MultiAttempt": false,
+		"CommunityStars": true
 	},
-	{
-	  "Points/M": "Most Points (M)"
-	},
-	{
-	  "PointsTop3/F": "Most Points From Top 3 (F)"
-	},
-	{
-	  "PointsTop3/M": "Most Points From Top 3 (M)"
-	},
-	{
-	  "AgeGrade": "Age Grade"
-	},
-	{
-	  "Community": "Community Stars"
-	},
-	{
-	  "Miles": "Most Miles"
-	},
-	{
-	  "Team": "Top Teams"
-	}
-  ],
-  "Awards": [
-	{
-	  "Overall": "5"
-	},
-	{
-	  "Top": "4"
-	},
-	{
-	  "Team": "3"
-	},
-	{
-	  "Course": "2"
-	},
-	{
-	  "Age Group": "1"
-	}
-  ],
-  "Races": [
-	{
-	  "Source": "WebScorer",
-	  "ID": 123,
-	  "Name": "Virgil Crest Ultramarathons",
-	  "Distance": "50K",
-	  "Courses": {
-		"Default": 123
-	  },
-	  "CommunityID": 234
-	}
-  ]
+	"Competitions": [
+		{
+			"Points/F": "Most Points (F)"
+		},
+		{
+			"Points/M": "Most Points (M)"
+		},
+		{
+			"PointsTop3/F": "Most Points From Top 3 (F)"
+		},
+		{
+			"PointsTop3/M": "Most Points From Top 3 (M)"
+		},
+		{
+			"AgeGrade": "Age Grade"
+		},
+		{
+			"Community": "Community Stars"
+		},
+		{
+			"Miles": "Most Miles"
+		},
+		{
+			"Team": "Top Teams"
+		}
+	],
+	"Awards": [
+		{
+			"Overall": "5"
+		},
+		{
+			"Top": "4"
+		},
+		{
+			"Team": "3"
+		},
+		{
+			"Course": "2"
+		},
+		{
+			"Age Group": "1"
+		}
+	],
+	"Races": [
+		{
+			"Source": "WebScorer",
+			"ID": 123,
+			"Name": "Virgil Crest Ultramarathons",
+			"Distance": "50K",
+			"Courses": {
+				"Default": 123
+			},
+			"CommunityID": 234
+		}
+	]
 }

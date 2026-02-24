@@ -1,24 +1,25 @@
 {
-  "RaceId": 123,
-  "Name": "Virgil Crest Ultramarathons",
-  "SportType": "Running (Trail)",
-  "Distances": [
-    {
-      "Name": "50K"
-    }
-  ],
-  "Racers": [
-    {
-      "UserId": 234,
-      "Name": "Steve Desmond",
-      "Age": 26,
-      "Gender": "M",
-      "Info1": "1985-02-16",
-	  "Info2": "NO",
-      "StartTime": "2011-09-24",
-      "Finished": 1,
-	  "Distance": "",
-	  "RaceTime": 238.9
-    }
-  ]
+	"RaceId": 123,
+	"Name": "Virgil Crest Ultramarathons",
+	"SportType": "Running (Trail)",
+	"Distances": [
+		{
+			"Name": "50K"
+		}
+	],
+	"Racers": [
+		{
+			"UserId": 234,
+			"Name": "Steve Desmond",
+			"Age": 26,
+			"Gender": "M",
+			"EmailAddress": null,
+			"Info1": "1985-02-16",
+			"Info2": "NO",
+			"StartTime": "2011-09-24",
+			"Finished": 1,
+			"Distance": "",
+			"RaceTime": 238.9
+		}
+	]
 }

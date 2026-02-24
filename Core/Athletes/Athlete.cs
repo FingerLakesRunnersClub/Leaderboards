@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using System.Text.Json.Serialization;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Athletes;
@@ -14,6 +15,7 @@ public sealed class Athlete : IEquatable<Athlete>
 
 	public byte Age { get; init; }
 	[JsonIgnore] public DateTime? DateOfBirth { get; init; }
+	[JsonIgnore] public string Email { get; init; }
 
 	public byte AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte) (date.Subtract(DateOfBirth.Value).TotalDays / Date.DaysPerYear)

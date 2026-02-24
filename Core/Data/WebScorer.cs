@@ -92,6 +92,7 @@ public sealed class WebScorer : IDataSource
 			Age = element.GetProperty("Age").GetByte(),
 			Category = Category.Parse(element.GetProperty("Gender").GetString()),
 			DateOfBirth = GetDOB(element),
+			Email = element.GetProperty("EmailAddress").GetString(),
 			Private = nowPrivate
 		};
 	}
@@ -105,12 +106,9 @@ public sealed class WebScorer : IDataSource
 		=> element.TryGetProperty("Info2", out var prop) && prop.GetString() == "Y";
 
 	private static Date ParseStart(string value)
-	{
-		var isDate = DateTime.TryParse(value, out var start);
-		return isDate
+		=> DateTime.TryParse(value, out var start)
 			? new Date(start)
 			: null;
-	}
 
 	public static Time ParseDuration(double seconds)
 		=> new(TimeSpan.FromSeconds(Math.Ceiling(Math.Round(seconds, 1, MidpointRounding.ToZero))));
