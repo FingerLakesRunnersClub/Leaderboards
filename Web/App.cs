@@ -28,7 +28,7 @@ public sealed class App(string context)
 		var app = builder.Build();
 
 		Configure(app);
-		Initialize(app);
+		Initialize(((IApplicationBuilder)app).ApplicationServices);
 		await app.Services.GetRequiredService<IDataService>().GetAthletes();
 
 		await app.RunAsync();
@@ -99,13 +99,13 @@ public sealed class App(string context)
 		});
 	}
 
-	private static void Initialize(IApplicationBuilder app)
+	public static void Initialize(IServiceProvider serviceProvider)
 	{
-		var connection = app.ApplicationServices.GetService<IDbConnection>();
+		var connection = serviceProvider.GetService<IDbConnection>();
 		if (connection is null)
 			return;
 
-		var logFactory = app.ApplicationServices.GetService<ILoggerFactory>();
+		var logFactory = serviceProvider.GetService<ILoggerFactory>();
 		var logger = logFactory.CreateLogger("Initializer");
 		var upgrader = new DBUpgrader(connection, logger);
 		upgrader.MigrateDatabase();

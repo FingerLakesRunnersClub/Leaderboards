@@ -1,5 +1,4 @@
-﻿using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Importer;
+﻿using FLRC.Leaderboards.Importer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -14,6 +13,8 @@ builder.ConfigureServices((_, services) =>
 );
 
 var app = builder.Build();
+FLRC.Leaderboards.Web.App.Initialize(app.Services);
+
 await app.StartAsync();
 await app.StopAsync();
 await app.WaitForShutdownAsync();

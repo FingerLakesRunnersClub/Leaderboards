@@ -8,11 +8,17 @@ public sealed class App(IFileSystem fs, Importer importer, Action<string> log) :
 {
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		log("Starting...");
-		var data = await fs.File.ReadAllTextAsync("TrailCircuit.json", cancellationToken);
+		//await Run("Challenge", cancellationToken);
+		await Run("TrailCircuit", cancellationToken);
+	}
+
+	private async Task Run(string series, CancellationToken cancellationToken)
+	{
+		log($"Starting {series}...");
+		var data = await fs.File.ReadAllTextAsync($"{series}.json", cancellationToken);
 		var courses = JsonSerializer.Deserialize<CourseImportConfig[]>(data)!;
 		await importer.Run(courses);
-		log("Done!");
+		log($"Done {series}!");
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
