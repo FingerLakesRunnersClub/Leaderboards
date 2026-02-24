@@ -24,7 +24,7 @@ VALUES (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Super Frosty Loomis'), 5, 
 
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'East Hill Rec Way'), 1, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Cornell Botanic Gardens'), 2.4, 'mi'),
-	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Waterfront Trail'),  3.1, 'mi'),
+	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Waterfront Trail'), 3.1, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Tortoise and Hare'), 5.4, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Danby Down & Dirty'), 6, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'South Hill Rec Way'), 6.8, 'mi'),
@@ -70,4 +70,6 @@ VALUES (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Super Frosty Loomis'), 5, 
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Abbott Ascent'), 8, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Black Diamond Cass to Gorge'), 8.2, 'mi'),
 	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'Triple Hump'), 9.2, 'mi'),
-	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'North Country Half'), 13.1, 'mi');
+	   (uuidv4(), (SELECT ID FROM Races WHERE Name = 'North Country Half'), 13.1, 'mi')
+
+ON CONFLICT DO NOTHING;

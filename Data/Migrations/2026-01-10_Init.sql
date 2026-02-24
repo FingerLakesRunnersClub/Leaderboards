@@ -1,11 +1,11 @@
-﻿CREATE TABLE Series
+﻿CREATE TABLE IF NOT EXISTS Series
 (
 	ID   UUID NOT NULL PRIMARY KEY,
 	Key  TEXT NOT NULL UNIQUE,
 	Name TEXT NOT NULL UNIQUE
 );
 
-CREATE TABLE Settings
+CREATE TABLE IF NOT EXISTS Settings
 (
 	SeriesID UUID NOT NULL REFERENCES Series (ID),
 	Key      TEXT NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE Settings
 	PRIMARY KEY (SeriesID, Key)
 );
 
-CREATE TABLE Features
+CREATE TABLE IF NOT EXISTS Features
 (
 	SeriesID UUID    NOT NULL REFERENCES Series (ID),
 	Key      TEXT    NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE Features
 	PRIMARY KEY (SeriesID, Key)
 );
 
-CREATE TABLE Iterations
+CREATE TABLE IF NOT EXISTS Iterations
 (
 	ID        UUID NOT NULL PRIMARY KEY,
 	SeriesID  UUID NOT NULL REFERENCES Series (ID),
@@ -31,21 +31,21 @@ CREATE TABLE Iterations
 	UNIQUE (SeriesID, Name)
 );
 
-CREATE TABLE Races
+CREATE TABLE IF NOT EXISTS Races
 (
 	ID   UUID NOT NULL PRIMARY KEY,
 	Name TEXT NOT NULL UNIQUE,
 	Type TEXT NOT NULL
 );
 
-CREATE TABLE RaceIterations
+CREATE TABLE IF NOT EXISTS RaceIterations
 (
 	IterationID UUID NOT NULL REFERENCES Iterations (ID),
 	RaceID      UUID NOT NULL REFERENCES Races (ID),
 	PRIMARY KEY (IterationID, RaceID)
 );
 
-CREATE TABLE Courses
+CREATE TABLE IF NOT EXISTS Courses
 (
 	ID       UUID          NOT NULL PRIMARY KEY,
 	RaceID   UUID          NOT NULL REFERENCES Races (ID),
@@ -53,7 +53,7 @@ CREATE TABLE Courses
 	Units    TEXT          NOT NULL
 );
 
-CREATE TABLE Challenges
+CREATE TABLE IF NOT EXISTS Challenges
 (
 	ID          UUID    NOT NULL PRIMARY KEY,
 	IterationID UUID    NOT NULL REFERENCES Iterations (ID),
@@ -66,14 +66,14 @@ CREATE TABLE Challenges
 	UNIQUE (IterationID, Name)
 );
 
-CREATE TABLE ChallengeCourses
+CREATE TABLE IF NOT EXISTS ChallengeCourses
 (
 	ChallengeID UUID NOT NULL REFERENCES Challenges (ID),
 	CourseID    UUID NOT NULL REFERENCES Courses (ID),
 	PRIMARY KEY (ChallengeID, CourseID)
 );
 
-CREATE TABLE Athletes
+CREATE TABLE IF NOT EXISTS Athletes
 (
 	ID          UUID    NOT NULL PRIMARY KEY,
 	Name        TEXT    NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE Athletes
 	IsPrivate   BOOLEAN NOT NULL
 );
 
-CREATE TABLE Results
+CREATE TABLE IF NOT EXISTS Results
 (
 	ID        UUID      NOT NULL PRIMARY KEY,
 	CourseID  UUID      NOT NULL REFERENCES Courses (ID),
@@ -92,7 +92,7 @@ CREATE TABLE Results
 	UNIQUE (AthleteID, StartTime, Duration)
 );
 
-CREATE TABLE LinkedAccounts
+CREATE TABLE IF NOT EXISTS LinkedAccounts
 (
 	ID        UUID NOT NULL PRIMARY KEY,
 	AthleteID UUID NOT NULL REFERENCES Athletes (ID),

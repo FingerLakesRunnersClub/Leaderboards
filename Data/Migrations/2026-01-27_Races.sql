@@ -57,7 +57,8 @@ VALUES (uuidv4(), 'Super Frosty Loomis', 'Trail'),
 	   (uuidv4(), 'Abbott Ascent', 'Trail'),
 	   (uuidv4(), 'Black Diamond Cass to Gorge', 'Trail'),
 	   (uuidv4(), 'Triple Hump', 'Road'),
-	   (uuidv4(), 'North Country Half', 'Trail');
+	   (uuidv4(), 'North Country Half', 'Trail')
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -72,7 +73,8 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'Forest Frolic',
 						  'Forge the Gorge',
 						  'Monster Marathon',
-						  'Danby Down and Dirty'));
+						  'Danby Down and Dirty'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -88,7 +90,8 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'Thom B. Trail Run',
 						  'Forest Frolic 15K',
 						  'Black Diamond Trail',
-						  'Pseudo Skunk Cabbage'));
+						  'Pseudo Skunk Cabbage'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -104,7 +107,8 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'East Hill Dryden Rail Trail',
 						  'Jim Schug Trail',
 						  'Brookton Hill & Dale',
-						  'Lick Brook & Treman FLT'));
+						  'Lick Brook & Treman FLT'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -120,7 +124,8 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'Black Diamond Park to Park',
 						  'Blueberry Patch',
 						  'Ludlowville Loop',
-						  'Dryden Lake Lollipop'));
+						  'Dryden Lake Lollipop'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -136,7 +141,8 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'Treman Trailipop',
 						  'Hammond Hill Hoctathon',
 						  'Run Rabbit Run',
-						  'Freeville Fly-In'));
+						  'Freeville Fly-In'))
+ON CONFLICT DO NOTHING;
 
 INSERT INTO RaceIterations (RaceID, IterationID)
 	(SELECT Races.ID AS RaceID, Iterations.ID AS IterationID
@@ -152,4 +158,5 @@ INSERT INTO RaceIterations (RaceID, IterationID)
 						  'Abbott Ascent',
 						  'Black Diamond Cass to Gorge',
 						  'Triple Hump',
-						  'North Country Half'));
+						  'North Country Half'))
+ON CONFLICT DO NOTHING;
