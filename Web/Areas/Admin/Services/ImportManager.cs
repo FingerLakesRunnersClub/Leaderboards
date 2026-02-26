@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Data.Models;
 using Course = FLRC.Leaderboards.Data.Models.Course;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
@@ -8,22 +9,31 @@ public sealed class ImportManager(ILegacyDataConverter legacyConverter, IResultS
 {
 	public string[] Sources => resultsAPI.Keys.ToArray();
 
-	public async Task ImportAthletes(string source, uint externalID)
+	public async Task<Athlete[]> ImportAthletes(string source, uint externalID)
 	{
 		var importer = resultsAPI[source];
 		var response = await importer.GetResults(externalID);
-		var athletes = response.GetProperty("Racers").EnumerateArray().Select(j => importer.Source.ParseAthlete(j, ReadOnlyDictionary<string, string>.Empty)).ToArray();
-		foreach (var athlete in athletes)
-			await legacyConverter.GetAthlete(source, athlete);
+		var legacyAthletes = response.GetProperty("Racers").EnumerateArray().Select(j => importer.Source.ParseAthlete(j, ReadOnlyDictionary<string, string>.Empty)).ToArray();
+		var athletes = new List<Athlete>();
+
+		foreach (var legacyAthlete in legacyAthletes)
+		{
+			var athlete = await legacyConverter.GetAthlete(source, legacyAthlete);
+			athletes.Add(athlete);
+		}
+
+		return athletes.ToArray();
 	}
 
-	public async Task ImportResults(Course course, string source, uint externalID, DateTime? dateOverride = null)
+	public async Task<Result[]> ImportResults(Course course, string source, uint externalID, DateTime? dateOverride = null)
 	{
 		var importer = resultsAPI[source];
 		var response = await importer.GetResults(externalID);
 		var dataSource = importer.Source;
 		var legacyResults = dataSource.ParseCourse(null, response, null);
 		var results = await legacyConverter.ConvertResults(course.ID, source, legacyResults, dateOverride);
+
 		await resultService.Import(results);
+		return results;
 	}
 }
