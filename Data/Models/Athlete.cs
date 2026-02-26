@@ -11,6 +11,7 @@ public sealed record Athlete
 	public DateOnly? DateOfBirth { get; set; }
 	public bool IsPrivate { get; set; }
 
+	public ICollection<Iteration> Registrations { get; init; } = [];
 	public ICollection<Result> Results { get; init; } = [];
 	public ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
 

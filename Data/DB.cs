@@ -19,6 +19,7 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 
 		var anIteration = build.Entity<Iteration>().Table("Iterations");
 		anIteration.HasMany(i => i.Races).WithMany(c => c.Iterations).UsingEntity<RaceIteration>().Table("RaceIterations");
+		anIteration.HasMany(i => i.Athletes).WithMany(a => a.Registrations).UsingEntity<IterationRegistration>().Table("IterationRegistration");
 		anIteration.HasMany(i => i.Challenges).WithOne(c => c.Iteration);
 
 		var aRace = build.Entity<Race>().Table("Races");
