@@ -13,7 +13,7 @@ public static class AppExtensions
 {
 	extension(IServiceCollection services)
 	{
-		public void AddDiscourseAuthentication()
+		public void AddAuthentication()
 		{
 			var authSecret = Environment.GetEnvironmentVariable("DiscourseAuthSecret");
 			if (string.IsNullOrWhiteSpace(authSecret))
@@ -24,6 +24,7 @@ public static class AppExtensions
 			services.AddSingleton<IDiscourseAuthenticator>(authenticator);
 
 			services.AddSingleton<IAuthService, AuthService>();
+			services.AddSingleton<IWebScorerAuthenticator, WebScorerAuthenticator>();
 			services.AddAuthorization();
 		}
 

@@ -41,7 +41,7 @@ public sealed class App(string context)
 		services.AddHttpContextAccessor();
 
 		services.AddDatabase();
-		services.AddDiscourseAuthentication();
+		services.AddAuthentication();
 
 		services.AddSingleton<IConfig, AppConfig>();
 
