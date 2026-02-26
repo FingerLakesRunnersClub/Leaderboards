@@ -14,7 +14,8 @@ public sealed class ResultServiceTests
 		var service = new ResultService(db);
 
 		var id = Guid.NewGuid();
-		await db.AddAsync(new Result { ID = id, Duration = TimeSpan.FromMilliseconds(1234567) });
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		await db.AddAsync(new Result { ID = id, Duration = TimeSpan.FromMilliseconds(1234567), Athlete = athlete });
 		await db.SaveChangesAsync();
 
 		//act
@@ -33,7 +34,8 @@ public sealed class ResultServiceTests
 
 		var id = Guid.NewGuid();
 		var course = new Course { ID = id, Distance = 5, Units = "km" };
-		var result = new Result { ID = Guid.NewGuid(), Course = course, Duration = TimeSpan.FromMilliseconds(1234567) };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result { ID = Guid.NewGuid(), Course = course, Duration = TimeSpan.FromMilliseconds(1234567), Athlete = athlete };
 		await db.AddAsync(result);
 		await db.SaveChangesAsync();
 

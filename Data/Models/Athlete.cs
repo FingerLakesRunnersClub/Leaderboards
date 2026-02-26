@@ -23,4 +23,7 @@ public sealed record Athlete
 
 	public bool HasLinkedAccount(string type)
 		=> LinkedAccounts.Any(a => a.Type == type);
+
+	public bool IsRegistered(Iteration iteration)
+		=> Registrations.Contains(iteration);
 }
