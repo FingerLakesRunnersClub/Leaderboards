@@ -6,11 +6,17 @@ namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
 
 public sealed class ResultService(DB db) : IResultService
 {
+	private readonly IQueryable<Result> _results
+		= db.Set<Result>()
+			.Include(r => r.Athlete)
+			.AsQueryable();
+
 	public async Task<Result> Get(Guid id)
-		=> await db.Set<Result>().FindAsync(id);
+		=> await _results
+			.FirstAsync(r => r.ID == id);
 
 	public async Task<Result[]> Find(Guid courseID)
-		=> await db.Set<Result>()
+		=> await _results
 			.Where(r => r.CourseID == courseID)
 			.ToArrayAsync();
 

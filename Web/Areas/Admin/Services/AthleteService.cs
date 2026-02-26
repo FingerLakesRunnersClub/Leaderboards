@@ -1,15 +1,16 @@
 using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
 
 public sealed class AthleteService(DB db) : IAthleteService
 {
-	private readonly IIncludableQueryable<Athlete, ICollection<LinkedAccount>> _athletes
+	private readonly IQueryable<Athlete> _athletes
 		= db.Set<Athlete>()
-			.Include(a => a.LinkedAccounts);
+			.Include(a => a.LinkedAccounts)
+			.Include(a => a.Registrations)
+			.AsQueryable();
 
 	public async Task<Athlete> Get(Guid id)
 		=> await _athletes.FirstAsync(a => a.ID == id);
