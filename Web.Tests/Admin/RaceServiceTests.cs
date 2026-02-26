@@ -27,6 +27,32 @@ public sealed class RaceServiceTests
 	}
 
 	[Fact]
+	public async Task CanGetSpecificRaces()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new RaceService(db);
+
+		var id1 = Guid.NewGuid();
+		var id2 = Guid.NewGuid();
+		var id3 = Guid.NewGuid();
+		await db.AddRangeAsync(
+			new Race { ID = id1, Name = "Test Race 1", Type = "Test" },
+			new Race { ID = id2, Name = "Test Race 2", Type = "Test" },
+			new Race { ID = id3, Name = "Test Race 3", Type = "Test" }
+		);
+		await db.SaveChangesAsync();
+
+		//act
+		var races = await service.GetRaces([id1, id3]);
+
+		//assert
+		Assert.Equal(2, races.Length);
+		Assert.Equal("Test Race 1", races[0].Name);
+		Assert.Equal("Test Race 3", races[1].Name);
+	}
+
+	[Fact]
 	public async Task CanGetRace()
 	{
 		//arrange

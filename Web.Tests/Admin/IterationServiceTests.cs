@@ -59,7 +59,7 @@ public sealed class IterationServiceTests
 
 		//act
 		var iteration = new Iteration { Name = "Test 1", Series = series };
-		await service.AddIteration(series.ID, iteration, []);
+		await service.AddIteration(series.ID, iteration);
 
 		//assert
 		Assert.Equal("Test 1", db.Set<Iteration>().Single().Name);
@@ -79,7 +79,7 @@ public sealed class IterationServiceTests
 
 		//act
 		var updated = new Iteration { Name = "Test 2" };
-		await service.UpdateIteration(iteration, updated, []);
+		await service.UpdateIteration(iteration, updated);
 
 		//assert
 		Assert.Equal("Test 2", db.Set<Iteration>().Single().Name);
@@ -101,13 +101,37 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var updated = new Iteration { Name = "Test 2" };
-		await service.UpdateIteration(iteration, updated, [r1.ID, r3.ID]);
+		await service.UpdateRaces(iteration, [r1, r3]);
 
 		//assert
 		var races = db.Set<Iteration>().Single().Races.OrderBy(r => r.Name).ToArray();
 		Assert.Equal(2, races.Length);
 		Assert.Equal("Race 1", races[0].Name);
 		Assert.Equal("Race 3", races[1].Name);
+	}
+
+	[Fact]
+	public async Task CanUpdateIterationRegistrations()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new IterationService(db);
+
+		var series = new Series { ID = Guid.NewGuid(), Key = "Test", Name = "Test" };
+		var a1 = new Athlete { ID = Guid.NewGuid(), Name = "A1" };
+		var a2 = new Athlete { ID = Guid.NewGuid(), Name = "A2" };
+		var a3 = new Athlete { ID = Guid.NewGuid(), Name = "A3" };
+		var iteration = new Iteration { ID = Guid.NewGuid(), Name = "Test 1", Series = series, Athletes = [a1, a2]};
+		await db.AddRangeAsync(iteration, a1, a2, a3);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.UpdateRegistrations(iteration, [a1, a3]);
+
+		//assert
+		var athletes = db.Set<Iteration>().Single().Athletes.OrderBy(r => r.Name).ToArray();
+		Assert.Equal(2, athletes.Length);
+		Assert.Equal("A1", athletes[0].Name);
+		Assert.Equal("A3", athletes[1].Name);
 	}
 }

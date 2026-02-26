@@ -1,0 +1,39 @@
+@using FLRC.Leaderboards.Data.Models
+@using FLRC.Leaderboards.Web.Areas.Admin
+@model ViewModel<Athlete[]>
+
+@await Html.PartialAsync("../AdminHeader")
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<form method="post" class="mb-3 float-right">
+			<button type="submit" class="btn btn-success">Update</button>
+		</form>
+
+		<table class="table table-bordered table-striped table-sm">
+			<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Category</th>
+				<th scope="col">Age</th>
+				<th scope="col">Linked Accounts</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var athlete in Model.Data)
+			{
+				<tr>
+					<th scope="row">
+						<a href="/Admin/Athletes/@athlete.ID">
+							@athlete.Name
+						</a>
+					</th>
+					<td>@athlete.Category</td>
+					<td>@athlete.AgeToday</td>
+					<td>@string.Join(", ", athlete.LinkedAccounts.Select(a => a.Type))</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</section>
+</article>

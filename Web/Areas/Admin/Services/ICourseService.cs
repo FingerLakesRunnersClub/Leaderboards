@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Models;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;

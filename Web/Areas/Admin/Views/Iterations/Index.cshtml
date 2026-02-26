@@ -21,6 +21,7 @@
 					<th scope="col">Name</th>
 					<th scope="col">Start Date</th>
 					<th scope="col">End Date</th>
+					<th scope="col">Registered</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -37,6 +38,13 @@
 						</td>
 						<td>
 							@iteration.EndDate
+						</td>
+						<td>
+							@iteration.Athletes.Count (
+							<a href="/Admin/Iterations/Registration/@iteration.ID">
+								View
+							</a>
+							)
 						</td>
 					</tr>
 				}

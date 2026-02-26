@@ -1,12 +1,13 @@
 using FLRC.Leaderboards.Data.Models;
 using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService) : Controller
+public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService, IRegistrationManager registrationManager) : Controller
 {
 	public async Task<ViewResult> Index()
 	{
@@ -28,7 +29,11 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpPost]
 	public async Task<RedirectResult> Add(Guid id, Iteration iteration, Guid[] races)
 	{
-		await iterationService.AddIteration(id, iteration, races);
+		var raceObjects = await raceService.GetRaces(races);
+
+		await iterationService.AddIteration(id, iteration);
+		await iterationService.UpdateRaces(iteration, raceObjects);
+
 		return Redirect("/Admin/Iterations");
 	}
 
@@ -46,7 +51,26 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	public async Task<RedirectResult> Edit(Guid id, Iteration updated, Guid[] races)
 	{
 		var iteration = await iterationService.GetIteration(id);
-		await iterationService.UpdateIteration(iteration, updated, races);
+		var raceObjects = await raceService.GetRaces(races);
+
+		await iterationService.UpdateIteration(iteration, updated);
+		await iterationService.UpdateRaces(iteration, raceObjects);
+
 		return Redirect("/Admin/Iterations");
+	}
+
+	public async Task<ViewResult> Registration(Guid id)
+	{
+		var iteration = await iterationService.GetIteration(id);
+		var vm = new ViewModel<Athlete[]>($"{iteration.Series.Name} {iteration.Name} Registered Athletes", iteration.Athletes.ToArray());
+		return View(vm);
+	}
+
+	[HttpPost]
+	public async Task<RedirectToActionResult> Registration(Guid id, IFormCollection form)
+	{
+		var iteration = await iterationService.GetIteration(id);
+		await registrationManager.Update(iteration);
+		return RedirectToAction(nameof(Registration));
 	}
 }
