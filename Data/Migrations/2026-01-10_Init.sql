@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Athletes
 	ID          UUID    NOT NULL PRIMARY KEY,
 	Name        TEXT    NOT NULL,
 	Category    CHAR    NOT NULL,
-	DateOfBirth DATE    NOT NULL,
+	DateOfBirth DATE,
 	IsPrivate   BOOLEAN NOT NULL
 );
 

@@ -135,7 +135,7 @@ public sealed class AthleteServiceTests
 		//assert
 		var result = db.Set<Athlete>().Single();
 		Assert.Equal("Test 2", result.Name);
-		Assert.Equal("02/16/1985", result.DateOfBirth.ToString("MM/dd/yyyy"));
+		Assert.Equal("02/16/1985", result.DateOfBirth?.ToString("MM/dd/yyyy"));
 		Assert.True(result.IsPrivate);
 	}
 
@@ -156,7 +156,7 @@ public sealed class AthleteServiceTests
 		//assert
 		var result = db.Set<Athlete>().Single();
 		Assert.Equal("Test 2", result.Name);
-		Assert.Equal("02/16/1985", result.DateOfBirth.ToString("MM/dd/yyyy"));
+		Assert.Equal("02/16/1985", result.DateOfBirth?.ToString("MM/dd/yyyy"));
 		Assert.True(result.IsPrivate);
 	}
 

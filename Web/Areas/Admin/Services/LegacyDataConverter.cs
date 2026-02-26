@@ -49,7 +49,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			await athleteService.AddAthlete(athlete);
 		}
 
-		if ((athlete.DateOfBirth == Athlete.UnknownDOB && newAthlete.DateOfBirth != Athlete.UnknownDOB)
+		if ((athlete.DateOfBirth is null && newAthlete.DateOfBirth is not null)
 		    || (athlete.Category == Athlete.UnknownCategory && newAthlete.Category != Athlete.UnknownCategory)
 		    || newAthlete.LinkedAccounts.Any(account => !athlete.LinkedAccounts.Contains(account, AthleteService.LinkedAccountComparer)))
 			await athleteService.UpdateAthlete(athlete, newAthlete);
@@ -62,7 +62,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 		{
 			ID = Guid.NewGuid(),
 			Name = athlete.Name,
-			DateOfBirth = athlete.DateOfBirth.HasValue ? DateOnly.FromDateTime(athlete.DateOfBirth.Value) : Athlete.UnknownDOB,
+			DateOfBirth = athlete.DateOfBirth.HasValue ? DateOnly.FromDateTime(athlete.DateOfBirth.Value) : null,
 			Category = athlete.Category?.Display[0] ?? Athlete.UnknownCategory,
 			IsPrivate = athlete.Private,
 			LinkedAccounts = new[] {
