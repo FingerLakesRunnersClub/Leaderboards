@@ -48,7 +48,7 @@ public sealed class LegacyDataConverterTests
 		var athleteService = Substitute.For<IAthleteService>();
 		var converter = new LegacyDataConverter(athleteService);
 
-		athleteService.Find(nameof(WebScorer), 123.ToString()).Returns(new Athlete { Name = "New1" });
+		athleteService.Find(LinkedAccount.Keys.WebScorer, 123.ToString()).Returns(new Athlete { Name = "New1" });
 
 		//act
 		var athlete = await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
@@ -111,7 +111,7 @@ public sealed class LegacyDataConverterTests
 		var athleteService = Substitute.For<IAthleteService>();
 		var converter = new LegacyDataConverter(athleteService);
 
-		athleteService.Find(nameof(WebScorer), 123.ToString()).Returns(new Athlete { Name = "New1" });
+		athleteService.Find(LinkedAccount.Keys.WebScorer, 123.ToString()).Returns(new Athlete { Name = "New1" });
 
 		//act
 		var athlete = await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
@@ -133,7 +133,7 @@ public sealed class LegacyDataConverterTests
 			DateOfBirth = DateOnly.Parse("1/1/2000"),
 			Category = 'M'
 		};
-		athleteService.Find(nameof(WebScorer), 123.ToString()).Returns(existing);
+		athleteService.Find(LinkedAccount.Keys.WebScorer, 123.ToString()).Returns(existing);
 
 		//act
 		await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
@@ -154,9 +154,9 @@ public sealed class LegacyDataConverterTests
 			Name = "New1",
 			DateOfBirth = DateOnly.Parse("1/1/2000"),
 			Category = 'M',
-			LinkedAccounts = [new LinkedAccount { Type = nameof(WebScorer), Value = 123.ToString() }]
+			LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = 123.ToString() }]
 		};
-		athleteService.Find(nameof(WebScorer), 123.ToString()).Returns(existing);
+		athleteService.Find(LinkedAccount.Keys.WebScorer, 123.ToString()).Returns(existing);
 
 		//act
 		await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
