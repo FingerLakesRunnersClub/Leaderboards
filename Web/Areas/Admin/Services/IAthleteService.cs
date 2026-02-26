@@ -12,4 +12,6 @@ public interface IAthleteService
 
 	Task AddAthlete(Athlete athlete);
 	Task UpdateAthlete(Athlete athlete, Athlete updated);
+
+	Task AddLinkedAccount(Athlete athlete, LinkedAccount account);
 }

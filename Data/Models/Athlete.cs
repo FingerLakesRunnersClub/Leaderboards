@@ -20,4 +20,7 @@ public sealed record Athlete
 		: null;
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
+
+	public bool HasLinkedAccount(string type)
+		=> LinkedAccounts.Any(a => a.Type == type);
 }

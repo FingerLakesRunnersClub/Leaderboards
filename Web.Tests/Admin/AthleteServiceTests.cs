@@ -161,7 +161,7 @@ public sealed class AthleteServiceTests
 	}
 
 	[Fact]
-	public async Task UpdateAddsNewLinkedAccounts()
+	public async Task CanAddNewLinkedAccounts()
 	{
 		//arrange
 		var db = TestHelpers.CreateDB();
@@ -171,8 +171,8 @@ public sealed class AthleteServiceTests
 		await db.AddAsync(athlete);
 
 		//act
-		var updated = new Athlete { ID = athlete.ID, Name = "Test 2", LinkedAccounts = [new LinkedAccount { Type = "t1", Value = "v1" }]};
-		await service.UpdateAthlete(athlete, updated);
+		var account = new LinkedAccount { Type = "t1", Value = "v1" };
+		await service.AddLinkedAccount(athlete, account);
 
 		//assert
 		var result = db.Set<Athlete>().Single();

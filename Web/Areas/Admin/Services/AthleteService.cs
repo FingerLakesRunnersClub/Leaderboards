@@ -42,16 +42,22 @@ public sealed class AthleteService(DB db) : IAthleteService
 		var newAccounts = updated.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccountComparer);
 		foreach (var account in newAccounts)
 		{
-			var newAccount = new LinkedAccount
-			{
-				ID = Guid.NewGuid(),
-				AthleteID = athlete.ID,
-				Type = account.Type,
-				Value = account.Value
-			};
-			await db.AddAsync(newAccount);
+			await AddLinkedAccount(athlete, account);
 		}
 
+		await db.SaveChangesAsync();
+	}
+
+	public async Task AddLinkedAccount(Athlete athlete, LinkedAccount account)
+	{
+		var newAccount = new LinkedAccount
+		{
+			ID = Guid.NewGuid(),
+			AthleteID = athlete.ID,
+			Type = account.Type,
+			Value = account.Value
+		};
+		await db.AddAsync(newAccount);
 		await db.SaveChangesAsync();
 	}
 }
