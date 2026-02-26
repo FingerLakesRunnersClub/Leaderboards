@@ -1,10 +1,7 @@
-using System.Security.Claims;
 using System.Security.Principal;
-using System.Text.Json;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Web.Controllers;
 using FLRC.Leaderboards.Web.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
@@ -22,54 +19,13 @@ public sealed class AccountControllerTests
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
 
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
+		var controller = new AccountController(authService, discourse);
 
 		//act
 		var result = controller.Login();
 
 		//assert
 		Assert.IsType<RedirectResult>(result);
-	}
-
-	[Fact]
-	public void InfoProvidesUserDetails()
-	{
-		//arrange
-		var authService = Substitute.For<IAuthService>();
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("name", "Steve Desmond")])));
-
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
-
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
-
-		//act
-		var result = controller.Info();
-
-		//assert
-		var json = JsonDocument.Parse(result!.Content!);
-		Assert.Equal("Steve Desmond", json.RootElement.GetProperty("name").GetString());
-	}
-
-	[Fact]
-	public void InfoIsEmptyWhenNotLoggedIn()
-	{
-		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		var authService = Substitute.For<IAuthService>();
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
-
-		//act
-		var result = controller.Info();
-
-		//assert
-		Assert.Equal("{}", result!.Content);
 	}
 
 	[Fact]
@@ -81,9 +37,7 @@ public sealed class AccountControllerTests
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
+		var controller = new AccountController(authService, discourse);
 
 		//act
 		await controller.Redirect("test", "123");
@@ -101,9 +55,7 @@ public sealed class AccountControllerTests
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
+		var controller = new AccountController(authService, discourse);
 
 		//act
 		await controller.Redirect("test", "123");
@@ -118,9 +70,7 @@ public sealed class AccountControllerTests
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		var contextAccessor = Substitute.For<IHttpContextAccessor>();
-
-		var controller = new AccountController(authService, discourse, contextAccessor);
+		var controller = new AccountController(authService, discourse);
 
 		//act
 		await controller.Logout();

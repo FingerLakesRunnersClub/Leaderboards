@@ -7,6 +7,7 @@ public interface IAuthService
 {
 	Task LogIn(IIdentity identity);
 	bool IsLoggedIn();
+	string GetCurrentHost();
 	ClaimsPrincipal GetCurrentUser();
 	Task LogOut();
 }

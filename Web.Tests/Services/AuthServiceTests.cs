@@ -14,17 +14,32 @@ namespace FLRC.Leaderboards.Web.Tests.Services;
 public sealed class AuthServiceTests
 {
 	[Fact]
+	public void CanGetCurrentHost()
+	{
+		//arrange
+		var contextAccessor = Substitute.For<IHttpContextAccessor>();
+		contextAccessor.HttpContext!.Request.Scheme = "https";
+		contextAccessor.HttpContext!.Request.Host = new HostString("example.com");
+
+		var service = new AuthService(contextAccessor);
+
+		//act
+		var host = service.GetCurrentHost();
+
+		//assert
+		Assert.Equal("https://example.com", host);
+	}
+
+	[Fact]
 	public async Task CanLogInUser()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		var netAuthService = Substitute.For<IAuthenticationService>();
 		contextAccessor.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(netAuthService);
 		contextAccessor.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		var identity = new GenericIdentity("test");
@@ -38,12 +53,10 @@ public sealed class AuthServiceTests
 	public void CanGetCurrentUser()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		contextAccessor.HttpContext!.User.Identity.Returns(new GenericIdentity("test"));
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		var user = service.GetCurrentUser();
@@ -56,12 +69,10 @@ public sealed class AuthServiceTests
 	public void IsLoggedInWhenUserIsAuthenticated()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		contextAccessor.HttpContext!.User.Identity!.IsAuthenticated.Returns(true);
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		var isLoggedIn = service.IsLoggedIn();
@@ -74,12 +85,10 @@ public sealed class AuthServiceTests
 	public void IsNotLoggedInWhenUserIsNotAuthenticated()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		contextAccessor.HttpContext!.User.Identity!.IsAuthenticated.Returns(false);
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		var isLoggedIn = service.IsLoggedIn();
@@ -92,12 +101,10 @@ public sealed class AuthServiceTests
 	public void IsNotLoggedInWhenNoIdentity()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		contextAccessor.HttpContext!.User.Identity.ReturnsNull();
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		var isLoggedIn = service.IsLoggedIn();
@@ -110,14 +117,12 @@ public sealed class AuthServiceTests
 	public async Task CanLogOutUser()
 	{
 		//arrange
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-
 		var contextAccessor = Substitute.For<IHttpContextAccessor>();
 		var netAuthService = Substitute.For<IAuthenticationService>();
 		contextAccessor.HttpContext!.RequestServices.GetService(typeof(IAuthenticationService)).Returns(netAuthService);
 		contextAccessor.HttpContext!.RequestServices.GetService(typeof(IUrlHelperFactory)).Returns(Substitute.For<IUrlHelperFactory>());
 
-		var service = new AuthService(discourse, contextAccessor);
+		var service = new AuthService(contextAccessor);
 
 		//act
 		await service.LogOut();
