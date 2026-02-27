@@ -1,7 +1,7 @@
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using NSubstitute;
 using Xunit;

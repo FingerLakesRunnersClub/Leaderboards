@@ -9,6 +9,7 @@
 		<PackageReference Include="dbup-postgresql" Version="7.0.1" />
 		<PackageReference Include="EFCore.NamingConventions" Version="10.0.1" />
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
+		<ProjectReference Include="../Model/Model.csproj" />
 		<Content Include="Migrations/*.sql" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
 </Project>

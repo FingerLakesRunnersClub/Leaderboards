@@ -1,7 +1,7 @@
 using System.Collections.ObjectModel;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Data.Models;
-using Course = FLRC.Leaderboards.Data.Models.Course;
+using FLRC.Leaderboards.Model;
+using Course = FLRC.Leaderboards.Model.Course;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
 

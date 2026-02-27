@@ -1,4 +1,4 @@
-using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.Areas.Admin;
 using FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 using FLRC.Leaderboards.Web.Areas.Admin.Services;

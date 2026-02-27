@@ -1,4 +1,4 @@
-using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
 

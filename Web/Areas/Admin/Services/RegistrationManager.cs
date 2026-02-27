@@ -1,5 +1,5 @@
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Services;
 

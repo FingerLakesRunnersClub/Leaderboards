@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using System.Security.Principal;
-using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;

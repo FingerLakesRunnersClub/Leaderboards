@@ -1,4 +1,4 @@
-namespace FLRC.Leaderboards.Data.Models;
+namespace FLRC.Leaderboards.Model;
 
 public sealed record Setting : Setting<string>;
 

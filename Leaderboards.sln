@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Importer", "Importer\Importer.csproj", "{FD4898F2-B895-49D0-BE2E-30D82BDCDD52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +141,18 @@ Global
 		{FD4898F2-B895-49D0-BE2E-30D82BDCDD52}.Release|x64.Build.0 = Release|Any CPU
 		{FD4898F2-B895-49D0-BE2E-30D82BDCDD52}.Release|x86.ActiveCfg = Release|Any CPU
 		{FD4898F2-B895-49D0-BE2E-30D82BDCDD52}.Release|x86.Build.0 = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|x64.Build.0 = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|x64.ActiveCfg = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|x64.Build.0 = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC13C7B6-604C-405D-AE26-AE9DAB0E594E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
