@@ -1,0 +1,28 @@
+@using FLRC.Leaderboards.Web.Areas.Admin
+@model ViewModel<string>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<p>We can't find your WebScorer account using the information we have.</p>
+		<p>Please sign in to WebScorer so we can connect your accounts.</p>
+		<div class="row justify-content-center">
+			<form method="post" class="bg-white border rounded shadow p-3 mt-3 mb-4 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+				@if (Model.Data is not null)
+				{
+					<p class="text-danger">@Model.Data</p>
+				}
+				<div class="form-group">
+					<label for="email">Email</label>
+					<input type="email" id="email" name="Email" required class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" id="password" name="Password" class="form-control"/>
+				</div>
+				<button type="submit" class="btn btn-primary">Verify</button>
+			</form>
+		</div>
+	</section>
+</article>
