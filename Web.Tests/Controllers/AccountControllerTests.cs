@@ -1,5 +1,6 @@
 using System.Security.Principal;
 using FLRC.Leaderboards.Core.Auth;
+using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using FLRC.Leaderboards.Web.Controllers;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,13 @@ public sealed class AccountControllerTests
 	public void LoginRedirectsToAuthPage()
 	{
 		//arrange
+		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
 
-		var controller = new AccountController(authService, discourse);
+		var controller = new AccountController(athleteService, authService, discourse);
 
 		//act
 		var result = controller.Login();
@@ -32,12 +34,13 @@ public sealed class AccountControllerTests
 	public async Task RedirectPerformsLogin()
 	{
 		//arrange
+		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
-
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
-		var controller = new AccountController(authService, discourse);
+		var controller = new AccountController(athleteService, authService, discourse);
+
+		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
 		//act
 		await controller.Redirect("test", "123");
@@ -50,12 +53,13 @@ public sealed class AccountControllerTests
 	public async Task RedirectDoesNotAttemptLoginOnValidationFailure()
 	{
 		//arrange
+		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
-		var controller = new AccountController(authService, discourse);
+		var controller = new AccountController(athleteService, authService, discourse);
 
 		//act
 		await controller.Redirect("test", "123");
@@ -68,9 +72,10 @@ public sealed class AccountControllerTests
 	public async Task LogoutSignsOutUser()
 	{
 		//arrange
+		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		var controller = new AccountController(authService, discourse);
+		var controller = new AccountController(athleteService, authService, discourse);
 
 		//act
 		await controller.Logout();

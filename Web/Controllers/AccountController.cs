@@ -1,17 +1,19 @@
 using System.Security.Claims;
 using FLRC.Leaderboards.Core.Auth;
+using FLRC.Leaderboards.Data.Models;
+using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AccountController(IAuthService authService, IDiscourseAuthenticator discourse) : Controller
+public sealed class AccountController(IAthleteService athleteService, IAuthService authService, IDiscourseAuthenticator discourse) : Controller
 {
 	public RedirectResult Login()
 	{
 		var host = authService.GetCurrentHost();
 		var url = discourse.GetLoginURL(host);
-		return base.Redirect(url);
+		return Redirect(url);
 	}
 
 	public async Task<IActionResult> Redirect(string sso, string sig)
@@ -25,7 +27,16 @@ public sealed class AccountController(IAuthService authService, IDiscourseAuthen
 		identity.AddClaims(response.Select(r => new Claim(r.Key, r.Value)));
 		await authService.LogIn(identity);
 
-		return Redirect("/Wizard");
+		var athlete = await CurrentAthlete(identity);
+		return Redirect(athlete is null ? "/Wizard" : "/");
+	}
+
+	private async Task<Athlete> CurrentAthlete(ClaimsIdentity identity)
+	{
+		var claims = identity.Claims.ToDictionary(c => c.Type, c => c.Value);
+		return claims.TryGetValue("external_id", out var id)
+			? await athleteService.Find(LinkedAccount.Keys.Discourse, id)
+			: null;
 	}
 
 	public async Task<RedirectResult> Logout()
