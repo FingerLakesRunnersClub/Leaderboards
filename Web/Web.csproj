@@ -11,5 +11,6 @@
 		<ProjectReference Include="../Core/Core.csproj" />
 		<ProjectReference Include="../Data/Data.csproj" />
 		<None Include="wwwroot/**" CopyToOutputDirectory="Always" />
+		<ProjectReference Include="..\Services\Services.csproj" />
 	</ItemGroup>
 </Project>

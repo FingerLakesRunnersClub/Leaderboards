@@ -1,5 +1,5 @@
 using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Web.Areas.Admin.Services;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;

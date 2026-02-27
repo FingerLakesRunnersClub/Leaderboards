@@ -1,7 +1,7 @@
 using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Areas.Admin;
 using FLRC.Leaderboards.Web.Areas.Admin.Controllers;
-using FLRC.Leaderboards.Web.Areas.Admin.Services;
 using NSubstitute;
 using Xunit;
 

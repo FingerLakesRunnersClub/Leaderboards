@@ -1,5 +1,5 @@
 using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Web.Areas.Admin.Services;
+using FLRC.Leaderboards.Services;
 
 namespace FLRC.Leaderboards.Importer;
 

@@ -1,6 +1,6 @@
 using System.Security.Principal;
 using FLRC.Leaderboards.Core.Auth;
-using FLRC.Leaderboards.Web.Areas.Admin.Services;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc;

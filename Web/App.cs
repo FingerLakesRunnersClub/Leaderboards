@@ -5,7 +5,7 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Series;
 using FLRC.Leaderboards.Data.Migrations;
-using FLRC.Leaderboards.Web.Areas.Admin.Services;
+using FLRC.Leaderboards.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
