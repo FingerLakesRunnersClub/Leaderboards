@@ -1,5 +1,5 @@
 ALTER TABLE Races ADD COLUMN IF NOT EXISTS Description TEXT;
-UPDATE Races SET Description = '' WHERE Description <> '';
+UPDATE Races SET Description = '' WHERE Description IS NULL OR DESCRIPTION = '';
 ALTER TABLE Races ALTER COLUMN Description SET NOT NULL;
 
 UPDATE Races SET Description = 'Feeling frisky? Test your legs at 1600 meters on any standard track in the world (just 9 meters short of a mile—we’ll round up for mileage calculations). You can run the Sweet 1600 in FLRC’s summer track meets for some competition, and it’s a great way to continue to rack up Challenge efforts while you’re traveling.' WHERE Name = 'Sweet 1600';
