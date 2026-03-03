@@ -18,7 +18,7 @@ public sealed class SeriesService(DB db) : ISeriesService
 	public async Task<Series> GetSeries(Guid id)
 		=> await _series.FirstAsync(s => s.ID == id);
 
-	public async Task<Series> FindSeries(string key)
+	public async Task<Series?> FindSeries(string key)
 		=> await _series.FirstAsync(s => s.Key == key);
 
 	public async Task AddSeries(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)

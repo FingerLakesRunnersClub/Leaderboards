@@ -59,7 +59,7 @@ public sealed class SeriesServiceTests
 		var series = await service.FindSeries("Test1");
 
 		//assert
-		Assert.Equal("Test 1", series.Name);
+		Assert.Equal("Test 1", series!.Name);
 	}
 
 	[Fact]

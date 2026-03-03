@@ -13,16 +13,20 @@ public sealed class AthleteService(DB db) : IAthleteService
 			.AsQueryable();
 
 	public async Task<Athlete> Get(Guid id)
-		=> await _athletes.FirstAsync(a => a.ID == id);
+		=> await _athletes
+			.FirstAsync(a => a.ID == id);
 
-	public async Task<Athlete> Find(string link, string value)
-		=> await _athletes.FirstOrDefaultAsync(a => a.LinkedAccounts.Any(l => l.Type == link && l.Value == value));
+	public async Task<Athlete?> Find(string link, string value)
+		=> await _athletes
+			.FirstOrDefaultAsync(a => a.LinkedAccounts.Any(l => l.Type == link && l.Value == value));
 
-	public async Task<Athlete> Find(string name, DateOnly dob)
-		=> await _athletes.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth == dob);
+	public async Task<Athlete?> Find(string name, DateOnly dob)
+		=> await _athletes
+			.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth == dob);
 
-	public async Task<Athlete> Find(string name, byte age, DateTime onDate)
-		=> await _athletes.Where(a => a.Name == name).ToAsyncEnumerable()
+	public async Task<Athlete?> Find(string name, byte age, DateTime onDate)
+		=> await _athletes
+			.Where(a => a.Name == name).ToAsyncEnumerable()
 			.FirstOrDefaultAsync(a => a.DateOfBirth is not null && a.AgeAsOf(onDate) == age);
 
 	public async Task AddAthlete(Athlete athlete)

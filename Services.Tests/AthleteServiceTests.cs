@@ -38,7 +38,7 @@ public sealed class AthleteServiceTests
 		var athlete = await service.Find("Test", DateOnly.Parse("2/3/1985"));
 
 		//assert
-		Assert.Equal(id, athlete.ID);
+		Assert.Equal(id, athlete!.ID);
 	}
 
 	[Fact]
@@ -56,7 +56,7 @@ public sealed class AthleteServiceTests
 		var athlete = await service.Find("Test", 41, new DateTime(2026, 02, 16));
 
 		//assert
-		Assert.Equal(id, athlete.ID);
+		Assert.Equal(id, athlete!.ID);
 	}
 
 	[Fact]
@@ -74,7 +74,7 @@ public sealed class AthleteServiceTests
 		var athlete = await service.Find("Test", 40, new DateTime(2026, 2, 1));
 
 		//assert
-		Assert.Equal(id, athlete.ID);
+		Assert.Equal(id, athlete!.ID);
 	}
 
 	[Fact]
@@ -98,7 +98,7 @@ public sealed class AthleteServiceTests
 		var athlete = await service.Find("Email", "test@example.com");
 
 		//assert
-		Assert.Equal("Test", athlete.Name);
+		Assert.Equal("Test", athlete!.Name);
 	}
 
 	[Fact]
