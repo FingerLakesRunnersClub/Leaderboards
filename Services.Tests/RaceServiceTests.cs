@@ -13,8 +13,8 @@ public sealed class RaceServiceTests
 		var service = new RaceService(db);
 
 		await db.AddRangeAsync(
-			new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test" },
-			new Race { ID = Guid.NewGuid(), Name = "Test Race 2", Type = "Test" }
+			new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" },
+			new Race { ID = Guid.NewGuid(), Name = "Test Race 2", Type = "Test", Description = "test" }
 		);
 		await db.SaveChangesAsync();
 
@@ -36,9 +36,9 @@ public sealed class RaceServiceTests
 		var id2 = Guid.NewGuid();
 		var id3 = Guid.NewGuid();
 		await db.AddRangeAsync(
-			new Race { ID = id1, Name = "Test Race 1", Type = "Test" },
-			new Race { ID = id2, Name = "Test Race 2", Type = "Test" },
-			new Race { ID = id3, Name = "Test Race 3", Type = "Test" }
+			new Race { ID = id1, Name = "Test Race 1", Type = "Test", Description = "test" },
+			new Race { ID = id2, Name = "Test Race 2", Type = "Test", Description = "test" },
+			new Race { ID = id3, Name = "Test Race 3", Type = "Test", Description = "test" }
 		);
 		await db.SaveChangesAsync();
 
@@ -58,8 +58,8 @@ public sealed class RaceServiceTests
 		var db = TestHelpers.CreateDB();
 		var service = new RaceService(db);
 
-		var r1 = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test" };
-		var r2 = new Race { ID = Guid.NewGuid(), Name = "Test Race 2", Type = "Test" };
+		var r1 = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
+		var r2 = new Race { ID = Guid.NewGuid(), Name = "Test Race 2", Type = "Test", Description = "test" };
 		await db.AddRangeAsync(r1, r2);
 		await db.SaveChangesAsync();
 
@@ -78,8 +78,8 @@ public sealed class RaceServiceTests
 		var service = new RaceService(db);
 
 		//act
-		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test" };
-		await service.AddRace(race, new Dictionary<Guid, Course>());
+		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
+		await service.AddRace(race);
 
 		//assert
 		Assert.Equal("Test Race 1", db.Set<Race>().Single().Name);
@@ -92,13 +92,13 @@ public sealed class RaceServiceTests
 		var db = TestHelpers.CreateDB();
 		var service = new RaceService(db);
 
-		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test" };
+		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
 		await db.AddAsync(race);
 		await db.SaveChangesAsync();
 
 		//act
 		var updated = new Race { Name = "Test Race 2" };
-		await service.UpdateRace(race, updated, new Dictionary<Guid, Course>());
+		await service.UpdateRace(race, updated);
 
 		//assert
 		Assert.Equal("Test Race 2", db.Set<Race>().Single().Name);
@@ -111,20 +111,19 @@ public sealed class RaceServiceTests
 		var db = TestHelpers.CreateDB();
 		var service = new RaceService(db);
 
-		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test" };
+		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
 		var course = new Course { ID = Guid.NewGuid(), RaceID = race.ID, Distance = 1, Units = nameof(Core.Races.DistanceUnit.mi) };
 		await db.AddRangeAsync(race, course);
 		await db.SaveChangesAsync();
 
 		//act
-		var updated = new Race { Name = "Test Race 2" };
 		course.Distance = 2;
 		var courses = new Dictionary<Guid, Course>()
 		{
 			{ course.ID, course},
 			{ Guid.Empty, new Course { Distance = 3, Units = nameof(Core.Races.DistanceUnit.km)} }
 		};
-		await service.UpdateRace(race, updated, courses);
+		await service.UpdateCourses(race, courses);
 
 		//assert
 		var updatedCourses = db.Set<Race>().Single().Courses.OrderBy(c => c.Distance).ToArray();

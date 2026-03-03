@@ -38,6 +38,7 @@ public sealed class RaceService(DB db) : IRaceService
 	{
 		race.Name = updated.Name;
 		race.Type = updated.Type;
+		race.Description = updated.Description;
 
 		await UpdateCourses(race, courses);
 

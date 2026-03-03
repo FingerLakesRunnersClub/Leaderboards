@@ -13,7 +13,8 @@ public sealed class CourseServiceTests
 		var service = new CourseService(db);
 
 		var id = Guid.NewGuid();
-		await db.AddAsync(new Course { ID = id, Race = new Race { Name = "Test", Type = "Trail "}, Distance = 5, Units = "km" });
+		var race = new Race { Name = "Test", Type = "Trail", Description = "test" };
+		await db.AddAsync(new Course { ID = id, Race = race, Distance = 5, Units = "km" });
 		await db.SaveChangesAsync();
 
 		//act

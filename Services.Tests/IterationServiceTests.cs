@@ -92,9 +92,9 @@ public sealed class IterationServiceTests
 		var service = new IterationService(db);
 
 		var series = new Series { ID = Guid.NewGuid(), Key = "Test", Name = "Test" };
-		var r1 = new Race { ID = Guid.NewGuid(), Name = "Race 1", Type = "Trail" };
-		var r2 = new Race { ID = Guid.NewGuid(), Name = "Race 2", Type = "Trail" };
-		var r3 = new Race { ID = Guid.NewGuid(), Name = "Race 3", Type = "Trail" };
+		var r1 = new Race { ID = Guid.NewGuid(), Name = "Race 1", Type = "Trail", Description = "test" };
+		var r2 = new Race { ID = Guid.NewGuid(), Name = "Race 2", Type = "Trail", Description = "test" };
+		var r3 = new Race { ID = Guid.NewGuid(), Name = "Race 3", Type = "Trail", Description = "test" };
 		var iteration = new Iteration { ID = Guid.NewGuid(), Name = "Test 1", Series = series, Races = [r1, r2]};
 		await db.AddRangeAsync(iteration, r1, r2, r3);
 		await db.SaveChangesAsync();
