@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize]
+[Area(nameof(Admin))]
+[Authorize(nameof(Admin))]
 public sealed class HomeController : Controller
 {
 	public ViewResult Index()

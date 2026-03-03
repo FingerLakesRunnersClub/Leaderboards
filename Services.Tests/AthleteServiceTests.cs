@@ -109,7 +109,7 @@ public sealed class AthleteServiceTests
 		var service = new AthleteService(db);
 
 		//act
-		var athlete = new Athlete { Name = "Test" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
 		await service.AddAthlete(athlete);
 
 		//assert

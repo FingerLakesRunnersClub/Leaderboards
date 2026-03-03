@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize]
+[Area(nameof(Admin))]
+[Authorize(nameof(Admin))]
 public sealed class ResultsController(IImportManager importManager, ICourseService courseService, IRaceService raceService, IResultService resultService) : Controller
 {
 	public async Task<ViewResult> Index(Guid id)

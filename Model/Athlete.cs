@@ -21,6 +21,9 @@ public sealed record Athlete
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
 
+	public ICollection<Admin> Admins { get; init; } = [];
+	public bool IsAdmin => Admins.Count > 0;
+
 	public bool HasLinkedAccount(string type)
 		=> LinkedAccounts.Any(a => a.Type == type);
 

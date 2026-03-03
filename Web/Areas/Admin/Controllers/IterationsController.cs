@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
-[Area("Admin")]
-[Authorize]
+[Area(nameof(Admin))]
+[Authorize(nameof(Admin))]
 public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService, IRegistrationManager registrationManager) : Controller
 {
 	public async Task<ViewResult> Index()

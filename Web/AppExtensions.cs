@@ -1,6 +1,7 @@
 using System.Data;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Data;
+using FLRC.Leaderboards.Web.Areas.Admin.Policies;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,8 @@ public static class AppExtensions
 
 			services.AddSingleton<IAuthService, AuthService>();
 			services.AddSingleton<IWebScorerAuthenticator, WebScorerAuthenticator>();
-			services.AddAuthorization();
+			services.AddAuthorizationBuilder()
+				.AddPolicy(nameof(Admin), b => b.Requirements.Add(new Admin()));
 		}
 
 		public void AddDatabase()

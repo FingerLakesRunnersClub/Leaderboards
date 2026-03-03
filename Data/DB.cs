@@ -38,6 +38,9 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		anAthlete.HasMany(a => a.Results).WithOne(r => r.Athlete);
 		anAthlete.HasMany(a => a.LinkedAccounts).WithOne(a => a.Athlete);
 
+		var anAdmin = build.Entity<Admin>().Table("Admins");
+		anAdmin.HasOne(a => a.Athlete).WithMany(a => a.Admins).HasForeignKey(nameof(Admin.ID));
+
 		build.Entity<LinkedAccount>().Table("LinkedAccounts");
 	}
 }

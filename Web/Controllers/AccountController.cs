@@ -25,9 +25,13 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 		var response = discourse.ParseResponse(sso);
 		var identity = new ClaimsIdentity("SSO");
 		identity.AddClaims(response.Select(r => new Claim(r.Key, r.Value)));
-		await authService.LogIn(identity);
 
 		var athlete = await CurrentAthlete(identity);
+		if (athlete is not null && athlete.IsAdmin)
+			identity.AddClaim(new Claim(identity.RoleClaimType, nameof(Admin)));
+
+		await authService.LogIn(identity);
+
 		return Redirect(athlete is null ? "/Wizard" : "/");
 	}
 
@@ -44,4 +48,7 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 		await authService.LogOut();
 		return Redirect("/");
 	}
+
+	public ViewResult AccessDenied()
+		=> View();
 }

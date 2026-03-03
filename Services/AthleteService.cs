@@ -8,6 +8,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 {
 	private readonly IQueryable<Athlete> _athletes
 		= db.Set<Athlete>()
+			.Include(a => a.Admins)
 			.Include(a => a.LinkedAccounts)
 			.Include(a => a.Registrations)
 			.AsQueryable();
