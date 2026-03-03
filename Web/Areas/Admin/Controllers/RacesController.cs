@@ -24,7 +24,9 @@ public sealed class RacesController(IRaceService raceService) : Controller
 	[HttpPost]
 	public async Task<RedirectToActionResult> Add(Race race, IDictionary<Guid, Course> courses)
 	{
-		await raceService.AddRace(race, courses);
+		await raceService.AddRace(race);
+		await raceService.UpdateCourses(race, courses);
+
 		return RedirectToAction(nameof(Index));
 	}
 
@@ -40,7 +42,8 @@ public sealed class RacesController(IRaceService raceService) : Controller
 	public async Task<RedirectToActionResult> Edit(Guid id, Race updated, IDictionary<Guid, Course> courses)
 	{
 		var race = await raceService.GetRace(id);
-		await raceService.UpdateRace(race, updated, courses);
+		await raceService.UpdateRace(race, updated);
+		await raceService.UpdateCourses(race, courses);
 		return RedirectToAction(nameof(Index));
 	}
 }

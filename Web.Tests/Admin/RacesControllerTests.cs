@@ -54,7 +54,8 @@ public sealed class RacesControllerTests
 		await controller.Add(race, courses);
 
 		//assert
-		await service.Received().AddRace(race, courses);
+		await service.Received().AddRace(race);
+		await service.Received().UpdateCourses(race, courses);
 	}
 
 	[Fact]
@@ -89,6 +90,7 @@ public sealed class RacesControllerTests
 		await controller.Edit(id, updated, courses);
 
 		//assert
-		await service.Received().UpdateRace(race, updated, courses);
+		await service.Received().UpdateRace(race, updated);
+		await service.Received().UpdateCourses(race, courses);
 	}
 }

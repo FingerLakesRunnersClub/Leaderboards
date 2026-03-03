@@ -24,28 +24,23 @@ public sealed class RaceService(DB db) : IRaceService
 		=> await _races
 			.FirstAsync(r => r.ID == id);
 
-	public async Task AddRace(Race race, IDictionary<Guid, Course> courses)
+	public async Task AddRace(Race race)
 	{
 		race.ID = Guid.NewGuid();
 		await db.AddAsync(race);
-
-		await UpdateCourses(race, courses);
-
 		await db.SaveChangesAsync();
 	}
 
-	public async Task UpdateRace(Race race, Race updated, IDictionary<Guid, Course> courses)
+	public async Task UpdateRace(Race race, Race updated)
 	{
 		race.Name = updated.Name;
 		race.Type = updated.Type;
 		race.Description = updated.Description;
 
-		await UpdateCourses(race, courses);
-
 		await db.SaveChangesAsync();
 	}
 
-	private async Task UpdateCourses(Race race, IDictionary<Guid, Course> courses)
+	public async Task UpdateCourses(Race race, IDictionary<Guid, Course> courses)
 	{
 		foreach (var course in courses)
 		{
