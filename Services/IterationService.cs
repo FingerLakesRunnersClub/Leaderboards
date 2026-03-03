@@ -6,6 +6,8 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class IterationService(DB db) : IIterationService
 {
+	private static readonly DateOnly Today = DateOnly.FromDateTime(DateTime.Today);
+
 	private readonly IQueryable<Iteration> _iterations
 		= db.Set<Iteration>()
 			.Include(i => i.Series)
@@ -24,6 +26,18 @@ public sealed class IterationService(DB db) : IIterationService
 	public async Task<Iteration> GetIteration(Guid id)
 		=> await _iterations
 			.FirstAsync(i => i.ID == id);
+
+	public async Task<Iteration?> FindCurrentIteration()
+		=> await _iterations
+			.Where(i => i.StartDate <= Today && i.EndDate >= Today)
+			.OrderByDescending(i => i.EndDate)
+			.FirstOrDefaultAsync();
+
+	public async Task<Iteration?> FindMostRecentIteration()
+		=> await _iterations
+			.Where(i => i.EndDate < Today)
+			.OrderByDescending(i => i.EndDate)
+			.FirstAsync();
 
 	public async Task AddIteration(Guid id, Iteration iteration)
 	{

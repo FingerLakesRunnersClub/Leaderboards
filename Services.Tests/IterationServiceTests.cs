@@ -46,6 +46,48 @@ public sealed class IterationServiceTests
 	}
 
 	[Fact]
+	public async Task CanFindCurrentIteration()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new IterationService(db);
+
+		var series = new Series { ID = Guid.NewGuid(), Key = "Test", Name = "Test" };
+		var past = new Iteration { ID = Guid.NewGuid(), Name = "Past", StartDate = new DateOnly(DateTime.Today.Year - 1, 1, 1), EndDate = new DateOnly(DateTime.Today.Year - 1, 12, 31), Series = series };
+		var present = new Iteration { ID = Guid.NewGuid(), Name = "Present", StartDate = new DateOnly(DateTime.Today.Year, 1, 1), EndDate = new DateOnly(DateTime.Today.Year, 12, 31), Series = series };
+		var future = new Iteration { ID = Guid.NewGuid(), Name = "Future", StartDate = new DateOnly(DateTime.Today.Year + 1, 1, 1), EndDate = new DateOnly(DateTime.Today.Year +- 1, 12, 31), Series = series };
+		await db.AddRangeAsync(past, present, future);
+		await db.SaveChangesAsync();
+
+		//act
+		var iteration = await service.FindCurrentIteration();
+
+		//assert
+		Assert.Equal("Present", iteration!.Name);
+	}
+
+	[Fact]
+	public async Task CanFindMostRecentIteration()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new IterationService(db);
+
+		var series = new Series { ID = Guid.NewGuid(), Key = "Test", Name = "Test" };
+		var old = new Iteration { ID = Guid.NewGuid(), Name = "Old", StartDate = new DateOnly(DateTime.Today.Year - 2, 1, 1), EndDate = new DateOnly(DateTime.Today.Year - 2, 12, 31), Series = series };
+		var recent = new Iteration { ID = Guid.NewGuid(), Name = "Recent", StartDate = new DateOnly(DateTime.Today.Year - 1, 1, 1), EndDate = new DateOnly(DateTime.Today.Year - 1, 12, 31), Series = series };
+		var future = new Iteration { ID = Guid.NewGuid(), Name = "Future", StartDate = new DateOnly(DateTime.Today.Year + 1, 1, 1), EndDate = new DateOnly(DateTime.Today.Year +- 1, 12, 31), Series = series };
+		await db.AddRangeAsync(old, recent, future);
+		await db.SaveChangesAsync();
+
+		//act
+		var iteration = await service.FindMostRecentIteration();
+
+		//assert
+		Assert.Equal("Recent", iteration!.Name);
+	}
+
+	[Fact]
 	public async Task CanAddIteration()
 	{
 		//arrange

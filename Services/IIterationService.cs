@@ -6,6 +6,10 @@ public interface IIterationService
 {
 	Task<Iteration[]> GetAllIterations();
 	Task<Iteration> GetIteration(Guid id);
+
+	Task<Iteration?> FindCurrentIteration();
+	Task<Iteration?> FindMostRecentIteration();
+
 	Task AddIteration(Guid id, Iteration iteration);
 	Task UpdateIteration(Iteration iteration, Iteration updated);
 
