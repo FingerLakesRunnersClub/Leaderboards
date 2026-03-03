@@ -35,8 +35,6 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.SaveChangesAsync();
 	}
 
-	public static readonly LinkedAccountComparer LinkedAccountComparer = new();
-
 	public async Task UpdateAthlete(Athlete athlete, Athlete updated)
 	{
 		athlete.Name = updated.Name;
@@ -44,7 +42,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 		athlete.DateOfBirth = updated.DateOfBirth ?? athlete.DateOfBirth;
 		athlete.IsPrivate = updated.IsPrivate || athlete.IsPrivate;
 
-		var newAccounts = updated.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccountComparer);
+		var newAccounts = updated.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer);
 		foreach (var account in newAccounts)
 		{
 			await AddLinkedAccount(athlete, account);

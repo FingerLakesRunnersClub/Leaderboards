@@ -15,4 +15,6 @@ public sealed record LinkedAccount
 		public const string Email = nameof(Email);
 		public const string WebScorer = nameof(WebScorer);
 	}
+
+	public static readonly LinkedAccountComparer Comparer = new();
 }

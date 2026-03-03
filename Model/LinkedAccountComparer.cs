@@ -1,10 +1,8 @@
-using FLRC.Leaderboards.Model;
-
-namespace FLRC.Leaderboards.Services;
+namespace FLRC.Leaderboards.Model;
 
 public sealed class LinkedAccountComparer : IEqualityComparer<LinkedAccount>
 {
-	public bool Equals(LinkedAccount x, LinkedAccount y)
+	public bool Equals(LinkedAccount? x, LinkedAccount? y)
 		=> x is not null
 		   && y is not null
 		   && x.Type == y.Type
