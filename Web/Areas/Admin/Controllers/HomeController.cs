@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public sealed class HomeController : Controller
 {
 	public ViewResult Index()

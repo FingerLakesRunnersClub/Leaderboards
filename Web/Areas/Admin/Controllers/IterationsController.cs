@@ -1,12 +1,14 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService, IRegistrationManager registrationManager) : Controller
 {
 	public async Task<ViewResult> Index()

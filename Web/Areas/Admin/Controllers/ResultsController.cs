@@ -1,11 +1,13 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public sealed class ResultsController(IImportManager importManager, ICourseService courseService, IRaceService raceService, IResultService resultService) : Controller
 {
 	public async Task<ViewResult> Index(Guid id)

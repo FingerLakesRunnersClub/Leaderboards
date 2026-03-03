@@ -1,10 +1,12 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
+[Authorize]
 public sealed class SeriesController(ISeriesService seriesService) : Controller
 {
 	public async Task<ViewResult> Index()
