@@ -37,7 +37,7 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 
 	private async Task<Athlete> CurrentAthlete(ClaimsIdentity identity)
 	{
-		var claims = identity.Claims.ToDictionary(c => c.Type, c => c.Value);
+		var claims = identity.ClaimDictionary;
 		return claims.TryGetValue("external_id", out var id)
 			? await athleteService.Find(LinkedAccount.Keys.Discourse, id)
 			: null;
