@@ -2,6 +2,7 @@ using System.Security.Claims;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Areas.Admin;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,5 +51,8 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 	}
 
 	public ViewResult AccessDenied()
-		=> View();
+	{
+		var vm = new ViewModel<string>("Access Denied", "You do not have access to this resource.");
+		return View(vm);
+	}
 }

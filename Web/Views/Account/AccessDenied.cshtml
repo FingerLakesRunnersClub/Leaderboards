@@ -1,10 +1,10 @@
-@using FLRC.Leaderboards.Core
-@model ErrorViewModel
+@using FLRC.Leaderboards.Web.Areas.Admin
+@model ViewModel<string>
 
-<h2>Access Denied</h2>
+<h2>@Model.Title</h2>
 
 <article class="card card-highlighted">
 	<section class="card-body">
-		You do not have access to this resource.
+		@Model.Data
 	</section>
 </article>
