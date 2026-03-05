@@ -53,7 +53,8 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 		    || (athlete.Category == Athlete.UnknownCategory && newAthlete.Category != Athlete.UnknownCategory))
 			await athleteService.UpdateAthlete(athlete, newAthlete);
 
-		foreach (var account in newAthlete.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer))
+		var newAccounts = newAthlete.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer).ToArray();
+		foreach (var account in newAccounts)
 			await athleteService.AddLinkedAccount(athlete, account);
 
 		return athlete;
