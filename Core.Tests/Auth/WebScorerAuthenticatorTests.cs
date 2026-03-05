@@ -9,14 +9,15 @@ public sealed class WebScorerAuthenticatorTests
 	public async Task CanGetLoginResponseFromWebScorer()
 	{
 		//arrange
-		var handler = new MockHttpMessageHandler(@"{""UserId"":456}");
+		var handler = new MockHttpMessageHandler(@"{""UserId"":456,""FirstName"":""Test"",""LastName"":""User""}");
 		var http = new HttpClient(handler);
 		var auth = new WebScorerAuthenticator(http);
 
 		//act
-		var id = await auth.Login("test", "123");
+		var athlete = await auth.Login("test", "123");
 
 		//assert
-		Assert.Equal((uint)456, id);
+		Assert.Equal((uint)456, athlete.ID);
+		Assert.Equal("Test User", athlete.Name);
 	}
 }

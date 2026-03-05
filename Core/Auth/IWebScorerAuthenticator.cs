@@ -1,6 +1,8 @@
+using FLRC.Leaderboards.Core.Athletes;
+
 namespace FLRC.Leaderboards.Core.Auth;
 
 public interface IWebScorerAuthenticator
 {
-	Task<uint> Login(string email, string password);
+	Task<Athlete> Login(string email, string password);
 }
