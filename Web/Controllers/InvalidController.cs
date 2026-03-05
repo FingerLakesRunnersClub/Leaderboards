@@ -16,7 +16,9 @@ public sealed class InvalidController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index() => View(await GetResults());
+	[HttpGet]
+	public async Task<ViewResult> Index()
+		=> View(await GetResults());
 
 	private async Task<InvalidViewModel> GetResults()
 	{

@@ -24,8 +24,11 @@ public sealed class AthleteController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index(uint id) => View(await GetAthlete(id));
+	[HttpGet]
+	public async Task<ViewResult> Index(uint id)
+		=> View(await GetAthlete(id));
 
+	[HttpGet]
 	public async Task<ViewResult> Course(uint id, uint courseID, string name)
 	{
 		var allResults = await _dataService.GetAllResults();
@@ -37,9 +40,13 @@ public sealed class AthleteController : Controller
 			: View(GetRunViewModel(id, course, await badges));
 	}
 
-	public async Task<ViewResult> Log(uint id) => View(await GetLog(id));
+	[HttpGet]
+	public async Task<ViewResult> Log(uint id)
+		=> View(await GetLog(id));
 
-	public async Task<ViewResult> Similar(uint id) => View(await GetSimilarAthletes(id));
+	[HttpGet]
+	public async Task<ViewResult> Similar(uint id)
+		=> View(await GetSimilarAthletes(id));
 
 	private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
 	{

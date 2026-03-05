@@ -20,27 +20,33 @@ public sealed class OverallController : Controller
 		_config = config;
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Points(string id)
 	{
 		var filter = new Filter { Category = Category.Parse(id) };
 		return View(await GetResults(_config.Competitions[$"Points/{id}"], overall => overall.MostPoints(filter)));
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> PointsTop3(string id)
 	{
 		var filter = new Filter { Category = Category.Parse(id) };
 		return View("Points", await GetResults(_config.Competitions[$"PointsTop3/{id}"], overall => overall.MostPoints(3, filter)));
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Miles()
 		=> View(await GetResults(_config.Competitions["Miles"], overall => overall.MostMiles(Filter.None)));
 
+	[HttpGet]
 	public async Task<ViewResult> AgeGrade()
 		=> View(await GetResults(_config.Competitions["AgeGrade"], overall => overall.AgeGrade(Filter.None)));
 
+	[HttpGet]
 	public async Task<ViewResult> Community()
 		=> View(await GetResults(_config.Competitions["Community"], overall => overall.CommunityStars(Filter.None)));
 
+	[HttpGet]
 	public async Task<ViewResult> Team()
 		=> View(await GetTeamResults(_config.Competitions["Team"], overall => overall.TeamPoints(Filter.None)));
 

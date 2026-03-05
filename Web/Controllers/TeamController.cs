@@ -18,9 +18,13 @@ public sealed class TeamController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index(byte id) => View(await GetTeam(Athlete.Teams[id]));
+	[HttpGet]
+	public async Task<ViewResult> Index(byte id)
+		=> View(await GetTeam(Athlete.Teams[id]));
 
-	public async Task<ViewResult> Members(byte id) => View(await GetMembers(Athlete.Teams[id]));
+	[HttpGet]
+	public async Task<ViewResult> Members(byte id)
+		=> View(await GetMembers(Athlete.Teams[id]));
 
 	private async Task<TeamMembersViewModel> GetMembers(Team team)
 	{

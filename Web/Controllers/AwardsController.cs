@@ -16,7 +16,9 @@ public sealed class AwardsController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index() => View(await GetAwards());
+	[HttpGet]
+	public async Task<ViewResult> Index()
+		=> View(await GetAwards());
 
 	private async Task<AwardsViewModel> GetAwards()
 		=> new(_config, await _dataService.GetAllResults());

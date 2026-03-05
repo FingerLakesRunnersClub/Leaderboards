@@ -16,7 +16,9 @@ public sealed class GroupController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index(string id) => View(await GetGroupResults(id));
+	[HttpGet]
+	public async Task<ViewResult> Index(string id)
+		=> View(await GetGroupResults(id));
 
 	private async Task<GroupResultsViewModel> GetGroupResults(string id)
 	{

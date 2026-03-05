@@ -32,6 +32,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 		       ?? await athleteService.Find("Email", claims["email"]);
 	}
 
+	[HttpGet]
 	public async Task<IActionResult> Link()
 	{
 		var athlete = await CurrentAthlete();
@@ -71,6 +72,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 			await athleteService.AddLinkedAccount(athlete, account);
 	}
 
+	[HttpGet]
 	public async Task<IActionResult> Registration()
 	{
 		var athlete = await CurrentAthlete();

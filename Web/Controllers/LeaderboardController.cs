@@ -16,6 +16,7 @@ public sealed class LeaderboardController : Controller
 		_config = config;
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Index(string id = null)
 	{
 		if (!Enum.TryParse<LeaderboardResultType>(id, out var type))

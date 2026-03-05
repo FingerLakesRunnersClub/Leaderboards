@@ -19,9 +19,11 @@ public sealed class LogController : Controller
 		_today = today ?? DateTime.Today;
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Index(uint? id = null)
 		=> View(await GetActivityLog(id, ActivityLogType.Recent, r => getGroup(r.StartTime.Value.Date), _today.Subtract(TimeSpan.FromDays(7))));
 
+	[HttpGet]
 	public async Task<ViewResult> All(uint? id = null)
 		=> View("Index", await GetActivityLog(id, ActivityLogType.Archive, r => getMonth(r.StartTime.Value.Date)));
 

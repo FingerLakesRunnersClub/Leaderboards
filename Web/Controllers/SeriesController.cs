@@ -15,6 +15,7 @@ public sealed class SeriesController : Controller
 		_config = config;
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Index(string id)
 	{
 		var results = await _seriesManager.Earliest();

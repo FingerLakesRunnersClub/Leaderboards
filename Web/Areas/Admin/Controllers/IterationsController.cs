@@ -11,6 +11,7 @@ namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 [Authorize(nameof(Admin))]
 public sealed class IterationsController(ISeriesService seriesService, IIterationService iterationService, IRaceService raceService, IRegistrationManager registrationManager) : Controller
 {
+	[HttpGet]
 	public async Task<ViewResult> Index()
 	{
 		var iterations = await iterationService.GetAllIterations();
@@ -61,6 +62,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 		return Redirect("/Admin/Iterations");
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Registration(Guid id)
 	{
 		var iteration = await iterationService.GetIteration(id);

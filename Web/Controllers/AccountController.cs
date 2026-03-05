@@ -17,6 +17,7 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 		return Redirect(url);
 	}
 
+	[HttpGet]
 	public async Task<IActionResult> Redirect(string sso, string sig)
 	{
 		var valid = discourse.IsValidResponse(sso, sig);
@@ -44,6 +45,7 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 			: null;
 	}
 
+	[HttpGet]
 	public async Task<RedirectResult> Logout()
 	{
 		await authService.LogOut();

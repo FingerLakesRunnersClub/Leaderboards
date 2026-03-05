@@ -17,7 +17,9 @@ public sealed class CompletedController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index() => View(await GetCompleted());
+	[HttpGet]
+	public async Task<ViewResult> Index()
+		=> View(await GetCompleted());
 
 	private async Task<CompletedViewModel> GetCompleted()
 	{

@@ -19,7 +19,9 @@ public sealed class StatisticsController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index() => View(await GetStatistics());
+	[HttpGet]
+	public async Task<ViewResult> Index()
+		=> View(await GetStatistics());
 
 	private async Task<StatisticsViewModel> GetStatistics()
 	{

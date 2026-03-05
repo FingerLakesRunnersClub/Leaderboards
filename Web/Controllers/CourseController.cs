@@ -20,27 +20,32 @@ public sealed class CourseController : Controller
 		_config = config;
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Fastest(uint id, string name, string category = null, byte? ag = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category), AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
 		return View(await GetResults(id, name, ResultType.Fastest, filter, c => c.Fastest(filter)));
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Farthest(uint id, string name, string category = null, byte? ag = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category), AgeGroup = ag.HasValue ? Athlete.Teams[ag.Value] : null };
 		return View(await GetResults(id, name, ResultType.Farthest, filter, c => c.Farthest(filter)));
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> BestAverage(uint id, string name, string category = null)
 	{
 		var filter = new Filter { Category = Category.Parse(category) };
 		return View(await GetResults(id, name, ResultType.BestAverage, filter, c => c.BestAverage(filter)));
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> MostRuns(uint id, string name)
 		=> View(await GetResults(id, name, ResultType.MostRuns, Filter.None, c => c.MostRuns(Filter.None)));
 
+	[HttpGet]
 	public async Task<ViewResult> Community(uint id, string name)
 		=> View(await GetResults(id, name, ResultType.Community, Filter.None, c => c.CommunityStars(Filter.None)));
 
@@ -57,6 +62,7 @@ public sealed class CourseController : Controller
 		};
 	}
 
+	[HttpGet]
 	public async Task<ViewResult> Team(uint id, string name)
 		=> View(await GetTeamResults(id, name));
 

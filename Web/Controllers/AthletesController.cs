@@ -16,7 +16,9 @@ public sealed class AthletesController : Controller
 		_config = config;
 	}
 
-	public async Task<ViewResult> Index() => View(await GetAthletes());
+	[HttpGet]
+	public async Task<ViewResult> Index()
+		=> View(await GetAthletes());
 
 	private async Task<AthletesViewModel> GetAthletes()
 	{
