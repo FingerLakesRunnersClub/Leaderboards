@@ -30,14 +30,14 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Add(Guid id, Iteration iteration, Guid[] races)
+	public async Task<RedirectToActionResult> Add(Guid id, Iteration iteration, Guid[] races)
 	{
 		var raceObjects = await raceService.GetRaces(races);
 
 		await iterationService.AddIteration(id, iteration);
 		await iterationService.UpdateRaces(iteration, raceObjects);
 
-		return Redirect("/Admin/Iterations");
+		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]
@@ -51,7 +51,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Edit(Guid id, Iteration updated, Guid[] races)
+	public async Task<RedirectToActionResult> Edit(Guid id, Iteration updated, Guid[] races)
 	{
 		var iteration = await iterationService.GetIteration(id);
 		var raceObjects = await raceService.GetRaces(races);
@@ -59,7 +59,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 		await iterationService.UpdateIteration(iteration, updated);
 		await iterationService.UpdateRaces(iteration, raceObjects);
 
-		return Redirect("/Admin/Iterations");
+		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]

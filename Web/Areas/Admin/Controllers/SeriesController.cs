@@ -24,10 +24,10 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Add(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)
+	public async Task<RedirectToActionResult> Add(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{
 		await seriesService.AddSeries(series, features, settings);
-		return Redirect("/Admin/Series");
+		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]
@@ -39,10 +39,10 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 	}
 
 	[HttpPost]
-	public async Task<RedirectResult> Edit(Guid id, Series updated, IDictionary<string, bool> features, IDictionary<string, string> settings)
+	public async Task<RedirectToActionResult> Edit(Guid id, Series updated, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{
 		var series = await seriesService.GetSeries(id);
 		await seriesService.UpdateSeries(series, updated, features, settings);
-		return Redirect("/Admin/Series");
+		return RedirectToAction(nameof(Index));
 	}
 }
