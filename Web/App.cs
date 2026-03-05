@@ -74,9 +74,9 @@ public sealed class App(string context)
 
 		services.AddScoped<IImportManager, ImportManager>();
 		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
+		services.AddScoped<IIterationManager, IterationManager>();
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
 	}
-
 
 	public static void Configure(IApplicationBuilder app)
 	{
