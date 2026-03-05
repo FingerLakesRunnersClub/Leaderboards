@@ -60,7 +60,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iteration = await service.FindCurrentIteration();
+		var iteration = await service.FindCurrentIteration(series.ID);
 
 		//assert
 		Assert.Equal("Present", iteration!.Name);
@@ -81,7 +81,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iteration = await service.FindMostRecentIteration();
+		var iteration = await service.FindMostRecentIteration(series.ID);
 
 		//assert
 		Assert.Equal("Recent", iteration!.Name);

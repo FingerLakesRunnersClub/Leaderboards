@@ -27,17 +27,17 @@ public sealed class IterationService(DB db) : IIterationService
 		=> await _iterations
 			.FirstAsync(i => i.ID == id);
 
-	public async Task<Iteration?> FindCurrentIteration()
+	public async Task<Iteration?> FindCurrentIteration(Guid seriesID)
 		=> await _iterations
-			.Where(i => i.StartDate <= Today && i.EndDate >= Today)
+			.Where(i => i.SeriesID == seriesID && i.StartDate <= Today && i.EndDate >= Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
 
-	public async Task<Iteration?> FindMostRecentIteration()
+	public async Task<Iteration?> FindMostRecentIteration(Guid seriesID)
 		=> await _iterations
-			.Where(i => i.EndDate < Today)
+			.Where(i => i.SeriesID == seriesID && i.EndDate < Today)
 			.OrderByDescending(i => i.EndDate)
-			.FirstAsync();
+			.FirstOrDefaultAsync();
 
 	public async Task AddIteration(Guid id, Iteration iteration)
 	{
