@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Race
+public sealed record Race : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public string Name { get; set; } = null!;

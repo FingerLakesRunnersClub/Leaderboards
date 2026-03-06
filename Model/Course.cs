@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Course
+public sealed record Course : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid RaceID { get; set; }

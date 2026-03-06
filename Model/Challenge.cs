@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Challenge
+public sealed record Challenge : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid IterationID { get; set; }

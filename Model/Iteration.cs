@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Iteration
+public sealed record Iteration : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid SeriesID { get; set; }

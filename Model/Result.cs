@@ -1,10 +1,10 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Result
+public sealed record Result : Identifiable<Guid>
 {
-	public Guid ID { get; init; }
-	public Guid CourseID { get; init; }
-	public Guid AthleteID { get; init; }
+	public Guid ID { get; set; }
+	public Guid CourseID { get; set; }
+	public Guid AthleteID { get; set; }
 	public DateTime StartTime { get; set; }
 	public TimeSpan Duration { get; set; }
 

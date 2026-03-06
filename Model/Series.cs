@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Series
+public sealed record Series : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public string Key { get; set; } = null!;

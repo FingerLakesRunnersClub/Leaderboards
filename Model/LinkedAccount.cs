@@ -1,11 +1,11 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record LinkedAccount
+public sealed record LinkedAccount : Identifiable<Guid>
 {
-	public Guid ID { get; init; }
-	public Guid AthleteID { get; init; }
-	public string Type { get; init; } = null!;
-	public string Value { get; init; } = null!;
+	public Guid ID { get; set; }
+	public Guid AthleteID { get; set; }
+	public string Type { get; set; } = null!;
+	public string Value { get; set; } = null!;
 
 	public Athlete Athlete { get; init; } = null!;
 

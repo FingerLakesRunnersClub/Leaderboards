@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Athlete
+public sealed record Athlete : Identifiable<Guid>
 {
 	public const char UnknownCategory = ' ';
 	private const double DaysPerYear = 365.2425;
