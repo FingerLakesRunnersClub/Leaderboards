@@ -93,6 +93,36 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.SaveChangesAsync();
 	}
 
+	public async Task MigrateLinkedAccounts(Athlete from, Athlete to)
+	{
+		var newAccounts = from.LinkedAccounts.Except(to.LinkedAccounts, LinkedAccount.Comparer).ToArray();
+		foreach (var account in newAccounts)
+			to.LinkedAccounts.Add(account);
+		from.LinkedAccounts.Clear();
+
+		await db.SaveChangesAsync();
+	}
+
+	public async Task MigrateRegistrations(Athlete from, Athlete to)
+	{
+		var newRegistrations = from.Registrations.ToArray();
+		foreach (var registration in newRegistrations)
+			to.Registrations.Add(registration);
+		from.Registrations.Clear();
+
+		await db.SaveChangesAsync();
+	}
+
+	public async Task MigrateResults(Athlete from, Athlete to)
+	{
+		var newResults = from.Results.ToArray();
+		foreach (var result in newResults)
+			to.Results.Add(result);
+		from.Results.Clear();
+
+		await db.SaveChangesAsync();
+	}
+
 	public async Task Delete(Athlete athlete)
 	{
 		db.Remove(athlete);

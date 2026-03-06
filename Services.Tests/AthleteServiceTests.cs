@@ -240,7 +240,67 @@ public sealed class AthleteServiceTests
 	}
 
 	[Fact]
-	public async Task CanDelete()
+	public async Task CanMigrateResults()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var a1 = new Athlete { ID = Guid.NewGuid(), Name = "Test 1", Results = [new Result(), new Result()] };
+		var a2 = new Athlete { ID = Guid.NewGuid(), Name = "Test 2", Results = [new Result(), new Result()] };
+		await db.AddRangeAsync(a1, a2);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.MigrateResults(a1, a2);
+
+		//assert
+		Assert.Empty(a1.Results);
+		Assert.Equal(4, a2.Results.Count);
+	}
+
+	[Fact]
+	public async Task CanMigrateRegistrations()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var a1 = new Athlete { ID = Guid.NewGuid(), Name = "Test 1", Registrations = [new Iteration { Name = "I1" }, new Iteration { Name = "I2" }] };
+		var a2 = new Athlete { ID = Guid.NewGuid(), Name = "Test 2", Registrations = [new Iteration { Name = "I3" }, new Iteration { Name = "I4" }] };
+		await db.AddRangeAsync(a1, a2);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.MigrateRegistrations(a1, a2);
+
+		//assert
+		Assert.Empty(a1.Registrations);
+		Assert.Equal(4, a2.Registrations.Count);
+	}
+
+	[Fact]
+	public async Task CanMigrateLinkedAccounts()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var a1 = new Athlete { ID = Guid.NewGuid(), Name = "Test 1", LinkedAccounts = [new LinkedAccount { Type = "T1", Value = "V1" }, new LinkedAccount { Type = "T2", Value = "V2" }] };
+		var a2 = new Athlete { ID = Guid.NewGuid(), Name = "Test 2", LinkedAccounts = [new LinkedAccount { Type = "T2", Value = "V2" }, new LinkedAccount { Type = "T3", Value = "V3" }] };
+		await db.AddRangeAsync(a1, a2);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.MigrateLinkedAccounts(a1, a2);
+
+		//assert
+		Assert.Empty(a1.LinkedAccounts);
+		Assert.Equal(3, a2.LinkedAccounts.Count);
+	}
+
+	[Fact]
+	public async Task CanDeleteAthlete()
 	{
 		//arrange
 		var db = TestHelpers.CreateDB();

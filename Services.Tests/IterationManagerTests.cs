@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Services.Tests;
 
-public class IterationManagerTests
+public sealed class IterationManagerTests
 {
 	[Fact]
 	public async Task CanGetActiveIteration()
