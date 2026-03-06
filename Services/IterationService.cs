@@ -11,6 +11,7 @@ public sealed class IterationService(DB db) : IIterationService
 	private readonly IQueryable<Iteration> _iterations
 		= db.Set<Iteration>()
 			.Include(i => i.Series)
+			.Include(i => i.Athletes)
 			.AsQueryable();
 
 	private readonly IQueryable<Iteration> _iterationDetails
