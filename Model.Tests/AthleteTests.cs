@@ -77,4 +77,30 @@ public sealed class AthleteTests
 		//assert
 		Assert.False(isRegistered);
 	}
+
+	[Fact]
+	public void IsAdminIfAdminRecordExists()
+	{
+		//arrange
+		var athlete = new Athlete { Admins = [ new Admin() ] };
+
+		//act
+		var isAdmin = athlete.IsAdmin;
+
+		//assert
+		Assert.True(isAdmin);
+	}
+
+	[Fact]
+	public void IsNotAdminIfAdminRecordDoesNotExist()
+	{
+		//arrange
+		var athlete = new Athlete();
+
+		//act
+		var isAdmin = athlete.IsAdmin;
+
+		//assert
+		Assert.False(isAdmin);
+	}
 }
