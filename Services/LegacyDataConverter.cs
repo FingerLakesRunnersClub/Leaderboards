@@ -72,6 +72,6 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			{
 				new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString() },
 				new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email }
-			}.Where(a => !string.IsNullOrWhiteSpace(a.Value)).ToArray()
+			}.Where(a => !string.IsNullOrWhiteSpace(a.Value)).ToList()
 		};
 }
