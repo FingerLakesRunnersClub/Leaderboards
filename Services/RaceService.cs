@@ -63,5 +63,7 @@ public sealed class RaceService(DB db) : IRaceService
 				await db.AddAsync(newCourse);
 			}
 		}
+
+		await db.SaveChangesAsync();
 	}
 }
