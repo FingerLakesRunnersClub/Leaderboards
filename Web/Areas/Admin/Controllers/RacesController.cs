@@ -11,7 +11,7 @@ public sealed class RacesController(IRaceService raceService) : Controller
 {
 	public async Task<ViewResult> Index()
 	{
-		var races = await raceService.GetAllRaces();
+		var races = await raceService.All();
 		var vm = new ViewModel<Race[]>("Race Administration", races);
 		return View(vm);
 	}
@@ -26,7 +26,7 @@ public sealed class RacesController(IRaceService raceService) : Controller
 	[HttpPost]
 	public async Task<RedirectToActionResult> Add(Race race, IDictionary<Guid, Course> courses)
 	{
-		await raceService.AddRace(race);
+		await raceService.Add(race);
 		await raceService.UpdateCourses(race, courses);
 
 		return RedirectToAction(nameof(Index));
@@ -35,7 +35,7 @@ public sealed class RacesController(IRaceService raceService) : Controller
 	[HttpGet]
 	public async Task<ViewResult> Edit(Guid id)
 	{
-		var race = await raceService.GetRace(id);
+		var race = await raceService.Get(id);
 		var vm = new ViewModel<Race>($"Edit {race.Name}", race);
 		return View("Form", vm);
 	}
@@ -43,8 +43,8 @@ public sealed class RacesController(IRaceService raceService) : Controller
 	[HttpPost]
 	public async Task<RedirectToActionResult> Edit(Guid id, Race updated, IDictionary<Guid, Course> courses)
 	{
-		var race = await raceService.GetRace(id);
-		await raceService.UpdateRace(race, updated);
+		var race = await raceService.Get(id);
+		await raceService.Update(race, updated);
 		await raceService.UpdateCourses(race, courses);
 		return RedirectToAction(nameof(Index));
 	}

@@ -14,7 +14,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpGet]
 	public async Task<ViewResult> Index()
 	{
-		var iterations = await iterationService.GetAllIterations();
+		var iterations = await iterationService.All();
 		var vm = new ViewModel<IGrouping<Series, Iteration>[]>("Iterations", iterations.GroupBy(i => i.Series).ToArray());
 		return View(vm);
 	}
@@ -22,8 +22,8 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpGet]
 	public async Task<ViewResult> Add(Guid id)
 	{
-		var series = await seriesService.GetSeries(id);
-		var races = await raceService.GetAllRaces();
+		var series = await seriesService.Get(id);
+		var races = await raceService.All();
 		var form = new IterationForm { Iteration = new Iteration(), Races = races };
 		var vm = new ViewModel<IterationForm>($"Add Iteration to {series.Name}", form);
 		return View("Form", vm);
@@ -34,7 +34,8 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	{
 		var raceObjects = await raceService.GetRaces(races);
 
-		await iterationService.AddIteration(id, iteration);
+		iteration.SeriesID = id;
+		await iterationService.Add(iteration);
 		await iterationService.UpdateRaces(iteration, raceObjects);
 
 		return RedirectToAction(nameof(Index));
@@ -43,8 +44,8 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpGet]
 	public async Task<ViewResult> Edit(Guid id)
 	{
-		var iteration = await iterationService.GetIteration(id);
-		var races = await raceService.GetAllRaces();
+		var iteration = await iterationService.Get(id);
+		var races = await raceService.All();
 		var form = new IterationForm { Iteration = iteration, Races = races };
 		var vm = new ViewModel<IterationForm>($"Edit {iteration.Series.Name} {iteration.Name}", form);
 		return View("Form", vm);
@@ -53,10 +54,10 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpPost]
 	public async Task<RedirectToActionResult> Edit(Guid id, Iteration updated, Guid[] races)
 	{
-		var iteration = await iterationService.GetIteration(id);
+		var iteration = await iterationService.Get(id);
 		var raceObjects = await raceService.GetRaces(races);
 
-		await iterationService.UpdateIteration(iteration, updated);
+		await iterationService.Update(iteration, updated);
 		await iterationService.UpdateRaces(iteration, raceObjects);
 
 		return RedirectToAction(nameof(Index));
@@ -65,7 +66,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpGet]
 	public async Task<ViewResult> Registration(Guid id)
 	{
-		var iteration = await iterationService.GetIteration(id);
+		var iteration = await iterationService.Get(id);
 		var vm = new ViewModel<Athlete[]>($"{iteration.Series.Name} {iteration.Name} Registered Athletes", iteration.Athletes.ToArray());
 		return View(vm);
 	}
@@ -73,7 +74,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	[HttpPost]
 	public async Task<RedirectToActionResult> Registration(Guid id, IFormCollection form)
 	{
-		var iteration = await iterationService.GetIteration(id);
+		var iteration = await iterationService.Get(id);
 		await registrationManager.Update(iteration);
 		return RedirectToAction(nameof(Registration));
 	}

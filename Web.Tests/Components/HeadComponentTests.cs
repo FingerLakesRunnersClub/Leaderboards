@@ -15,7 +15,7 @@ public sealed class HeadComponentTests
 	{
 		//arrange
 		var seriesService = Substitute.For<ISeriesService>();
-		seriesService.FindSeries("test").Returns(new Series());
+		seriesService.Find("test").Returns(new Series());
 
 		var context = new AppContextProvider("test");
 		var component = new HeadComponent(seriesService, context);

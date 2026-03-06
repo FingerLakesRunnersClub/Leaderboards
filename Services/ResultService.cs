@@ -11,6 +11,9 @@ public sealed class ResultService(DB db) : IResultService
 			.Include(r => r.Athlete)
 			.AsQueryable();
 
+	public Task<Result[]> All()
+		=> throw new NotImplementedException();
+
 	public async Task<Result> Get(Guid id)
 		=> await _results
 			.FirstAsync(r => r.ID == id);
@@ -23,7 +26,16 @@ public sealed class ResultService(DB db) : IResultService
 	public async Task Import(Result[] results)
 	{
 		var newResults = results.Where(newR => !db.Set<Result>().Any(r => r.AthleteID == newR.AthleteID && r.CourseID == newR.CourseID && r.StartTime == newR.StartTime && r.Duration == newR.Duration));
-		await db.Set<Result>().AddRangeAsync(newResults);
+		await db.AddRangeAsync(newResults);
 		await db.SaveChangesAsync();
 	}
+
+	public Task Add(Result result)
+		=> throw new NotImplementedException();
+
+	public Task Update(Result result, Result updated)
+		=> throw new NotImplementedException();
+
+	public Task Delete(Result result)
+		=> throw new NotImplementedException();
 }

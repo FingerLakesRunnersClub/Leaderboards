@@ -14,7 +14,7 @@ public sealed class RacesControllerTests
 	{
 		//arrange
 		var service = Substitute.For<IRaceService>();
-		service.GetAllRaces().Returns([new Race(), new Race()]);
+		service.All().Returns([new Race(), new Race()]);
 
 		var controller = new RacesController(service);
 
@@ -54,7 +54,7 @@ public sealed class RacesControllerTests
 		await controller.Add(race, courses);
 
 		//assert
-		await service.Received().AddRace(race);
+		await service.Received().Add(race);
 		await service.Received().UpdateCourses(race, courses);
 	}
 
@@ -63,7 +63,7 @@ public sealed class RacesControllerTests
 	{
 		//arrange
 		var service = Substitute.For<IRaceService>();
-		service.GetRace(Arg.Any<Guid>()).Returns(new Race { Name = "Test Race" });
+		service.Get(Arg.Any<Guid>()).Returns(new Race { Name = "Test Race" });
 		var controller = new RacesController(service);
 
 		//act
@@ -81,7 +81,7 @@ public sealed class RacesControllerTests
 		var id = Guid.NewGuid();
 		var race = new Race { ID = id, Name = "Test Race" };
 		var service = Substitute.For<IRaceService>();
-		service.GetRace(id).Returns(race);
+		service.Get(id).Returns(race);
 		var controller = new RacesController(service);
 
 		//act
@@ -90,7 +90,7 @@ public sealed class RacesControllerTests
 		await controller.Edit(id, updated, courses);
 
 		//assert
-		await service.Received().UpdateRace(race, updated);
+		await service.Received().Update(race, updated);
 		await service.Received().UpdateCourses(race, courses);
 	}
 }

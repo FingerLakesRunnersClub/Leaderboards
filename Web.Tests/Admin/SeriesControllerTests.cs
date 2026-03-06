@@ -14,7 +14,7 @@ public sealed class SeriesControllerTests
 	{
 		//arrange
 		var service = Substitute.For<ISeriesService>();
-		service.GetAllSeries().Returns([new Series(), new Series()]);
+		service.All().Returns([new Series(), new Series()]);
 		var controller = new SeriesController(service);
 
 		//act
@@ -54,7 +54,9 @@ public sealed class SeriesControllerTests
 		await controller.Add(series, features, settings);
 
 		//assert
-		await service.Received().AddSeries(series, features, settings);
+		await service.Received().Add(series);
+		await service.Received().UpdateFeatures(series, features);
+		await service.Received().UpdateSettings(series, settings);
 	}
 
 	[Fact]
@@ -62,7 +64,7 @@ public sealed class SeriesControllerTests
 	{
 		//arrange
 		var service = Substitute.For<ISeriesService>();
-		service.GetSeries(Arg.Any<Guid>()).Returns(new Series());
+		service.Get(Arg.Any<Guid>()).Returns(new Series());
 		var controller = new SeriesController(service);
 
 		//act
@@ -80,7 +82,7 @@ public sealed class SeriesControllerTests
 		var id = Guid.NewGuid();
 		var series = new Series();
 		var service = Substitute.For<ISeriesService>();
-		service.GetSeries(id).Returns(series);
+		service.Get(id).Returns(series);
 		var controller = new SeriesController(service);
 
 		//act
@@ -90,6 +92,8 @@ public sealed class SeriesControllerTests
 		await controller.Edit(id, updated, features, settings);
 
 		//assert
-		await service.Received().UpdateSeries(series, updated, features, settings);
+		await service.Received().Update(series, updated);
+		await service.Received().UpdateFeatures(series, features);
+		await service.Received().UpdateSettings(series, settings);
 	}
 }

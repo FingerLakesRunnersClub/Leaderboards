@@ -19,7 +19,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iterations = await service.GetAllIterations();
+		var iterations = await service.All();
 
 		//assert
 		Assert.Equal(2, iterations.Length);
@@ -39,7 +39,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iteration = await service.GetIteration(i1.ID);
+		var iteration = await service.Get(i1.ID);
 
 		//assert
 		Assert.Equal("Test 1", iteration.Name);
@@ -60,7 +60,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iteration = await service.FindCurrentIteration(series.ID);
+		var iteration = await service.Current(series.ID);
 
 		//assert
 		Assert.Equal("Present", iteration!.Name);
@@ -81,7 +81,7 @@ public sealed class IterationServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var iteration = await service.FindMostRecentIteration(series.ID);
+		var iteration = await service.MostRecent(series.ID);
 
 		//assert
 		Assert.Equal("Recent", iteration!.Name);
@@ -100,7 +100,7 @@ public sealed class IterationServiceTests
 
 		//act
 		var iteration = new Iteration { Name = "Test 1", Series = series };
-		await service.AddIteration(series.ID, iteration);
+		await service.Add(iteration);
 
 		//assert
 		Assert.Equal("Test 1", db.Set<Iteration>().Single().Name);
@@ -120,7 +120,7 @@ public sealed class IterationServiceTests
 
 		//act
 		var updated = new Iteration { Name = "Test 2" };
-		await service.UpdateIteration(iteration, updated);
+		await service.Update(iteration, updated);
 
 		//assert
 		Assert.Equal("Test 2", db.Set<Iteration>().Single().Name);

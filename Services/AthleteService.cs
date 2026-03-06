@@ -22,7 +22,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 			.Include(a => a.Results)
 			.AsQueryable();
 
-	public async Task<Athlete[]> GetAllAthletes()
+	public async Task<Athlete[]> All()
 		=> await _athletes
 			.OrderBy(a => a.Name)
 			.ToArrayAsync();
@@ -44,13 +44,14 @@ public sealed class AthleteService(DB db) : IAthleteService
 			.Where(a => a.Name == name).ToAsyncEnumerable()
 			.FirstOrDefaultAsync(a => a.DateOfBirth is not null && a.AgeAsOf(onDate) == age);
 
-	public async Task AddAthlete(Athlete athlete)
+	public async Task Add(Athlete athlete)
 	{
+		athlete.ID = Guid.NewGuid();
 		await db.AddAsync(athlete);
 		await db.SaveChangesAsync();
 	}
 
-	public async Task UpdateAthlete(Athlete athlete, Athlete updated)
+	public async Task Update(Athlete athlete, Athlete updated)
 	{
 		athlete.Name = updated.Name;
 		athlete.Category = updated.Category == Athlete.UnknownCategory ? athlete.Category : updated.Category;
@@ -92,7 +93,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.SaveChangesAsync();
 	}
 
-	public async Task DeleteAthlete(Athlete athlete)
+	public async Task Delete(Athlete athlete)
 	{
 		db.Remove(athlete);
 		await db.SaveChangesAsync();

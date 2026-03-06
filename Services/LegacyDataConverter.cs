@@ -46,12 +46,12 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 		if (athlete is null)
 		{
 			athlete = newAthlete;
-			await athleteService.AddAthlete(athlete);
+			await athleteService.Add(athlete);
 		}
 
 		if ((athlete.DateOfBirth is null && newAthlete.DateOfBirth is not null)
 		    || (athlete.Category == Athlete.UnknownCategory && newAthlete.Category != Athlete.UnknownCategory))
-			await athleteService.UpdateAthlete(athlete, newAthlete);
+			await athleteService.Update(athlete, newAthlete);
 
 		var newAccounts = newAthlete.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer).ToArray();
 		foreach (var account in newAccounts)

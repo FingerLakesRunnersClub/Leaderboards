@@ -2,11 +2,10 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Services;
 
-public interface ISeriesService
+public interface ISeriesService : IDataService<Series>
 {
-	Task<Series[]> GetAllSeries();
-	Task<Series> GetSeries(Guid id);
-	Task AddSeries(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings);
-	Task UpdateSeries(Series series, Series updated, IDictionary<string, bool> features, IDictionary<string, string> settings);
-	Task<Series?> FindSeries(string key);
+	Task<Series?> Find(string key);
+
+	Task UpdateSettings(Series series, IDictionary<string, string> settings);
+	Task UpdateFeatures(Series series, IDictionary<string, bool> features);
 }

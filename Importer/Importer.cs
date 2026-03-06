@@ -8,7 +8,7 @@ public sealed class Importer(IImportManager importManager, IRaceService raceServ
 	public async Task Run(CourseImportConfig[] definitions)
 	{
 		log("Getting all courses...");
-		var races = await raceService.GetAllRaces();
+		var races = await raceService.All();
 		var courses = races.SelectMany(r => r.Courses).ToArray();
 		log($"{courses.Length} courses found!");
 

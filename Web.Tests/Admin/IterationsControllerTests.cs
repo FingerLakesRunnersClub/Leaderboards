@@ -21,7 +21,7 @@ public sealed class IterationsControllerTests
 		var registrationManager = Substitute.For<IRegistrationManager>();
 		var controller = new IterationsController(seriesService, iterationService, raceService, registrationManager);
 
-		iterationService.GetAllIterations().Returns([
+		iterationService.All().Returns([
 			new Iteration { Series = new Series { ID = Guid.NewGuid() } },
 			new Iteration { Series = new Series { ID = Guid.NewGuid() } }
 		]);
@@ -45,7 +45,7 @@ public sealed class IterationsControllerTests
 		var controller = new IterationsController(seriesService, iterationService, raceService, registrationManager);
 
 		var series = new Series { ID = Guid.NewGuid() };
-		iterationService.GetAllIterations().Returns([
+		iterationService.All().Returns([
 			new Iteration { Series = series },
 			new Iteration { Series = series }
 		]);
@@ -68,7 +68,7 @@ public sealed class IterationsControllerTests
 		var registrationManager = Substitute.For<IRegistrationManager>();
 		var controller = new IterationsController(seriesService, iterationService, raceService, registrationManager);
 
-		seriesService.GetSeries(Arg.Any<Guid>()).Returns(new Series { Name = "Test" });
+		seriesService.Get(Arg.Any<Guid>()).Returns(new Series { Name = "Test" });
 
 		//act
 		var result = await controller.Add(Guid.NewGuid());
@@ -90,11 +90,11 @@ public sealed class IterationsControllerTests
 
 		//act
 		var seriesID = Guid.NewGuid();
-		var iteration = new Iteration();
+		var iteration = new Iteration { SeriesID = seriesID };
 		await controller.Add(seriesID, iteration, []);
 
 		//assert
-		await iterationService.Received().AddIteration(seriesID, iteration);
+		await iterationService.Received().Add(iteration);
 		await iterationService.Received().UpdateRaces(iteration, Arg.Any<Race[]>());
 	}
 
@@ -109,7 +109,7 @@ public sealed class IterationsControllerTests
 		var registrationManager = Substitute.For<IRegistrationManager>();
 		var controller = new IterationsController(seriesService, iterationService, raceService, registrationManager);
 
-		iterationService.GetIteration(Arg.Any<Guid>()).Returns(iteration);
+		iterationService.Get(Arg.Any<Guid>()).Returns(iteration);
 
 		//act
 		var result = await controller.Edit(Guid.NewGuid());
@@ -131,14 +131,14 @@ public sealed class IterationsControllerTests
 
 		var id = Guid.NewGuid();
 		var iteration = new Iteration { ID = id, Name = "Iteration", Series = new Series { Name = "Test" } };
-		iterationService.GetIteration(Arg.Any<Guid>()).Returns(iteration);
+		iterationService.Get(Arg.Any<Guid>()).Returns(iteration);
 
 		//act
 		var updated = new Iteration();
 		await controller.Edit(id, updated, []);
 
 		//assert
-		await iterationService.Received().UpdateIteration(iteration, updated);
+		await iterationService.Received().Update(iteration, updated);
 		await iterationService.Received().UpdateRaces(iteration, Arg.Any<Race[]>());
 	}
 
@@ -164,7 +164,7 @@ public sealed class IterationsControllerTests
 				new Athlete()
 			]
 		};
-		iterationService.GetIteration(Arg.Any<Guid>()).Returns(iteration);
+		iterationService.Get(Arg.Any<Guid>()).Returns(iteration);
 
 		//act
 		var result = await controller.Registration(id);
@@ -186,7 +186,7 @@ public sealed class IterationsControllerTests
 
 		var id = Guid.NewGuid();
 		var iteration = new Iteration { ID = id, Name = "Iteration", Series = new Series { Name = "Test" } };
-		iterationService.GetIteration(Arg.Any<Guid>()).Returns(iteration);
+		iterationService.Get(Arg.Any<Guid>()).Returns(iteration);
 
 		//act
 		await controller.Registration(id, new FormCollection([]));

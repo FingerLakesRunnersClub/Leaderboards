@@ -20,38 +20,36 @@ public sealed class IterationService(DB db) : IIterationService
 			.Include(i => i.Athletes.OrderBy(a => a.Name)).ThenInclude(a => a.LinkedAccounts.OrderBy(l => l.Type))
 			.AsQueryable();
 
-	public async Task<Iteration[]> GetAllIterations()
+	public async Task<Iteration[]> All()
 		=> await _iterations
 			.OrderBy(i => i.Series.Name)
 			.ThenByDescending(i => i.StartDate)
 			.ToArrayAsync();
 
-	public async Task<Iteration> GetIteration(Guid id)
+	public async Task<Iteration> Get(Guid id)
 		=> await _iterationDetails
 			.FirstAsync(i => i.ID == id);
 
-	public async Task<Iteration?> FindCurrentIteration(Guid seriesID)
+	public async Task<Iteration?> Current(Guid seriesID)
 		=> await _iterationDetails
 			.Where(i => i.SeriesID == seriesID && i.StartDate <= Today && i.EndDate >= Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
 
-	public async Task<Iteration?> FindMostRecentIteration(Guid seriesID)
+	public async Task<Iteration?> MostRecent(Guid seriesID)
 		=> await _iterationDetails
 			.Where(i => i.SeriesID == seriesID && i.EndDate < Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
 
-	public async Task AddIteration(Guid id, Iteration iteration)
+	public async Task Add(Iteration iteration)
 	{
 		iteration.ID = Guid.NewGuid();
-		iteration.SeriesID = id;
-
-		await db.Set<Iteration>().AddAsync(iteration);
+		await db.AddAsync(iteration);
 		await db.SaveChangesAsync();
 	}
 
-	public async Task UpdateIteration(Iteration iteration, Iteration updated)
+	public async Task Update(Iteration iteration, Iteration updated)
 	{
 		iteration.Name = updated.Name;
 		iteration.StartDate = updated.StartDate;
@@ -77,4 +75,7 @@ public sealed class IterationService(DB db) : IIterationService
 
 		await db.SaveChangesAsync();
 	}
+
+	public Task Delete(Iteration iteration)
+		=> throw new NotImplementedException();
 }

@@ -2,16 +2,10 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Services;
 
-public interface IIterationService
+public interface IIterationService : IDataService<Iteration>
 {
-	Task<Iteration[]> GetAllIterations();
-	Task<Iteration> GetIteration(Guid id);
-
-	Task<Iteration?> FindCurrentIteration(Guid seriesID);
-	Task<Iteration?> FindMostRecentIteration(Guid seriesID);
-
-	Task AddIteration(Guid id, Iteration iteration);
-	Task UpdateIteration(Iteration iteration, Iteration updated);
+	Task<Iteration?> Current(Guid seriesID);
+	Task<Iteration?> MostRecent(Guid seriesID);
 
 	Task UpdateRaces(Iteration iteration, Race[] races);
 	Task UpdateRegistrations(Iteration iteration, Athlete[] athletes);

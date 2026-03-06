@@ -17,7 +17,7 @@ public sealed class HeaderComponentTests
 	{
 		//arrange
 		var seriesService = Substitute.For<ISeriesService>();
-		seriesService.FindSeries("UTs").Returns(new Series { Key = "UTs", Name = "Unit Tests" });
+		seriesService.Find("UTs").Returns(new Series { Key = "UTs", Name = "Unit Tests" });
 
 		var http = Substitute.For<IHttpContextAccessor>();
 

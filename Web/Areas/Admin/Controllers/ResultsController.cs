@@ -20,7 +20,7 @@ public sealed class ResultsController(IImportManager importManager, ICourseServi
 	[HttpGet]
 	public async Task<ViewResult> Import()
 	{
-		var races = await raceService.GetAllRaces();
+		var races = await raceService.All();
 		var form = new ResultImportForm
 		{
 			Races = races,

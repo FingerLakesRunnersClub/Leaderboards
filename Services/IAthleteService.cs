@@ -2,22 +2,14 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Services;
 
-public interface IAthleteService
+public interface IAthleteService : IDataService<Athlete>
 {
-	Task<Athlete[]> GetAllAthletes();
-	Task<Athlete> Get(Guid id);
-
 	Task<Athlete?> Find(string link, string value);
 	Task<Athlete?> Find(string name, DateOnly dob);
 	Task<Athlete?> Find(string legacyAthleteName, byte legacyAthleteAge, DateTime date);
-
-	Task AddAthlete(Athlete athlete);
-	Task UpdateAthlete(Athlete athlete, Athlete updated);
 
 	Task AddLinkedAccount(Athlete athlete, LinkedAccount account);
 
 	Task AddAdmin(Athlete athlete);
 	Task RemoveAdmin(Athlete athlete);
-
-	Task DeleteAthlete(Athlete athlete);
 }

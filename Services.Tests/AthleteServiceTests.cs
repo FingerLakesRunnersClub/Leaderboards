@@ -20,7 +20,7 @@ public sealed class AthleteServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var athletes = await service.GetAllAthletes();
+		var athletes = await service.All();
 
 		//assert
 		Assert.Equal("Test 1", athletes[0].Name);
@@ -132,7 +132,7 @@ public sealed class AthleteServiceTests
 
 		//act
 		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
-		await service.AddAthlete(athlete);
+		await service.Add(athlete);
 
 		//assert
 		Assert.Equal("Test", db.Set<Athlete>().Single().Name);
@@ -151,7 +151,7 @@ public sealed class AthleteServiceTests
 
 		//act
 		var updated = new Athlete { ID = athlete.ID, Name = "Test 2", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
-		await service.UpdateAthlete(athlete, updated);
+		await service.Update(athlete, updated);
 
 		//assert
 		var result = db.Set<Athlete>().Single();
@@ -173,7 +173,7 @@ public sealed class AthleteServiceTests
 
 		//act
 		var updated = new Athlete { ID = athlete.ID, Name = "Test 2" };
-		await service.UpdateAthlete(athlete, updated);
+		await service.Update(athlete, updated);
 
 		//assert
 		var result = db.Set<Athlete>().Single();
@@ -252,7 +252,7 @@ public sealed class AthleteServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		await service.DeleteAthlete(athlete);
+		await service.Delete(athlete);
 
 		//assert
 		Assert.Empty(await db.Set<Athlete>().ToArrayAsync());

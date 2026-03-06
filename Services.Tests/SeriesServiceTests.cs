@@ -18,7 +18,7 @@ public sealed class SeriesServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var series = await service.GetAllSeries();
+		var series = await service.All();
 
 		//assert
 		Assert.Equal(2, series.Length);
@@ -37,7 +37,7 @@ public sealed class SeriesServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var series = await service.GetSeries(s1.ID);
+		var series = await service.Get(s1.ID);
 
 		//assert
 		Assert.Equal("Test 1", series.Name);
@@ -56,7 +56,7 @@ public sealed class SeriesServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var series = await service.FindSeries("Test1");
+		var series = await service.Find("Test1");
 
 		//assert
 		Assert.Equal("Test 1", series!.Name);
@@ -71,7 +71,7 @@ public sealed class SeriesServiceTests
 
 		//act
 		var series = new Series { ID = Guid.NewGuid(), Key = "Test", Name = "Test" };
-		await service.AddSeries(series, new Dictionary<string, bool>(), new Dictionary<string, string>());
+		await service.Add(series);
 
 		//assert
 		Assert.Equal("Test", db.Set<Series>().Single().Name);
@@ -90,7 +90,7 @@ public sealed class SeriesServiceTests
 
 		//act
 		var updated = new Series { Key = "Test", Name = "Test 2" };
-		await service.UpdateSeries(series, updated, new Dictionary<string, bool>(), new Dictionary<string, string>());
+		await service.Update(series, updated);
 
 		//assert
 		Assert.Equal("Test 2", db.Set<Series>().Single().Name);

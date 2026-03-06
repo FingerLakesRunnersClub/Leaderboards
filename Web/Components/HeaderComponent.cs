@@ -12,7 +12,7 @@ public sealed class HeaderComponent(ISeriesService seriesService, IHttpContextAc
 {
 	public async Task<ViewViewComponentResult> InvokeAsync()
 	{
-		var series = await seriesService.FindSeries(contextProvider.App);
+		var series = await seriesService.Find(contextProvider.App);
 		var enableAuth = series.Features.FirstOrDefault(f => f.Key == nameof(FeatureSet.EnableAuth))?.Value ?? false;
 
 		var vm = new HeaderViewModel

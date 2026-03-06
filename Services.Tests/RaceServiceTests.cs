@@ -19,7 +19,7 @@ public sealed class RaceServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var races = await service.GetAllRaces();
+		var races = await service.All();
 
 		//assert
 		Assert.Equal(2, races.Length);
@@ -64,7 +64,7 @@ public sealed class RaceServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var race = await service.GetRace(r1.ID);
+		var race = await service.Get(r1.ID);
 
 		//assert
 		Assert.Equal("Test Race 1", race.Name);
@@ -79,7 +79,7 @@ public sealed class RaceServiceTests
 
 		//act
 		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
-		await service.AddRace(race);
+		await service.Add(race);
 
 		//assert
 		Assert.Equal("Test Race 1", db.Set<Race>().Single().Name);
@@ -98,7 +98,7 @@ public sealed class RaceServiceTests
 
 		//act
 		var updated = new Race { Name = "Test Race 2" };
-		await service.UpdateRace(race, updated);
+		await service.Update(race, updated);
 
 		//assert
 		Assert.Equal("Test Race 2", db.Set<Race>().Single().Name);

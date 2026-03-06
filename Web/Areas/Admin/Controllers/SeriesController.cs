@@ -11,7 +11,7 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 {
 	public async Task<ViewResult> Index()
 	{
-		var series = await seriesService.GetAllSeries();
+		var series = await seriesService.All();
 		var vm = new ViewModel<Series[]>("Series Management", series);
 		return View(vm);
 	}
@@ -26,14 +26,17 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 	[HttpPost]
 	public async Task<RedirectToActionResult> Add(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{
-		await seriesService.AddSeries(series, features, settings);
+		await seriesService.Add(series);
+		await seriesService.UpdateFeatures(series, features);
+		await seriesService.UpdateSettings(series, settings);
+
 		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]
 	public async Task<ViewResult> Edit(Guid id)
 	{
-		var series = await seriesService.GetSeries(id);
+		var series = await seriesService.Get(id);
 		var vm = new ViewModel<Series>("Edit Series", series);
 		return View("Form", vm);
 	}
@@ -41,8 +44,12 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 	[HttpPost]
 	public async Task<RedirectToActionResult> Edit(Guid id, Series updated, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{
-		var series = await seriesService.GetSeries(id);
-		await seriesService.UpdateSeries(series, updated, features, settings);
+		var series = await seriesService.Get(id);
+
+		await seriesService.Update(series, updated);
+		await seriesService.UpdateFeatures(series, features);
+		await seriesService.UpdateSettings(series, settings);
+
 		return RedirectToAction(nameof(Index));
 	}
 }

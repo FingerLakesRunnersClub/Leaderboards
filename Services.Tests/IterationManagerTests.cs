@@ -19,8 +19,8 @@ public class IterationManagerTests
 
 		var id = Guid.NewGuid();
 		contextProvider.App.Returns("tests");
-		seriesService.FindSeries("tests").Returns(new Series { ID = id });
-		iterationService.FindCurrentIteration(id).Returns(new Iteration { Name = "Test" });
+		seriesService.Find("tests").Returns(new Series { ID = id });
+		iterationService.Current(id).Returns(new Iteration { Name = "Test" });
 
 		//act
 		var iteration = await manager.ActiveIteration();

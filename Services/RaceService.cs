@@ -12,7 +12,7 @@ public sealed class RaceService(DB db) : IRaceService
 			.OrderBy(r => r.Name)
 			.AsQueryable();
 
-	public async Task<Race[]> GetAllRaces()
+	public async Task<Race[]> All()
 		=> await _races.ToArrayAsync();
 
 	public async Task<Race[]> GetRaces(Guid[] ids)
@@ -20,18 +20,18 @@ public sealed class RaceService(DB db) : IRaceService
 			.Where(r => ids.Any(id => r.ID == id))
 			.ToArrayAsync();
 
-	public async Task<Race> GetRace(Guid id)
+	public async Task<Race> Get(Guid id)
 		=> await _races
 			.FirstAsync(r => r.ID == id);
 
-	public async Task AddRace(Race race)
+	public async Task Add(Race race)
 	{
 		race.ID = Guid.NewGuid();
 		await db.AddAsync(race);
 		await db.SaveChangesAsync();
 	}
 
-	public async Task UpdateRace(Race race, Race updated)
+	public async Task Update(Race race, Race updated)
 	{
 		race.Name = updated.Name;
 		race.Type = updated.Type;
@@ -66,4 +66,7 @@ public sealed class RaceService(DB db) : IRaceService
 
 		await db.SaveChangesAsync();
 	}
+
+	public Task Delete(Race race)
+		=> throw new NotImplementedException();
 }

@@ -100,7 +100,7 @@ public sealed class LegacyDataConverterTests
 		var athlete = await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
 
 		//assert
-		await athleteService.Received().AddAthlete(athlete);
+		await athleteService.Received().Add(athlete);
 	}
 
 	[Fact]
@@ -116,7 +116,7 @@ public sealed class LegacyDataConverterTests
 		var athlete = await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
 
 		//assert
-		await athleteService.DidNotReceive().AddAthlete(athlete);
+		await athleteService.DidNotReceive().Add(athlete);
 	}
 
 	[Fact]
@@ -161,6 +161,6 @@ public sealed class LegacyDataConverterTests
 		await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
 
 		//assert
-		await athleteService.DidNotReceive().UpdateAthlete(Arg.Any<Athlete>(), Arg.Any<Athlete>());
+		await athleteService.DidNotReceive().Update(Arg.Any<Athlete>(), Arg.Any<Athlete>());
 	}
 }

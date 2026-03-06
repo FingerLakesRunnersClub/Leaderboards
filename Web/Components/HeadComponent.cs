@@ -10,7 +10,7 @@ public sealed class HeadComponent(ISeriesService seriesService, IContextProvider
 {
 	public async Task<ViewViewComponentResult> InvokeAsync(string title)
 	{
-		var series = await seriesService.FindSeries(contextProvider.App);
+		var series = await seriesService.Find(contextProvider.App);
 		var vm = new HeadViewModel { Context = series.Key, AppName = series.Name, PageTitle = title };
 		return View("../Head", vm);
 	}
