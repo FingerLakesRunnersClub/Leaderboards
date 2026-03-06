@@ -6,6 +6,7 @@ using FLRC.Leaderboards.Core.Series;
 using FLRC.Leaderboards.Data.Migrations;
 using FLRC.Leaderboards.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
@@ -22,6 +23,7 @@ public sealed class App(string context)
 			WebRootPath = Path.Combine(AppContext.BaseDirectory, "wwwroot")
 		};
 		var builder = WebApplication.CreateBuilder(options);
+		builder.Configuration.AddJsonFile($"{context}.json");
 
 		ConfigureServices(builder.Services);
 		builder.Services.AddSingleton<IContextProvider>(_ => new AppContextProvider(context));
