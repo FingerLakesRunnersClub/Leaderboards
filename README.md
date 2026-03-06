@@ -33,14 +33,7 @@ This repository contains the code for the various leaderboard apps that the Fing
 
 - Run `dotnet watch --project Challenge run` to start the Challenge server
   - or `dotnet watch --project TrailCircuit run` to start the Trail Circuit server
+  - or `dotnet watch --project Track run` to start the Track server
 
 - Browse to `http://localhost:5000`
 - Run `dotnet test` to run tests before committing/pushing
-
-### Via Docker Compose
-
-- Run `./dcd up -d --build` to start both apps simultaneously
-- Browse to `http://localhost:5001` for the Challenge, or `http://localhost:5002` for the Trail Circuit
-- Run `docker compose exec dashboard dotnet test` to run tests before committing/pushing
-
-(`dcd` stands for Docker Compose Dev, and is simple Bash script that translates Docker Compose commands to always use the `dev` config file)

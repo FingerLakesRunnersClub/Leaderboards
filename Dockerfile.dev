@@ -1,7 +1,0 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0
-WORKDIR /app
-ARG app
-ENV app_name=$app
-
-RUN apt-get update && apt-get install -y procps
-ENTRYPOINT dotnet watch --project $app_name run

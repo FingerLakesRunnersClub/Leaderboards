@@ -1,5 +1,4 @@
-﻿using System.Data;
-using System.IO.Abstractions;
+﻿using System.IO.Abstractions;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
@@ -9,6 +8,7 @@ using FLRC.Leaderboards.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -28,7 +28,7 @@ public sealed class App(string context)
 		var app = builder.Build();
 
 		Configure(app);
-		Initialize(((IApplicationBuilder)app).ApplicationServices);
+		Initialize(app.Services);
 		await app.Services.GetRequiredService<IDataService>().GetAthletes();
 
 		await app.RunAsync();
@@ -102,10 +102,7 @@ public sealed class App(string context)
 
 	public static void Initialize(IServiceProvider serviceProvider)
 	{
-		var connection = serviceProvider.GetService<IDbConnection>();
-		if (connection is null)
-			return;
-
+		var connection = serviceProvider.GetService<NpgsqlConnection>();
 		var logFactory = serviceProvider.GetService<ILoggerFactory>();
 		var logger = logFactory.CreateLogger("Initializer");
 		var upgrader = new DBUpgrader(connection, logger);

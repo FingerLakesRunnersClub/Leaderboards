@@ -43,7 +43,7 @@ public sealed record AppConfig : IConfig
 		PersonalAPI = config.GetValue<string>("PersonalAPI");
 
 		CommunityURL = config.GetValue<string>("CommunityURL");
-		CommunityKey = Environment.GetEnvironmentVariable("CommunityKey");
+		CommunityKey = config.GetValue<string>("CommunityKey");
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
 		CommunityRetryDelay = config.GetValue<ushort>("CommunityRetryDelay");
 

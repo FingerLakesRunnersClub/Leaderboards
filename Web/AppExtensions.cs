@@ -1,10 +1,10 @@
-using System.Data;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Web.Areas.Admin.Policies;
 using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -16,13 +16,12 @@ public static class AppExtensions
 	{
 		public void AddAuthentication()
 		{
-			var authSecret = Environment.GetEnvironmentVariable("DiscourseAuthSecret");
-			if (string.IsNullOrWhiteSpace(authSecret))
-				return;
-
 			services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
-			var authenticator = new DiscourseAuthenticator("https://forum.fingerlakesrunners.org", authSecret);
-			services.AddSingleton<IDiscourseAuthenticator>(authenticator);
+			services.AddSingleton<IDiscourseAuthenticator>(s =>
+			{
+				var authSecret = s.GetService<IConfiguration>().GetValue<string>("DiscourseAuthSecret");
+				return new DiscourseAuthenticator("https://forum.fingerlakesrunners.org", authSecret);
+			});
 
 			services.AddSingleton<IAuthService, AuthService>();
 			services.AddSingleton<IWebScorerAuthenticator, WebScorerAuthenticator>();
@@ -32,13 +31,12 @@ public static class AppExtensions
 
 		public void AddDatabase()
 		{
-			var connectionString = Environment.GetEnvironmentVariable("Database");
-			if (string.IsNullOrWhiteSpace(connectionString))
-				return;
-
-			var connection = new NpgsqlConnection(connectionString);
-			services.AddDbContext<DB>(o => o.UseNpgsql(connection).UseLowerCaseNamingConvention());
-			services.AddScoped<IDbConnection>(_ => connection);
+			services.AddScoped(s =>
+			{
+				var connectionString = s.GetService<IConfiguration>().GetValue<string>("Database");
+				return new NpgsqlConnection(connectionString);
+			});
+			services.AddDbContext<DB>((s, o) => o.UseNpgsql(s.GetService<NpgsqlConnection>()).UseLowerCaseNamingConvention());
 		}
 	}
 }
