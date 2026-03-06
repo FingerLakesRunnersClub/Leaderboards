@@ -11,22 +11,36 @@ public sealed class AthleteService(DB db) : IAthleteService
 			.Include(a => a.Admins)
 			.Include(a => a.LinkedAccounts)
 			.Include(a => a.Registrations)
+			.Include(a => a.Results)
 			.AsQueryable();
 
-	public async Task<Athlete> Get(Guid id)
+	private readonly IQueryable<Athlete> _athleteDetails
+		= db.Set<Athlete>()
+			.Include(a => a.Admins)
+			.Include(a => a.LinkedAccounts.OrderBy(l => l.Type).ThenBy(l => l.Value))
+			.Include(a => a.Registrations).ThenInclude(i => i.Series)
+			.Include(a => a.Results)
+			.AsQueryable();
+
+	public async Task<Athlete[]> GetAllAthletes()
 		=> await _athletes
+			.OrderBy(a => a.Name)
+			.ToArrayAsync();
+
+	public async Task<Athlete> Get(Guid id)
+		=> await _athleteDetails
 			.FirstAsync(a => a.ID == id);
 
 	public async Task<Athlete?> Find(string link, string value)
-		=> await _athletes
+		=> await _athleteDetails
 			.FirstOrDefaultAsync(a => a.LinkedAccounts.Any(l => l.Type == link && l.Value == value));
 
 	public async Task<Athlete?> Find(string name, DateOnly dob)
-		=> await _athletes
+		=> await _athleteDetails
 			.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth == dob);
 
 	public async Task<Athlete?> Find(string name, byte age, DateTime onDate)
-		=> await _athletes
+		=> await _athleteDetails
 			.Where(a => a.Name == name).ToAsyncEnumerable()
 			.FirstOrDefaultAsync(a => a.DateOfBirth is not null && a.AgeAsOf(onDate) == age);
 
@@ -62,6 +76,25 @@ public sealed class AthleteService(DB db) : IAthleteService
 			Value = account.Value
 		};
 		await db.AddAsync(newAccount);
+		await db.SaveChangesAsync();
+	}
+
+	public async Task AddAdmin(Athlete athlete)
+	{
+		var admin = new Admin { ID = athlete.ID };
+		await db.AddAsync(admin);
+		await db.SaveChangesAsync();
+	}
+
+	public async Task RemoveAdmin(Athlete athlete)
+	{
+		athlete.Admins.Clear();
+		await db.SaveChangesAsync();
+	}
+
+	public async Task DeleteAthlete(Athlete athlete)
+	{
+		db.Remove(athlete);
 		await db.SaveChangesAsync();
 	}
 }

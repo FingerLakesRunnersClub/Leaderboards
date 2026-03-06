@@ -1,10 +1,32 @@
 using FLRC.Leaderboards.Model;
+using Microsoft.EntityFrameworkCore;
 using Xunit;
 
 namespace FLRC.Leaderboards.Services.Tests;
 
 public sealed class AthleteServiceTests
 {
+	[Fact]
+	public async Task AllAthletesAreOrderedByName()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		await db.AddRangeAsync(
+			new Athlete { ID = Guid.NewGuid(), Name = "Test 2" },
+			new Athlete { ID = Guid.NewGuid(), Name = "Test 1" }
+		);
+		await db.SaveChangesAsync();
+
+		//act
+		var athletes = await service.GetAllAthletes();
+
+		//assert
+		Assert.Equal("Test 1", athletes[0].Name);
+		Assert.Equal("Test 2", athletes[1].Name);
+	}
+
 	[Fact]
 	public async Task CanGetAthlete()
 	{
@@ -31,7 +53,7 @@ public sealed class AthleteServiceTests
 		var service = new AthleteService(db);
 
 		var id = Guid.NewGuid();
-		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3)});
+		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3) });
 		await db.SaveChangesAsync();
 
 		//act
@@ -49,7 +71,7 @@ public sealed class AthleteServiceTests
 		var service = new AthleteService(db);
 
 		var id = Guid.NewGuid();
-		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3)});
+		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3) });
 		await db.SaveChangesAsync();
 
 		//act
@@ -67,7 +89,7 @@ public sealed class AthleteServiceTests
 		var service = new AthleteService(db);
 
 		var id = Guid.NewGuid();
-		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3)});
+		await db.AddAsync(new Athlete { ID = id, Name = "Test", DateOfBirth = new DateOnly(1985, 2, 3) });
 		await db.SaveChangesAsync();
 
 		//act
@@ -89,7 +111,7 @@ public sealed class AthleteServiceTests
 		{
 			ID = id, Name = "Test", LinkedAccounts =
 			[
-				new LinkedAccount { ID = Guid.NewGuid(), AthleteID = id, Type = "Email", Value = "test@example.com"}
+				new LinkedAccount { ID = Guid.NewGuid(), AthleteID = id, Type = "Email", Value = "test@example.com" }
 			]
 		});
 		await db.SaveChangesAsync();
@@ -123,7 +145,7 @@ public sealed class AthleteServiceTests
 		var db = TestHelpers.CreateDB();
 		var service = new AthleteService(db);
 
-		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-01-01")};
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-01-01") };
 		await db.AddAsync(athlete);
 		await db.SaveChangesAsync();
 
@@ -147,6 +169,7 @@ public sealed class AthleteServiceTests
 
 		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
 		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
 
 		//act
 		var updated = new Athlete { ID = athlete.ID, Name = "Test 2" };
@@ -168,6 +191,7 @@ public sealed class AthleteServiceTests
 
 		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
 		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
 
 		//act
 		var account = new LinkedAccount { Type = "t1", Value = "v1" };
@@ -176,5 +200,61 @@ public sealed class AthleteServiceTests
 		//assert
 		var result = db.Set<Athlete>().Single();
 		Assert.NotEmpty(result.LinkedAccounts);
+	}
+
+	[Fact]
+	public async Task CanAddAthleteAsAdmin()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.AddAdmin(athlete);
+
+		//assert
+		Assert.True(athlete.IsAdmin);
+	}
+
+	[Fact]
+	public async Task CanRemoveAthleteAsAdmin()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var id = Guid.NewGuid();
+		var athlete = new Athlete { ID = id, Name = "Test", Admins = [new Admin { ID = id }] };
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.RemoveAdmin(athlete);
+
+		//assert
+		Assert.False(athlete.IsAdmin);
+	}
+
+	[Fact]
+	public async Task CanDelete()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new AthleteService(db);
+
+		var id = Guid.NewGuid();
+		var athlete = new Athlete { ID = id, Name = "Test" };
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.DeleteAthlete(athlete);
+
+		//assert
+		Assert.Empty(await db.Set<Athlete>().ToArrayAsync());
 	}
 }

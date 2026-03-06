@@ -4,6 +4,7 @@ namespace FLRC.Leaderboards.Services;
 
 public interface IAthleteService
 {
+	Task<Athlete[]> GetAllAthletes();
 	Task<Athlete> Get(Guid id);
 
 	Task<Athlete?> Find(string link, string value);
@@ -14,4 +15,9 @@ public interface IAthleteService
 	Task UpdateAthlete(Athlete athlete, Athlete updated);
 
 	Task AddLinkedAccount(Athlete athlete, LinkedAccount account);
+
+	Task AddAdmin(Athlete athlete);
+	Task RemoveAdmin(Athlete athlete);
+
+	Task DeleteAthlete(Athlete athlete);
 }
