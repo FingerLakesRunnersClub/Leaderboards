@@ -8,18 +8,26 @@ public sealed class SeriesService(DB db) : ISeriesService
 {
 	private readonly IQueryable<Series> _series
 		= db.Set<Series>()
+			.OrderBy(s => s.Key)
+			.AsQueryable();
+
+	private readonly IQueryable<Series> _seriesDetails
+		= db.Set<Series>()
 			.Include(s => s.Features)
 			.Include(s => s.Settings)
 			.AsQueryable();
 
 	public async Task<Series[]> GetAllSeries()
-		=> await db.Set<Series>().OrderBy(s => s.Key).ToArrayAsync();
+		=> await _series
+			.ToArrayAsync();
 
 	public async Task<Series> GetSeries(Guid id)
-		=> await _series.FirstAsync(s => s.ID == id);
+		=> await _seriesDetails
+			.FirstAsync(s => s.ID == id);
 
 	public async Task<Series?> FindSeries(string key)
-		=> await _series.FirstAsync(s => s.Key == key);
+		=> await _seriesDetails
+			.FirstAsync(s => s.Key == key);
 
 	public async Task AddSeries(Series series, IDictionary<string, bool> features, IDictionary<string, string> settings)
 	{

@@ -11,10 +11,13 @@ public sealed class IterationService(DB db) : IIterationService
 	private readonly IQueryable<Iteration> _iterations
 		= db.Set<Iteration>()
 			.Include(i => i.Series)
-			.Include(i => i.Races)
-			.ThenInclude(r => r.Courses)
-			.Include(i => i.Athletes.OrderBy(a => a.Name))
-			.ThenInclude(a => a.LinkedAccounts.OrderBy(l => l.Type))
+			.AsQueryable();
+
+	private readonly IQueryable<Iteration> _iterationDetails
+		= db.Set<Iteration>()
+			.Include(i => i.Series)
+			.Include(i => i.Races).ThenInclude(r => r.Courses)
+			.Include(i => i.Athletes.OrderBy(a => a.Name)).ThenInclude(a => a.LinkedAccounts.OrderBy(l => l.Type))
 			.AsQueryable();
 
 	public async Task<Iteration[]> GetAllIterations()
@@ -24,17 +27,17 @@ public sealed class IterationService(DB db) : IIterationService
 			.ToArrayAsync();
 
 	public async Task<Iteration> GetIteration(Guid id)
-		=> await _iterations
+		=> await _iterationDetails
 			.FirstAsync(i => i.ID == id);
 
 	public async Task<Iteration?> FindCurrentIteration(Guid seriesID)
-		=> await _iterations
+		=> await _iterationDetails
 			.Where(i => i.SeriesID == seriesID && i.StartDate <= Today && i.EndDate >= Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
 
 	public async Task<Iteration?> FindMostRecentIteration(Guid seriesID)
-		=> await _iterations
+		=> await _iterationDetails
 			.Where(i => i.SeriesID == seriesID && i.EndDate < Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
