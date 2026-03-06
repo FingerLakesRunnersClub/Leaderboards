@@ -1,0 +1,101 @@
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.Areas.Admin
+@model ViewModel<Athlete>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<form method="post">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label for="name">Name</label>
+					<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+				</div>
+
+				<div class="form-group col-sm-4 col-md-2">
+					<label for="category">Category</label>
+					<select type="text" id="category" name="Category" required class="form-control">
+						@foreach (var category in new[] { ' ', 'F', 'M', 'X' })
+						{
+							<option value="@category" @(category == Model.Data.Category ? "selected" : "")>
+								@category
+							</option>
+						}
+					</select>
+				</div>
+
+				<div class="form-group col-sm-8 col-md-4">
+					<label for="DOB">Date of Birth</label>
+					<input type="date" id="DOB" name="DateOfBirth" value="@Model.Data.DateOfBirth?.ToString("yyyy-MM-dd")" class="form-control"/>
+				</div>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Submit</button>
+			<a href="/Admin/Athletes" class="btn btn-light">Back</a>
+
+			<div class="row my-3">
+				<div class="col-md-6">
+					<h3>Linked Accounts</h3>
+
+					<table class="table table-bordered table-striped">
+						<thead>
+						<tr>
+							<th scope="col">Type</th>
+							<th scope="col">Value</th>
+						</tr>
+						</thead>
+						<tbody>
+						@foreach (var account in Model.Data.LinkedAccounts)
+						{
+							<tr>
+								<td>@account.Type</td>
+								<td>@account.Value</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+
+				</div>
+
+				<div class="col-md-6">
+					<h3>Registrations</h3>
+
+					<table class="table table-bordered table-striped">
+						<thead>
+						<tr>
+							<th scope="col">Series</th>
+							<th scope="col">Iteration</th>
+						</tr>
+						</thead>
+						<tbody>
+						@foreach (var iteration in Model.Data.Registrations.OrderBy(i => i.Series.Name).ThenByDescending(i => i.Name))
+						{
+							<tr>
+								<td>@iteration.Series.Name</td>
+								<td>@iteration.Name</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="bg-white border rounded shadow p-3 my-4 col-sm-6 col-md-4 col-lg-3">
+				<h3>Danger Zone</h3>
+
+				<p>
+					<a href="/Admin/Athletes/Merge/@Model.Data.ID" class="btn btn-warning">
+						Merge
+					</a>
+				</p>
+
+				<p>
+					<a href="/Admin/Athletes/ToggleAdmin/@Model.Data.ID" class="btn btn-danger">
+						@(Model.Data.IsAdmin ? "Remove Admin" : "Make Admin")
+					</a>
+				</p>
+			</div>
+		</form>
+	</section>
+</article>

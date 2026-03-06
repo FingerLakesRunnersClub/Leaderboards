@@ -1,0 +1,39 @@
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.Areas.Admin
+@model ViewModel<Athlete[]>
+
+@await Html.PartialAsync("../AdminHeader")
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<table class="table table-striped table-bordered table-sm">
+			<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Category</th>
+				<th scope="col">Age</th>
+				<th scope="col">Results</th>
+				<th scope="col">Series Registrations</th>
+				<th scope="col">Linked Accounts</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var athlete in Model.Data)
+			{
+				<tr>
+					<th scope="row">
+						<a href="/Admin/Athletes/Edit/@athlete.ID">
+							@athlete.Name
+						</a>
+					</th>
+					<td>@athlete.Category</td>
+					<td>@athlete.AgeToday</td>
+					<td>@athlete.Results.Count</td>
+					<td>@athlete.Registrations.Count</td>
+					<td>@athlete.LinkedAccounts.Count</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</section>
+</article>
