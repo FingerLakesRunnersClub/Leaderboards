@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Overall;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Teams;
 using Microsoft.AspNetCore.Mvc;
 

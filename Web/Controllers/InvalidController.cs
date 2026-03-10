@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Reports;
 using Microsoft.AspNetCore.Mvc;
 

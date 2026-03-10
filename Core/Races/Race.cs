@@ -14,19 +14,7 @@ public sealed class Race
 
 	public ushort CommunityID { get; init; }
 
-	private Post[] _communityPosts = [];
-	public Post[] CommunityPosts
-	{
-		get => _communityPosts;
-		set
-		{
-			_communityPosts = value;
-			foreach (var course in Courses)
-			{
-				course.ClearCommunityCache();
-			}
-		}
-	}
+	public Post[] CommunityPosts { get; set; } = [];
 
 	public int CommunityHash { get; set; }
 
