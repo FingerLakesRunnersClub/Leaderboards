@@ -14,6 +14,7 @@ public sealed record Athlete : Identifiable<Guid>
 	public ICollection<Iteration> Registrations { get; init; } = [];
 	public ICollection<Result> Results { get; init; } = [];
 	public ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
+	public ICollection<Challenge> Challenges { get; init; } = [];
 
 	public byte? AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)

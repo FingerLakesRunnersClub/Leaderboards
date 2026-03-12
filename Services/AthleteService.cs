@@ -20,6 +20,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 			.Include(a => a.LinkedAccounts.OrderBy(l => l.Type).ThenBy(l => l.Value))
 			.Include(a => a.Registrations).ThenInclude(i => i.Series)
 			.Include(a => a.Results)
+			.Include(a => a.Challenges).ThenInclude(c => c.Iteration)
 			.AsQueryable();
 
 	public async Task<Athlete[]> All()

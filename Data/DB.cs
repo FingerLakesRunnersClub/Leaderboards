@@ -33,11 +33,13 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		aResult.Property(r => r.StartTime).HasConversion(t => t.ToUniversalTime(), t => t.ToLocalTime());
 
 		var aChallenge = build.Entity<Challenge>().Table("Challenges");
-		aChallenge.HasMany(c => c.Courses).WithMany(c => c.Challenges).UsingEntity<ChallengeCourse>();
+		aChallenge.HasMany(c => c.Courses).WithMany(c => c.Challenges).UsingEntity<ChallengeCourse>().Table("ChallengeCourses");
+		aChallenge.Property(c => c.TimeLimit).HasConversion(t => t != null ? (byte?)t.Value.Hours : null, t => t != null ? TimeSpan.FromHours(t.Value) : null);
 
 		var anAthlete = build.Entity<Athlete>().Table("Athletes");
 		anAthlete.HasMany(a => a.Results).WithOne(r => r.Athlete);
 		anAthlete.HasMany(a => a.LinkedAccounts).WithOne(a => a.Athlete);
+		anAthlete.HasMany(a => a.Challenges).WithOne(c => c.Athlete);
 
 		var anAdmin = build.Entity<Admin>().Table("Admins");
 		anAdmin.HasOne(a => a.Athlete).WithMany(a => a.Admins).HasForeignKey(nameof(Admin.ID));
