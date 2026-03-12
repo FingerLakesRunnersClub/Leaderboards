@@ -41,7 +41,7 @@
 			{
 				var isChecked = selectedRaceIDs.Contains(race.ID);
 				<tr>
-					<td class="form-check">
+					<td class="text-center align-middle">
 						<input type="checkbox" id="race-@race.ID" name="Races" @(isChecked ? "checked" : "") value="@race.ID"/>
 					</td>
 					<th scope="row">

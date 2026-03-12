@@ -27,10 +27,14 @@
 					@foreach (var row in Model.MissingRows)
 					{
 						<tr>
-							<td class="text-center">
-								<input type="checkbox" checked="checked" name="users" value="@row.User.ID"/>
+							<td class="text-center align-middle">
+								<input type="checkbox" checked="checked" id="user-@row.User.ID" name="users" value="@row.User.ID" />
 							</td>
-							<td>@row.Athlete.Name</td>
+							<th scope="row">
+								<label for="user-@row.User.ID" class="form-check-label">
+									@row.Athlete.Name
+								</label>
+							</th>
 							<td class="text-center">@row.Athlete.Team.Display</td>
 							<td>@row.User.Username</td>
 							<td>
