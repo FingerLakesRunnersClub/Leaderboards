@@ -24,4 +24,8 @@
 			}
 		</select>
 	</td>
+
+	<td class="text-center align-middle">
+		<input type="checkbox" id="course-@id-active" name="Courses[@id].IsActive" @(Model.IsActive ? "checked" : "") value="true" />
+	</td>
 </tr>

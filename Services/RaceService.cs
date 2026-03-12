@@ -49,6 +49,7 @@ public sealed class RaceService(DB db) : IRaceService
 			{
 				existing.Distance = course.Value.Distance;
 				existing.Units = course.Value.Units;
+				existing.IsActive = course.Value.IsActive;
 				db.Update(existing);
 			}
 			else if (course.Value.Distance > 0 && !string.IsNullOrWhiteSpace(course.Value.Units))
@@ -58,7 +59,8 @@ public sealed class RaceService(DB db) : IRaceService
 					ID = Guid.NewGuid(),
 					RaceID = race.ID,
 					Distance = course.Value.Distance,
-					Units = course.Value.Units
+					Units = course.Value.Units,
+					IsActive = course.Value.IsActive
 				};
 				await db.AddAsync(newCourse);
 			}

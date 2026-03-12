@@ -6,6 +6,7 @@ public sealed record Course : Identifiable<Guid>
 	public Guid RaceID { get; set; }
 	public decimal Distance { get; set; }
 	public string Units { get; set; } = null!;
+	public bool IsActive { get; set; }
 
 	public Race Race { get; init; } = null!;
 	public ICollection<Result> Results { get; init; } = [];
