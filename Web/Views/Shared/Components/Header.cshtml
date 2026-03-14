@@ -1,4 +1,6 @@
-﻿@using FLRC.Leaderboards.Web.ViewModels
+﻿@using FLRC.AgeGradeCalculator
+@using FLRC.Leaderboards.Core.Races
+@using FLRC.Leaderboards.Web.ViewModels
 @model HeaderViewModel
 
 <header>
@@ -34,8 +36,9 @@
 					<ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
 						@foreach (var course in Model.CourseMenu)
 						{
+							var defaultPage = Enum.TryParse<FieldEvent>(course.Value.ToFieldEvent(), out _) ? "Farthest" : "Fastest";
 							<li class="dropdown-item">
-								<a href="/Course/@course.Key/Fastest">@course.Value</a>
+								<a href="/Course/@course.Key/@defaultPage">@course.Value</a>
 							</li>
 						}
 					</ul>
