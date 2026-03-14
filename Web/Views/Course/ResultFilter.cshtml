@@ -49,7 +49,7 @@
 				<a class="btn btn-sm btn-@style(Category.M)" href="@resultsURL/M@(query)">M</a>
 			</div>
 
-			@if (Model.ResultType.Value == ResultType.Fastest)
+			@if (Model.ResultType.Value is ResultType.Fastest or ResultType.Farthest)
 			{
 				<div class="float-right ml-5">
 					<select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
