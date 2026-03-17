@@ -68,6 +68,7 @@ public sealed class App(string context)
 		});
 
 		services.AddScoped<IAthleteService, AthleteService>();
+		services.AddScoped<IChallengeService, ChallengeService>();
 		services.AddScoped<ICourseService, CourseService>();
 		services.AddScoped<IIterationService, IterationService>();
 		services.AddScoped<IRaceService, RaceService>();
