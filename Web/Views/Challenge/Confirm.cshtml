@@ -1,0 +1,45 @@
+@using FLRC.Leaderboards.Web.Areas.Admin
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<SelectChallengeForm>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<p class="text-center">Are you sure you want to commit to this @Model.Data.Selection Challenge?</p>
+
+		<div class="row flex-column align-items-center">
+			<div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
+				@await Html.PartialAsync("CourseTable", Model.Data.Courses)
+
+				<table class="table table-bordered table-sm">
+					<tbody>
+					<tr>
+						<th scope="row">Total Courses</th>
+						<td class="text-right">@Model.Data.Courses.Length</td>
+					</tr>
+					<tr>
+						<th scope="row">Total Distance</th>
+						<td class="text-right">@Model.Data.Courses.Sum(c => c.Distance) mi</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<form method="post" action="/Challenge/Confirm" class="d-flex justify-content-center">
+			<input type="hidden" name="Confirmed" value="true"/>
+			<input type="hidden" name="Selection" value="@Model.Data.Selection"/>
+			@if (Model.Data.Selection == "Personal")
+			{
+				@foreach (var id in Model.Data.Selected)
+				{
+					<input type="hidden" name="Selected" value="@id"/>
+				}
+			}
+
+			<button type="submit" class="btn btn-primary mx-1">Confirm</button>
+			<a href="/Challenge/Select" class="btn btn-light mx-1">Cancel</a>
+		</form>
+	</section>
+</article>

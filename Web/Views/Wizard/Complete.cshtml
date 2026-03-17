@@ -1,14 +1,14 @@
 @using FLRC.Leaderboards.Model
 @using FLRC.Leaderboards.Web.Areas.Admin
-@model ViewModel<Iteration>
+@model ViewModel<Athlete>
 
 <h2>@Model.Title</h2>
 
 <article class="card card-highlighted">
 	<section class="card-body">
-		<h3>You're all set!</h3>
+		<h3>Hi, @Model.Data.Name!</h3>
 
-		<p>We've confirmed that you're signed up for the @Model.Data.Name @Model.Data.Series.Name &mdash; time to get running!</p>
+		<p>We've linked your accounts and you're ready for the next step!</p>
 
 		<a href="/" class="btn btn-primary">
 			View Leaderboard

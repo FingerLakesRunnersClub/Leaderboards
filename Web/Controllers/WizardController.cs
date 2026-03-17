@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace FLRC.Leaderboards.Web.Controllers;
 
 [Authorize]
-public sealed class WizardController(IAthleteService athleteService, IAuthService authService,  IIterationManager iterationManager, ILegacyDataConverter legacyDataConverter, IRegistrationManager registrationManager, IWebScorerAuthenticator webScorer) : Controller
+public sealed class WizardController(IAthleteService athleteService, IAuthService authService, ILegacyDataConverter legacyDataConverter, IWebScorerAuthenticator webScorer) : Controller
 {
 	public async Task<IActionResult> Index()
 	{
@@ -20,7 +20,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 		if (athlete is null || athlete.LinkedAccounts.All(a => a.Type != LinkedAccount.Keys.WebScorer))
 			return RedirectToAction(nameof(Link));
 
-		return RedirectToAction(nameof(Registration));
+		return RedirectToAction(nameof(Complete));
 	}
 
 	private async Task<Athlete> CurrentAthlete()
@@ -37,7 +37,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	{
 		var athlete = await CurrentAthlete();
 		if (athlete is not null && athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer))
-			return RedirectToAction(nameof(Registration));
+			return RedirectToAction(nameof(Complete));
 
 		var vm = new ViewModel<string>("Athlete Verification", null);
 		return View(vm);
@@ -48,12 +48,18 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	{
 		var athlete = await CurrentAthlete();
 		if (athlete is not null && athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer))
-			return RedirectToAction(nameof(Registration));
+			return RedirectToAction(nameof(Complete));
 
 		try
 		{
 			var loggedIn = await webScorer.Login(form["Email"], form["Password"]);
 			athlete = await legacyDataConverter.GetAthlete(nameof(WebScorer), loggedIn);
+
+			var user = authService.GetCurrentUser();
+			var claims = user.ClaimDictionary;
+
+			await AddAccountIfNeeded(athlete, LinkedAccount.Keys.Discourse, claims["external_id"]);
+			await AddAccountIfNeeded(athlete, LinkedAccount.Keys.Email, claims["email"]);
 			await AddAccountIfNeeded(athlete, LinkedAccount.Keys.Email, form["Email"]);
 		}
 		catch (HttpRequestException)
@@ -62,7 +68,15 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 			return View(vm);
 		}
 
-		return RedirectToAction(nameof(Registration));
+		return RedirectToAction(nameof(Complete));
+	}
+
+	[HttpGet]
+	public async Task<ViewResult> Complete()
+	{
+		var athlete = await CurrentAthlete();
+		var vm = new ViewModel<Athlete>("Verification Complete", athlete);
+		return View(vm);
 	}
 
 	private async Task AddAccountIfNeeded(Athlete athlete, string type, string value)
@@ -70,40 +84,5 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 		var account = new LinkedAccount { Type = type, Value = value };
 		if (!athlete.LinkedAccounts.Contains(account, LinkedAccount.Comparer))
 			await athleteService.AddLinkedAccount(athlete, account);
-	}
-
-	[HttpGet]
-	public async Task<IActionResult> Registration()
-	{
-		var athlete = await CurrentAthlete();
-		if (!athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer))
-			return RedirectToAction(nameof(Link));
-
-		var iteration = await iterationManager.ActiveIteration();
-		if (iteration is null)
-			return Redirect("/");
-
-		var vm = new ViewModel<Iteration>("Registration Confirmation", iteration);
-		if (!athlete.IsRegistered(iteration))
-			return View(vm);
-
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-		await AddAccountIfNeeded(athlete, LinkedAccount.Keys.Discourse, claims["external_id"]);
-		await AddAccountIfNeeded(athlete, LinkedAccount.Keys.Email, claims["email"]);
-
-		return View("Complete", vm);
-	}
-
-	[HttpPost]
-	public async Task<IActionResult> Registration(IFormCollection form)
-	{
-		var iteration = await iterationManager.ActiveIteration();
-		if (iteration is null)
-			return Redirect("/");
-
-		await registrationManager.Update(iteration);
-
-		return RedirectToAction(nameof(Registration));
 	}
 }

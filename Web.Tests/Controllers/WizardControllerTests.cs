@@ -22,17 +22,11 @@ public sealed class WizardControllerTests
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		//act
@@ -44,22 +38,16 @@ public sealed class WizardControllerTests
 	}
 
 	[Fact]
-	public async Task IndexRedirectsToRegistrationCheckWhenMatchFound()
+	public async Task IndexRedirectsToCompleteWhenMatchFound()
 	{
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
@@ -70,26 +58,20 @@ public sealed class WizardControllerTests
 
 		//assert
 		var redirect = result as RedirectToActionResult;
-		Assert.Equal(nameof(WizardController.Registration), redirect!.ActionName);
+		Assert.Equal(nameof(WizardController.Complete), redirect!.ActionName);
 	}
 
 	[Fact]
-	public async Task LinkRedirectsToRegistrationCheckWhenMatchFound()
+	public async Task LinkRedirectsToCompleteWhenMatchFound()
 	{
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
@@ -100,7 +82,7 @@ public sealed class WizardControllerTests
 
 		//assert
 		var redirect = result as RedirectToActionResult;
-		Assert.Equal(nameof(WizardController.Registration), redirect!.ActionName);
+		Assert.Equal(nameof(WizardController.Complete), redirect!.ActionName);
 	}
 
 	[Fact]
@@ -109,17 +91,11 @@ public sealed class WizardControllerTests
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		var athlete = new Athlete();
@@ -134,22 +110,16 @@ public sealed class WizardControllerTests
 	}
 
 	[Fact]
-	public async Task LinkSubmitRedirectsToRegistrationCheckWhenMatchFound()
+	public async Task LinkSubmitRedirectsToCompleteWhenMatchFound()
 	{
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
@@ -160,7 +130,7 @@ public sealed class WizardControllerTests
 
 		//assert
 		var redirect = result as RedirectToActionResult;
-		Assert.Equal(nameof(WizardController.Registration), redirect!.ActionName);
+		Assert.Equal(nameof(WizardController.Complete), redirect!.ActionName);
 	}
 
 	[Fact]
@@ -169,17 +139,11 @@ public sealed class WizardControllerTests
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		webScorer.Login(Arg.Any<string>(), Arg.Any<string>()).Throws(new HttpRequestException());
@@ -194,22 +158,16 @@ public sealed class WizardControllerTests
 	}
 
 	[Fact]
-	public async Task LinkSubmitRedirectsToRegistrationOnSuccess()
+	public async Task LinkSubmitRedirectsToCompleteOnSuccess()
 	{
 		//arrange
 		var authService = Substitute.For<IAuthService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
 		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
 		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
+		var controller = new WizardController(athleteService, authService, legacyDataConverter, webScorer);
 
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
 		legacyDataConverter.GetAthlete(nameof(WebScorer), Arg.Any<Core.Athletes.Athlete>()).Returns(new Athlete());
@@ -219,132 +177,6 @@ public sealed class WizardControllerTests
 
 		//assert
 		var redirect = result as RedirectToActionResult;
-		Assert.Equal(nameof(WizardController.Registration), redirect!.ActionName);
-	}
-
-	[Fact]
-	public async Task RegistrationRedirectsToLinkIfNoLinkedAccount()
-	{
-		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
-		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
-
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
-
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete());
-
-		//act
-		var result = await controller.Registration();
-
-		//assert
-		var redirect = result as RedirectToActionResult;
-		Assert.Equal(nameof(WizardController.Link), redirect!.ActionName);
-	}
-
-	[Fact]
-	public async Task RegistrationShowsRefreshFormIfNotRegistered()
-	{
-		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
-		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
-
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
-
-		iterationManager.ActiveIteration().Returns(new Iteration());
-
-		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
-
-		//act
-		var result = await controller.Registration();
-
-		//assert
-		var view = result as ViewResult;
-		Assert.Null(view!.ViewName);
-	}
-
-	[Fact]
-	public async Task RegistrationShowsCompletePageIfRegistered()
-	{
-		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
-		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
-
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
-
-		var iteration = new Iteration();
-		iterationManager.ActiveIteration().Returns(iteration);
-
-		var athlete = new Athlete
-		{
-			LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }],
-			Registrations = [iteration]
-		};
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
-
-		//act
-		var result = await controller.Registration();
-
-		//assert
-		var view = result as ViewResult;
-		Assert.Equal("Complete", view!.ViewName);
-	}
-
-	[Fact]
-	public async Task CanUpdateRegistration()
-	{
-		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var legacyDataConverter = Substitute.For<ILegacyDataConverter>();
-		var registrationManager = Substitute.For<IRegistrationManager>();
-		var webScorer = Substitute.For<IWebScorerAuthenticator>();
-		var controller = new WizardController(athleteService, authService, iterationManager, legacyDataConverter, registrationManager, webScorer);
-
-		var claims = new[]
-		{
-			new Claim("external_id", "123"),
-			new Claim("email", "test@example.com")
-		};
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
-
-		iterationManager.ActiveIteration().Returns(new Iteration());
-
-		//act
-		await controller.Registration(new FormCollection([]));
-
-		//assert
-		await registrationManager.Received().Update(Arg.Any<Iteration>());
+		Assert.Equal(nameof(WizardController.Complete), redirect!.ActionName);
 	}
 }

@@ -1,0 +1,22 @@
+@using FLRC.Leaderboards.Model
+@model ICollection<Course>
+
+<table class="table table-striped table-bordered table-sm table-responsive-sm">
+	<thead>
+	<tr>
+		<th scope="col">Name</th>
+		<th scope="col">Type</th>
+		<th scope="col">Distance</th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var course in Model.OrderBy(c => c.Distance))
+	{
+		<tr>
+			<th scope="row">@course.Race.Name</th>
+			<td>@course.Race.Type</td>
+			<td>@course.DistanceDisplay</td>
+		</tr>
+	}
+	</tbody>
+</table>
