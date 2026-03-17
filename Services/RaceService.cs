@@ -47,11 +47,17 @@ public sealed class RaceService(DB db) : IRaceService
 			var existing = race.Courses.FirstOrDefault(c => c.ID == course.Key);
 			if (existing is not null)
 			{
-				existing.Distance = course.Value.Distance;
-				existing.Units = course.Value.Units;
-				existing.IsActive = course.Value.IsActive;
-				db.Update(existing);
+				if (course.Value.Distance == 0)
+					db.Remove(existing);
+				else
+				{
+					existing.Distance = course.Value.Distance;
+					existing.Units = course.Value.Units;
+					existing.IsActive = course.Value.IsActive;
+					db.Update(existing);
+				}
 			}
+
 			else if (course.Value.Distance > 0 && !string.IsNullOrWhiteSpace(course.Value.Units))
 			{
 				var newCourse = new Course

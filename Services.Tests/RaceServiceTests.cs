@@ -105,22 +105,25 @@ public sealed class RaceServiceTests
 	}
 
 	[Fact]
-	public async Task CanEditAndAddCourses()
+	public async Task CanEditCourses()
 	{
 		//arrange
 		var db = TestHelpers.CreateDB();
 		var service = new RaceService(db);
 
 		var race = new Race { ID = Guid.NewGuid(), Name = "Test Race 1", Type = "Test", Description = "test" };
-		var course = new Course { ID = Guid.NewGuid(), RaceID = race.ID, Distance = 1, Units = nameof(Core.Races.DistanceUnit.mi) };
-		await db.AddRangeAsync(race, course);
+		var course1 = new Course { ID = Guid.NewGuid(), RaceID = race.ID, Distance = 1, Units = nameof(Core.Races.DistanceUnit.mi) };
+		var course2 = new Course { ID = Guid.NewGuid(), RaceID = race.ID, Distance = 4, Units = nameof(Core.Races.DistanceUnit.mi) };
+		await db.AddRangeAsync(race, course1, course2);
 		await db.SaveChangesAsync();
 
 		//act
-		course.Distance = 2;
+		course1.Distance = 2;
+		course2.Distance = 0;
 		var courses = new Dictionary<Guid, Course>()
 		{
-			{ course.ID, course},
+			{ course1.ID, course1},
+			{ course2.ID, course2},
 			{ Guid.Empty, new Course { Distance = 3, Units = nameof(Core.Races.DistanceUnit.km)} }
 		};
 		await service.UpdateCourses(race, courses);
