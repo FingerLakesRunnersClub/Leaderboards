@@ -14,4 +14,10 @@ public sealed record Iteration : Identifiable<Guid>
 	public ICollection<Race> Races { get; init; } = [];
 	public ICollection<Challenge> Challenges { get; init; } = [];
 	public ICollection<Athlete> Athletes { get; init; } = [];
+
+	public bool IsActive
+		=> DateOnly.FromDateTime(DateTime.Now) > StartDate && DateOnly.FromDateTime(DateTime.Now) <= EndDate;
+
+	public Challenge? OfficialChallenge
+		=> Challenges.FirstOrDefault(c => c is { IsPrimary: true, IsOfficial: true });
 }
