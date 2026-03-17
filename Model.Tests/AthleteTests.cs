@@ -79,6 +79,35 @@ public sealed class AthleteTests
 	}
 
 	[Fact]
+	public void HasChallengeIfIterationMatches()
+	{
+		//arrange
+		var i1 = new Iteration { Name = "test1" };
+		var athlete = new Athlete { Challenges = [new Challenge { Iteration = i1 }] };
+
+		//act
+		var isRegistered = athlete.HasChallenge(i1);
+
+		//assert
+		Assert.True(isRegistered);
+	}
+
+	[Fact]
+	public void DoesNotHaveChallengeIfIterationDoesNotMatch()
+	{
+		//arrange
+		var i1 = new Iteration { Name = "test1" };
+		var i2 = new Iteration { Name = "test2" };
+		var athlete = new Athlete { Challenges = [new Challenge { Iteration = i1 }] };
+
+		//act
+		var isRegistered = athlete.HasChallenge(i2);
+
+		//assert
+		Assert.False(isRegistered);
+	}
+
+	[Fact]
 	public void IsAdminIfAdminRecordExists()
 	{
 		//arrange

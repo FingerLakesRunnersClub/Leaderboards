@@ -30,4 +30,7 @@ public sealed record Athlete : Identifiable<Guid>
 
 	public bool IsRegistered(Iteration iteration)
 		=> Registrations.Contains(iteration);
+
+	public bool HasChallenge(Iteration iteration)
+		=> Challenges.Any(c => c.Iteration == iteration);
 }
