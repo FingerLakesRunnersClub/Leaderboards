@@ -8,9 +8,12 @@ public sealed record Challenge : Identifiable<Guid>
 	public bool IsOfficial { get; set; }
 	public bool IsPrimary { get; set; }
 	public TimeSpan? TimeLimit { get; set; }
+	public Guid? AthleteID { get; set; }
+
 
 	public Iteration Iteration { get; init; } = null!;
 	public ICollection<Course> Courses { get; init; } = [];
+	public ICollection<Athlete> Athletes { get; init; } = [];
 
 	public Athlete? Athlete { get; init; }
 }
