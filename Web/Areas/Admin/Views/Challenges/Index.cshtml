@@ -1,0 +1,26 @@
+@using FLRC.Leaderboards.Web.Areas.Admin
+@using FLRC.Leaderboards.Model;
+@model ViewModel<Challenge[]>
+
+@await Html.PartialAsync("../AdminHeader")
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		@foreach (var iteration in Model.Data.GroupBy(c => c.Iteration))
+		{
+			<h3>@iteration.Key.Name</h3>
+
+			<ul>
+				@foreach (var challenge in iteration)
+				{
+					<li>
+						<a href="/Admin/Challenges/Edit/@challenge.ID">
+							@challenge.Name
+						</a>
+					</li>
+				}
+			</ul>
+		}
+	</section>
+</article>
+

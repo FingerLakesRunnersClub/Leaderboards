@@ -1,0 +1,50 @@
+@using FLRC.Leaderboards.Web.Areas.Admin
+@using FLRC.Leaderboards.Model
+@model ViewModel<Challenge>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<form method="post">
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input type="text" id="name" name="Name" required value="@Model.Data.Name" class="form-control"/>
+			</div>
+
+			<h3>Courses</h3>
+			<table class="table table-striped table-bordered table-sm table-responsive-sm">
+				<thead>
+				<tr>
+					<th scope="col"></th>
+					<th scope="col">Name</th>
+					<th scope="col">Type</th>
+					<th scope="col">Distance</th>
+				</tr>
+				</thead>
+				<tbody>
+				@foreach (var course in Model.Data.Iteration.Races.SelectMany(c => c.Courses).OrderBy(c => c.Distance))
+				{
+					<tr>
+						<td class="text-center align-middle">
+							<input type="checkbox" id="course-@course.ID" name="Selected" value="@course.ID" @(Model.Data.Courses.Contains(course) ? "checked" : "") />
+						</td>
+						<th scope="row">
+							<label for="course-@course.ID" class="form-check-label">@course.Race.Name</label>
+						</th>
+						<td>@course.Race.Type</td>
+						<td>@course.DistanceDisplay</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+
+			<button type="submit" class="btn btn-primary">
+				Submit
+			</button>
+			<a href="/Admin/Challenges" class="btn btn-light">
+				Cancel
+			</a>
+		</form>
+	</section>
+</article>
