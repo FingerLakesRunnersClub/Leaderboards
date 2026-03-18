@@ -15,7 +15,7 @@ jobs:
       TZ: America/New_York
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Docker login
         run: docker login -u vtsv -p ${{ secrets.DOCKER_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
       TZ: America/New_York
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Create SSH directory
         run: mkdir -p ~/.ssh
