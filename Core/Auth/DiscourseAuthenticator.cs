@@ -29,7 +29,7 @@ public sealed class DiscourseAuthenticator : IDiscourseAuthenticator
 		var hash = HMACSHA256.HashData(_secret, base64Bytes);
 
 		var sso = WebUtility.UrlEncode(payloadBase64);
-		var sig = Convert.ToHexString(hash).ToLower();
+		var sig = Convert.ToHexString(hash).ToLowerInvariant();
 
 		return $"{_baseURL}/session/sso_provider?sso={sso}&sig={sig}";
 	}
