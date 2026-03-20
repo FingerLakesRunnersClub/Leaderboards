@@ -19,5 +19,5 @@ public sealed record Iteration : Identifiable<Guid>
 		=> DateOnly.FromDateTime(DateTime.Now) > StartDate && DateOnly.FromDateTime(DateTime.Now) <= EndDate;
 
 	public Challenge? OfficialChallenge
-		=> Challenges.FirstOrDefault(c => c is { IsPrimary: true, IsOfficial: true });
+		=> Challenges.FirstOrDefault(c => c is { IsOfficial: true, IsPrimary: true });
 }

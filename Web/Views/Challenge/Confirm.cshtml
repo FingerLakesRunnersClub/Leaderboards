@@ -1,3 +1,4 @@
+@using FLRC.Leaderboards.Model
 @using FLRC.Leaderboards.Web.Areas.Admin
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<SelectChallengeForm>
@@ -30,7 +31,7 @@
 		<form method="post" action="/Challenge/Confirm" class="d-flex justify-content-center">
 			<input type="hidden" name="Confirmed" value="true"/>
 			<input type="hidden" name="Selection" value="@Model.Data.Selection"/>
-			@if (Model.Data.Selection == "Personal")
+			@if (Model.Data.Selection == @Challenge.Types.Personal)
 			{
 				@foreach (var id in Model.Data.Selected)
 				{

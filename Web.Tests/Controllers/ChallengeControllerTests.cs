@@ -260,7 +260,7 @@ public sealed class ChallengeControllerTests
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
-		await controller.Confirm(new SelectChallengeForm { Selection = "Official" });
+		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Default });
 
 		//assert
 		await challengeService.DidNotReceive().Add(Arg.Any<Challenge>());
@@ -288,7 +288,7 @@ public sealed class ChallengeControllerTests
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
-		await controller.Confirm(new SelectChallengeForm { Selection = "Personal" });
+		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Personal });
 
 		//assert
 		await challengeService.Received().Add(Arg.Any<Challenge>());

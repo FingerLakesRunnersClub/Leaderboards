@@ -70,7 +70,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 	{
 		var iteration = await iterationManager.ActiveIteration();
 		if (iteration?.OfficialChallenge is null)
-			throw new NotImplementedException("No official challenge has been created yet");
+			throw new NotImplementedException("No official primary challenge has been created yet");
 
 		var athlete = await CurrentAthlete();
 		if (!athlete.IsRegistered(iteration))
@@ -104,7 +104,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (athlete.HasChallenge(iteration))
 			return RedirectToAction(nameof(Dashboard));
 
-		var courses = form.Selection == "Official"
+		var courses = form.Selection == Model.Challenge.Types.Default
 			? iteration.OfficialChallenge.Courses
 			: SelectedCourses(iteration, form.Selected);
 
@@ -137,7 +137,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (athlete.HasChallenge(iteration))
 			return RedirectToAction(nameof(Dashboard));
 
-		if (form.Selection == "Official")
+		if (form.Selection == Model.Challenge.Types.Default)
 		{
 			var official = iteration.Challenges.First(c => c is { IsPrimary: true, IsOfficial: true });
 			await challengeService.AddConnection(athlete, official);
@@ -148,7 +148,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		{
 			Iteration = iteration,
 			Athlete = athlete,
-			Name = $"{athlete.Name} Personal Challenge",
+			Name = $"{athlete.Name} {Model.Challenge.Types.Personal} Challenge",
 			Courses = SelectedCourses(iteration, form.Selected).ToArray()
 		};
 		await challengeService.Add(challenge);
