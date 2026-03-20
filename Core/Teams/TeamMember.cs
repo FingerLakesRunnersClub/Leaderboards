@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Teams;
 
@@ -16,7 +17,7 @@ public sealed record TeamMember : IComparable<TeamMember>
 
 	public Points Score => new(50 * Courses + AgeGrade.Value + Runs / 50.0 + Miles.Value / Distance.MilesPerMarathon);
 
-	public TeamMember(Ranked<Time>[] results)
+	public TeamMember(Ranked<Time, Result>[] results)
 	{
 		Courses = (byte)results.Length;
 		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade?.Value ?? 0));

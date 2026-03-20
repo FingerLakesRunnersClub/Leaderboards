@@ -49,7 +49,7 @@ public sealed class CourseController : Controller
 	public async Task<ViewResult> Community(uint id, string name)
 		=> View(await GetResults(id, name, ResultType.Community, Filter.None, c => c.CommunityStars(Filter.None)));
 
-	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string name, ResultType resultType, Filter filter, Func<Course, RankedList<T>> results)
+	private async Task<CourseResultsViewModel<T>> GetResults<T>(uint courseID, string name, ResultType resultType, Filter filter, Func<Course, RankedList<T, Result>> results)
 	{
 		var course = await _dataService.GetResults(courseID, name);
 		return new CourseResultsViewModel<T>

@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Ranking;
@@ -19,7 +20,7 @@ public sealed class RankedListTests
 	public void CanCreateRankedListFromList()
 	{
 		//arrange
-		var list = new Ranked<byte>[]
+		var list = new Ranked<byte, Result>[]
 		{
 			new() { Rank = new Rank(1) },
 			new() { Rank = new Rank(2) },
@@ -27,7 +28,7 @@ public sealed class RankedListTests
 		};
 
 		//act
-		var rankedList = new RankedList<byte>(list);
+		var rankedList = new RankedList<byte, Result>(list);
 
 		//assert
 		Assert.Equal(3, rankedList.Count);

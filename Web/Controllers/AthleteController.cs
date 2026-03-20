@@ -103,9 +103,9 @@ public sealed class AthleteController : Controller
 		};
 	}
 
-	private static RankedList<Time> RankRun(Result[] results)
+	private static RankedList<Time, Result> RankRun(Result[] results)
 	{
-		var ranks = new RankedList<Time>();
+		var ranks = new RankedList<Time, Result>();
 
 		var sorted = results.OrderBy(r => r.Duration ?? Time.Max).ToArray();
 		for (ushort rank = 1; rank <= sorted.Length; rank++)
@@ -118,36 +118,36 @@ public sealed class AthleteController : Controller
 				Rank = RankRun(result, rank, ranks),
 				Result = result,
 				Value = result.Duration,
-				AgeGrade = AgeGrade(result)
+				AgeGrade = result.AgeGrade()
 			});
 		}
 
 		return ranks;
 	}
 
-	private static RankedList<Performance> RankFieldEvent(Result[] results)
+	private static RankedList<Performance, Result> RankFieldEvent(Result[] results)
 	{
-		var ranks = new RankedList<Performance>();
+		var ranks = new RankedList<Performance, Result>();
 
 		var sorted = results.OrderBy(r => r.Performance ?? Performance.Zero).ToArray();
 		for (ushort rank = 1; rank <= sorted.Length; rank++)
 		{
 			var result = sorted[rank - 1];
 
-			ranks.Add(new Ranked<Performance>
+			ranks.Add(new Ranked<Performance, Result>
 			{
 				All = ranks,
 				Rank = RankFieldEvent(result, rank, ranks),
 				Result = result,
 				Value = result.Performance,
-				AgeGrade = AgeGrade(result)
+				AgeGrade = result.AgeGrade()
 			});
 		}
 
 		return ranks;
 	}
 
-	private static Rank RankRun(Result result, ushort rank, RankedList<Time> ranks)
+	private static Rank RankRun(Result result, ushort rank, RankedList<Time, Result> ranks)
 		=> result.Athlete.Private ? null
 			: result.AgeGrade > 100 ? new Rank(0)
 			: !ranks.Exists(r => r.Rank.Value > 0) ? new Rank(1)
@@ -155,17 +155,12 @@ public sealed class AthleteController : Controller
 			: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0)));
 
 
-	private static Rank RankFieldEvent(Result result, ushort rank, RankedList<Performance> ranks)
+	private static Rank RankFieldEvent(Result result, ushort rank, RankedList<Performance, Result> ranks)
 		=> result.Athlete.Private ? null
 			: result.AgeGrade > 100 ? new Rank(0)
 			: !ranks.Exists(r => r.Rank.Value > 0) ? new Rank(1)
 			: ranks.Any() && ranks[^1].Value == result.Performance ? ranks.Last().Rank
 			: new Rank((ushort)(rank - ranks.Count(r => r.Rank.Value == 0)));
-
-	private static AgeGrade AgeGrade(Result result)
-		=> result.AgeGrade is not null
-			? new AgeGrade(result.AgeGrade.Value)
-			: null;
 
 	private static SimilarAthlete[] RankMatches(SimilarAthlete[] matches)
 	{

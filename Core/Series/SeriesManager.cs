@@ -17,13 +17,13 @@ public sealed class SeriesManager : ISeriesManager
 		_series = config.Series;
 	}
 
-	public async Task<IDictionary<Series, RankedList<SeriesResult>>> Earliest()
+	public async Task<IDictionary<Series, RankedList<SeriesResult, Result>>> Earliest()
 		=> await RankedResult(Earliest);
 
-	public async Task<IDictionary<Series, RankedList<SeriesResult>>> Fastest()
+	public async Task<IDictionary<Series, RankedList<SeriesResult, Result>>> Fastest()
 		=> await RankedResult(Fastest);
 
-	private async Task<IDictionary<Series, RankedList<SeriesResult>>> RankedResult(Func<SeriesResult[], RankedList<SeriesResult>> method)
+	private async Task<IDictionary<Series, RankedList<SeriesResult, Result>>> RankedResult(Func<SeriesResult[], RankedList<SeriesResult, Result>> method)
 	{
 		var results = await GetSeriesResults();
 		return results.ToDictionary(s => s.Key, s => method(s.Value));
@@ -100,15 +100,15 @@ public sealed class SeriesManager : ISeriesManager
 		};
 	}
 
-	private static RankedList<SeriesResult> Earliest(SeriesResult[] results)
+	private static RankedList<SeriesResult, Result> Earliest(SeriesResult[] results)
 		=> Rank(results, r => r.FinishTime);
 
-	private static RankedList<SeriesResult> Fastest(SeriesResult[] results)
+	private static RankedList<SeriesResult, Result> Fastest(SeriesResult[] results)
 		=> Rank(results, r => r.TotalTime);
 
-	private static RankedList<SeriesResult> Rank<T>(SeriesResult[] results, Func<SeriesResult, T> sort)
+	private static RankedList<SeriesResult, Result> Rank<T>(SeriesResult[] results, Func<SeriesResult, T> sort)
 	{
-		var ranks = new RankedList<SeriesResult>();
+		var ranks = new RankedList<SeriesResult, Result>();
 
 		var sorted = results.OrderBy(sort).ToArray();
 		for (ushort rank = 1; rank <= sorted.Length; rank++)

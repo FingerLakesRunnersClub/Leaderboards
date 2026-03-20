@@ -128,7 +128,7 @@ public sealed class AthleteControllerTests
 		dataService.GetAllResults().Returns(courses);
 
 		var seriesManager = Substitute.For<ISeriesManager>();
-		var results = new Dictionary<Series, RankedList<SeriesResult>>
+		var results = new Dictionary<Series, RankedList<SeriesResult, Result>>
 		{
 			{ new Series { ID = "100K", BadgeIcon = "Tiger" }, [new Ranked<SeriesResult> { Value = new SeriesResult { Athlete = CourseData.Athlete1 } }] }
 		};
