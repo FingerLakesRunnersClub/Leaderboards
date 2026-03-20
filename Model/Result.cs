@@ -10,4 +10,7 @@ public sealed record Result : Identifiable<Guid>
 
 	public Course Course { get; init; } = null!;
 	public Athlete Athlete { get; init; } = null!;
+
+	public byte? AthleteAge
+		=> Athlete.AgeAsOf(StartTime);
 }
