@@ -50,7 +50,14 @@ public sealed class WizardControllerTests
 		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
-		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
+		var athlete = new Athlete
+		{
+			LinkedAccounts =
+			[
+				new LinkedAccount { Type = LinkedAccount.Keys.Discourse, Value = "234" },
+				new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "345" }
+			]
+		};
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
@@ -62,7 +69,7 @@ public sealed class WizardControllerTests
 	}
 
 	[Fact]
-	public async Task LinkRedirectsToCompleteWhenMatchFound()
+	public async Task LinkRedirectsToCompleteWhenMatchIsComplete()
 	{
 		//arrange
 		var authService = Substitute.For<IAuthService>();
@@ -74,7 +81,14 @@ public sealed class WizardControllerTests
 		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
-		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
+		var athlete = new Athlete
+		{
+			LinkedAccounts =
+			[
+				new LinkedAccount { Type = LinkedAccount.Keys.Discourse, Value = "234" },
+				new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "345" }
+			]
+		};
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
@@ -122,7 +136,14 @@ public sealed class WizardControllerTests
 		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
 
-		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
+		var athlete = new Athlete
+		{
+			LinkedAccounts =
+			[
+				new LinkedAccount { Type = LinkedAccount.Keys.Discourse, Value = "234" },
+				new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "345" }
+			]
+		};
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
