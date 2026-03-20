@@ -13,28 +13,28 @@ public sealed class OverallResults
 
 	public OverallResults(Course[] courses) => _courses = courses;
 
-	public RankedList<Points> MostPoints(Filter filter = null)
+	public RankedList<Points, Result> MostPoints(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.Sum(r => r.Points?.Value ?? 0)) : null, g => g.Sum(r => r.Points?.Value));
 
-	public RankedList<Points> MostPoints(byte limit, Filter filter = null)
+	public RankedList<Points, Result> MostPoints(byte limit, Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new Points(g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0)) : null, g => g.OrderByDescending(r => r.Points).Take(limit).Sum(r => r.Points?.Value ?? 0), g => g.Where(r => r.Rank.Value == 1).Sum(r => r.All.Count > 1 ? r.All[1].BehindLeader.Value.TotalSeconds : 0), g => uint.Min((uint)g.Count(), limit));
 
-	public RankedList<Miles> MostMiles(Filter filter = null)
+	public RankedList<Miles, Result> MostMiles(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)), g => (uint)g.Sum(r => r.Count));
 
-	public RankedList<AgeGrade> AgeGrade(Filter filter = null)
+	public RankedList<AgeGrade, Result> AgeGrade(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.Private), g => !g.Key.Private ? new AgeGrade(g.AvgAgeGrade()) : null, g => g.Count(), g => (uint)g.Count());
 
-	public RankedList<Stars> CommunityStars(Filter filter = null)
+	public RankedList<Stars, Result> CommunityStars(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.CommunityStars(filter).Where(p => p.Value.Value > 0)).GroupBy(r => r.Result.Athlete), g => new Stars((ushort)g.Sum(c => c.Value.Value)), g => g.Sum(c => c.Value.Value));
 
-	public RankedList<Date> Completed(Filter filter = null)
+	public RankedList<Date, Result> Completed(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _courses.Length), g => g.Max(r => r.Value), g => Date.CompetitionStart.Subtract(g.Max(r => r.Value)?.Value ?? Date.CompetitionStart), g => (uint)g.Count());
 
-	public RankedList<TeamMember> TeamMembers(Team team, Filter filter = null)
+	public RankedList<TeamMember, Result> TeamMembers(Team team, Filter filter = null)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest(filter).Where(r => r.Result.Athlete.Team == team)).ToArray());
 
-	private static RankedList<TeamMember> RankTeam(Ranked<Time>[] results)
+	private static RankedList<TeamMember, Result> RankTeam(Ranked<Time, Result>[] results)
 	{
 		var ranked = results
 			.GroupBy(r => r.Result.Athlete)
@@ -42,11 +42,11 @@ public sealed class OverallResults
 			.OrderByDescending(m => m.Score)
 			.ToArray();
 
-		var ranks = new RankedList<TeamMember>();
+		var ranks = new RankedList<TeamMember, Result>();
 		for (byte rank = 1; rank <= ranked.Length; rank++)
 		{
 			var value = ranked[rank - 1];
-			ranks.Add(new Ranked<TeamMember>
+			ranks.Add(new Ranked<TeamMember, Result>
 			{
 				All = ranks,
 				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
@@ -60,10 +60,10 @@ public sealed class OverallResults
 		return ranks;
 	}
 
-	public RankedList<TeamMember> GroupMembers(Athlete[] athletes)
+	public RankedList<TeamMember, Result> GroupMembers(Athlete[] athletes)
 		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).ToArray());
 
-	public RankedList<TeamResults> TeamPoints(Filter filter = null)
+	public RankedList<TeamResults, Result> TeamPoints(Filter filter = null)
 		=> _courses.SelectMany(c => c.TeamPoints(filter))
 			.GroupBy(r => r.Value.Team)
 			.Select(g => new TeamResults
@@ -74,15 +74,15 @@ public sealed class OverallResults
 			})
 			.Rank();
 
-	private static RankedList<T1> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort)
+	private static RankedList<T1, Result> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort)
 		=> RankedList(results, getValue, sort, getValue, g => (uint)g.Count());
 
-	private static RankedList<T1> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
+	private static RankedList<T1, Result> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2, Result>>, uint> count)
 		=> RankedList(results, getValue, sort, getValue, count);
 
-	private static RankedList<T1> RankedList<T1, T2, T3, T4>(IEnumerable<IGrouping<Athlete, Ranked<T2>>> results, Func<IGrouping<Athlete, Ranked<T2>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2>>, T4> tiebreaker, Func<IGrouping<Athlete, Ranked<T2>>, uint> count)
+	private static RankedList<T1, Result> RankedList<T1, T2, T3, T4>(IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort, Func<IGrouping<Athlete, Ranked<T2, Result>>, T4> tiebreaker, Func<IGrouping<Athlete, Ranked<T2, Result>>, uint> count)
 	{
-		var ranks = new RankedList<T1>();
+		var ranks = new RankedList<T1, Result>();
 		var list = results.OrderByDescending(sort).ThenByDescending(tiebreaker).ToArray();
 		for (ushort rank = 1; rank <= list.Length; rank++)
 		{
@@ -94,7 +94,7 @@ public sealed class OverallResults
 				: null;
 
 			var avgAgeGrade = result.AvgAgeGrade();
-			ranks.Add(new Ranked<T1>
+			ranks.Add(new Ranked<T1, Result>
 			{
 				All = ranks,
 				Rank = notInFirstPlace && lastPlace.Value.Equals(value) ? lastPlace.Rank : new Rank(rank),

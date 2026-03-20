@@ -11,20 +11,20 @@ namespace FLRC.Leaderboards.Core.Athletes;
 public sealed class AthleteSummary
 {
 	public Athlete Athlete { get; }
-	public IDictionary<Course, Ranked<Time>> Fastest { get; }
-	public IDictionary<Course, Ranked<Performance>> Farthest { get; }
-	public IDictionary<Course, Ranked<Time>> Average { get; }
-	public IDictionary<Course, Ranked<ushort>> Runs { get; }
-	public Dictionary<Course, Ranked<Stars>> CommunityStars { get; }
+	public Dictionary<Course, Ranked<Time, Result>> Fastest { get; }
+	public Dictionary<Course, Ranked<Performance, Result>> Farthest { get; }
+	public Dictionary<Course, Ranked<Time, Result>> Average { get; }
+	public Dictionary<Course, Ranked<ushort, Result>> Runs { get; }
+	public Dictionary<Course, Ranked<Stars, Result>> CommunityStars { get; }
 	public Dictionary<Course, Result[]> All { get; }
 
 	public AthleteOverallRow[] Competitions { get; }
 
-	public Ranked<Points> OverallPoints { get; }
-	public Ranked<AgeGrade> OverallAgeGrade { get; }
-	public Ranked<Miles> OverallMiles { get; }
-	public Ranked<Stars> OverallCommunityStars { get; }
-	public Ranked<TeamResults> TeamResults { get; }
+	public Ranked<Points, Result> OverallPoints { get; }
+	public Ranked<AgeGrade, Result> OverallAgeGrade { get; }
+	public Ranked<Miles, Result> OverallMiles { get; }
+	public Ranked<Stars, Result> OverallCommunityStars { get; }
+	public Ranked<TeamResults, Result> TeamResults { get; }
 
 	public int TotalResults { get; }
 
@@ -72,7 +72,7 @@ public sealed class AthleteSummary
 		TotalResults = Fastest.Count(r => r.Value != null) + Average.Count(r => r.Value != null);
 	}
 
-	private AthleteOverallRow OverallRow<T>(string id, Category category, Athlete athlete, Func<Ranked<T>> results) where T : Formattable
+	private AthleteOverallRow OverallRow<T>(string id, Category category, Athlete athlete, Func<Ranked<T, Result>> results) where T : Formattable
 	{
 		if (!_config.Competitions.TryGetValue(id, out var name) || category != null && category != athlete.Category)
 			return null;
@@ -106,6 +106,6 @@ public sealed class AthleteSummary
 
 	private const byte PercentThreshold = 5;
 
-	private static bool IsMatch(Ranked<Time> mine, Ranked<Time> theirs)
+	private static bool IsMatch(Ranked<Time ,Result> mine, Ranked<Time ,Result> theirs)
 		=> Time.AbsolutePercentDifference(mine.Value, theirs.Value) <= PercentThreshold;
 }

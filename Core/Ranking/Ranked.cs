@@ -4,12 +4,14 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Ranking;
 
-public class Ranked<T>
+public class Ranked<T> : Ranked<T, Result>;
+
+public class Ranked<T,R>
 {
 	[JsonIgnore]
-	public RankedList<T> All { get; init; }
+	public RankedList<T,R> All { get; init; }
 	public Rank Rank { get; init; }
-	public Result Result { get; init; }
+	public R Result { get; init; }
 	public T Value { get; init; }
 	public uint Count { get; init; }
 

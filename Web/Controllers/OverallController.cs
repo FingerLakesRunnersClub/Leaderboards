@@ -50,7 +50,7 @@ public sealed class OverallController : Controller
 	public async Task<ViewResult> Team()
 		=> View(await GetTeamResults(_config.Competitions["Team"], overall => overall.TeamPoints(Filter.None)));
 
-	private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallResults, RankedList<T>> results)
+	private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallResults, RankedList<T, Result>> results)
 	{
 		var allResults = await _dataService.GetAllResults();
 		var overall = new OverallResults(allResults);
@@ -64,7 +64,7 @@ public sealed class OverallController : Controller
 		};
 	}
 
-	private async Task<OverallResultsViewModel<TeamResults>> GetTeamResults(string title, Func<OverallResults, RankedList<TeamResults>> results)
+	private async Task<OverallResultsViewModel<TeamResults>> GetTeamResults(string title, Func<OverallResults, RankedList<TeamResults, Result>> results)
 	{
 		var allResults = await _dataService.GetAllResults();
 		var overall = new OverallResults(allResults);

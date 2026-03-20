@@ -5,7 +5,7 @@ namespace FLRC.Leaderboards.Core.Results;
 
 public class CourseResultsViewModel<T> : CourseResultsViewModel
 {
-	public RankedList<T> RankedResults { get; init; }
+	public RankedList<T, Result> RankedResults { get; init; }
 }
 
 public class CourseResultsViewModel : DataTableViewModel

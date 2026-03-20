@@ -1,10 +1,11 @@
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Overall;
 
 public class OverallResultsViewModel<T> : OverallResultsViewModel
 {
-	public RankedList<T> RankedResults { get; init; }
+	public RankedList<T, Result> RankedResults { get; init; }
 }
 
 public class OverallResultsViewModel : DataTableViewModel

@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
@@ -34,15 +35,15 @@ public sealed class SimilarAthlete
 		Score = GetScore(Similarity.Value, Overlap.Value);
 	}
 
-	private static Dictionary<Course, Ranked<Time>> GetResultsToCompare(IDictionary<Course, Ranked<Time>> mine, IDictionary<Course, Ranked<Time>> theirs)
+	private static Dictionary<Course, Ranked<Time, Result>> GetResultsToCompare(IDictionary<Course, Ranked<Time, Result>> mine, IDictionary<Course, Ranked<Time, Result>> theirs)
 		=> mine
 			.Where(r => r.Value != null && theirs[r.Key] != null)
 			.ToDictionary(r => r.Key, r => r.Value);
 
-	private static double GetDiffTotal(IDictionary<Course, Ranked<Time>> my, IDictionary<Course, Ranked<Time>> their)
+	private static double GetDiffTotal(IDictionary<Course, Ranked<Time, Result>> my, IDictionary<Course, Ranked<Time, Result>> their)
 		=> my.Sum(r => r.Value != null && their[r.Key] != null ? Time.PercentDifference(r.Value.Value, their[r.Key].Value) : 0);
 
-	private static double GetTotal(IDictionary<Course, Ranked<Time>> fastestToCompare, IDictionary<Course, Ranked<Time>> avgToCompare, AthleteSummary their) =>
+	private static double GetTotal(IDictionary<Course, Ranked<Time, Result>> fastestToCompare, IDictionary<Course, Ranked<Time, Result>> avgToCompare, AthleteSummary their) =>
 		fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0)
 		+ avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0);
 

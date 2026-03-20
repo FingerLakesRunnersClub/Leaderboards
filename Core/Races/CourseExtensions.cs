@@ -11,16 +11,16 @@ public static class CourseExtensions
 {
 	extension(Course course)
 	{
-		public RankedList<Time> Fastest(Filter filter = null)
+		public RankedList<Time, Result> Fastest(Filter filter = null)
 			=> course.Rank(filter ?? new Filter(), rs => rs.Any(r => r.Duration is not null || r.Athlete.Private), rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration ?? Time.Max));
 
-		private RankedList<T> Rank<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
+		private RankedList<T, Result> Rank<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
 			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort, course.Race?.AllowInvalid ?? false);
 
-		private RankedList<T> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
+		private RankedList<T, Result> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
 			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort, course.Race?.AllowInvalid ?? false);
 
-		public RankedList<Stars> CommunityStars(Filter filter = null)
+		public RankedList<Stars, Result> CommunityStars(Filter filter = null)
 			=> course.RankDescending(filter ?? new Filter(), g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(course), g => new Stars((ushort)g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 
 		public GroupedResult[] GroupedResults(Filter filter = null)
@@ -28,10 +28,10 @@ public static class CourseExtensions
 				.GroupBy(r => r.Athlete).Select(g => new GroupedResult(g))
 				.ToArray();
 
-		public RankedList<TeamResults> TeamPoints(Filter filter = null)
+		public RankedList<TeamResults, Result> TeamPoints(Filter filter = null)
 			=> course.RankedTeamResults(filter ?? new Filter());
 
-		private RankedList<TeamResults> RankedTeamResults(Filter filter)
+		private RankedList<TeamResults, Result> RankedTeamResults(Filter filter)
 		{
 			var teamResults = course.GroupedResults(filter)
 				.GroupBy(g => g.Key.Team)
@@ -76,23 +76,23 @@ public static class CourseExtensions
 				: (ushort)0;
 		}
 
-		public RankedList<Performance> Farthest(Filter filter = null)
+		public RankedList<Performance, Result> Farthest(Filter filter = null)
 			=> course.RankDescending(filter ?? new Filter(), rs => rs.Any(r => r.Performance is not null), rs => rs.OrderByDescending(r => r.Performance).First(), rs => rs.Max(r => r.Performance ?? Performance.Zero));
 
-		public RankedList<Time> BestAverage(Filter filter = null)
+		public RankedList<Time, Result> BestAverage(Filter filter = null)
 		{
 			filter ??= new Filter();
 			var threshold = course.AverageThreshold(filter);
-				return course.Rank(filter, rs => !rs.Key.Private && rs.Count() >= threshold, rs => rs.Average(course, threshold), rs => rs.Average(course, threshold).Duration ?? Time.Max);
+			return course.Rank(filter, rs => !rs.Key.Private && rs.Count() >= threshold, rs => rs.Average(course, threshold), rs => rs.Average(course, threshold).Duration ?? Time.Max);
 		}
 
-		public RankedList<ushort> MostRuns(Filter filter = null)
+		public RankedList<ushort, Result> MostRuns(Filter filter = null)
 			=> course.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(course), r => (ushort)r.Count());
 
-		public RankedList<Miles> MostMiles(Filter filter = null)
+		public RankedList<Miles, Result> MostMiles(Filter filter = null)
 			=> course.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(course), r => new Miles(r.Count() * course.Distance.Miles));
 
-		public RankedList<Date> Earliest(Filter filter = null)
+		public RankedList<Date, Result> Earliest(Filter filter = null)
 			=> course.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => g.Min(r => r.FinishTime));
 
 		public Statistics Statistics()
@@ -141,25 +141,25 @@ public static class CourseExtensions
 
 	extension(Result result)
 	{
-		private Time BehindLeader<T>(bool isInFirstPlace, Ranked<T> firstPlace)
+		public Time BehindLeader<T>(bool isInFirstPlace, Ranked<T, Result> firstPlace)
 			=> isInFirstPlace || result.Duration is null || firstPlace?.Result.Duration is null
 				? result.Course.FormatTime(TimeSpan.Zero)
 				: result.Behind(firstPlace.Result);
 
-		private Points Points<T>(bool isInFirstPlace, Ranked<T> firstPlace)
+		public Points Points<T>(bool isInFirstPlace, Ranked<T, Result> firstPlace)
 			=> result.Duration is not null && (isInFirstPlace || firstPlace?.Result.Duration is not null)
 				? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.Value.TotalSeconds / result.Duration.Value.TotalSeconds * 100)
 				: null;
 
-		private AgeGrade AgeGrade()
+		public AgeGrade AgeGrade()
 			=> result.AgeGrade is not null
 				? new AgeGrade(result.AgeGrade.Value)
 				: null;
 	}
 
-	private static RankedList<T> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue, bool allowInvalid)
+	private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue, bool allowInvalid)
 	{
-		var ranks = new RankedList<T>();
+		var ranks = new RankedList<T, Result>();
 		byte skippedRanks = 0;
 
 		var list = sorted.ThenBy(rs => getResult(rs).Duration ?? Time.Max).ToArray();
@@ -187,18 +187,18 @@ public static class CourseExtensions
 				Result = result,
 				Value = value,
 				Count = (uint)results.Count(),
-				BehindLeader = BehindLeader(result, isInFirstPlace, firstPlace),
-				Points = Points(result, isInFirstPlace, firstPlace),
-				AgeGrade = AgeGrade(result)
+				BehindLeader = result.BehindLeader(isInFirstPlace, firstPlace),
+				Points = result.Points(isInFirstPlace, firstPlace),
+				AgeGrade = result.AgeGrade()
 			};
 
 			ranks.Add(rankedResult);
 		}
 
-		return new RankedList<T>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
+		return new RankedList<T, Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
 	}
 
-	private static Rank Rank<T>(bool isInFirstPlace, Ranked<T> lastPlace, T value, ushort rank)
+	private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Result> lastPlace, T value, ushort rank)
 		=> !isInFirstPlace && lastPlace.Value.Equals(value)
 			? lastPlace.Rank
 			: new Rank((ushort)(isInFirstPlace ? 1 : rank));

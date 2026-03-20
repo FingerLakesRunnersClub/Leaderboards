@@ -41,7 +41,7 @@ public sealed class AwardsViewModel : ViewModel
 		return awards.GroupBy(a => a.Athlete).ToDictionary(a => a.Key, a => a.ToArray());
 	}
 
-	private Award[] Overall<T>(string type, string title, RankedList<T> results, byte top)
+	private Award[] Overall<T>(string type, string title, RankedList<T, Result> results, byte top)
 		=> results.Where(r => r.Rank.Value <= top)
 			.Select(r => new Award
 			{
@@ -52,7 +52,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private Award[] Team(RankedList<TeamMember> members)
+	private Award[] Team(RankedList<TeamMember, Result> members)
 		=> members.Where(m => m.Rank.Value <= 10)
 			.Select(r => new Award
 			{
@@ -63,7 +63,7 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private Award[] Course<T>(string type, string title, Ranked<T>[] results)
+	private Award[] Course<T>(string type, string title, Ranked<T, Result>[] results)
 		=> results.Where(r => r.Rank.Value == 1)
 			.Select(r => new Award
 			{

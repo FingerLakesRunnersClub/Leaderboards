@@ -3,17 +3,26 @@ using FLRC.Leaderboards.Core.Athletes;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public abstract class Grouped<T> : IGrouping<Athlete, T>, IComparable<Grouped<T>>
+public abstract class Grouped<T> : Grouped<Athlete, T>
 {
-	protected readonly IGrouping<Athlete, T> _group;
+	protected Grouped(IGrouping<Athlete, T> group) : base(group)
+	{
+	}
 
-	public Grouped(IGrouping<Athlete, T> group) => _group = group;
+	public int CompareTo(Grouped<T> other) => _group.Key.ID.CompareTo(other.Key.ID);
+}
+
+public abstract class Grouped<G, T> : IGrouping<G, T>, IComparable<Grouped<G,T>>
+{
+	protected readonly IGrouping<G, T> _group;
+
+	public Grouped(IGrouping<G, T> group) => _group = group;
 
 
-	public Athlete Key => _group.Key;
+	public G Key => _group.Key;
 	public IEnumerator<T> GetEnumerator() => _group.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-	public int CompareTo(Grouped<T> other) => _group.Key.ID.CompareTo(other.Key.ID);
+	public virtual int CompareTo(Grouped<G, T> other) => GetHashCode().CompareTo(other.GetHashCode());
 }
