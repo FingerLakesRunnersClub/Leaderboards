@@ -21,7 +21,7 @@ public sealed record Date : Formatted<DateTime>, IComparable<Date>
 		return firstSaturday.AddDays((Value.DayOfYear - firstSaturday.DayOfYear) / 7 * 7);
 	}
 
-	public override string Display => Value.ToLocalTime().ToString("M/d/yy h:mmtt").ToLower().Replace(" 12:00am", "");
+	public override string Display => Value.ToLocalTime().ToString("M/d/yy h:mmtt").ToLowerInvariant().Replace(" 12:00am", "");
 
 
 	public int CompareTo(Date other) => Value.CompareTo(other.Value);
