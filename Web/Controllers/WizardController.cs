@@ -17,10 +17,11 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	{
 		var athlete = await CurrentAthlete();
 
-		if (athlete is null || athlete.LinkedAccounts.All(a => a.Type != LinkedAccount.Keys.WebScorer))
-			return RedirectToAction(nameof(Link));
+		var redirect = AccountIsReady(athlete)
+			? nameof(Complete)
+			: nameof(Link);
 
-		return RedirectToAction(nameof(Complete));
+		return RedirectToAction(redirect);
 	}
 
 	private async Task<Athlete> CurrentAthlete()
@@ -36,7 +37,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	public async Task<IActionResult> Link()
 	{
 		var athlete = await CurrentAthlete();
-		if (athlete is not null && athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer))
+		if (AccountIsReady(athlete))
 			return RedirectToAction(nameof(Complete));
 
 		var vm = new ViewModel<string>("Athlete Verification", null);
@@ -47,7 +48,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	public async Task<IActionResult> Link(IFormCollection form)
 	{
 		var athlete = await CurrentAthlete();
-		if (athlete is not null && athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer))
+		if (AccountIsReady(athlete))
 			return RedirectToAction(nameof(Complete));
 
 		try
@@ -70,6 +71,11 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 
 		return RedirectToAction(nameof(Complete));
 	}
+
+	private static bool AccountIsReady(Athlete athlete)
+		=> athlete is not null
+		   && athlete.HasLinkedAccount(LinkedAccount.Keys.Discourse)
+		   && athlete.HasLinkedAccount(LinkedAccount.Keys.WebScorer);
 
 	[HttpGet]
 	public async Task<ViewResult> Complete()
