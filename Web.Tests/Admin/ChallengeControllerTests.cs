@@ -1,7 +1,6 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Areas.Admin.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 
