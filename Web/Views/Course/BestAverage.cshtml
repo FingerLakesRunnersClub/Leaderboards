@@ -7,7 +7,7 @@
 <h2>@Model.Config.CourseLabel Results</h2>
 <div class="card card-highlighted">
     <div class="card-body">
-        @await Html.PartialAsync("CourseInfo", Model)
+        @await Html.PartialAsync("LegacyCourseInfo")
         @await Html.PartialAsync("ResultFilter")
 
         <div class="alert alert-info">Only athletes who have run this @Model.Config.CourseLabel.ToLowerInvariant() at least @Model.Course.AverageThreshold(new Filter(Model.Filter.Category)) times are displayed</div>
