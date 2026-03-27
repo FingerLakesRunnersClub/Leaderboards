@@ -1,14 +1,14 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Race : Identifiable<Guid>
+public record Race : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public string Name { get; set; } = null!;
 	public string Type { get; set; } = null!;
 	public string Description { get; set; } = null!;
 
-	public ICollection<Iteration> Iterations { get; init; } = [];
-	public ICollection<Course> Courses { get; init; } = [];
+	public virtual ICollection<Iteration> Iterations { get; init; } = [];
+	public virtual ICollection<Course> Courses { get; init; } = [];
 
 	public string DistanceDisplay => string.Join(", ", Courses.Select(c => c.DistanceDisplay));
 }

@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Challenge : Identifiable<Guid>
+public record Challenge : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid IterationID { get; set; }
@@ -10,11 +10,11 @@ public sealed record Challenge : Identifiable<Guid>
 	public TimeSpan? TimeLimit { get; set; }
 	public Guid? AthleteID { get; set; }
 
-	public Iteration Iteration { get; init; } = null!;
-	public ICollection<Course> Courses { get; init; } = [];
-	public ICollection<Athlete> Athletes { get; init; } = [];
+	public virtual Iteration Iteration { get; init; } = null!;
+	public virtual ICollection<Course> Courses { get; init; } = [];
+	public virtual ICollection<Athlete> Athletes { get; init; } = [];
 
-	public Athlete? Athlete { get; init; }
+	public virtual Athlete? Athlete { get; init; }
 
 	public static class Types
 	{

@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Athlete : Identifiable<Guid>
+public record Athlete : Identifiable<Guid>
 {
 	public const char UnknownCategory = ' ';
 	private const double DaysPerYear = 365.2425;
@@ -11,10 +11,10 @@ public sealed record Athlete : Identifiable<Guid>
 	public DateOnly? DateOfBirth { get; set; }
 	public bool IsPrivate { get; set; }
 
-	public ICollection<Iteration> Registrations { get; init; } = [];
-	public ICollection<Result> Results { get; init; } = [];
-	public ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
-	public ICollection<Challenge> Challenges { get; init; } = [];
+	public virtual ICollection<Iteration> Registrations { get; init; } = [];
+	public virtual ICollection<Result> Results { get; init; } = [];
+	public virtual ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
+	public virtual ICollection<Challenge> Challenges { get; init; } = [];
 
 	public byte? AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
@@ -22,7 +22,7 @@ public sealed record Athlete : Identifiable<Guid>
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
 
-	public ICollection<Admin> Admins { get; init; } = [];
+	public virtual ICollection<Admin> Admins { get; init; } = [];
 	public bool IsAdmin => Admins.Count > 0;
 
 	public bool HasLinkedAccount(string type)

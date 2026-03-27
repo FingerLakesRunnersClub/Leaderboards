@@ -1,3 +1,3 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Feature : Setting<bool>;
+public record Feature : Setting<bool>;

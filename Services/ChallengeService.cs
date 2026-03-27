@@ -6,26 +6,16 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class ChallengeService(DB db) : IChallengeService
 {
-	private readonly IQueryable<Challenge> _challenges
-		= db.Set<Challenge>()
-			.Include(c => c.Iteration)
+	public async Task<Challenge[]> All()
+		=> await db.Set<Challenge>()
 			.OrderByDescending(c => c.Iteration.Name)
 			.ThenByDescending(c => c.IsOfficial)
 			.ThenByDescending(c => c.IsPrimary)
 			.ThenBy(c => c.Name)
-			.AsQueryable();
-
-	private readonly IQueryable<Challenge> _challengeDetails
-		= db.Set<Challenge>()
-			.Include(c => c.Courses).ThenInclude(c => c.Race)
-			.Include(c => c.Iteration).ThenInclude(i => i.Races).ThenInclude(r => r.Courses)
-			.AsQueryable();
-
-	public async Task<Challenge[]> All()
-		=> await _challenges.ToArrayAsync();
+			.ToArrayAsync();
 
 	public async Task<Challenge> Get(Guid id)
-		=> await _challengeDetails
+		=> await db.Set<Challenge>()
 			.FirstAsync(c => c.ID == id);
 
 	public async Task Add(Challenge challenge)
