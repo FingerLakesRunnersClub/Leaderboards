@@ -1,6 +1,5 @@
 @addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
-@using FLRC.Leaderboards.Core
-@model DataTableViewModel
+@model (string Title, string ResponsiveBreakpoint)
 
 <app v-cloak>
     <div v-if="!show_table" class="alert alert-secondary">No data found</div>
