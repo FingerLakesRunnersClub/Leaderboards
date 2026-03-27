@@ -1,0 +1,77 @@
+﻿@using FLRC.Leaderboards.Core.Athletes
+@using FLRC.Leaderboards.Core.Races
+@using FLRC.Leaderboards.Core.Results
+@using FLRC.Leaderboards.Core.Teams
+@using FLRC.Leaderboards.Web.ViewModels
+@model CourseResults
+
+@functions
+{
+	string Style(ResultType type) => Model.Type == type
+		? "secondary"
+		: "light";
+
+	string Style(string distance) => new Distance(Model.Course.DistanceDisplay) == new Distance(distance)
+		? "secondary"
+		: "light";
+
+	string Style(Category category) => Model.Filter.Category == null && category == null || Model.Filter.Category == category
+		? "secondary"
+		: "light";
+}
+
+<form class="float-left">
+	<section class="mb-3 mt-2">
+		<div class="btn-group d-flex flex-wrap">
+			@if (Model.HasMultiAttemptCompetitions)
+			{
+				foreach (var type in Enum.GetValues<ResultType>().Except([ResultType.Farthest]).Select(t => new FormattedResultType(t)))
+				{
+					<a class="btn btn-sm btn-@Style(type.Value)" href="/Results/@type.Value/@Model.Course.ID">@type.Display</a>
+				}
+			}
+			else if (Model.Course.Race.Courses.Count > 1)
+			{
+				foreach (var course in Model.Course.Race.Courses)
+				{
+					<a class="btn btn-sm btn-@Style(course.DistanceDisplay)" href="/Results/Fastest/@course.ID">@course.DistanceDisplay</a>
+				}
+			}
+		</div>
+	</section>
+
+	@if (Model.Type is ResultType.Fastest or ResultType.Farthest or ResultType.BestAverage)
+	{
+		var resultsURL = $"/Results/{Model.Type}/{Model.Course.ID}".Replace("//", "/");
+		var query = $"?ag={Model.Filter.AgeGroup?.Value}";
+		<section class="mb-4">
+			<div class="btn-group">
+				<a class="btn btn-sm btn-@Style((Category)null)" href="@resultsURL@query">All</a>
+				<a class="btn btn-sm btn-@Style(Category.F)" href="@resultsURL/F@(query)">F</a>
+				<a class="btn btn-sm btn-@Style(Category.M)" href="@resultsURL/M@(query)">M</a>
+			</div>
+
+			@if (Model.Type is ResultType.Fastest or ResultType.Farthest)
+			{
+				<div class="float-right ml-5">
+					<select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
+						<option value="">All Age Groups</option>
+						@foreach (var team in Team.Teams)
+						{
+							<option value="@team.Key" @(Model.Filter.AgeGroup == team.Value ? "selected" : string.Empty)>
+								@team.Value.Display
+							</option>
+						}
+					</select>
+				</div>
+			}
+		</section>
+	}
+</form>
+<div class="clearfix"></div>
+
+<script>
+    function goToAgeGroup(ag) {
+        location.href = ag ? `?ag=${ag}` : '?';
+    }
+</script>
