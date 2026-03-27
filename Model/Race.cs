@@ -15,5 +15,8 @@ public record Race : Identifiable<Guid>
 	[JsonIgnore]
 	public virtual ICollection<Course> Courses { get; init; } = [];
 
+	[JsonIgnore]
+	public virtual ICollection<RaceLink> Links { get; init; } = [];
+
 	public string DistanceDisplay => string.Join(", ", Courses.Select(c => c.DistanceDisplay));
 }
