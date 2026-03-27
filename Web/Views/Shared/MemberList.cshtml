@@ -22,6 +22,6 @@
             const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
         </script>
 
-        @await Html.PartialAsync("DataTable")
+        @await Html.PartialAsync("LegacyDataTable")
     </div>
 </div>
