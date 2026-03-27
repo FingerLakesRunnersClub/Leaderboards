@@ -3,6 +3,7 @@ using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Races;
@@ -349,10 +350,10 @@ public sealed class CourseTests
 		var course = new Course { Results = results };
 
 		//act
-		var m2 = course.GroupedResults(new Filter(Category.M, Athlete.Teams[2]));
-		var m3 = course.GroupedResults(new Filter(Category.M, Athlete.Teams[3]));
-		var f2 = course.GroupedResults(new Filter(Category.F, Athlete.Teams[2]));
-		var f3 = course.GroupedResults(new Filter(Category.F, Athlete.Teams[3]));
+		var m2 = course.GroupedResults(new Filter(Category.M, Team.Teams[2]));
+		var m3 = course.GroupedResults(new Filter(Category.M, Team.Teams[3]));
+		var f2 = course.GroupedResults(new Filter(Category.F, Team.Teams[2]));
+		var f3 = course.GroupedResults(new Filter(Category.F, Team.Teams[3]));
 
 		//assert
 		Assert.Equal(new TimeSpan(1, 2, 3), m2.First().First().Duration.Value);

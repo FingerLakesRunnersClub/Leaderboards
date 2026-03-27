@@ -127,8 +127,8 @@ public sealed class CourseControllerTests
 		//assert
 		var vm = (CourseResultsViewModel<TeamResults>) response.Model;
 		var ranked = vm!.RankedResults;
-		var team2 = ranked.First(r => r.Value.Team == Athlete.Teams[2]);
-		var team3 = ranked.First(r => r.Value.Team == Athlete.Teams[3]);
+		var team2 = ranked.First(r => r.Value.Team == Team.Teams[2]);
+		var team3 = ranked.First(r => r.Value.Team == Team.Teams[3]);
 		Assert.Equal(1, team3.Value.AgeGradePoints);
 		Assert.Equal(2, team2.Value.AgeGradePoints);
 		Assert.Equal(1, team2.Value.MostRunsPoints);

@@ -75,7 +75,7 @@ public sealed class AwardsViewModel : ViewModel
 			.ToArray();
 
 	private Award[] AgeGroup(Course[] results, Category category)
-		=> Athlete.Teams
+		=> Teams.Team.Teams
 			.SelectMany(t => results.SelectMany(c => CourseAgeGroupAwards(c, category, t.Value)))
 			.ToArray();
 

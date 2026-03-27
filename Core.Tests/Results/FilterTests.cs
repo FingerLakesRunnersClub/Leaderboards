@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
@@ -57,7 +58,7 @@ public sealed class FilterTests
 			Athlete = new Athlete { Category = Category.M, DateOfBirth = new DateTime(2000, 1, 1) },
 			StartTime = new Date(new DateTime(2022, 4, 25))
 		};
-		var filter = new Filter { AgeGroup = Athlete.Teams[2] };
+		var filter = new Filter { AgeGroup = Team.Teams[2] };
 
 		//act
 		var matches = filter.IsMatch(result);
@@ -75,7 +76,7 @@ public sealed class FilterTests
 			Athlete = new Athlete { Category = Category.M, DateOfBirth = new DateTime(1990, 1, 1) },
 			StartTime = new Date(new DateTime(2022, 4, 25))
 		};
-		var filter = new Filter { AgeGroup = Athlete.Teams[2] };
+		var filter = new Filter { AgeGroup = Team.Teams[2] };
 
 		//act
 		var matches = filter.IsMatch(result);
