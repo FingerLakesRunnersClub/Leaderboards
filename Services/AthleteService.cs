@@ -6,42 +6,28 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class AthleteService(DB db) : IAthleteService
 {
-	private readonly IQueryable<Athlete> _athletes
-		= db.Set<Athlete>()
-			.Include(a => a.Admins)
-			.Include(a => a.LinkedAccounts)
-			.Include(a => a.Registrations)
-			.Include(a => a.Results)
-			.AsQueryable();
-
-	private readonly IQueryable<Athlete> _athleteDetails
-		= db.Set<Athlete>()
-			.Include(a => a.Admins)
-			.Include(a => a.LinkedAccounts.OrderBy(l => l.Type).ThenBy(l => l.Value))
-			.Include(a => a.Registrations).ThenInclude(i => i.Series)
-			.Include(a => a.Results)
-			.Include(a => a.Challenges).ThenInclude(c => c.Iteration)
-			.AsQueryable();
-
 	public async Task<Athlete[]> All()
-		=> await _athletes
+		=> await db.Set<Athlete>()
+			.Include(a => a.Results)
+			.Include(a => a.Registrations)
+			.Include(a => a.LinkedAccounts)
 			.OrderBy(a => a.Name)
 			.ToArrayAsync();
 
 	public async Task<Athlete> Get(Guid id)
-		=> await _athleteDetails
+		=> await db.Set<Athlete>()
 			.FirstAsync(a => a.ID == id);
 
 	public async Task<Athlete?> Find(string link, string value)
-		=> await _athleteDetails
+		=> await db.Set<Athlete>()
 			.FirstOrDefaultAsync(a => a.LinkedAccounts.Any(l => l.Type == link && l.Value == value));
 
 	public async Task<Athlete?> Find(string name, DateOnly dob)
-		=> await _athleteDetails
+		=> await db.Set<Athlete>()
 			.FirstOrDefaultAsync(a => a.Name == name && a.DateOfBirth == dob);
 
 	public async Task<Athlete?> Find(string name, byte age, DateTime onDate)
-		=> await _athleteDetails
+		=> await db.Set<Athlete>()
 			.Where(a => a.Name == name).ToAsyncEnumerable()
 			.FirstOrDefaultAsync(a => a.DateOfBirth is not null && a.AgeAsOf(onDate) == age);
 

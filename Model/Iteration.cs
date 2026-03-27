@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Iteration : Identifiable<Guid>
+public record Iteration : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid SeriesID { get; set; }
@@ -10,10 +10,10 @@ public sealed record Iteration : Identifiable<Guid>
 	public string? RegistrationType { get; set; }
 	public string? RegistrationContext { get; set; }
 
-	public Series Series { get; init; } = null!;
-	public ICollection<Race> Races { get; init; } = [];
-	public ICollection<Challenge> Challenges { get; init; } = [];
-	public ICollection<Athlete> Athletes { get; init; } = [];
+	public virtual Series Series { get; init; } = null!;
+	public virtual ICollection<Race> Races { get; init; } = [];
+	public virtual ICollection<Challenge> Challenges { get; init; } = [];
+	public virtual ICollection<Athlete> Athletes { get; init; } = [];
 
 	public bool IsActive
 		=> DateOnly.FromDateTime(DateTime.Now) > StartDate && DateOnly.FromDateTime(DateTime.Now) <= EndDate;

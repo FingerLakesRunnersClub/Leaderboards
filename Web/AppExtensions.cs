@@ -36,7 +36,7 @@ public static class AppExtensions
 				var connectionString = s.GetService<IConfiguration>().GetValue<string>("Database");
 				return new NpgsqlConnection(connectionString);
 			});
-			services.AddDbContext<DB>((s, o) => o.UseNpgsql(s.GetService<NpgsqlConnection>()).UseLowerCaseNamingConvention());
+			services.AddDbContext<DB>((s, o) => o.UseLazyLoadingProxies().UseNpgsql(s.GetService<NpgsqlConnection>()).UseLowerCaseNamingConvention());
 		}
 	}
 }

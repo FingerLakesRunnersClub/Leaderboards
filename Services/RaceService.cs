@@ -6,22 +6,19 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class RaceService(DB db) : IRaceService
 {
-	private readonly IQueryable<Race> _races
-		= db.Set<Race>()
-			.Include(r => r.Courses.OrderBy(c => c.Distance).ThenBy(c => c.Units))
-			.OrderBy(r => r.Name)
-			.AsQueryable();
-
 	public async Task<Race[]> All()
-		=> await _races.ToArrayAsync();
+		=> await db.Set<Race>()
+			.OrderBy(r => r.Name)
+			.ToArrayAsync();
 
 	public async Task<Race[]> GetRaces(Guid[] ids)
-		=> await _races
+		=> await db.Set<Race>()
 			.Where(r => ids.Any(id => r.ID == id))
+			.OrderBy(r => r.Name)
 			.ToArrayAsync();
 
 	public async Task<Race> Get(Guid id)
-		=> await _races
+		=> await db.Set<Race>()
 			.FirstAsync(r => r.ID == id);
 
 	public async Task Add(Race race)

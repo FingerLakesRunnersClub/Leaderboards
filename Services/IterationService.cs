@@ -8,38 +8,24 @@ public sealed class IterationService(DB db) : IIterationService
 {
 	private static readonly DateOnly Today = DateOnly.FromDateTime(DateTime.Today);
 
-	private readonly IQueryable<Iteration> _iterations
-		= db.Set<Iteration>()
-			.Include(i => i.Series)
-			.Include(i => i.Athletes)
-			.AsQueryable();
-
-	private readonly IQueryable<Iteration> _iterationDetails
-		= db.Set<Iteration>()
-			.Include(i => i.Series)
-			.Include(i => i.Challenges).ThenInclude(c => c.Courses).ThenInclude(c => c.Race)
-			.Include(i => i.Races).ThenInclude(r => r.Courses)
-			.Include(i => i.Athletes.OrderBy(a => a.Name)).ThenInclude(a => a.LinkedAccounts.OrderBy(l => l.Type))
-			.AsQueryable();
-
 	public async Task<Iteration[]> All()
-		=> await _iterations
+		=> await db.Set<Iteration>()
 			.OrderBy(i => i.Series.Name)
 			.ThenByDescending(i => i.StartDate)
 			.ToArrayAsync();
 
 	public async Task<Iteration> Get(Guid id)
-		=> await _iterationDetails
+		=> await db.Set<Iteration>()
 			.FirstAsync(i => i.ID == id);
 
 	public async Task<Iteration?> Current(Guid seriesID)
-		=> await _iterationDetails
+		=> await db.Set<Iteration>()
 			.Where(i => i.SeriesID == seriesID && i.StartDate <= Today && i.EndDate >= Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();
 
 	public async Task<Iteration?> MostRecent(Guid seriesID)
-		=> await _iterationDetails
+		=> await db.Set<Iteration>()
 			.Where(i => i.SeriesID == seriesID && i.EndDate < Today)
 			.OrderByDescending(i => i.EndDate)
 			.FirstOrDefaultAsync();

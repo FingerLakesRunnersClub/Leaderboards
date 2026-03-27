@@ -6,28 +6,17 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class CourseService(DB db) : ICourseService
 {
-	private readonly IQueryable<Course> _courses
-		= db.Set<Course>()
-			.Include(c => c.Race)
-			.AsQueryable();
-
-	private readonly IQueryable<Course> _courseDetails
-		= db.Set<Course>()
-			.Include(c => c.Race)
-			.Include(c => c.Results)
-			.AsQueryable();
-
 	public async Task<Course[]> All()
-		=> await _courses
+		=> await db.Set<Course>()
 			.ToArrayAsync();
 
 	public async Task<Course[]> GetCourses(Guid[] ids)
-		=> await _courses
+		=> await db.Set<Course>()
 			.Where(c => ids.Any(id => c.ID == id))
 			.ToArrayAsync();
 
 	public async Task<Course> Get(Guid id)
-		=> await _courseDetails
+		=> await db.Set<Course>()
 			.FirstAsync(c => c.ID == id);
 
 	public Task Add(Course course)

@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Model;
 
-public sealed record Result : Identifiable<Guid>
+public record Result : Identifiable<Guid>
 {
 	public Guid ID { get; set; }
 	public Guid CourseID { get; set; }
@@ -8,8 +8,8 @@ public sealed record Result : Identifiable<Guid>
 	public DateTime StartTime { get; set; }
 	public TimeSpan Duration { get; set; }
 
-	public Course Course { get; init; } = null!;
-	public Athlete Athlete { get; init; } = null!;
+	public virtual Course Course { get; init; } = null!;
+	public virtual Athlete Athlete { get; init; } = null!;
 
 	public byte? AthleteAge
 		=> Athlete.AgeAsOf(StartTime);

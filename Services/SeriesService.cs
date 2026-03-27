@@ -6,27 +6,17 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class SeriesService(DB db) : ISeriesService
 {
-	private readonly IQueryable<Series> _series
-		= db.Set<Series>()
-			.OrderBy(s => s.Key)
-			.AsQueryable();
-
-	private readonly IQueryable<Series> _seriesDetails
-		= db.Set<Series>()
-			.Include(s => s.Features)
-			.Include(s => s.Settings)
-			.AsQueryable();
-
 	public async Task<Series[]> All()
-		=> await _series
+		=> await db.Set<Series>()
+			.OrderBy(s => s.Key)
 			.ToArrayAsync();
 
 	public async Task<Series> Get(Guid id)
-		=> await _seriesDetails
+		=> await db.Set<Series>()
 			.FirstAsync(s => s.ID == id);
 
 	public async Task<Series?> Find(string key)
-		=> await _seriesDetails
+		=> await db.Set<Series>()
 			.FirstAsync(s => s.Key == key);
 
 	public async Task Add(Series series)
