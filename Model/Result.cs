@@ -13,4 +13,6 @@ public record Result : Identifiable<Guid>
 
 	public byte? AthleteAge
 		=> Athlete.AgeAsOf(StartTime);
+
+	public DateTime FinishTime => StartTime + Duration;
 }
