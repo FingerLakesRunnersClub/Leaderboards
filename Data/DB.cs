@@ -46,5 +46,9 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		anAdmin.HasOne(a => a.Athlete).WithMany(a => a.Admins).HasForeignKey(nameof(Admin.ID));
 
 		build.Entity<LinkedAccount>().Table("LinkedAccounts");
+
+		var aRaceLink = build.Entity<RaceLink>().Table("RaceLinks");
+		aRaceLink.HasOne(l => l.Race).WithMany(r => r.Links);
+
 	}
 }
