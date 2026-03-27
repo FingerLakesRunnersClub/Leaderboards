@@ -1,8 +1,6 @@
-UPDATE Iterations
-SET RegistrationType = 'AnyRace'
-WHERE ID = (SELECT Iterations.ID
-			FROM Iterations
-					 INNER JOIN Series ON Iterations.SeriesID = Series.ID AND Iterations.Name = '2026' AND Series.Key = 'TrailCircuit' AND RegistrationType IS NULL);
+DELETE
+FROM RaceIterations
+WHERE IterationID = (SELECT ID FROM Iterations WHERE SeriesID = (SELECT ID FROM Series WHERE Key = 'TrailCircuit') AND Name = '2026');
 
 WITH PastRaces AS (SELECT DISTINCT Races.ID AS RaceID
 				   FROM Races
