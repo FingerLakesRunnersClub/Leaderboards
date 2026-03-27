@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
