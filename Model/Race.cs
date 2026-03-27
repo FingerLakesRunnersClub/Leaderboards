@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FLRC.Leaderboards.Model;
 
 public record Race : Identifiable<Guid>
@@ -7,7 +9,10 @@ public record Race : Identifiable<Guid>
 	public string Type { get; set; } = null!;
 	public string Description { get; set; } = null!;
 
+	[JsonIgnore]
 	public virtual ICollection<Iteration> Iterations { get; init; } = [];
+
+	[JsonIgnore]
 	public virtual ICollection<Course> Courses { get; init; } = [];
 
 	public string DistanceDisplay => string.Join(", ", Courses.Select(c => c.DistanceDisplay));

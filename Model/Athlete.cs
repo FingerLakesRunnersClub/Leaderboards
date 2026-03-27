@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FLRC.Leaderboards.Model;
 
 public record Athlete : Identifiable<Guid>
@@ -11,19 +13,28 @@ public record Athlete : Identifiable<Guid>
 	public DateOnly? DateOfBirth { get; set; }
 	public bool IsPrivate { get; set; }
 
+	[JsonIgnore]
 	public virtual ICollection<Iteration> Registrations { get; init; } = [];
+
+	[JsonIgnore]
 	public virtual ICollection<Result> Results { get; init; } = [];
+
+	[JsonIgnore]
 	public virtual ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
+
+	[JsonIgnore]
 	public virtual ICollection<Challenge> Challenges { get; init; } = [];
+
+	[JsonIgnore]
+	public virtual ICollection<Admin> Admins { get; init; } = [];
+
+	public bool IsAdmin => Admins.Count > 0;
 
 	public byte? AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
 		: null;
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
-
-	public virtual ICollection<Admin> Admins { get; init; } = [];
-	public bool IsAdmin => Admins.Count > 0;
 
 	public bool HasLinkedAccount(string type)
 		=> LinkedAccounts.Any(a => a.Type == type);
