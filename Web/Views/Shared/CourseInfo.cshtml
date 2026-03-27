@@ -1,29 +1,43 @@
-@using FLRC.Leaderboards.Core.Results
-@model CourseResultsViewModel
+@using FLRC.Leaderboards.Core.Config
+@using FLRC.Leaderboards.Model
+@model Course
+
+@functions
+{
+	static string Icon(string type)
+	{
+		return type switch
+		{
+			RaceLink.Types.Info => "fas fa-info-circle",
+			RaceLink.Types.Community => "fas fa-comments",
+			_ => null
+		};
+	}
+}
 
 <div class="float-sm-right mb-1 d-flex justify-content-between">
-	@if (Model.Course.Race.URL is not null)
+	@foreach (var link in Model.Race.Links)
 	{
-		<a class="course-info btn btn-sm btn-outline-dark" href="@Model.Course.Race.URL">
-			<i aria-hidden="true" class="fas fa-info-circle"></i>
-			@Model.Config.CourseLabel Info
+		<a class="course-@link.Type.ToLowerInvariant() btn btn-sm btn-outline-dark ml-2" href="@link.URL">
+			<i aria-hidden="true" class="@Icon(link.Type)"></i>
+			@link.Name
 		</a>
 	}
-	@if (Model.Config.Features.MultiAttempt)
+	@if (Model.Race.Iterations.Any(i => i.Series.Feature[nameof(FeatureSet.MultiAttempt)]))
 	{
-		<a class="activity-log btn btn-sm btn-outline-dark ml-2" href="/Log/Index/@Model.Course.ID">
+		<a class="activity-log btn btn-sm btn-outline-dark ml-2" href="/Log/Index/@Model.ID">
+			<i aria-hidden="true" class="fas fa-file-lines"></i>
 			Activity Log
-			<i aria-hidden="true" class="fas fa-arrow-right"></i>
 		</a>
 	}
 </div>
 <h4 class="mb-0">
-	@Model.Course.Name
+	@Model.Race.Name
 </h4>
-@if (Model.Config.Features.ShowBadges)
+@if (Model.Race.Iterations.Any(i => i.Series.Feature[nameof(FeatureSet.ShowBadges)]))
 {
 	<div class="mb-2">
-		<span class="badge badge-pill badge-secondary">@Model.Course.Race.Type</span>
-		<span class="badge badge-pill badge-warning">@Model.Course.ShortName</span>
+		<span class="badge badge-pill badge-secondary">@Model.Race.Type</span>
+		<span class="badge badge-pill badge-warning">@Model.DistanceDisplay</span>
 	</div>
 }
