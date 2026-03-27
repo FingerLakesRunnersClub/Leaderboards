@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace FLRC.Leaderboards.Model;
 
 public record Challenge : Identifiable<Guid>
@@ -11,7 +13,11 @@ public record Challenge : Identifiable<Guid>
 	public Guid? AthleteID { get; set; }
 
 	public virtual Iteration Iteration { get; init; } = null!;
+
+	[JsonIgnore]
 	public virtual ICollection<Course> Courses { get; init; } = [];
+
+	[JsonIgnore]
 	public virtual ICollection<Athlete> Athletes { get; init; } = [];
 
 	public virtual Athlete? Athlete { get; init; }
