@@ -1,6 +1,6 @@
 using FLRC.Leaderboards.Core;
 
-namespace FLRC.Leaderboards.Web.Areas.Admin;
+namespace FLRC.Leaderboards.Web.ViewModels;
 
 public sealed class ViewModel<T>(string title, T data) : ViewModel
 {

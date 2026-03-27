@@ -1,3 +1,4 @@
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
