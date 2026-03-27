@@ -69,8 +69,8 @@ public sealed class OverallResults
 			.Select(g => new TeamResults
 			{
 				Team = g.Key,
-				AgeGradePoints = (byte)(g.Sum(r => r.Value.AgeGradePoints) + Athlete.Teams.Count * (_courses.Length - g.Count())),
-				MostRunsPoints = (byte)(g.Sum(r => r.Value.MostRunsPoints) + Athlete.Teams.Count * (_courses.Length - g.Count()))
+				AgeGradePoints = (byte)(g.Sum(r => r.Value.AgeGradePoints) + Team.Teams.Count * (_courses.Length - g.Count())),
+				MostRunsPoints = (byte)(g.Sum(r => r.Value.MostRunsPoints) + Team.Teams.Count * (_courses.Length - g.Count()))
 			})
 			.Rank();
 

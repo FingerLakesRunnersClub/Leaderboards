@@ -1,6 +1,7 @@
 ﻿@using FLRC.Leaderboards.Core.Athletes
 @using FLRC.Leaderboards.Core.Races
 @using FLRC.Leaderboards.Core.Results
+@using FLRC.Leaderboards.Core.Teams
 @model CourseResultsViewModel
 
 @functions
@@ -54,7 +55,7 @@
 				<div class="float-right ml-5">
 					<select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
 						<option value="">All Age Groups</option>
-						@foreach (var team in Athlete.Teams)
+						@foreach (var team in Team.Teams)
 						{
 							<option value="@team.Key" @(Model.Filter.AgeGroup == team.Value ? "selected" : string.Empty)>
 								@team.Value.Display

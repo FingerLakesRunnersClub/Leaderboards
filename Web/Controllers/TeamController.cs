@@ -21,11 +21,11 @@ public sealed class TeamController : Controller
 
 	[HttpGet]
 	public async Task<ViewResult> Index(byte id)
-		=> View(await GetTeam(Athlete.Teams[id]));
+		=> View(await GetTeam(Team.Teams[id]));
 
 	[HttpGet]
 	public async Task<ViewResult> Members(byte id)
-		=> View(await GetMembers(Athlete.Teams[id]));
+		=> View(await GetMembers(Team.Teams[id]));
 
 	private async Task<TeamMembersViewModel> GetMembers(Team team)
 	{

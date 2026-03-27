@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using System.Text.Json.Serialization;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Teams;
@@ -24,14 +23,12 @@ public sealed class Athlete : IEquatable<Athlete>
 	public Team Team
 		=> Age switch
 		{
-			< 20 => Teams[2],
-			>= 70 => Teams[6],
-			_ => Teams[(byte) (Age / 10)]
+			< 20 => Team.Teams[2],
+			>= 70 => Team.Teams[6],
+			_ => Team.Teams[(byte) (Age / 10)]
 		};
 
 	public byte AgeToday => AgeAsOf(DateTime.Today);
-
-	public static readonly IImmutableDictionary<byte, Team> Teams = Enumerable.Range(2, 5).ToImmutableDictionary(t => (byte) t, t => new Team((byte) t));
 
 	public bool Equals(Athlete other) => ID == other?.ID;
 	public override bool Equals(object obj) => Equals((Athlete) obj);

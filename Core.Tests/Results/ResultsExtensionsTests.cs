@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Core.Teams;
 using Xunit;
 
 namespace FLRC.Leaderboards.Core.Tests.Results;
@@ -41,7 +42,7 @@ public sealed class ResultsExtensionsTests
 	{
 		//arrange
 		var results = CourseData.Results;
-		var filter = new Filter(Category.M, Athlete.Teams[2]);
+		var filter = new Filter(Category.M, Team.Teams[2]);
 
 		//act
 		var filtered = results.Filter(filter);
@@ -61,7 +62,7 @@ public sealed class ResultsExtensionsTests
 			Athlete = new Athlete { DateOfBirth = new DateTime(1952, 1, 1), Category = Category.M },
 			StartTime = new Date(new DateTime(2022, 4, 25))
 		});
-		var filter = new Filter(Category.M, Athlete.Teams[6]);
+		var filter = new Filter(Category.M, Team.Teams[6]);
 
 		//act
 		var filtered = results.ToArray().Filter(filter);

@@ -188,7 +188,7 @@ public sealed class OverallResultsTests
 		var vm = new OverallResults(LeaderboardData.Courses);
 
 		//act
-		var members = vm.TeamMembers(Athlete.Teams[2]);
+		var members = vm.TeamMembers(Team.Teams[2]);
 
 		//assert
 		Assert.Equal("1–29", members.First().Result.Athlete.Team.Display);
