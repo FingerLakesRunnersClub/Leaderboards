@@ -33,7 +33,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		var user = authService.GetCurrentUser();
 		var claims = user.ClaimDictionary;
 
-		return await athleteService.Find("Discourse", claims["external_id"]);
+		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"]);
 	}
 
 	[HttpGet]
