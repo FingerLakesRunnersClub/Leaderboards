@@ -117,7 +117,7 @@ public sealed class AthleteServiceTests
 		await db.SaveChangesAsync();
 
 		//act
-		var athlete = await service.Find("Email", "test@example.com");
+		var athlete = await service.Find(LinkedAccount.Keys.Email, "test@example.com");
 
 		//assert
 		Assert.Equal("Test", athlete!.Name);
