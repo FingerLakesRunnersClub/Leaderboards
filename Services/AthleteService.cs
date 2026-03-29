@@ -67,19 +67,6 @@ public sealed class AthleteService(DB db) : IAthleteService
 		await db.SaveChangesAsync();
 	}
 
-	public async Task AddAdmin(Athlete athlete)
-	{
-		var admin = new Admin { ID = athlete.ID };
-		await db.AddAsync(admin);
-		await db.SaveChangesAsync();
-	}
-
-	public async Task RemoveAdmin(Athlete athlete)
-	{
-		athlete.Admins.Clear();
-		await db.SaveChangesAsync();
-	}
-
 	public async Task MigrateLinkedAccounts(Athlete from, Athlete to)
 	{
 		var newAccounts = from.LinkedAccounts.Except(to.LinkedAccounts, LinkedAccount.Comparer).ToArray();

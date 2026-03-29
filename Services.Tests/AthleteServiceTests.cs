@@ -203,43 +203,6 @@ public sealed class AthleteServiceTests
 	}
 
 	[Fact]
-	public async Task CanAddAthleteAsAdmin()
-	{
-		//arrange
-		var db = TestHelpers.CreateDB();
-		var service = new AthleteService(db);
-
-		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
-		await db.AddAsync(athlete);
-		await db.SaveChangesAsync();
-
-		//act
-		await service.AddAdmin(athlete);
-
-		//assert
-		Assert.True(athlete.IsAdmin);
-	}
-
-	[Fact]
-	public async Task CanRemoveAthleteAsAdmin()
-	{
-		//arrange
-		var db = TestHelpers.CreateDB();
-		var service = new AthleteService(db);
-
-		var id = Guid.NewGuid();
-		var athlete = new Athlete { ID = id, Name = "Test", Admins = [new Admin { ID = id }] };
-		await db.AddAsync(athlete);
-		await db.SaveChangesAsync();
-
-		//act
-		await service.RemoveAdmin(athlete);
-
-		//assert
-		Assert.False(athlete.IsAdmin);
-	}
-
-	[Fact]
 	public async Task CanMigrateResults()
 	{
 		//arrange

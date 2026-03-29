@@ -15,13 +15,14 @@ public sealed class AccountControllerTests
 	public void LoginRedirectsToAuthPage()
 	{
 		//arrange
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.GetLoginURL(Arg.Any<string>()).Returns("https://example.com/login-page");
 
-		var controller = new AccountController(athleteService, authService, discourse);
+		var controller = new AccountController(adminService, athleteService, authService, discourse);
 
 		//act
 		var result = controller.Login();
@@ -34,11 +35,12 @@ public sealed class AccountControllerTests
 	public async Task RedirectPerformsLogin()
 	{
 		//arrange
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 
-		var controller = new AccountController(athleteService, authService, discourse);
+		var controller = new AccountController(adminService, athleteService, authService, discourse);
 
 		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
 
@@ -53,13 +55,14 @@ public sealed class AccountControllerTests
 	public async Task RedirectDoesNotAttemptLoginOnValidationFailure()
 	{
 		//arrange
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
 		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
 
-		var controller = new AccountController(athleteService, authService, discourse);
+		var controller = new AccountController(adminService, athleteService, authService, discourse);
 
 		//act
 		await controller.Redirect("test", "123");
@@ -72,10 +75,11 @@ public sealed class AccountControllerTests
 	public async Task LogoutSignsOutUser()
 	{
 		//arrange
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var authService = Substitute.For<IAuthService>();
 		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		var controller = new AccountController(athleteService, authService, discourse);
+		var controller = new AccountController(adminService, athleteService, authService, discourse);
 
 		//act
 		await controller.Logout();

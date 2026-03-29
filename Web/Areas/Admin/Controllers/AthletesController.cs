@@ -9,7 +9,7 @@ namespace FLRC.Leaderboards.Web.Areas.Admin.Controllers;
 
 [Area(nameof(Admin))]
 [Authorize(nameof(Admin))]
-public sealed class AthletesController(IAthleteService athleteService) : Controller
+public sealed class AthletesController(IAdminService adminService, IAthleteService athleteService) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Index()
@@ -38,12 +38,12 @@ public sealed class AthletesController(IAthleteService athleteService) : Control
 	[HttpGet]
 	public async Task<RedirectToActionResult> ToggleAdmin(Guid id)
 	{
-		var athlete = await athleteService.Get(id);
+		var exists = await adminService.Verify(id);
 
-		if (athlete.IsAdmin)
-			await athleteService.RemoveAdmin(athlete);
+		if (exists)
+			await adminService.Delete(new Model.Admin { ID = id });
 		else
-			await athleteService.AddAdmin(athlete);
+			await adminService.Add(new Model.Admin { ID = id });
 
 		return RedirectToAction(nameof(Edit), new { id });
 	}
@@ -75,7 +75,8 @@ public sealed class AthletesController(IAthleteService athleteService) : Control
 		await athleteService.MigrateResults(old, athlete);
 		await athleteService.MigrateRegistrations(old, athlete);
 		await athleteService.MigrateLinkedAccounts(old, athlete);
-		await athleteService.RemoveAdmin(old);
+
+		await adminService.Delete(new Model.Admin { ID = old.ID });
 		await athleteService.Delete(old);
 
 		return RedirectToAction(nameof(Edit), new { id = to });

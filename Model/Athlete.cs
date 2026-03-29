@@ -25,11 +25,6 @@ public record Athlete : Identifiable<Guid>
 	[JsonIgnore]
 	public virtual ICollection<Challenge> Challenges { get; init; } = [];
 
-	[JsonIgnore]
-	public virtual ICollection<Admin> Admins { get; init; } = [];
-
-	public bool IsAdmin => Admins.Count > 0;
-
 	public byte? AgeAsOf(DateTime date) => DateOfBirth.HasValue
 		? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
 		: null;
