@@ -10,9 +10,6 @@ public interface IAthleteService : IDataService<Athlete>
 
 	Task AddLinkedAccount(Athlete athlete, LinkedAccount account);
 
-	Task AddAdmin(Athlete athlete);
-	Task RemoveAdmin(Athlete athlete);
-
 	Task MigrateResults(Athlete from, Athlete to);
 	Task MigrateRegistrations(Athlete from, Athlete to);
 	Task MigrateLinkedAccounts(Athlete from, Athlete to);

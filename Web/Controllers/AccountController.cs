@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AccountController(IAthleteService athleteService, IAuthService authService, IDiscourseAuthenticator discourse) : Controller
+public sealed class AccountController(IAdminService adminService, IAthleteService athleteService, IAuthService authService, IDiscourseAuthenticator discourse) : Controller
 {
 	public RedirectResult Login()
 	{
@@ -29,7 +29,7 @@ public sealed class AccountController(IAthleteService athleteService, IAuthServi
 		identity.AddClaims(response.Select(r => new Claim(r.Key, r.Value)));
 
 		var athlete = await CurrentAthlete(identity);
-		if (athlete is not null && athlete.IsAdmin)
+		if (athlete is not null && await adminService.Verify(athlete.ID))
 			identity.AddClaim(new Claim(identity.RoleClaimType, nameof(Admin)));
 
 		await authService.LogIn(identity);
