@@ -67,6 +67,7 @@ public sealed class App(string context)
 			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
 		});
 
+		services.AddScoped<IAdminService, AdminService>();
 		services.AddScoped<IAthleteService, AthleteService>();
 		services.AddScoped<IChallengeService, ChallengeService>();
 		services.AddScoped<ICourseService, CourseService>();
