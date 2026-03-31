@@ -8,7 +8,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Components;
 
-public sealed class HeadComponentTests
+public sealed class HeadTests
 {
 	[Fact]
 	public async Task CanRenderComponent()
@@ -18,7 +18,7 @@ public sealed class HeadComponentTests
 		seriesService.Find("test").Returns(new Series());
 
 		var context = new AppContextProvider("test");
-		var component = new HeadComponent(seriesService, context);
+		var component = new Head(seriesService, context);
 
 		//act
 		var result = await component.InvokeAsync("test page");
