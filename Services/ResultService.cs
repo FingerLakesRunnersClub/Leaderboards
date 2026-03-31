@@ -15,6 +15,7 @@ public sealed class ResultService(DB db) : IResultService
 
 	public async Task<Result[]> Find(Guid courseID)
 		=> await db.Set<Result>()
+			.Include(r => r.Athlete)
 			.Where(r => r.CourseID == courseID)
 			.ToArrayAsync();
 
