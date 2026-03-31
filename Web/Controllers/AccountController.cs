@@ -10,15 +10,15 @@ namespace FLRC.Leaderboards.Web.Controllers;
 
 public sealed class AccountController(IAdminService adminService, IAthleteService athleteService, IAuthService authService, IDiscourseAuthenticator discourse) : Controller
 {
-	public RedirectResult Login()
+	public RedirectResult Login(string returnUrl = null)
 	{
 		var host = authService.GetCurrentHost();
-		var url = discourse.GetLoginURL(host);
+		var url = discourse.GetLoginURL(host, returnUrl);
 		return Redirect(url);
 	}
 
 	[HttpGet]
-	public async Task<IActionResult> Redirect(string sso, string sig)
+	public async Task<IActionResult> Redirect(string sso, string sig, string url = null)
 	{
 		var valid = discourse.IsValidResponse(sso, sig);
 		if (!valid)
@@ -34,7 +34,7 @@ public sealed class AccountController(IAdminService adminService, IAthleteServic
 
 		await authService.LogIn(identity);
 
-		return Redirect(athlete is null ? "/Wizard" : "/");
+		return Redirect(athlete is null ? "/Wizard" : url ?? "/");
 	}
 
 	private async Task<Athlete> CurrentAthlete(ClaimsIdentity identity)

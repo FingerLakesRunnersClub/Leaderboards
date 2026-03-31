@@ -17,9 +17,9 @@ public sealed class DiscourseAuthenticator : IDiscourseAuthenticator
 		_secret = Encoding.UTF8.GetBytes(secret);
 	}
 
-	public string GetLoginURL(string currentHost)
+	public string GetLoginURL(string currentHost, string url)
 	{
-		var returnURL = $"{currentHost}/Account/Redirect";
+		var returnURL = $"{currentHost}/Account/Redirect?url={url}";
 		var nonce = Guid.NewGuid();
 
 		var payload = $"nonce={nonce}&return_sso_url={returnURL}";

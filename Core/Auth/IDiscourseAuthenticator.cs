@@ -2,7 +2,7 @@ namespace FLRC.Leaderboards.Core.Auth;
 
 public interface IDiscourseAuthenticator
 {
-	string GetLoginURL(string currentHost);
+	string GetLoginURL(string currentHost, string url);
 	bool IsValidResponse(string sso, string sig);
 	IDictionary<string, string> ParseResponse(string sso);
 }
