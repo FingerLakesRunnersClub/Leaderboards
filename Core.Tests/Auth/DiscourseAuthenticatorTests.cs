@@ -12,7 +12,7 @@ public sealed class DiscourseAuthenticatorTests
 		var authenticator = new DiscourseAuthenticator("https://example.com/discourse", "secret");
 
 		//act
-		var loginURL = authenticator.GetLoginURL("http://localhost");
+		var loginURL = authenticator.GetLoginURL("http://localhost", "/return-here");
 
 		//assert
 		Assert.StartsWith("https://example.com/discourse/session/sso_provider?sso=", loginURL);
