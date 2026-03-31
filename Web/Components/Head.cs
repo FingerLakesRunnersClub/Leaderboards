@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class HeadComponent(ISeriesService seriesService, IContextProvider contextProvider) : ViewComponent
+public sealed class Head(ISeriesService seriesService, IContextProvider contextProvider) : ViewComponent
 {
 	public async Task<ViewViewComponentResult> InvokeAsync(string title)
 	{

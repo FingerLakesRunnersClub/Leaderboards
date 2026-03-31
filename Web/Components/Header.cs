@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class HeaderComponent(ISeriesService seriesService, IHttpContextAccessor httpContextAccessor, IConfig config, IContextProvider contextProvider) : ViewComponent
+public sealed class Header(ISeriesService seriesService, IHttpContextAccessor httpContextAccessor, IConfig config, IContextProvider contextProvider) : ViewComponent
 {
 	public async Task<ViewViewComponentResult> InvokeAsync()
 	{
