@@ -40,6 +40,4 @@ public sealed class ResultTests
 		//assert
 		Assert.Equal(new DateTime(2024, 04, 15, 10, 27, 03), finishTime);
 	}
-
-
 }
