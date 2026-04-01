@@ -1,0 +1,85 @@
+@model TimeSpan
+@{
+	var time = Model > TimeSpan.Zero ? Model : (TimeSpan?)null;
+
+	var hours = time?.Hours.ToString() ?? string.Empty;
+
+	var minutes = time?.Hours >= 1
+		? time.Value.Minutes.ToString().PadLeft(2, '0')
+		: time?.Minutes.ToString() ?? string.Empty;
+
+	var seconds = time?.Seconds.ToString().PadLeft(2, '0');
+}
+<div id="duration" class="input-group d-inline-flex">
+	<input type="text" inputmode="numeric" pattern="\d?" name="Duration[h]" maxlength="1" placeholder="h" value="@hours" class="form-control text-right" title="Hours"/>
+	<span class="input-group-text text-center">:</span>
+	<input type="text" inputmode="numeric" pattern="[0-5]?[0-9]" name="Duration[m]" required maxlength="2" placeholder="mm" value="@minutes" class="form-control text-right" title="Minutes"/>
+	<span class="input-group-text text-center">:</span>
+	<input type="text" inputmode="numeric" pattern="[0-5][0-9]" name="Duration[s]" required minlength="2" maxlength="2" placeholder="ss" value="@seconds" class="form-control text-right" title="Seconds"/>
+</div>
+
+<style>
+	#duration input {
+		width: 3.5rem;
+		flex: unset;
+	}
+
+	#duration input[name="Duration[h]"] {
+		width: 2.25rem;
+	}
+
+	#duration .input-group-text {
+		border-left: 0;
+		border-right: 0;
+		border-radius: 0;
+	}
+</style>
+
+<script>
+	const hours = document.querySelector('#duration input[name="Duration[h]"]');
+	const minutes = document.querySelector('#duration input[name="Duration[m]"]');
+	const seconds = document.querySelector('#duration input[name="Duration[s]"]');
+
+	function hoursUpdated() {
+		hours.setCustomValidity("");
+		if (hours.value.toString().length === 1)
+			minutes.focus();
+	}
+
+	function minutesUpdated() {
+		minutes.setCustomValidity("");
+		if (minutes.value.toString().length === 2)
+			seconds.focus();
+		else if (minutes.value.toString().length === 0)
+			hours.focus();
+	}
+
+	function secondsUpdated() {
+		seconds.setCustomValidity("");
+		if (seconds.value.toString().length === 0)
+			minutes.focus();
+	}
+
+	hours.addEventListener('input', hoursUpdated);
+	minutes.addEventListener('input', minutesUpdated);
+	seconds.addEventListener('input', secondsUpdated);
+
+	function hoursInvalid() {
+		hours.setCustomValidity("Hours must be a number between 0-9");
+		hours.focus();
+	}
+
+	function minutesInvalid() {
+		minutes.setCustomValidity("Minutes must be a number between 0-59");
+		minutes.focus();
+	}
+
+	function secondsInvalid() {
+		seconds.setCustomValidity("Seconds must be a 2-digit number 00-59");
+		seconds.focus();
+	}
+
+	hours.addEventListener('invalid', hoursInvalid);
+	minutes.addEventListener('invalid', minutesInvalid);
+	seconds.addEventListener('invalid', secondsInvalid);
+</script>

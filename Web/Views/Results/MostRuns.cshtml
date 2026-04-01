@@ -1,0 +1,27 @@
+﻿@using System.Text.Json
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<CourseResults<ushort>>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+    <section class="card-body">
+        @await Html.PartialAsync("CourseInfo", Model.Data.Course)
+        @await Html.PartialAsync("ResultFilter", Model.Data)
+
+        <script>
+            const fields = [
+                { name: 'Rank', center: true, value: r => r.Rank.Value },
+                { name: 'Name', value: r => r.Result.Athlete.Name, link: r => `/Athlete/Index/${r.Result.Athlete.ID}` },
+                { name: 'Age', center: true, value: r => r.Result.AthleteAge || '' },
+                { name: 'Category', center: true, value: r => r.Result.Athlete.Category, sort: r => r.Result.Athlete.Category ?? 'X', show: @((Model.Data.Filter.Category == null).ToString().ToLowerInvariant()) },
+                { name: '# of Runs', center: true, value: r => r.Count }
+            ];
+
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
+        </script>
+
+        @await Html.PartialAsync("DataTable", (Model.Title, "md"))
+
+    </section>
+</article>
