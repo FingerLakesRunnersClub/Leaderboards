@@ -1,0 +1,34 @@
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<Result>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<h3>@Model.Data.Course.Race.Name</h3>
+
+		<form method="post">
+			<div class="row">
+				<div class="form-group col-md-6 col-lg-4">
+					<label for="StartTime">Start Time</label>
+					<input type="datetime-local" id="StartTime" name="StartTime" required value="@Model.Data.StartTime.ToString("yyyy-MM-ddTHH:mm:ss")" class="form-control"/>
+				</div>
+
+				<div class="form-group col-md-6 col-lg-4">
+					<label for="duration">Duration</label>
+					@await Html.PartialAsync("Duration", Model.Data.Duration)
+				</div>
+			</div>
+
+			<div class="alert alert-info">
+				Please ensure that <b>@Model.Data.Course.Race.Name</b> is the correct course for which to add a result!
+			</div>
+
+			<div class="d-flex d-sm-inline-flex" style="gap: 0.5rem;">
+				<button type="submit" class="btn btn-primary flex-fill">Submit</button>
+				<a href="javascrpt:history.back();" class="btn btn-light flex-fill">Cancel</a>
+			</div>
+		</form>
+	</section>
+</article>

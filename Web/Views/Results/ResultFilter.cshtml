@@ -1,0 +1,119 @@
+﻿@using FLRC.Leaderboards.Core.Athletes
+@using FLRC.Leaderboards.Core.Races
+@using FLRC.Leaderboards.Core.Results
+@using FLRC.Leaderboards.Core.Teams
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.ViewModels
+@model CourseResults
+
+@functions
+{
+	string Style(ResultType type) => Model.Type == type
+		? "secondary"
+		: "light";
+
+	string Style(string distance) => new Distance(Model.Course.DistanceDisplay) == new Distance(distance)
+		? "secondary"
+		: "light";
+
+	string Style(Category category) => Model.Filter.Category == null && category == null || Model.Filter.Category == category
+		? "secondary"
+		: "light";
+
+	string Style(Iteration iteration) => Model.Filter.Iteration == null && iteration.ID == Guid.Empty || Model.Filter.Iteration?.ID == iteration?.ID
+		? "secondary"
+		: "light";
+
+	string QueryString(FLRC.Leaderboards.Web.Filter filter)
+	{
+		var filters = new List<string>();
+		if (filter.Category is not null)
+			filters.Add("c=" + filter.Category.Value);
+		if (filter.AgeGroup is not null)
+			filters.Add("ag=" + filter.AgeGroup.Value);
+		if (filter.Iteration != Model.ActiveIteration)
+			filters.Add("i=" + (filter.Iteration?.ID ?? Guid.Empty));
+
+		return "?" + string.Join("&", filters);
+	}
+}
+
+<form class="float-left">
+	@if (Model.Course.Race.Iterations.Count > 1)
+	{
+		var all = new Iteration { ID = Guid.Empty };
+		<section class="mt-2 mb-3">
+			<div class="btn-group">
+				<a class="btn btn-sm btn-@Style(all)" href="@QueryString(Model.Filter with { Iteration = all })">
+					All
+				</a>
+
+				@foreach (var iteration in Model.Course.Race.Iterations.OrderByDescending(i => i.Name))
+				{
+					<a class="btn btn-sm btn-@Style(iteration)" href="@QueryString(Model.Filter with { Iteration = iteration })">
+						@iteration.Name
+					</a>
+				}
+			</div>
+		</section>
+	}
+
+	<section class="mb-3">
+		<div class="btn-group d-flex flex-wrap">
+			@if (Model.HasMultiAttemptCompetitions)
+			{
+				foreach (var type in Enum.GetValues<ResultType>().Except([ResultType.Farthest]).Select(t => new FormattedResultType(t)))
+				{
+					<a class="btn btn-sm btn-@Style(type.Value)" href="/Results/@type.Value/@Model.Course.ID@QueryString(Model.Filter)">
+						@type.Display
+					</a>
+				}
+			}
+			else if (Model.Course.Race.Courses.Count > 1)
+			{
+				foreach (var course in Model.Course.Race.Courses)
+				{
+					<a class="btn btn-sm btn-@Style(course.DistanceDisplay)" href="/Results/Fastest/@course.ID">
+						@course.DistanceDisplay
+					</a>
+				}
+			}
+		</div>
+	</section>
+
+	@if (Model.Type is ResultType.Fastest or ResultType.Farthest or ResultType.BestAverage)
+	{
+		<section class="mb-4">
+			<div class="btn-group">
+				@foreach (var category in new[] { null, Category.F, Category.M })
+				{
+					<a class="btn btn-sm btn-@Style(category)" href="@QueryString(Model.Filter with { Category = category })">
+						@(category is null ? "All" : category.Display)
+					</a>
+				}
+			</div>
+
+			@if (Model.Type is ResultType.Fastest or ResultType.Farthest)
+			{
+				<div class="float-right ml-5">
+					<select class="form-control form-control-sm" onchange="goToAgeGroup(this.value)">
+						<option value="">All Age Groups</option>
+						@foreach (var team in Team.Teams)
+						{
+							<option value="@team.Key" @(Model.Filter.AgeGroup == team.Value ? "selected" : string.Empty)>
+								@team.Value.Display
+							</option>
+						}
+					</select>
+				</div>
+			}
+		</section>
+	}
+</form>
+<div class="clearfix"></div>
+
+<script>
+	function goToAgeGroup(ag) {
+		location.href = ag ? `?ag=${ag}` : '?';
+	}
+</script>
