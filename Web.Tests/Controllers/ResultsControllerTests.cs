@@ -147,6 +147,8 @@ public class ResultsControllerTests
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService);
 
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
+		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 10, Units = "km", Race = new Race { Type = "Road" } });
 
 		var data = new Dictionary<string, StringValues>
 		{
@@ -162,5 +164,38 @@ public class ResultsControllerTests
 
 		//assert
 		await resultService.Received().Add(Arg.Is<Result>(r => r.Duration == new TimeSpan(1, 23, 45)));
+	}
+
+	[Fact]
+	public async Task CannotSubmitInvalidResultToAddForm()
+	{
+		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var courseService = Substitute.For<ICourseService>();
+		var iterationService = Substitute.For<IIterationService>();
+		var resultService = Substitute.For<IResultService>();
+
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService);
+
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
+		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } });
+
+		var data = new Dictionary<string, StringValues>
+		{
+			{ "StartTime", "2026-04-03T14:15:16" },
+			{ "Duration[h]", "1" },
+			{ "Duration[m]", "23" },
+			{ "Duration[s]", "45" }
+		};
+		var form = new FormCollection(data);
+
+		//act
+		await controller.Add(Guid.NewGuid(), form);
+
+		//assert
+		await resultService.DidNotReceive().Add(Arg.Any<Result>());
 	}
 }

@@ -15,10 +15,10 @@ public static class CourseExtensions
 			=> course.Rank(filter ?? new Filter(), rs => rs.Any(r => r.Duration is not null || r.Athlete.Private), rs => rs.OrderBy(r => r.Duration).First(), rs => rs.Min(r => r.Duration ?? Time.Max));
 
 		private RankedList<T, Result> Rank<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
-			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort, course.Race?.AllowInvalid ?? false);
+			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort);
 
 		private RankedList<T, Result> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
-			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort, course.Race?.AllowInvalid ?? false);
+			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
 		public RankedList<Stars, Result> CommunityStars(Filter filter = null)
 			=> course.RankDescending(filter ?? new Filter(), g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(course), g => new Stars((ushort)g.Sum(r => r.CommunityStars.Count(p => p.Value))));
@@ -157,7 +157,7 @@ public static class CourseExtensions
 				: null;
 	}
 
-	private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue, bool allowInvalid)
+	private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedResult> sorted, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> getValue)
 	{
 		var ranks = new RankedList<T, Result>();
 		byte skippedRanks = 0;
@@ -167,12 +167,6 @@ public static class CourseExtensions
 		{
 			var results = list[rank - 1];
 			var result = getResult(results);
-
-			if (result.AgeGrade > 100 && !allowInvalid)
-			{
-				skippedRanks++;
-				continue;
-			}
 
 			var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
 			var value = getValue(results);

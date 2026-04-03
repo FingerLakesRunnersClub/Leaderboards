@@ -97,21 +97,29 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 	[HttpPost]
 	[Authorize]
-	public async Task<RedirectToActionResult> Add(Guid id, IFormCollection form)
+	public async Task<IActionResult> Add(Guid id, IFormCollection form)
 	{
 		if (!byte.TryParse(form["Duration[h]"], out var hours)
 		    || !byte.TryParse(form["Duration[m]"], out var minutes)
 		    || !byte.TryParse(form["Duration[s]"], out var seconds))
 			throw new ArgumentException(nameof(Result.Duration));
 
-		var course = await courseService.Get(id);
 		var result = new Result
 		{
-			Course = course,
+			Course = await courseService.Get(id),
 			Athlete = await CurrentAthlete(),
 			StartTime = DateTime.Parse(form["StartTime"]),
 			Duration = new TimeSpan(hours, minutes, seconds)
 		};
+
+		if (!result.IsValid())
+		{
+			var vm = new ViewModel<Result>("Add Result", result)
+			{
+				Error = "The result entered is invalid, please double-check your entry!"
+			};
+			return View("Form", vm);
+		}
 
 		await resultService.Add(result);
 		return RedirectToAction(nameof(Fastest), new { id });

@@ -8,6 +8,13 @@
 	<section class="card-body">
 		<h3>@Model.Data.Course.Race.Name</h3>
 
+		@if (Model.Error is not null)
+		{
+			<div class="alert alert-error">
+				@Model.Error
+			</div>
+		}
+
 		<form method="post">
 			<div class="row">
 				<div class="form-group col-md-6 col-lg-4">

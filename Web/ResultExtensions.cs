@@ -14,6 +14,9 @@ public static class ResultExtensions
 
 	extension(Model.Result result)
 	{
+		public bool IsValid()
+			=> result.AgeGrade()?.Value <= 100;
+
 		public Time BehindLeader<T>(bool isInFirstPlace, Ranked<T, Model.Result> firstPlace)
 			=> isInFirstPlace || result.Duration == TimeSpan.Zero || firstPlace?.Result.Duration is null
 				? new Time(TimeSpan.Zero)
