@@ -1,58 +1,58 @@
-using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Reports;
-using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class LogController : Controller
+public sealed class LogController(ICourseService courseService, IResultService resultService, DateTime? date = null) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-	private readonly DateTime _today;
+	private readonly DateTime _date = date ?? DateTime.Today;
 
-	public LogController(IDataService dataService, IConfig config, DateTime? today = null)
+	[HttpGet]
+	public async Task<ViewResult> Index(Guid? id = null)
 	{
-		_dataService = dataService;
-		_config = config;
-		_today = today ?? DateTime.Today;
+		var log = await GetActivityLog(id, ActivityLogType.Recent, r => GetGroup(r.StartTime.Date), _date.Subtract(TimeSpan.FromDays(7)));
+		var vm = new ViewModel<ActivityLog>("Activity Log" + (log.Course is not null ? $" — {log.Course.Race.Name}" : string.Empty), log);
+		return View(vm);
 	}
 
 	[HttpGet]
-	public async Task<ViewResult> Index(uint? id = null)
-		=> View(await GetActivityLog(id, ActivityLogType.Recent, r => getGroup(r.StartTime.Value.Date), _today.Subtract(TimeSpan.FromDays(7))));
-
-	[HttpGet]
-	public async Task<ViewResult> All(uint? id = null)
-		=> View("Index", await GetActivityLog(id, ActivityLogType.Archive, r => getMonth(r.StartTime.Value.Date)));
-
-	private async Task<ActivityLogViewModel> GetActivityLog(uint? id, ActivityLogType type, Func<Result, string> grouping, DateTime? filter = null)
+	public async Task<ViewResult> All(Guid? id = null)
 	{
-		var course = id != null ? await _dataService.GetResults(id.Value, null) : null;
-		var results = course == null
-			? await _dataService.GetAllResults()
-			: [course];
+		var log = await GetActivityLog(id, ActivityLogType.Archive, r => GetMonth(r.StartTime.Date));
+		var vm = new ViewModel<ActivityLog>("Activity Log" + (log.Course is not null ? $" — {log.Course.Race.Name}" : string.Empty), log);
+		return View("Index", vm);
+	}
 
-		return new ActivityLogViewModel
+	private async Task<ActivityLog> GetActivityLog(Guid? id, ActivityLogType type, Func<Result, string> grouping, DateTime? filter = null)
+	{
+		var course = id is not null
+			? await courseService.Get(id.Value)
+			: null;
+
+		var results = id is null
+			? await resultService.All()
+			: await resultService.Find(id.Value);
+
+		return new ActivityLog
 		{
-			Config = _config,
 			Type = type,
 			Course = course,
 			Results = results
-				.SelectMany(c => c.Results)
-				.Where(r => filter == null || r.StartTime.Value.Date > filter)
-				.OrderByDescending(r => r.StartTime.Value)
+				.Where(r => filter is null || r.StartTime.Date > filter)
+				.OrderByDescending(r => r.StartTime)
 				.GroupBy(grouping)
 				.ToArray()
 		};
 	}
 
-	private static string getGroup(DateTime date)
+	private static string GetGroup(DateTime date)
 		=> date == DateTime.Today ? "Today"
 			: date == DateTime.Today.Subtract(TimeSpan.FromDays(1)) ? "Yesterday"
 			: "This Week";
 
-	private static string getMonth(DateTime date)
+	private static string GetMonth(DateTime date)
 		=> date.ToString("MMMM yyyy");
 }
