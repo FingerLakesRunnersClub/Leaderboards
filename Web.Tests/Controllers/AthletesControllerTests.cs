@@ -1,7 +1,7 @@
-using FLRC.Leaderboards.Core.Athletes;
-using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Tests;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 
@@ -13,22 +13,22 @@ public sealed class AthletesControllerTests
 	public async Task CanGetListOfAthletes()
 	{
 		//arrange
-		var athletes = new Dictionary<uint, Athlete>
-		{
-			{ 123, new Athlete { Name = "Test 1" } },
-			{ 234, new Athlete { Name = "Test 2" } }
-		};
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAthletes().Returns(athletes);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new AthletesController(iterationManager);
 
-		var controller = new AthletesController(dataService, TestHelpers.Config);
+		var athletes = new[]
+		{
+			new Athlete { Name = "Test 1" },
+			new Athlete { Name = "Test 2" }
+		};
+		iterationManager.ActiveIteration().Returns(new Iteration { Athletes = athletes });
 
 		//act
 		var response = await controller.Index();
 
 		//assert
-		var vm = response.Model as AthletesViewModel;
-		Assert.Equal("Test 1", vm!.Athletes[123].Name);
-		Assert.Equal("Test 2", vm.Athletes[234].Name);
+		var vm = response.Model as ViewModel<Athlete[]>;
+		Assert.Equal("Test 1", vm!.Data[0].Name);
+		Assert.Equal("Test 2", vm.Data[1].Name);
 	}
 }

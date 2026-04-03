@@ -1,24 +1,25 @@
 ﻿@using System.Text.Json
-@using FLRC.Leaderboards.Core.Athletes
-@model AthletesViewModel
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<Athlete[]>
 
 <h2>@Model.Title</h2>
 
 <div class="card card-highlighted">
     <div class="card-body">
-        <h5>Total: @Model.Athletes.Count</h5>
+        <h5>Total: @Model.Data.Length</h5>
 
         <script>
             const fields = [
-                { name: 'Name', value: r => r.Name, link: r => `/Athlete/Index/${r.ID}` },
-                { name: 'Age', center: true, value: r => r.AgeToday || '' },
-                { name: 'Category', center: true, value: r => r.Category?.Display, sort: r => r.Category?.Value ?? 'X'.charCodeAt(0) },
-                { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}`, show: @Model.Config.Features.AgeGroupTeams.ToString().ToLowerInvariant() },
+                { name: 'Name', value: a => a.Name, link: a => `/Athlete/Index/${a.ID}` },
+                { name: 'Age', center: true, value: a => a.AgeToday || '' },
+                { name: 'Category', center: true, value: a => a.Category, sort: a => a.Category ?? 'X' },
+                @* { name: 'Team', center: true, value: r => r.Team.Display, sort: r => r.Team.Value, link: r => `/Team/Index/${r.Team.Value}`, show: @Model.Config.Features.AgeGroupTeams.ToString().ToLowerInvariant() }, *@
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Athletes.Values));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data));
         </script>
 
-        @await Html.PartialAsync("LegacyDataTable")
+        @await Html.PartialAsync("DataTable", (Model.Title, "md"))
     </div>
 </div>
