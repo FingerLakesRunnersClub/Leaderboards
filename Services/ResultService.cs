@@ -6,8 +6,8 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class ResultService(DB db) : IResultService
 {
-	public Task<Result[]> All()
-		=> throw new NotImplementedException();
+	public async Task<Result[]> All()
+		=> await db.Set<Result>().ToArrayAsync();
 
 	public async Task<Result> Get(Guid id)
 		=> await db.Set<Result>()

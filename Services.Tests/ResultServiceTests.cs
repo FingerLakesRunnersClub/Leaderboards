@@ -6,6 +6,26 @@ namespace FLRC.Leaderboards.Services.Tests;
 public sealed class ResultServiceTests
 {
 	[Fact]
+	public async Task CanGetAllResults()
+	{
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		await db.AddRangeAsync(
+			new Result { ID = Guid.NewGuid(), Duration = TimeSpan.FromMilliseconds(1234567), Athlete = athlete },
+			new Result { ID = Guid.NewGuid(), Duration = TimeSpan.FromMilliseconds(2345678), Athlete = athlete }
+		);
+		await db.SaveChangesAsync();
+
+		//act
+		var results = await service.All();
+
+		//assert
+		Assert.Equal(2, results.Length);
+	}
+
+	[Fact]
 	public async Task CanGetResult()
 	{
 		//arrange
@@ -74,8 +94,8 @@ public sealed class ResultServiceTests
 
 		var c1 = Guid.NewGuid();
 		var c2 = Guid.NewGuid();
-		var a1 =  Guid.NewGuid();
-		var a2 =  Guid.NewGuid();
+		var a1 = Guid.NewGuid();
+		var a2 = Guid.NewGuid();
 		var t1 = DateTime.Parse("2026-02-13 11:01:00 AM");
 		var t2 = DateTime.Parse("2026-02-13 11:01:01 AM");
 		var d1 = TimeSpan.FromMilliseconds(1234567);

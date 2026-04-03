@@ -1,9 +1,7 @@
-using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Reports;
-using FLRC.Leaderboards.Core.Results;
-using FLRC.Leaderboards.Core.Tests;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 
@@ -15,69 +13,82 @@ public sealed class LogControllerTests
 	public async Task RecentShowsResultsInReverseChronologicalOrder()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var course = new Course { Results = CourseData.Results };
-		dataService.GetAllResults().Returns([course]);
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 2, 8));
+		var courseService = Substitute.For<ICourseService>();
+		var resultService = Substitute.For<IResultService>();
+
+		var controller = new LogController(courseService, resultService, new DateTime(2020, 2, 8));
+
+		var course = new Course { Results = ResultsData.Results };
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.All().Returns(course.Results.ToArray());
 
 		//act
 		var response = await controller.Index();
 
 		//assert
-		var vm = (ActivityLogViewModel) response.Model;
-		var results = vm!.Results.SelectMany(g => g).ToArray();
+		var vm = response.Model as ViewModel<ActivityLog>;
+		var results = vm!.Data.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
-		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime);
 	}
 
 	[Fact]
 	public async Task ArchiveLogShowsResultsInReverseChronologicalOrder()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var course = new Course { Results = CourseData.Results };
-		dataService.GetAllResults().Returns([course]);
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
+		var courseService = Substitute.For<ICourseService>();
+		var resultService = Substitute.For<IResultService>();
+
+		var controller = new LogController(courseService, resultService, new DateTime(2020, 2, 8));
+
+		var course = new Course { Results = ResultsData.Results };
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.All().Returns(course.Results.ToArray());
 
 		//act
 		var response = await controller.All();
 
 		//assert
-		var vm = (ActivityLogViewModel) response.Model;
-		var results = vm!.Results.SelectMany(g => g).ToArray();
-		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 1), results[7].StartTime.Value);
+		var vm = response.Model as ViewModel<ActivityLog>;
+		var results = vm!.Data.Results.SelectMany(g => g).ToArray();
+		Assert.Equal(8, results.Length);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 1), results[7].StartTime);
 	}
 
 	[Fact]
 	public async Task SameMonthsInDifferentYearsAreSeparated()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var results = CourseData.Results.ToList();
-		results.Add(new Result { StartTime = new Date(new DateTime(2021, 2, 1)) });
+		var courseService = Substitute.For<ICourseService>();
+		var resultService = Substitute.For<IResultService>();
+
+		var controller = new LogController(courseService, resultService, new DateTime(2020, 2, 8));
+
+		var results = ResultsData.Results.ToList();
+		results.Add(new Result { StartTime = new DateTime(2021, 2, 1) });
 		var course = new Course { Results = results.ToArray() };
-		dataService.GetAllResults().Returns([course]);
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 1, 8));
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.All().Returns(course.Results.ToArray());
 
 		//act
 		var response = await controller.All();
 
 		//assert
-		var vm = (ActivityLogViewModel) response.Model;
-		var groups = vm!.Results.Select(g => g.Key).ToArray();
+		var vm = response.Model as ViewModel<ActivityLog>;
+		var groups = vm!.Data.Results.Select(g => g.Key).ToArray();
 		Assert.Equal(2, groups.Length);
 		Assert.Equal("February 2021", groups[0]);
 		Assert.Equal("February 2020", groups[1]);
@@ -87,24 +98,28 @@ public sealed class LogControllerTests
 	public async Task CanGetActivityLogForCourse()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var course = new Course { Results = CourseData.Results };
-		dataService.GetResults(123, null).Returns(course);
-		var controller = new LogController(dataService, TestHelpers.Config, new DateTime(2020, 2, 8));
+		var courseService = Substitute.For<ICourseService>();
+		var resultService = Substitute.For<IResultService>();
+
+		var controller = new LogController(courseService, resultService, new DateTime(2020, 2, 8));
+
+		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Name = "Test" }, Results = ResultsData.Results };
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.Find(course.ID).Returns(course.Results.ToArray());
 
 		//act
-		var response = await controller.Index(123);
+		var response = await controller.Index(course.ID);
 
 		//assert
-		var vm = (ActivityLogViewModel) response.Model;
-		var results = vm!.Results.SelectMany(g => g).ToArray();
+		var vm = response.Model as ViewModel<ActivityLog>;
+		var results = vm!.Data.Results.SelectMany(g => g).ToArray();
 		Assert.Equal(7, results.Length);
-		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime.Value);
-		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime.Value);
+		Assert.Equal(new DateTime(2020, 2, 8), results[0].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 7), results[1].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 6), results[2].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 5), results[3].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 4), results[4].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 3), results[5].StartTime);
+		Assert.Equal(new DateTime(2020, 2, 2), results[6].StartTime);
 	}
 }

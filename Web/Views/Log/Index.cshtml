@@ -1,12 +1,15 @@
-﻿@using FLRC.Leaderboards.Core.Community
+﻿@using FLRC.Leaderboards.Core.Metrics
+@using FLRC.Leaderboards.Core.Races
 @using FLRC.Leaderboards.Core.Reports
-@model ActivityLogViewModel
+@using FLRC.Leaderboards.Web.Controllers
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<ActivityLog>
 
 @functions
 {
-	string breakpoint() => Model.Course == null ? "md" : "sm";
+	string Breakpoint() => Model.Data.Course is null ? "md" : "sm";
 
-	string style(ActivityLogType type) => Model.Type == type
+	string Style(ActivityLogType type) => Model.Data.Type == type
 	? "secondary"
 	: "light";
 }
@@ -15,32 +18,28 @@
 
 <section class="mb-3">
 	<div class="btn-group">
-		@foreach (var type in ActivityLogViewModel.LogTypes)
+		@foreach (var type in ActivityLog.Types)
 		{
-			<a class="btn btn-sm btn-@style(type.Key)" href="/Log/@type.Value/@Model.Course?.ID">@type.Key</a>
+			<a class="btn btn-sm btn-@Style(type.Key)" href="/Log/@type.Value/@Model.Data.Course?.ID">@type.Key</a>
 		}
 	</div>
 </section>
 
 <div class="card card-highlighted">
 	<div class="card-body">
-		@foreach (var group in Model.Results)
+		@foreach (var group in Model.Data.Results)
 		{
 			<h4>@group.Key</h4>
-			<table class="table table-bordered table-striped table-hover table-sm table-responsive-@breakpoint()">
+			<table class="table table-bordered table-striped table-hover table-sm table-responsive-@Breakpoint()">
 				<thead>
 				<tr>
 					<th>Date</th>
 					<th>Athlete</th>
-					@if (Model.Course == null)
+					@if (Model.Data.Course is null)
 					{
-						<th>@Model.Config.CourseLabel</th>
+						<th>@Model.Data.CourseLabel</th>
 					}
 					<th class="text-right">Time</th>
-					@if (Model.Config.Features.CommunityStars)
-					{
-						<th class="text-center">Community</th>
-					}
 				</tr>
 				</thead>
 				<tbody>
@@ -48,53 +47,24 @@
 				{
 					<tr>
 						<td>
-							@result.StartTime.Display
+							@(new Date(result.StartTime).Display)
 						</td>
 						<td>
 							<a href="/Athlete/Index/@result.Athlete.ID">
 								@result.Athlete.Name
 							</a>
 						</td>
-						@if (Model.Course == null)
+						@if (Model.Data.Course == null)
 						{
 							<td>
-								<a href="/Course/@result.Course.ID/Fastest">
-									@result.CourseName
+								<a href="/Results/Fastest/@result.Course.ID">
+									@result.Course.Race.Name
 								</a>
 							</td>
 						}
 						<td class="text-right">
-							@result.Duration?.Display
+							@(new Time(result.Duration).Display)
 						</td>
-						@if (Model.Config.Features.CommunityStars)
-						{
-							<td class="text-center">
-								@if (result.CommunityStars != null)
-								{
-									<div class="community d-flex justify-content-center">
-										<span class="group">
-											@if (result.CommunityStars[StarType.GroupRun])
-											{
-												<span class="star" title="Group Run">
-													<i aria-hidden="true" class="fas fa-running"></i>
-													<i aria-hidden="true" class="fas fa-running"></i>
-													<i aria-hidden="true" class="fas fa-star"></i>
-												</span>
-											}
-										</span>
-										<span class="group">
-											@if (result.CommunityStars[StarType.Story])
-											{
-												<span class="star" title="Story">
-													<i aria-hidden="true" class="far fa-file-alt"></i>
-													<i aria-hidden="true" class="fas fa-star"></i>
-												</span>
-											}
-										</span>
-									</div>
-								}
-							</td>
-						}
 					</tr>
 				}
 				</tbody>
