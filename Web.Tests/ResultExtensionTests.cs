@@ -7,6 +7,61 @@ namespace FLRC.Leaderboards.Web.Tests;
 public sealed class ResultExtensionTests
 {
 	[Fact]
+	public void ResultIsValidWithRealisticAgeGrade()
+	{
+		//arrange
+		var result = new Result
+		{
+			StartTime = new DateTime(2020, 1, 1, 12, 0, 0),
+			Duration = new TimeSpan(1, 2, 3),
+			Course = new Course { Distance = 10, Units = "km", Race = new Race { Type = "Road" } },
+			Athlete = new Athlete { DateOfBirth = new DateOnly(2000, 1, 1) }
+		};
+
+		//act
+		var isValid = result.IsValid();
+
+		//assert
+		Assert.True(isValid);
+	}
+
+	[Fact]
+	public void ResultIsNotValidWithUnrealisticAgeGrade()
+	{
+		//arrange
+		var result = new Result
+		{
+			Duration = new TimeSpan(1, 2, 3),
+			Course = new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } },
+			Athlete = new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) }
+		};
+
+		//act
+		var isValid = result.IsValid();
+
+		//assert
+		Assert.False(isValid);
+	}
+
+	[Fact]
+	public void ResultIsNotValidWithoutAthleteAge()
+	{
+		//arrange
+		var result = new Result
+		{
+			Duration = new TimeSpan(1, 2, 3),
+			Course = new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } },
+			Athlete = new Athlete()
+		};
+
+		//act
+		var isValid = result.IsValid();
+
+		//assert
+		Assert.False(isValid);
+	}
+
+	[Fact]
 	public void CanGetTimeBehindOtherResult()
 	{
 		//arrange

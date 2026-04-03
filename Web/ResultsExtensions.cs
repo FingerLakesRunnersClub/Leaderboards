@@ -37,12 +37,12 @@ public static class ResultsExtensions
 			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
 		private RankedList<T, Model.Result> Rank<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> sort)
-			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort, false);
+			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort);
 
 		private RankedList<T, Model.Result> RankDescending<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> sort)
-			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort, false);
+			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
-		private static RankedList<T, Model.Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> getValue, bool allowInvalid)
+		private static RankedList<T, Model.Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> getValue)
 		{
 			var ranks = new RankedList<T, Model.Result>();
 			byte skippedRanks = 0;
@@ -52,12 +52,6 @@ public static class ResultsExtensions
 			{
 				var group = list[rank - 1];
 				var result = getResult(group);
-
-				if (result.AgeGrade()?.Value > 100 && !allowInvalid)
-				{
-					skippedRanks++;
-					continue;
-				}
 
 				var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
 				var value = getValue(group);
