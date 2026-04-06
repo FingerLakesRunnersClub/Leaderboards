@@ -1,43 +1,43 @@
 using FLRC.Leaderboards.Core.Athletes;
-using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Reports;
-using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Athlete = FLRC.Leaderboards.Model.Athlete;
+using Course = FLRC.Leaderboards.Model.Course;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class StatisticsController : Controller
+public sealed class StatisticsController(IIterationManager iterationManager) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public StatisticsController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index()
-		=> View(await GetStatistics());
-
-	private async Task<StatisticsViewModel> GetStatistics()
 	{
-		var results = await _dataService.GetAllResults();
+		var iteration = await iterationManager.ActiveIteration();
+		var stats = await GetStatistics(iteration);
+		var vm = new ViewModel<StatisticsViewModel>("Statistics", stats);
+		return View(vm);
+	}
 
-		var courseStats = results.ToDictionary(c => c, c => c.Statistics());
-		var athletes = courseStats.SelectMany(stats => stats.Key.Results.Select(r => r.Athlete)).Distinct()
-			.ToArray();
+	private async Task<StatisticsViewModel> GetStatistics(Iteration iteration)
+	{
+		var officialCourses = iteration.OfficialChallenge.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters);
+		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(officialCourses).OrderBy(c => new Distance(c.DistanceDisplay).Meters);
+		var courses = officialCourses.Concat(otherCourses).ToArray();
 
-		var history = results.SelectMany(c => c.Results).GroupBy(r => r.StartTime.Week)
+		var courseStats = courses.ToDictionary(c => c, c => c.Results.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate).ToArray().Statistics());
+		var athletes = courseStats.SelectMany(stats => stats.Key.Results.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate).Select(r => r.Athlete)).Distinct().ToArray();
+
+		var history = courses.SelectMany(c => c.Results)
+			.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate)
+			.GroupBy(r => new Date(r.StartTime).Week)
 			.OrderByDescending(r => r.Key)
-			.ToDictionary(g => g.Key, weeklyStatistics);
+			.ToDictionary(g => g.Key, WeeklyStatistics);
 
 		return new StatisticsViewModel
 		{
-			Config = _config,
 			Courses = courseStats,
 			History = history,
 			Total = GetTotals(athletes, courseStats)
@@ -50,8 +50,8 @@ public sealed class StatisticsController : Controller
 			Participants = new Dictionary<string, int>
 			{
 				{ string.Empty, athletes.Length },
-				{ Category.F.Display, athletes.Count(a => a.Category == Category.F) },
-				{ Category.M.Display, athletes.Count(a => a.Category == Category.M) }
+				{ Category.F.Display, athletes.Count(a => a.Category == 'F') },
+				{ Category.M.Display, athletes.Count(a => a.Category == 'M') }
 			},
 			Runs = new Dictionary<string, int>
 			{
@@ -74,25 +74,25 @@ public sealed class StatisticsController : Controller
 				{
 					Category.F.Display,
 					(double) courseStats.Sum(stats => stats.Value.Runs[Category.F.Display]) /
-					athletes.Count(a => a.Category == Category.F)
+					athletes.Count(a => a.Category == 'F')
 				},
 				{
 					Category.M.Display,
 					(double) courseStats.Sum(stats => stats.Value.Runs[Category.M.Display]) /
-					athletes.Count(a => a.Category == Category.M)
+					athletes.Count(a => a.Category == 'M')
 				}
 			}
 		};
 
-	private static Statistics weeklyStatistics(IEnumerable<Result> results)
+	private static Statistics WeeklyStatistics(IEnumerable<Result> results)
 	{
 		var resultList = results.ToArray();
 		var athletes = resultList.Select(r => r.Athlete).Distinct().ToArray();
-		var fResults = resultList.Where(r => r.Athlete.Category == Category.F).ToArray();
-		var mResults = resultList.Where(r => r.Athlete.Category == Category.M).ToArray();
+		var fResults = resultList.Where(r => r.Athlete.Category == 'F').ToArray();
+		var mResults = resultList.Where(r => r.Athlete.Category == 'M').ToArray();
 
-		var fAthletes = athletes.Where(a => a.Category == Category.F).ToArray();
-		var mAthletes = athletes.Where(a => a.Category == Category.M).ToArray();
+		var fAthletes = athletes.Where(a => a.Category == 'F').ToArray();
+		var mAthletes = athletes.Where(a => a.Category == 'M').ToArray();
 		return new Statistics
 		{
 			Participants = new Dictionary<string, int>
@@ -111,15 +111,15 @@ public sealed class StatisticsController : Controller
 			{
 				{
 					string.Empty,
-					resultList.Sum(r => r.Course.Distance.Miles)
+					resultList.Sum(r => new Distance(r.Course.DistanceDisplay).Miles)
 				},
 				{
 					Category.F.Display,
-					fResults.Sum(r => r.Course.Distance.Miles)
+					fResults.Sum(r => new Distance(r.Course.DistanceDisplay).Miles)
 				},
 				{
 					Category.M.Display,
-					mResults.Sum(r => r.Course.Distance.Miles)
+					mResults.Sum(r => new Distance(r.Course.DistanceDisplay).Miles)
 				}
 			},
 			Average = new Dictionary<string, double>

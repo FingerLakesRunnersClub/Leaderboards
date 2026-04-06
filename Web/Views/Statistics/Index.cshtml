@@ -1,6 +1,6 @@
 ﻿@using FLRC.Leaderboards.Core.Athletes
-@using FLRC.Leaderboards.Core.Reports
-@model StatisticsViewModel
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<StatisticsViewModel>
 
 <h2 id="table-header">@Model.Title</h2>
 
@@ -9,49 +9,37 @@
 		<table aria-labelledby="table-header" class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
 			<thead>
 			<tr>
-				<th scope="col" rowspan="2">@Model.Config.CourseLabel</th>
+				<th scope="col" rowspan="2">Course</th>
 				<th scope="colgroup" colspan="3">Participants</th>
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="colgroup" colspan="3">Total Runs</th>
-				}
+				<th scope="colgroup" colspan="3">Total Runs</th>
 				<th scope="colgroup" colspan="3">Total Miles</th>
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="colgroup" colspan="3">Average Runs</th>
-				}
+				<th scope="colgroup" colspan="3">Average Runs</th>
 			</tr>
 			<tr>
 				<th scope="col">All</th>
 				<th scope="col">F</th>
 				<th scope="col">M</th>
 
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-				}
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
 
 				<th scope="col">All</th>
 				<th scope="col">F</th>
 				<th scope="col">M</th>
 
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-				}
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var (key, stats) in Model.Courses)
+			@foreach (var (key, stats) in Model.Data.Courses)
 			{
 				<tr>
 					<td>
-						<a href="/Course/@key.ID/@key.ShortName/Fastest">
-							@key.Name
+						<a href="/Results/Fastest/@key.ID">
+							@key.Race.Name
 						</a>
 					</td>
 
@@ -59,113 +47,99 @@
 					<td>@stats.Participants[Category.F.Display]</td>
 					<td>@stats.Participants[Category.M.Display]</td>
 
-					@if (Model.Config.Features.MultiAttempt)
-					{
-						<td>@stats.Runs[string.Empty]</td>
-						<td>@stats.Runs[Category.F.Display]</td>
-						<td>@stats.Runs[Category.M.Display]</td>
-					}
+					<td>@stats.Runs[string.Empty]</td>
+					<td>@stats.Runs[Category.F.Display]</td>
+					<td>@stats.Runs[Category.M.Display]</td>
+
 					<td>@stats.Miles[string.Empty].ToString("F1")</td>
 					<td>@stats.Miles[Category.F.Display].ToString("F1")</td>
 					<td>@stats.Miles[Category.M.Display].ToString("F1")</td>
 
-					@if (Model.Config.Features.MultiAttempt)
-					{
-						<td>@stats.Average[string.Empty].ToString("F1")</td>
-						<td>@stats.Average[Category.F.Display].ToString("F1")</td>
-						<td>@stats.Average[Category.M.Display].ToString("F1")</td>
-					}
+					<td>@stats.Average[string.Empty].ToString("F1")</td>
+					<td>@stats.Average[Category.F.Display].ToString("F1")</td>
+					<td>@stats.Average[Category.M.Display].ToString("F1")</td>
 				</tr>
 			}
 			<tr>
 				<th scope="row">Total</th>
 
-				<th scope="col">@Model.Total.Participants[string.Empty]</th>
-				<th scope="col">@Model.Total.Participants[Category.F.Display]</th>
-				<th scope="col">@Model.Total.Participants[Category.M.Display]</th>
+				<th scope="col">@Model.Data.Total.Participants[string.Empty]</th>
+				<th scope="col">@Model.Data.Total.Participants[Category.F.Display]</th>
+				<th scope="col">@Model.Data.Total.Participants[Category.M.Display]</th>
 
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="col">@Model.Total.Runs[string.Empty]</th>
-					<th scope="col">@Model.Total.Runs[Category.F.Display]</th>
-					<th scope="col">@Model.Total.Runs[Category.M.Display]</th>
-				}
+				<th scope="col">@Model.Data.Total.Runs[string.Empty]</th>
+				<th scope="col">@Model.Data.Total.Runs[Category.F.Display]</th>
+				<th scope="col">@Model.Data.Total.Runs[Category.M.Display]</th>
 
-				<th scope="col">@Model.Total.Miles[string.Empty].ToString("F1")</th>
-				<th scope="col">@Model.Total.Miles[Category.F.Display].ToString("F1")</th>
-				<th scope="col">@Model.Total.Miles[Category.M.Display].ToString("F1")</th>
+				<th scope="col">@Model.Data.Total.Miles[string.Empty].ToString("F1")</th>
+				<th scope="col">@Model.Data.Total.Miles[Category.F.Display].ToString("F1")</th>
+				<th scope="col">@Model.Data.Total.Miles[Category.M.Display].ToString("F1")</th>
 
-				@if (Model.Config.Features.MultiAttempt)
-				{
-					<th scope="col">@Model.Total.Average[string.Empty].ToString("F1")</th>
-					<th scope="col">@Model.Total.Average[Category.F.Display].ToString("F1")</th>
-					<th scope="col">@Model.Total.Average[Category.M.Display].ToString("F1")</th>
-				}
+				<th scope="col">@Model.Data.Total.Average[string.Empty].ToString("F1")</th>
+				<th scope="col">@Model.Data.Total.Average[Category.F.Display].ToString("F1")</th>
+				<th scope="col">@Model.Data.Total.Average[Category.M.Display].ToString("F1")</th>
 			</tr>
 			</tbody>
 		</table>
 	</div>
 </div>
 
-@if (Model.Config.Features.MultiAttempt)
-{
-	<h3 id="history-header">History</h3>
+<h3 id="history-header">History</h3>
 
-	<div class="card card-highlighted">
-		<div class="card-body">
-			<table aria-labelledby="history-header" class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
-				<thead>
+<div class="card card-highlighted">
+	<div class="card-body">
+		<table aria-labelledby="history-header" class="table table-bordered table-striped table-hover table-sm table-responsive-md text-center">
+			<thead>
+			<tr>
+				<th scope="col" rowspan="2">Week</th>
+				<th scope="colgroup" colspan="3">Participants</th>
+				<th scope="colgroup" colspan="3">Total Runs</th>
+				<th scope="colgroup" colspan="3">Total Miles</th>
+				<th scope="colgroup" colspan="3">Average Runs</th>
+			</tr>
+			<tr>
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
+
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
+
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
+
+				<th scope="col">All</th>
+				<th scope="col">F</th>
+				<th scope="col">M</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var (startDate, stats) in Model.Data.History.OrderByDescending(w => w.Key))
+			{
 				<tr>
-					<th scope="col" rowspan="2">Week</th>
-					<th scope="colgroup" colspan="3">Participants</th>
-					<th scope="colgroup" colspan="3">Total Runs</th>
-					<th scope="colgroup" colspan="3">Total Miles</th>
-					<th scope="colgroup" colspan="3">Average Runs</th>
+					<td>
+						@startDate.ToString("M/d/yy")–@startDate.AddDays(6).ToString("M/d/yy")
+					</td>
+
+					<td>@stats.Participants[string.Empty]</td>
+					<td>@stats.Participants[Category.F.Display]</td>
+					<td>@stats.Participants[Category.M.Display]</td>
+
+					<td>@stats.Runs[string.Empty]</td>
+					<td>@stats.Runs[Category.F.Display]</td>
+					<td>@stats.Runs[Category.M.Display]</td>
+
+					<td>@stats.Miles[string.Empty].ToString("F1")</td>
+					<td>@stats.Miles[Category.F.Display].ToString("F1")</td>
+					<td>@stats.Miles[Category.M.Display].ToString("F1")</td>
+
+					<td>@stats.Average[string.Empty].ToString("F1")</td>
+					<td>@stats.Average[Category.F.Display].ToString("F1")</td>
+					<td>@stats.Average[Category.M.Display].ToString("F1")</td>
 				</tr>
-				<tr>
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-
-					<th scope="col">All</th>
-					<th scope="col">F</th>
-					<th scope="col">M</th>
-				</tr>
-				</thead>
-				<tbody>
-				@foreach (var (startDate, stats) in Model.History.OrderByDescending(w => w.Key))
-				{
-					<tr>
-						<td>
-							@startDate.ToString("M/d/yy")–@startDate.AddDays(6).ToString("M/d/yy")
-						</td>
-
-						<td>@stats.Participants[string.Empty]</td>
-						<td>@stats.Participants[Category.F.Display]</td>
-						<td>@stats.Participants[Category.M.Display]</td>
-
-						<td>@stats.Runs[string.Empty]</td>
-						<td>@stats.Runs[Category.F.Display]</td>
-						<td>@stats.Runs[Category.M.Display]</td>
-
-						<td>@stats.Miles[string.Empty].ToString("F1")</td>
-						<td>@stats.Miles[Category.F.Display].ToString("F1")</td>
-						<td>@stats.Miles[Category.M.Display].ToString("F1")</td>
-
-						<td>@stats.Average[string.Empty].ToString("F1")</td>
-						<td>@stats.Average[Category.F.Display].ToString("F1")</td>
-						<td>@stats.Average[Category.M.Display].ToString("F1")</td>
-					</tr>
-				}
-			</table>
-		</div>
+			}
+		</table>
 	</div>
-}
+</div>
