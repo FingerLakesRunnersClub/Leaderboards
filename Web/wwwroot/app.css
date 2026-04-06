@@ -71,6 +71,11 @@ footer a, footer a:hover, footer a:focus {
 	overflow-y: auto;
 }
 
+.dropdown-menu hr {
+	width: 50%;
+	margin: 0.75rem auto;
+}
+
 #about {
     right: 0.25rem;
 }

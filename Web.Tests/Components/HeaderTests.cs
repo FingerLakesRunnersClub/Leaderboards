@@ -16,23 +16,22 @@ public sealed class HeaderTests
 	public async Task CanRenderComponent()
 	{
 		//arrange
-		var seriesService = Substitute.For<ISeriesService>();
-		seriesService.Find("UTs").Returns(new Series { Key = "UTs", Name = "Unit Tests" });
+		var iterationManager = Substitute.For<IIterationManager>();
+		var iteration = new Iteration { Series = new Series { Key = "UTs", Name = "Unit Tests" } };
+		iterationManager.ActiveIteration().Returns(iteration);
 
 		var http = Substitute.For<IHttpContextAccessor>();
 
 		var settings = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var config = new AppConfig(settings);
 
-		var app = new AppContextProvider("UTs");
-
-		var component = new Header(seriesService, http, config, app);
+		var component = new Header(iterationManager, http, config);
 
 		//act
 		var result = await component.InvokeAsync();
 
 		//assert
-		var model = (HeaderViewModel)result.ViewData!.Model;
+		var model = result.ViewData!.Model as HeaderViewModel;
 		Assert.Equal("Unit Tests", model!.Series.Name);
 	}
 }

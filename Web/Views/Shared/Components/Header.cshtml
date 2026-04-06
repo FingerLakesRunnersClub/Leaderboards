@@ -34,11 +34,24 @@
 						@(Model.CourseMenuLabel)s
 					</a>
 					<ul id="races" class="dropdown-menu" onclick="event.stopPropagation();">
-						@foreach (var course in Model.CourseMenu)
+						@foreach (var course in Model.OfficialCourses)
 						{
-							var defaultPage = Enum.TryParse<FieldEvent>(course.Value.ToFieldEvent(), out _) ? "Farthest" : "Fastest";
+							var defaultPage = Enum.TryParse<FieldEvent>(course.Race.Name.ToFieldEvent(), out _) ? "Farthest" : "Fastest";
 							<li class="dropdown-item">
-								<a href="/Course/@course.Key/@defaultPage">@course.Value</a>
+								<a href="/Results/@defaultPage/@course.ID">@course.Race.Name</a>
+							</li>
+						}
+
+						@if (Model.OfficialCourses.Length > 0 && Model.OtherCourses.Length > 0)
+						{
+							<hr/>
+						}
+
+						@foreach (var course in Model.OtherCourses)
+						{
+							var defaultPage = Enum.TryParse<FieldEvent>(course.Race.Name.ToFieldEvent(), out _) ? "Farthest" : "Fastest";
+							<li class="dropdown-item">
+								<a href="/Results/@defaultPage/@course.ID">@course.Race.Name</a>
 							</li>
 						}
 					</ul>
