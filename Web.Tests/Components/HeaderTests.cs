@@ -19,21 +19,21 @@ public sealed class HeaderTests
 		var authService = Substitute.For<IAuthService>();
 		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
-		var seriesService = Substitute.For<ISeriesService>();
-		seriesService.Find("UTs").Returns(new Series { Key = "UTs", Name = "Unit Tests" });
+		var iterationManager = Substitute.For<IIterationManager>();
 
 		var settings = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var config = new AppConfig(settings);
 
-		var app = new AppContextProvider("UTs");
+		var component = new Header(authService, adminService, athleteService, config, iterationManager);
 
-		var component = new Header(authService, adminService, athleteService, seriesService, config, app);
+		var iteration = new Iteration { Series = new Series { Key = "UTs", Name = "Unit Tests" } };
+		iterationManager.ActiveIteration().Returns(iteration);
 
 		//act
 		var result = await component.InvokeAsync();
 
 		//assert
-		var model = (HeaderViewModel)result.ViewData!.Model;
+		var model = result.ViewData!.Model as HeaderViewModel;
 		Assert.Equal("Unit Tests", model!.Series.Name);
 	}
 }
