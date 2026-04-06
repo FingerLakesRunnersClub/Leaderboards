@@ -1,6 +1,8 @@
+using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Reports;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -89,5 +91,48 @@ public static class ResultsExtensions
 
 		private Model.Result[] Filter(Filter filter)
 			=> results.Where(r => filter == null || filter.IsMatch(r)).ToArray();
+
+		public Statistics Statistics()
+		{
+			var allAthletes = results.GroupedResults();
+			var fAthletes = results.GroupedResults(new Filter(Category.F));
+			var mAthletes = results.GroupedResults(new Filter(Category.M));
+
+			var allResultCount = results.Count;
+			var fResultCount = results.Count(r => r.Athlete.Category == 'F');
+			var mResultCount = results.Count(r => r.Athlete.Category == 'M');
+
+			var averageTotal = allAthletes.Length > 0 ? allAthletes.Average(a => a.Count()) : 0;
+			var fAverage = fAthletes.Length > 0 ? fAthletes.Average(a => a.Count()) : 0;
+			var mAverage = mAthletes.Length > 0 ? mAthletes.Average(a => a.Count()) : 0;
+
+			return new Statistics
+			{
+				Participants = new Dictionary<string, int>
+				{
+					{ string.Empty, allAthletes.Length },
+					{ Category.F.Display, fAthletes.Length },
+					{ Category.M.Display, mAthletes.Length }
+				},
+				Runs = new Dictionary<string, int>
+				{
+					{ string.Empty, allResultCount },
+					{ Category.F.Display, fResultCount },
+					{ Category.M.Display, mResultCount }
+				},
+				Miles = new Dictionary<string, double>
+				{
+					{ string.Empty, allResultCount * new Distance(results.FirstOrDefault()?.Course.DistanceDisplay ?? "0").Miles },
+					{ Category.F.Display, fResultCount * new Distance(results.FirstOrDefault()?.Course.DistanceDisplay ?? "0").Miles },
+					{ Category.M.Display, mResultCount * new Distance(results.FirstOrDefault()?.Course.DistanceDisplay ?? "0").Miles }
+				},
+				Average = new Dictionary<string, double>
+				{
+					{ string.Empty, allAthletes.Length != 0 ? averageTotal : 0 },
+					{ Category.F.Display, fAthletes.Length != 0 ? fAverage : 0 },
+					{ Category.M.Display, mAthletes.Length != 0 ? mAverage : 0 }
+				}
+			};
+		}
 	}
 }

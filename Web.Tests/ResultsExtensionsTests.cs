@@ -447,4 +447,20 @@ public sealed class ResultsExtensionsTests
 		Assert.Equal(2, runs[1].Rank.Value);
 		Assert.Equal(ResultsData.Athlete1, runs[1].Result.Athlete);
 	}
+
+	[Fact]
+	public void CanGetStatisticsForCourse()
+	{
+		//arrange
+		var results = ResultsData.Results;
+
+		//act
+		var stats = results.Statistics();
+
+		//assert
+		Assert.Equal(4, stats.Participants[string.Empty]);
+		Assert.Equal(8, stats.Runs[string.Empty]);
+		Assert.Equal(8 * 10000 / Core.Races.Distance.MetersPerMile, stats.Miles[string.Empty]);
+		Assert.Equal(2, stats.Average[string.Empty]);
+	}
 }
