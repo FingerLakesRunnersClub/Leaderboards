@@ -53,7 +53,7 @@ public sealed class ChallengeControllerTests
 		challengeService.Get(id).Returns(new Challenge());
 
 		//act
-		var result = await controller.Edit(id, "test2", []);
+		var result = await controller.Edit(id, "test2", null, []);
 
 		//assert
 		Assert.Equal(nameof(ChallengesController.Index), result.ActionName);

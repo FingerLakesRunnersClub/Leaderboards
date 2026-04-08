@@ -26,6 +26,13 @@ public record Iteration : Identifiable<Guid>
 	public bool IsActive
 		=> DateOnly.FromDateTime(DateTime.Now) > StartDate && DateOnly.FromDateTime(DateTime.Now) <= EndDate;
 
+	[JsonIgnore]
 	public Challenge? OfficialChallenge
 		=> Challenges.FirstOrDefault(c => c is { IsOfficial: true, IsPrimary: true });
+
+	[JsonIgnore]
+	public Challenge[] UltraChallenges
+		=> Challenges.Where(c => c is { IsOfficial: true, IsPrimary: false, Courses.Count: > 0 })
+			.OrderBy(c => c.Name)
+			.ToArray();
 }

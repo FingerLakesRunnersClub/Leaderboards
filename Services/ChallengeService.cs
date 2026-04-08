@@ -34,6 +34,7 @@ public sealed class ChallengeService(DB db) : IChallengeService
 	public async Task Update(Challenge challenge, Challenge updated)
 	{
 		challenge.Name = updated.Name;
+		challenge.TimeLimit = updated.TimeLimit;
 		await db.SaveChangesAsync();
 	}
 
