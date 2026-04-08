@@ -28,10 +28,14 @@ public sealed class ChallengesController(IChallengeService challengeService, ICo
 	}
 
 	[HttpPost]
-	public async Task<RedirectToActionResult> Edit(Guid id, string name, Guid[] selected)
+	public async Task<RedirectToActionResult> Edit(Guid id, string name, byte? timeLimit, Guid[] selected)
 	{
 		var challenge = await challengeService.Get(id);
-		var updated = new Challenge { Name = name };
+		var updated = new Challenge
+		{
+			Name = name,
+			TimeLimit = timeLimit is not null ? TimeSpan.FromHours(timeLimit.Value) : null
+		};
 		var courses = await courseService.GetCourses(selected);
 		await challengeService.Update(challenge, updated);
 		await challengeService.UpdateCourses(challenge, courses);

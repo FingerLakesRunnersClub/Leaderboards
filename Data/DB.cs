@@ -21,6 +21,7 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		anIteration.HasMany(i => i.Races).WithMany(c => c.Iterations).UsingEntity<RaceIteration>().Table("RaceIterations");
 		anIteration.HasMany(i => i.Athletes).WithMany(a => a.Registrations).UsingEntity<IterationRegistration>().Table("IterationRegistration");
 		anIteration.HasMany(i => i.Challenges).WithOne(c => c.Iteration);
+		anIteration.Ignore(i => i.UltraChallenges);
 
 		var aRace = build.Entity<Race>().Table("Races");
 		aRace.HasMany(r => r.Courses).WithOne(c => c.Race);
@@ -34,7 +35,7 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 
 		var aChallenge = build.Entity<Challenge>().Table("Challenges");
 		aChallenge.HasMany(c => c.Courses).WithMany(c => c.Challenges).UsingEntity<ChallengeCourse>().Table("ChallengeCourses");
-		aChallenge.Property(c => c.TimeLimit).HasConversion(t => t != null ? (byte?)t.Value.Hours : null, t => t != null ? TimeSpan.FromHours(t.Value) : null);
+		aChallenge.Property(c => c.TimeLimit).HasConversion(t => t != null ? (byte?)t.Value.TotalHours : null, t => t != null ? TimeSpan.FromHours(t.Value) : null);
 		aChallenge.HasOne(c => c.Athlete);
 
 		var anAthlete = build.Entity<Athlete>().Table("Athletes");
