@@ -88,8 +88,7 @@ CREATE TABLE IF NOT EXISTS Results
 	CourseID  UUID      NOT NULL REFERENCES Courses (ID),
 	AthleteID UUID      NOT NULL REFERENCES Athletes (ID),
 	StartTime TIMESTAMP NOT NULL,
-	Duration  INT       NOT NULL,
-	UNIQUE (AthleteID, StartTime, Duration)
+	Duration  INT       NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS LinkedAccounts
