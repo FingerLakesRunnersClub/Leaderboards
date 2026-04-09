@@ -50,7 +50,7 @@ public sealed class Header(IIterationManager iterationManager, IHttpContextAcces
 		reports.Add("Statistics", "/Statistics");
 
 		if (config.SeriesTitle is not null)
-			reports.Add(config.SeriesTitle, "/Series");
+			reports.Add(config.SeriesTitle, "/UltraChallenges/Results");
 
 		return reports;
 	}

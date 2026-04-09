@@ -1,22 +1,23 @@
 @using System.Text.Json
-@using FLRC.Leaderboards.Core.Series;
-@model SeriesViewModel
+@using FLRC.Leaderboards.Model;
+@using FLRC.Leaderboards.Web.ViewModels
+@model ChallengeViewModel
 
 @functions
 {
-	string style(Series series) => Model.Series == series
+	string Style(Challenge challenge) => Model.Challenge == challenge
 		? "secondary"
 		: "light";
 }
 
-<h2>@Model.Config.SeriesTitle</h2>
+<h2>Ultra Challenges</h2>
 
 <section class="mb-3">
 	<div class="btn-group">
-		@foreach (var series in Model.Config.Series)
+		@foreach (var challenge in Model.Challenges)
 		{
-			var url = $"/Series/Index/{series.ID}";
-			<a class="btn btn-sm btn-@style(series)" href="@url">@series.ID</a>
+			var url = $"/UltraChallenges/Results/{challenge.ID}";
+			<a class="btn btn-sm btn-@Style(challenge)" href="@url">@challenge.Name</a>
 		}
 	</div>
 </section>
@@ -29,8 +30,8 @@
 			const fields = [
 				{ name: 'Rank', center: true, value: r => r.Rank.Value },
 				{ name: 'Name', value: r => r.Value.Athlete.Name, link: r => `/Athlete/Index/${r.Value.Athlete.ID}` },
-				{ name: 'Age', center: true, value: r => r.Value.Athlete.Age || '' },
-				{ name: 'Category', center: true, value: r => r.Value.Athlete.Category?.Display, sort: r => r.Value.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
+				{ name: 'Age', center: true, value: r => r.Value.AthleteAge || '' },
+				{ name: 'Category', center: true, value: r => r.Value.Athlete.Category, sort: r => r.Value.Athlete.Category ?? 'X'.charCodeAt(0) },
 				{ name: 'Start Date', center: true, value: r => r.Value.StartTime.Display, sort: r => r.Value.StartTime.Value },
 				{ name: 'Finish Date', center: true, value: r => r.Value.FinishTime.Display, sort: r => r.Value.FinishTime.Value },
 				{ name: 'Total Time', center: true, value: r => r.Value.TotalTime.Display, sort: r => r.Value.TotalTime.Value },
