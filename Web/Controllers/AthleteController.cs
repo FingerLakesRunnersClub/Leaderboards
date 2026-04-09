@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
@@ -6,24 +7,17 @@ using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
-using FLRC.Leaderboards.Core.Series;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc;
+using Course = FLRC.Leaderboards.Core.Races.Course;
+using Result = FLRC.Leaderboards.Core.Results.Result;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AthleteController : Controller
+public sealed class AthleteController(IIterationManager iterationManager, IDataService dataService, IConfig config) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly ISeriesManager _seriesManager;
-	private readonly IConfig _config;
-
-	public AthleteController(IDataService dataService, ISeriesManager seriesManager, IConfig config)
-	{
-		_dataService = dataService;
-		_seriesManager = seriesManager;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index(uint id)
 		=> View(await GetAthlete(id));
@@ -31,9 +25,9 @@ public sealed class AthleteController : Controller
 	[HttpGet]
 	public async Task<ViewResult> Course(uint id, uint courseID, string name)
 	{
-		var allResults = await _dataService.GetAllResults();
+		var allResults = await dataService.GetAllResults();
 		var badges = GetBadges(id, allResults);
-		var course = await _dataService.GetResults(courseID, name);
+		var course = await dataService.GetResults(courseID, name);
 
 		return course.IsFieldEvent
 			? View("FieldEvent", GetFieldEventViewModel(id, course, await badges))
@@ -50,13 +44,13 @@ public sealed class AthleteController : Controller
 
 	private async Task<AthleteSummaryViewModel> GetAthlete(uint id)
 	{
-		var athlete = await _dataService.GetAthlete(id);
-		var results = await _dataService.GetAllResults();
-		var summary = new AthleteSummary(athlete, results, _config);
+		var athlete = await dataService.GetAthlete(id);
+		var results = await dataService.GetAllResults();
+		var summary = new AthleteSummary(athlete, results, config);
 
 		return new AthleteSummaryViewModel
 		{
-			Config = _config,
+			Config = config,
 			Summary = summary,
 			Header = new AthleteHeader
 			{
@@ -73,7 +67,7 @@ public sealed class AthleteController : Controller
 
 		return new AthleteCourseResultsViewModel
 		{
-			Config = _config,
+			Config = config,
 			Header = new AthleteHeader
 			{
 				Athlete = myResults[0].Athlete,
@@ -91,7 +85,7 @@ public sealed class AthleteController : Controller
 
 		return new AthleteFieldEventResultsViewModel()
 		{
-			Config = _config,
+			Config = config,
 			Header = new AthleteHeader
 			{
 				Athlete = myResults[0].Athlete,
@@ -172,28 +166,44 @@ public sealed class AthleteController : Controller
 
 	private async Task<IDictionary<string, string>> GetBadges(uint id, Course[] results)
 	{
+		var iteration = await iterationManager.ActiveIteration();
+		if (iteration is null)
+			return ReadOnlyDictionary<string, string>.Empty;
+
+		var myID = Guid.NewGuid();
+
 		var overall = new OverallResults(results);
 		var completed = overall.Completed().Any(r => r.Result.Athlete.ID == id);
 
-		var series = await _seriesManager.Earliest();
-		var result = series
-			.Where(s => s.Value.Any(r => r.Value.Athlete.ID == id))
-			.ToDictionary(s => s.Key.BadgeIcon, s => s.Key.Name);
+		var challengeResults = await UltraChallengeResultsCalculator.Earliest(iteration);
+		var result = challengeResults
+			.Where(s => s.Value.Any(r => r.Value.Athlete.ID == myID))
+			.ToDictionary(s => BadgeIcon(s.Key), s => s.Key.Name);
 
 		return completed
-			? result.Prepend(new KeyValuePair<string, string>("medal", _config.App)).ToDictionary(d => d.Key, d => d.Value)
+			? result.Prepend(new KeyValuePair<string, string>("medal", config.App)).ToDictionary(d => d.Key, d => d.Value)
 			: result;
 	}
 
+	private static string BadgeIcon(Challenge challenge)
+		=> challenge switch
+		{
+			{ IsOfficial: true, IsPrimary: true } => "medal",
+			{ IsOfficial: true, IsPrimary: false } when challenge.Name.Contains("Tarmac") => "road",
+			{ IsOfficial: true, IsPrimary: false } when challenge.Name.Contains("Trail") => "mountain",
+			{ IsOfficial: true, IsPrimary: false } when challenge.Name.Contains("Ultra") => "diamond",
+			_ => throw new ArgumentOutOfRangeException($"Invalid challenge {challenge.Name}")
+		};
+
 	private async Task<AthleteLogViewModel> GetLog(uint id)
 	{
-		var athlete = await _dataService.GetAthlete(id);
-		var courses = await _dataService.GetAllResults();
+		var athlete = await dataService.GetAthlete(id);
+		var courses = await dataService.GetAllResults();
 		var results = courses.SelectMany(c => c.Results.Where(r => r.Athlete.ID == athlete.ID)).ToArray();
 
 		return new AthleteLogViewModel
 		{
-			Config = _config,
+			Config = config,
 			Header = new AthleteHeader
 			{
 				Athlete = athlete,
@@ -206,13 +216,13 @@ public sealed class AthleteController : Controller
 
 	private async Task<SimilarAthletesViewModel> GetSimilarAthletes(uint id)
 	{
-		var athlete = await _dataService.GetAthlete(id);
-		var results = await _dataService.GetAllResults();
-		var my = new AthleteSummary(athlete, results, _config);
+		var athlete = await dataService.GetAthlete(id);
+		var results = await dataService.GetAllResults();
+		var my = new AthleteSummary(athlete, results, config);
 
 		return new SimilarAthletesViewModel
 		{
-			Config = _config,
+			Config = config,
 			Header = new AthleteHeader
 			{
 				Athlete = my.Athlete,

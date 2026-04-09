@@ -2,7 +2,6 @@
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Series;
 using FLRC.Leaderboards.Data.Migrations;
 using FLRC.Leaderboards.Services;
 using Microsoft.AspNetCore.Builder;
@@ -50,7 +49,6 @@ public sealed class App(string context)
 		services.AddSingleton<IDataService, DataService>();
 		services.AddSingleton<ICommunityAPI, DiscourseAPI>();
 		services.AddSingleton<ICustomInfoAPI, CustomInfoAPI>();
-		services.AddSingleton<ISeriesManager, SeriesManager>();
 
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();

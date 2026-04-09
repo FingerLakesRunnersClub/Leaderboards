@@ -5,11 +5,11 @@ using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
-using FLRC.Leaderboards.Core.Series;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Core.Tests.Leaders;
-using FLRC.Leaderboards.Core.Tests.Series;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 
@@ -22,7 +22,7 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 		var athlete = new Athlete { ID = 123, Category = Category.M };
 		var course = new Course
 		{
@@ -57,7 +57,7 @@ public sealed class AthleteControllerTests
 		};
 		dataService.GetAthlete(123).Returns(athlete);
 		dataService.GetAllResults().Returns([course]);
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(123);
@@ -80,12 +80,13 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		dataService.GetAthlete(123).Returns(LeaderboardData.Athlete1);
 		dataService.GetAllResults().Returns(LeaderboardData.Courses);
 
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		iterationManager.ActiveIteration().Returns(UltraChallengeData.Iteration);
 
 		//act
 		var response = await controller.Index(123);
@@ -100,12 +101,12 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 
 		dataService.GetAthlete(567).Returns(LeaderboardData.Private);
 		dataService.GetAllResults().Returns(LeaderboardData.Courses);
 
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index(567);
@@ -116,40 +117,11 @@ public sealed class AthleteControllerTests
 	}
 
 	[Fact]
-	public async Task HeaderCanContainSeriesCompletionBadges()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAthlete(123).Returns(CourseData.Athlete1);
-
-		var courses = SeriesData.Results.Select(r => r.Course).Distinct().ToArray();
-		foreach (var course in courses)
-			course.Results = SeriesData.Results.Where(r => r.Course == course).ToArray();
-		dataService.GetAllResults().Returns(courses);
-
-		var seriesManager = Substitute.For<ISeriesManager>();
-		var results = new Dictionary<Series, RankedList<SeriesResult, Result>>
-		{
-			{ new Series { ID = "100K", BadgeIcon = "Tiger" }, [new Ranked<SeriesResult> { Value = new SeriesResult { Athlete = CourseData.Athlete1 } }] }
-		};
-		seriesManager.Earliest().Returns(results);
-
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
-
-		//act
-		var response = await controller.Index(123);
-
-		//assert
-		var vm = (AthleteSummaryViewModel)response.Model;
-		Assert.Contains("Tiger", vm!.Header.BadgeIcons.Keys);
-	}
-
-	[Fact]
 	public async Task CanGetAllResultsForActivityLog()
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 		var athlete = new Athlete { ID = 123 };
 		var course = new Course
 		{
@@ -167,7 +139,7 @@ public sealed class AthleteControllerTests
 		};
 		dataService.GetAthlete(123).Returns(athlete);
 		dataService.GetAllResults().Returns([course]);
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Log(123);
@@ -182,7 +154,7 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 		var course = new Course
 		{
 			ID = 234,
@@ -199,7 +171,7 @@ public sealed class AthleteControllerTests
 			]
 		};
 		dataService.GetResults(234, null).Returns(course);
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Course(123, 234, null);
@@ -214,7 +186,7 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var dataService = Substitute.For<IDataService>();
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 		var course = new Course
 		{
 			ID = 234,
@@ -255,7 +227,7 @@ public sealed class AthleteControllerTests
 			]
 		};
 		dataService.GetResults(234, null).Returns(course);
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Course(123, 234, null);
@@ -280,9 +252,9 @@ public sealed class AthleteControllerTests
 		dataService.GetAthlete(456).Returns(CourseData.Athlete4);
 		dataService.GetAllResults().Returns([new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") }]);
 
-		var seriesManager = Substitute.For<ISeriesManager>();
+		var iterationManager = Substitute.For<IIterationManager>();
 
-		var controller = new AthleteController(dataService, seriesManager, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
 
 		//act
 		var result = await controller.Similar(123);
