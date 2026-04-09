@@ -64,7 +64,7 @@ public sealed class Header(IAuthService authService, IAdminService adminService,
 		reports.Add("Statistics", "/Statistics");
 
 		if (config.SeriesTitle is not null)
-			reports.Add(config.SeriesTitle, "/Series");
+			reports.Add(config.SeriesTitle, "/UltraChallenges/Results");
 
 		return reports;
 	}
