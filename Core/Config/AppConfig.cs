@@ -1,5 +1,4 @@
-﻿using FLRC.Leaderboards.Core.Series;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace FLRC.Leaderboards.Core.Config;
 
@@ -24,7 +23,6 @@ public sealed record AppConfig : IConfig
 	public IDictionary<byte, string> CommunityGroups { get; }
 
 	public string SeriesTitle { get; }
-	public SeriesSet Series { get; }
 
 	public string FileSystemResults { get; }
 
@@ -48,7 +46,6 @@ public sealed record AppConfig : IConfig
 		CommunityRetryDelay = config.GetValue<ushort>("CommunityRetryDelay");
 
 		SeriesTitle = config.GetValue<string>("SeriesTitle");
-		Series = new SeriesSet(config.GetSection("Series"));
 
 		FileSystemResults = config.GetValue<string>("FileSystemResults");
 	}
