@@ -3,7 +3,7 @@ using FLRC.Leaderboards.Services;
 
 namespace FLRC.Leaderboards.Importer;
 
-public sealed class Importer(IImportManager importManager, IRaceService raceService, Action<string> log)
+public sealed class Importer(IImportManager importManager, IRegistrationManager registrationManager, IIterationService iterationService, IRaceService raceService, Action<string> log)
 {
 	public async Task Run(CourseImportConfig[] definitions)
 	{
@@ -34,5 +34,15 @@ public sealed class Importer(IImportManager importManager, IRaceService raceServ
 
 			log($"Imported \"{definition.Name} ({course?.DistanceDisplay})\"!");
 		}
+
+		log("Updating iteration registration...");
+		var iterations = await iterationService.All();
+		foreach (var iteration in iterations.Where(i => i.RegistrationType is not null))
+		{
+			log($"Updating registration for {iteration.Series.Name} {iteration.Name}...");
+			await registrationManager.Update(iteration);
+		}
+
+		log("Updated all iteration registrations!");
 	}
 }
