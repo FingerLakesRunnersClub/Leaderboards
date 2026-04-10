@@ -8,7 +8,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<None Include="*.json" CopyToOutputDirectory="PreserveNewest" />
-		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.0" />
+		<PackageReference Include="TestableIO.System.IO.Abstractions.Wrappers" Version="22.1.1" />
 		<ProjectReference Include="..\Web\Web.csproj" />
 	</ItemGroup>
 </Project>
