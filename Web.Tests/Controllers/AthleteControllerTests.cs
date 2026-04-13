@@ -3,13 +3,11 @@ using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Core.Tests.Leaders;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
-using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 

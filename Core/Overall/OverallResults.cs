@@ -31,38 +31,6 @@ public sealed class OverallResults
 	public RankedList<Date, Result> Completed(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _courses.Length), g => g.Max(r => r.Value), g => Date.CompetitionStart.Subtract(g.Max(r => r.Value)?.Value ?? Date.CompetitionStart), g => (uint)g.Count());
 
-	public RankedList<TeamMember, Result> TeamMembers(Team team, Filter filter = null)
-		=> RankTeam(_courses.SelectMany(c => c.Fastest(filter).Where(r => r.Result.Athlete.Team == team)).ToArray());
-
-	private static RankedList<TeamMember, Result> RankTeam(Ranked<Time, Result>[] results)
-	{
-		var ranked = results
-			.GroupBy(r => r.Result.Athlete)
-			.Select(g => new TeamMember(g.ToArray()) { Athlete = g.Key })
-			.OrderByDescending(m => m.Score)
-			.ToArray();
-
-		var ranks = new RankedList<TeamMember, Result>();
-		for (byte rank = 1; rank <= ranked.Length; rank++)
-		{
-			var value = ranked[rank - 1];
-			ranks.Add(new Ranked<TeamMember, Result>
-			{
-				All = ranks,
-				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
-				Result = new Result { Athlete = value.Athlete },
-				Count = value.Courses,
-				AgeGrade = value.AgeGrade,
-				Value = value
-			});
-		}
-
-		return ranks;
-	}
-
-	public RankedList<TeamMember, Result> GroupMembers(Athlete[] athletes)
-		=> RankTeam(_courses.SelectMany(c => c.Fastest().Where(r => athletes.Contains(r.Result.Athlete))).ToArray());
-
 	public RankedList<TeamResults, Result> TeamPoints(Filter filter = null)
 		=> _courses.SelectMany(c => c.TeamPoints(filter))
 			.GroupBy(r => r.Value.Team)

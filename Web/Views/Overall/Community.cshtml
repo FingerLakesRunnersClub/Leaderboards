@@ -1,12 +1,12 @@
 ﻿@using System.Text.Json
 @using FLRC.Leaderboards.Core.Metrics
-@using FLRC.Leaderboards.Core.Overall
-@model OverallResultsViewModel<Stars>
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<OverallResults<Stars>>
 
 <h2>Overall Leaders</h2>
 <div class="card card-highlighted">
     <div class="card-body">
-        @await Html.PartialAsync("OverallFilter")
+        @await Html.PartialAsync("OverallFilter", Model.Data)
 
         <script>
             const fields = [
@@ -17,10 +17,9 @@
 			    { name: 'Community Stars', center: true, value: r => r.Value.Display, sort: r => r.Value.Value, descending: true }
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
         </script>
 
-        @await Html.PartialAsync("LegacyDataTable")
-
+        @await Html.PartialAsync("DataTable", (Model.Title, "lg"))
     </div>
 </div>

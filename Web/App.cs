@@ -4,11 +4,13 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Data.Migrations;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Npgsql;
+using OverallResultsCalculator = FLRC.Leaderboards.Web.Services.OverallResultsCalculator;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -78,6 +80,7 @@ public sealed class App(string context)
 		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
 		services.AddScoped<IIterationManager, IterationManager>();
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
+		services.AddScoped<IOverallResultsCalculator, OverallResultsCalculator>();
 	}
 
 	public static void Configure(IApplicationBuilder app)

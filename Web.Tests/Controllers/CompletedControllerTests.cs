@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;

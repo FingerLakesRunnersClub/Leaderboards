@@ -1,7 +1,6 @@
 ﻿@using System.Text.Json
-@using FLRC.Leaderboards.Core.Overall
-@using FLRC.Leaderboards.Core.Teams
-@model OverallResultsViewModel<TeamMember>
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<TeamMembers>
 
 <div class="card card-highlighted">
     <div class="card-body">
@@ -19,9 +18,9 @@
                 { name: 'Total Miles', center: true, value: r => r.Value.Miles.Display, sort: r => r.Value.Miles.Value, descending: true }
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
         </script>
 
-        @await Html.PartialAsync("LegacyDataTable")
+        @await Html.PartialAsync("DataTable", (Model.Title, "xl"))
     </div>
 </div>

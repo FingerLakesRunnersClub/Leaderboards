@@ -3,7 +3,6 @@ using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Components;
 using FLRC.Leaderboards.Web.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using NSubstitute;
 using Xunit;

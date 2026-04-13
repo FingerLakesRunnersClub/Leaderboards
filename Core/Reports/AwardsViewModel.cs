@@ -29,7 +29,7 @@ public sealed class AwardsViewModel : ViewModel
 		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(), 10));
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(), 10));
 		awards.AddRange(Overall("Community", "Overall Community", overall.CommunityStars(), 10));
-		awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints()[0].Value.Team)));
+		//awards.AddRange(Team(overall.TeamMembers(overall.TeamPoints()[0].Value.Team)));
 		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", results.SelectMany(c => c.Fastest(Filter.F)).ToArray()));
 		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", results.SelectMany(c => c.Fastest(Filter.M)).ToArray()));
 		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", results.SelectMany(c => c.BestAverage(Filter.F)).ToArray()));
@@ -52,16 +52,16 @@ public sealed class AwardsViewModel : ViewModel
 			})
 			.ToArray();
 
-	private Award[] Team(RankedList<TeamMember, Result> members)
-		=> members.Where(m => m.Rank.Value <= 10)
-			.Select(r => new Award
-			{
-				Name = $"{r.Rank.Display} Top Team Member",
-				Link = $"/Team/Members/{r.Result.Athlete.Team.Value}",
-				Value = Config.Awards["Team"],
-				Athlete = r.Result.Athlete
-			})
-			.ToArray();
+	// private Award[] Team(RankedList<TeamMember, Result> members)
+	// 	=> members.Where(m => m.Rank.Value <= 10)
+	// 		.Select(r => new Award
+	// 		{
+	// 			Name = $"{r.Rank.Display} Top Team Member",
+	// 			Link = $"/Team/Members/{r.Result.Athlete.Team.Value}",
+	// 			Value = Config.Awards["Team"],
+	// 			Athlete = r.Result.Athlete
+	// 		})
+	// 		.ToArray();
 
 	private Award[] Course<T>(string type, string title, Ranked<T, Result>[] results)
 		=> results.Where(r => r.Rank.Value == 1)

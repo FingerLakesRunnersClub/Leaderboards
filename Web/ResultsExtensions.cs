@@ -3,6 +3,7 @@ using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Reports;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web;
@@ -134,6 +135,40 @@ public static class ResultsExtensions
 					{ Category.M.Display, mAthletes.Length != 0 ? mAverage : 0 }
 				}
 			};
+		}
+
+		public RankedList<TeamResults, Result> TeamPoints(Iteration iteration, Filter filter = null)
+			=>	results.RankedTeamResults(iteration, filter ?? new Filter());
+
+		private RankedList<TeamResults, Result> RankedTeamResults(Iteration iteration, Filter filter)
+		{
+			var teamResults = results.GroupedResults(filter)
+				.GroupBy(g => g.Key.Team(iteration))
+				.Select(t => new TeamResults
+				{
+					Team = t.Key,
+					AverageAgeGrade = new AgeGrade(t.Select(rs => rs.MinBy(r => r.Duration))
+							.Where(r => r?.Duration != null)
+							.OrderBy(r => r.Duration)
+							.Take(10)
+							.Sum(r => r.AgeGrade()?.Value ?? 0) / 10
+					),
+					TotalRuns = (ushort)t.Sum(rs => rs.Count())
+				}).ToArray();
+
+			var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
+			for (var x = 0; x < fastestTeams.Length; x++)
+				fastestTeams[x].AgeGradePoints = x > 0 && fastestTeams[x].AverageAgeGrade == fastestTeams[x - 1].AverageAgeGrade
+					? fastestTeams[x - 1].AgeGradePoints
+					: (byte)(x + 1);
+
+			var mostRunTeams = teamResults.OrderByDescending(t => t.TotalRuns).ToArray();
+			for (var x = 0; x < mostRunTeams.Length; x++)
+				mostRunTeams[x].MostRunsPoints = x > 0 && mostRunTeams[x].TotalRuns == mostRunTeams[x - 1].TotalRuns
+					? mostRunTeams[x - 1].MostRunsPoints
+					: (byte)(x + 1);
+
+			return teamResults.Rank();
 		}
 	}
 }

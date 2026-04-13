@@ -1,12 +1,12 @@
 ﻿@using System.Text.Json
 @using FLRC.Leaderboards.Core.Metrics
-@using FLRC.Leaderboards.Core.Overall
-@model OverallResultsViewModel<Miles>
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<OverallResults<Miles>>
 
 <h2>Overall Leaders</h2>
 <div class="card card-highlighted">
     <div class="card-body">
-        @await Html.PartialAsync("OverallFilter")
+        @await Html.PartialAsync("OverallFilter", Model.Data)
 
         <script>
             const fields = [
@@ -15,13 +15,12 @@
                 { name: 'Age', center: true, value: r => r.Result.Athlete.Age || '' },
                 { name: 'Category', center: true, value: r => r.Result.Athlete.Category?.Display, sort: r => r.Result.Athlete.Category?.Value ?? 'X'.charCodeAt(0) },
                 { name: 'Total Miles', center: true, value: r => r.Value.Display, sort: r => r.Value.Value, descending: true },
-                { name: '@(Model.Config.CourseLabel)s Run', center: true, value: r => r.Count, descending: true }
+                { name: 'Coursess Run', center: true, value: r => r.Count, descending: true }
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.RankedResults));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
         </script>
 
-        @await Html.PartialAsync("LegacyDataTable")
-
+        @await Html.PartialAsync("DataTable", (Model.Title, "md"))
     </div>
 </div>

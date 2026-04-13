@@ -1,8 +1,7 @@
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Teams;
-using FLRC.Leaderboards.Core.Tests;
-using FLRC.Leaderboards.Core.Tests.Leaders;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 
@@ -14,8 +13,8 @@ public sealed class TeamControllerTests
 	public async Task CanGetTeamNameFromViewModel()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var controller = new TeamController(dataService, TestHelpers.Config);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new TeamController(iterationManager);
 
 		//act
 		var response = await controller.Index(3);
@@ -29,9 +28,10 @@ public sealed class TeamControllerTests
 	public async Task CanGetOverallResultsForTeam()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService, TestHelpers.Config);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new TeamController(iterationManager);
+
+		iterationManager.ActiveIteration().Returns(UltraChallengeData.Iteration);
 
 		//act
 		var response = await controller.Index(3);
@@ -45,9 +45,10 @@ public sealed class TeamControllerTests
 	public async Task CanGetCourseResultsForTeam()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService, TestHelpers.Config);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new TeamController(iterationManager);
+
+		iterationManager.ActiveIteration().Returns(UltraChallengeData.Iteration);
 
 		//act
 		var response = await controller.Index(3);
@@ -61,17 +62,18 @@ public sealed class TeamControllerTests
 	public async Task CanGetTeamMembers()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-		var controller = new TeamController(dataService, TestHelpers.Config);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new TeamController(iterationManager);
+
+		iterationManager.ActiveIteration().Returns(UltraChallengeData.Iteration);
 
 		//act
 		var response = await controller.Members(3);
 
 		//assert
-		var vm = (TeamMembersViewModel)response.Model;
-		Assert.Equal(2, vm!.RankedResults.Count);
-		Assert.Equal(LeaderboardData.Athlete2, vm.RankedResults.First().Result.Athlete);
-		Assert.Equal(LeaderboardData.Athlete4, vm.RankedResults.Skip(1).First().Result.Athlete);
+		var vm = response.Model as ViewModel<TeamMembers>;
+		Assert.Equal(2, vm!.Data.Results.Count);
+		Assert.Equal(ResultsData.Athlete2, vm.Data.Results.First().Result.Athlete);
+		Assert.Equal(ResultsData.Athlete4, vm.Data.Results.Skip(1).First().Result.Athlete);
 	}
 }

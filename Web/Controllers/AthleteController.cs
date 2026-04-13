@@ -3,7 +3,6 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
-using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
@@ -172,8 +171,8 @@ public sealed class AthleteController(IIterationManager iterationManager, IDataS
 
 		var myID = Guid.NewGuid();
 
-		var overall = new OverallResults(results);
-		var completed = overall.Completed().Any(r => r.Result.Athlete.ID == id);
+		var overall = new OverallResultsCalculator(iteration);
+		var completed = overall.Completed().Any(r => r.Result.Athlete.ID == myID);
 
 		var challengeResults = await UltraChallengeResultsCalculator.Earliest(iteration);
 		var result = challengeResults

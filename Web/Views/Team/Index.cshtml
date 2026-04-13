@@ -1,15 +1,14 @@
 ﻿@using FLRC.Leaderboards.Core.Ranking
-@using FLRC.Leaderboards.Core.Results
-@using FLRC.Leaderboards.Core.Teams
-@model TeamSummaryViewModel
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<TeamSummary>
 
-<a class="btn btn-light btn-sm float-right" href="/Team/Members/@Model.Team.Value">
+<a class="btn btn-light btn-sm float-right" href="/Team/Members/@Model.Data.Team.Value">
     Team Members <i aria-hidden="true" class="fas fa-arrow-right"></i>
 </a>
 
-<h2>Team @Model.Team.Display</h2>
+<h2>Team @Model.Data.Team.Display</h2>
 
-<table aria-label="Overall Results for Team @Model.Team.Display" class="table table-bordered table-sm text-center">
+<table aria-label="Overall Results for Team @Model.Data.Team.Display" class="table table-bordered table-sm text-center">
     <thead>
     <tr>
         <th scope="col">
@@ -32,27 +31,27 @@
     <tbody>
     <tr>
         <td>
-            @Model.Overall?.Value.AgeGradePoints
+            @Model.Data.Overall?.Value.AgeGradePoints
         </td>
         <td>
-            @Model.Overall?.Value.MostRunsPoints
+            @Model.Data.Overall?.Value.MostRunsPoints
         </td>
         <td>
-            @Model.Overall?.Value.TotalPoints
-            (<a href="/Overall/Team">@Model.Overall?.Rank.Display</a>)
+            @Model.Data.Overall?.Value.TotalPoints
+            (<a href="/Overall/Team">@Model.Data.Overall?.Rank.Display</a>)
         </td>
     </tr>
     </tbody>
 </table>
 
 <div class="row">
-    @foreach (var (course, results) in Model.Courses.Where(r => r.Value != null))
+    @foreach (var (course, results) in Model.Data.Courses.Where(r => r.Value != null))
     {
         <div class="col-12 col-lg-6">
             <div class="card-highlighted card mb-3">
                 <div class="card-body no-activity-log">
-	                @await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
-	                <table aria-label="Team @Model.Team.Display @Model.Config.CourseLabel Results for @course.Name"
+	                @await Html.PartialAsync("CourseInfo", course)
+	                <table aria-label="Team @Model.Data.Team.Display @Model.Config.CourseLabel Results for @course.Race.Name"
                            class="table table-bordered table-sm text-center mt-2 mb-0">
                         <thead>
                         <tr>

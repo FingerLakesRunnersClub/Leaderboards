@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.Services;
 using Xunit;
 

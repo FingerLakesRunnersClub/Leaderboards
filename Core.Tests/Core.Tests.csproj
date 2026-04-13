@@ -14,4 +14,7 @@
 		<ProjectReference Include="../Core/Core.csproj" />
 		<None Include="json/*.json" CopyToOutputDirectory="Always" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Overall\" />
+	</ItemGroup>
 </Project>

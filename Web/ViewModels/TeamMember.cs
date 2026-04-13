@@ -1,10 +1,9 @@
-using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
-using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Model;
 
-namespace FLRC.Leaderboards.Core.Teams;
+namespace FLRC.Leaderboards.Web.ViewModels;
 
 public sealed record TeamMember : IComparable<TeamMember>
 {
@@ -22,7 +21,7 @@ public sealed record TeamMember : IComparable<TeamMember>
 		Courses = (byte)results.Length;
 		AgeGrade = new AgeGrade(results.Average(r => r.AgeGrade?.Value ?? 0));
 		Runs = (ushort) results.Sum(r => r.Count);
-		Miles = new Miles(results.Sum(r => r.Count * r.Result.Course.Distance.Miles));
+		Miles = new Miles(results.Sum(r => r.Count * new Distance(r.Result.Course.DistanceDisplay).Miles));
 	}
 
 	public int CompareTo(TeamMember other)

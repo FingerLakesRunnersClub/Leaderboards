@@ -1,7 +1,7 @@
-﻿@using FLRC.Leaderboards.Core.Teams
-@model TeamMembersViewModel
+﻿@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<TeamMembers>
 
-<a class="btn btn-light btn-sm float-right" href="/Team/Index/@Model.Team.Value">
+<a class="btn btn-light btn-sm float-right" href="/Team/Index/@Model.Data.Team.Value">
     Team Page <i aria-hidden="true" class="fas fa-arrow-right"></i>
 </a>
 
