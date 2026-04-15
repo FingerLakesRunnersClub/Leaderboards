@@ -2,8 +2,8 @@ using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Components;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using Xunit;
@@ -16,17 +16,18 @@ public sealed class HeaderTests
 	public async Task CanRenderComponent()
 	{
 		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var adminService = Substitute.For<IAdminService>();
+		var athleteService = Substitute.For<IAthleteService>();
 		var seriesService = Substitute.For<ISeriesService>();
 		seriesService.Find("UTs").Returns(new Series { Key = "UTs", Name = "Unit Tests" });
-
-		var http = Substitute.For<IHttpContextAccessor>();
 
 		var settings = new ConfigurationBuilder().AddJsonFile("json/config.json").Build();
 		var config = new AppConfig(settings);
 
 		var app = new AppContextProvider("UTs");
 
-		var component = new Header(seriesService, http, config, app);
+		var component = new Header(authService, adminService, athleteService, seriesService, config, app);
 
 		//act
 		var result = await component.InvokeAsync();

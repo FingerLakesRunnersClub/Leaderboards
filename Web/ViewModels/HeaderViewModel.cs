@@ -12,4 +12,6 @@ public sealed record HeaderViewModel
 	public IDictionary<string, string> LinksMenu { get; init; }
 	public bool EnableAuth { get; init; }
 	public ClaimsPrincipal User { get; init; }
+	public Athlete Athlete { get; init; }
+	public bool IsAdmin { get; init; }
 }

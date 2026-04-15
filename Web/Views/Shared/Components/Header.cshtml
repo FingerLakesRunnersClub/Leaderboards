@@ -1,5 +1,6 @@
 ﻿@using FLRC.AgeGradeCalculator
 @using FLRC.Leaderboards.Core.Races
+@using FLRC.Leaderboards.Web
 @using FLRC.Leaderboards.Web.ViewModels
 @model HeaderViewModel
 
@@ -11,7 +12,7 @@
 				<h1 class="sr-only">@Model.Series.Name</h1>
 			</a>
 			<ul class="primary-nav nav justify-content-center">
-				<li class="nav-item">
+				<li class="nav-item @(Model.EnableAuth ? "d-none d-md-block" : "")">
 					<a class="nav-link text-dark" href="/">Home</a>
 				</li>
 				<li class="nav-item">
@@ -63,13 +64,23 @@
 							Account
 						</a>
 						<ul id="account" class="dropdown-menu" onclick="event.stopPropagation();">
-							@if (Model.User?.Identity?.IsAuthenticated ?? false)
+							@if (Model.Athlete is not null)
 							{
 								<li class="dropdown-item">
-									<a href="/Account/Info">
-										@Model.User.Identity.Name
+									<a href="/Athlete/Index/@Model.Athlete.ID">
+										<img src="@Model.User.ClaimDictionary["avatar_url"]" alt="@Model.Athlete.Name avatar"/>
+										@Model.Athlete.Name
 									</a>
 								</li>
+								@if (Model.IsAdmin)
+								{
+									<li class="dropdown-item">
+										<a href="/Admin">
+											Admin Menu
+										</a>
+									</li>
+								}
+
 								<li class="dropdown-item">
 									<a href="/Account/LogOut">
 										Log Out

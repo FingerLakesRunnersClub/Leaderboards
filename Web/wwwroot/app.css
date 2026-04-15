@@ -83,6 +83,18 @@ footer a, footer a:hover, footer a:focus {
     background-color: #f0f2f0;
 }
 
+.dropdown-item a {
+	display: flex;
+	align-items: center;
+}
+
+.dropdown-item img {
+	max-width: 1.5rem;
+	margin-left: -0.75rem;
+	margin-right: 0.25rem;
+	border-radius: 50%;
+}
+
 .btn {
     border: 1px solid #dae0e5;
 }

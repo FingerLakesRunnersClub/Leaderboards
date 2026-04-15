@@ -1,19 +1,29 @@
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class Header(ISeriesService seriesService, IHttpContextAccessor httpContextAccessor, IConfig config, IContextProvider contextProvider) : ViewComponent
+public sealed class Header(IAuthService authService, IAdminService adminService, IAthleteService athleteService, ISeriesService seriesService, IConfig config, IContextProvider contextProvider) : ViewComponent
 {
 	public async Task<ViewViewComponentResult> InvokeAsync()
 	{
 		var series = await seriesService.Find(contextProvider.App);
 		var enableAuth = series.Features.FirstOrDefault(f => f.Key == nameof(FeatureSet.EnableAuth))?.Value ?? false;
+
+		var user = enableAuth && authService.IsLoggedIn()
+			? authService.GetCurrentUser()
+			: null;
+
+		var athlete = user is not null
+			? await athleteService.Find(LinkedAccount.Keys.Discourse, user.ClaimDictionary["external_id"])
+			: null;
+
+		var admin = athlete is not null && await adminService.Verify(athlete.ID);
 
 		var vm = new HeaderViewModel
 		{
@@ -23,7 +33,9 @@ public sealed class Header(ISeriesService seriesService, IHttpContextAccessor ht
 			CourseMenu = config.CourseNames,
 			LinksMenu = config.Links,
 			EnableAuth = enableAuth,
-			User = httpContextAccessor.HttpContext!.User
+			User = user,
+			Athlete = athlete,
+			IsAdmin = admin
 		};
 
 		return View("../Header", vm);
