@@ -1,0 +1,33 @@
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<ChallengeDashboard>
+
+<table class="table table-striped table-bordered table-sm table-responsive-sm">
+	<thead>
+	<tr>
+		<th scope="col"></th>
+		<th scope="col">Name</th>
+		<th scope="col">Type</th>
+		<th scope="col">Distance</th>
+	</tr>
+	</thead>
+	<tbody>
+	@foreach (var course in Model.Data.Challenge.Courses.OrderBy(c => c.Distance))
+	{
+		<tr>
+			<td class="text-center">
+				@if (Model.Data.CoursesCompleted.Contains(course))
+				{
+					<i class="fas fa-check-circle text-success"></i>
+				}
+			</td>
+			<th scope="row">
+				<a href="/Results/Fastest/@course.ID">
+					@course.Race.Name
+				</a>
+			</th>
+			<td>@course.Race.Type</td>
+			<td>@course.DistanceDisplay</td>
+		</tr>
+	}
+	</tbody>
+</table>

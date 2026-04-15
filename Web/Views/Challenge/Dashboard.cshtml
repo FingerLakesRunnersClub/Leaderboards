@@ -5,6 +5,7 @@
 
 <article class="card card-highlighted">
 	<section class="card-body">
-		<h3>Under construction</h3>
+		@await Component.InvokeAsync("Dashboard")
+		@await Html.PartialAsync("MyCourseTable")
 	</section>
 </article>

@@ -33,7 +33,8 @@ public sealed class ChallengeControllerTests
 		var athlete = new Athlete
 		{
 			LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }],
-			Registrations = [iteration]
+			Registrations = [iteration],
+			Challenges = [new Challenge { Iteration = iteration, IsPrimary = true }]
 		};
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 

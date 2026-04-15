@@ -23,7 +23,24 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (!athlete.IsRegistered(iteration))
 			return RedirectToAction(nameof(Registration));
 
-		var dashboard = new ChallengeDashboard();
+		var challenge = athlete.Challenges
+			.FirstOrDefault(c => c.Iteration == iteration && c.IsPrimary);
+
+		var allIterationResults = athlete.Results
+			.Where(r => r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue)
+			            && r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue))
+			.ToArray();
+
+		var challengeCoursesCompleted = challenge.Courses
+			.Where(c => allIterationResults.Any(r => r.CourseID == c.ID))
+			.ToArray();
+
+		var dashboard = new ChallengeDashboard
+		{
+			Athlete = athlete,
+			Challenge = challenge,
+			CoursesCompleted = challengeCoursesCompleted
+		};
 		var vm = new ViewModel<ChallengeDashboard>("Challenge Dashboard", dashboard);
 		return View(vm);
 	}
