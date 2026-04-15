@@ -1,0 +1,12 @@
+@using FLRC.Leaderboards.Web.Components
+@model FLRC.Leaderboards.Web.ViewModels.ChallengeProgress
+
+<div class="alert alert-primary">
+    <h3>Your Challenge</h3>
+
+    <p>You've completed @Model.CompletedCourses.Length of @Model.AllCourses.Length courses.</p>
+
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" style="width: @Model.PercentComplete%" aria-valuenow="@Model.PercentComplete" aria-valuemin="0" aria-valuemax="100"></div>
+    </div>
+</div>

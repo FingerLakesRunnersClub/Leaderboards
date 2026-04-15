@@ -1,0 +1,14 @@
+@using FLRC.Leaderboards.Model
+@model Iteration
+
+<div class="alert alert-primary d-flex flex-column align-items-center">
+    <h3>Register for this year's Challenge!</h3>
+
+    <a class="btn btn-primary" href="https://www.webscorer.com/register?pid=1&raceid=@Model.RegistrationContext">
+        Click here to sign up
+    </a>
+
+    <a class="btn btn-light" href="/Challenge/RecheckRegistration">
+        I'm in, check again
+    </a>
+</div>

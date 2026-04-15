@@ -8,6 +8,8 @@
 		: "light";
 }
 
+@await Component.InvokeAsync("Dashboard")
+
 @if (Model.Config.Competitions.Any())
 {
 	<h2>Overall Leaders</h2>

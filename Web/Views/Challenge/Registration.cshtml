@@ -10,7 +10,11 @@
 
 		<p>We couldn't find your @Model.Data.Name @Model.Data.Series.Name registration.</p>
 
-		<p>Please ensure you're signed up, then click the button below.</p>
+		<a class="btn btn-light" href="https://www.webscorer.com/register?pid=1&raceid=@Model.Data.RegistrationContext">
+			Register Here
+		</a>
+
+		<p>Once you're signed up, click the button below.</p>
 
 		<form method="post">
 			<button type="submit" class="btn btn-primary">
