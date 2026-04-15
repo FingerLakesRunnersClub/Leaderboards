@@ -65,6 +65,10 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 	}
 
 	[HttpGet]
+	public async Task<IActionResult> RecheckRegistration()
+		=> await Registration(new FormCollection([]));
+
+	[HttpGet]
 	public async Task<IActionResult> Select()
 	{
 		var iteration = await iterationManager.ActiveIteration();
@@ -148,7 +152,9 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 			Iteration = iteration,
 			Athlete = athlete,
 			Name = $"{athlete.Name} {Model.Challenge.Types.Personal} Challenge",
-			Courses = SelectedCourses(iteration, form.Selected).ToArray()
+			IsPrimary = true,
+			IsOfficial = false,
+			Courses = SelectedCourses(iteration, form.Selected).ToArray(),
 		};
 		await challengeService.Add(challenge);
 		await challengeService.AddConnection(athlete, challenge);

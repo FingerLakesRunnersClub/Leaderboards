@@ -292,6 +292,7 @@ public sealed class ChallengeControllerTests
 
 		//assert
 		await challengeService.Received().Add(Arg.Any<Challenge>());
-		await challengeService.Received().AddConnection(athlete, Arg.Any<Challenge>());
+		await challengeService.Received().AddConnection(athlete, Arg.Is<Challenge>(c => c.IsPrimary && !c.IsOfficial));
+
 	}
 }
