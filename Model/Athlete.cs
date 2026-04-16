@@ -25,9 +25,13 @@ public record Athlete : Identifiable<Guid>
 	[JsonIgnore]
 	public virtual ICollection<Challenge> Challenges { get; init; } = [];
 
-	public byte? AgeAsOf(DateTime date) => DateOfBirth.HasValue
-		? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
-		: null;
+	public byte? AgeAsOf(DateOnly date)
+		=> AgeAsOf(date.ToDateTime(TimeOnly.MinValue));
+
+	public byte? AgeAsOf(DateTime date)
+		=> DateOfBirth.HasValue
+			? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
+			: null;
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
 

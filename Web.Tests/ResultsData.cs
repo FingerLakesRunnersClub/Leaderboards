@@ -4,11 +4,11 @@ namespace FLRC.Leaderboards.Web.Tests;
 
 public static class ResultsData
 {
-	public static readonly Athlete Athlete1 = new() { ID = Guid.NewGuid(), Name="A1", Category = 'M', DateOfBirth = DateOnly.Parse("1/1/2000") };
-	public static readonly Athlete Athlete2 = new() { ID = Guid.NewGuid(), Name="A2", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/2000") };
-	public static readonly Athlete Athlete3 = new() { ID = Guid.NewGuid(), Name="A3", Category = 'M', DateOfBirth = DateOnly.Parse("1/1/1990") };
-	public static readonly Athlete Athlete4 = new() { ID = Guid.NewGuid(), Name="A4", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1990") };
-	public static readonly Athlete Private = new() { ID = Guid.NewGuid(), Name="AP", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1980"), IsPrivate = true };
+	public static readonly Athlete Athlete1 = new() { ID = Guid.NewGuid(), Name = "A1", Category = 'M', DateOfBirth = DateOnly.Parse("1/1/2000") };
+	public static readonly Athlete Athlete2 = new() { ID = Guid.NewGuid(), Name = "A2", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/2000") };
+	public static readonly Athlete Athlete3 = new() { ID = Guid.NewGuid(), Name = "A3", Category = 'M', DateOfBirth = DateOnly.Parse("1/1/1990") };
+	public static readonly Athlete Athlete4 = new() { ID = Guid.NewGuid(), Name = "A4", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1990") };
+	public static readonly Athlete Private = new() { ID = Guid.NewGuid(), Name = "AP", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1980"), IsPrivate = true };
 
 	private static readonly Race Race = new() { Name = "10K", Type = "Road" };
 	public static readonly Course Course = new() { Race = Race, Distance = 10, Units = "km" };
@@ -25,12 +25,13 @@ public static class ResultsData
 		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/4/2020"), Duration = TimeSpan.Parse("2:00:00.0") }
 	];
 
-	private static readonly Course SimilarCourse = new() { Distance = 400, Units = "m" };
+	private static readonly Course SimilarCourse = new() { Distance = 400, Units = "m", Race = new Race { Type = "Road" } };
+
 	public static Result[] SimilarResults =>
 	[
-		new() { Course = SimilarCourse, Athlete = Athlete1, StartTime =DateTime.Parse("2/1/2020"), Duration = TimeSpan.FromSeconds(100) },
-		new() { Course = SimilarCourse, Athlete = Athlete2, StartTime =DateTime.Parse("2/3/2020"), Duration = TimeSpan.FromSeconds(105) },
-		new() { Course = SimilarCourse, Athlete = Athlete3, StartTime =DateTime.Parse("2/7/2020"), Duration = TimeSpan.FromSeconds(110) },
-		new() { Course = SimilarCourse, Athlete = Athlete4, StartTime =DateTime.Parse("2/5/2020"), Duration = TimeSpan.FromSeconds(96) }
+		new() { Course = SimilarCourse, Athlete = Athlete1, StartTime = DateTime.Parse("2/1/2020"), Duration = TimeSpan.FromSeconds(100) },
+		new() { Course = SimilarCourse, Athlete = Athlete2, StartTime = DateTime.Parse("2/3/2020"), Duration = TimeSpan.FromSeconds(105) },
+		new() { Course = SimilarCourse, Athlete = Athlete3, StartTime = DateTime.Parse("2/7/2020"), Duration = TimeSpan.FromSeconds(110) },
+		new() { Course = SimilarCourse, Athlete = Athlete4, StartTime = DateTime.Parse("2/5/2020"), Duration = TimeSpan.FromSeconds(96) }
 	];
 }

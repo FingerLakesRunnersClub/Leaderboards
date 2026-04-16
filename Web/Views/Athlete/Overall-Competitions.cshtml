@@ -1,11 +1,11 @@
-﻿@using FLRC.Leaderboards.Core.Athletes
-@model AthleteSummaryViewModel
+﻿@using FLRC.Leaderboards.Web.ViewModels
+@model AthleteSummary
 
 <dl class="row mb-0">
-	@foreach (var competition in Model.Summary.Competitions)
+	@foreach (var competition in Model.Competitions)
 	{
 		<dt class="col-6">
-			@competition.Name.Replace($" ({Model.Summary.Athlete.Category.Display})", "")
+			@competition.Name.Replace($" ({Model.Athlete.Category})", "")
 		</dt>
 		<dd class="col-6">
 			@competition.Value (<a href="/Overall/@competition.ID">@competition.Rank.Display</a>)

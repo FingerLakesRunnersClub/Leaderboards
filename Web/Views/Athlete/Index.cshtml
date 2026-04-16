@@ -1,24 +1,27 @@
 ﻿@using FLRC.Leaderboards.Core.Athletes
-@using FLRC.Leaderboards.Core.Races
-@using FLRC.Leaderboards.Core.Results
-@model AthleteSummaryViewModel
+@using FLRC.Leaderboards.Core.Metrics
+@using FLRC.Leaderboards.Core.Ranking
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<FLRC.Leaderboards.Web.ViewModels.AthleteSummary>
 
-@await Html.PartialAsync("AthleteHeader", Model.Header)
+@await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete.ID)
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
-		@if (Model.Config.FileSystemResults is null)
+		@if (true)
 		{
-			@await Html.PartialAsync("Overall-" + (Model.Config.Features.MultiAttemptCompetitions ? "MultiAttempt" : "Competitions"), Model)
+			@await Html.PartialAsync("Overall-" + (true ? "MultiAttempt" : "Competitions"), Model.Data)
 		}
 		<div class="text-center">
-			<a href="/Athlete/Log/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
+			<a href="/Athlete/Log/@Model.Data.Athlete.ID" class="btn btn-xs btn-light">
 				Activity Log
 				<i aria-hidden="true" class="fas fa-arrow-alt-circle-right"></i>
 			</a>
-			@if (Model.Config.Features.MultiAttemptCompetitions && !Model.Summary.Athlete.Private)
+			@if (true && !Model.Data.Athlete.IsPrivate)
 			{
-				<a href="/Athlete/Similar/@Model.Summary.Athlete.ID" class="btn btn-xs btn-light">
+				<a href="/Athlete/Similar/@Model.Data.Athlete.ID" class="btn btn-xs btn-light">
 					Similar Athletes
 					<i aria-hidden="true" class="fas fa-arrow-alt-circle-right"></i>
 				</a>
@@ -28,29 +31,30 @@
 </div>
 
 <div class="row">
-	@foreach (var (course, _) in Model.Summary.All.Where(r => r.Value != null && r.Value.Any()))
+	@foreach (var (course, _) in Model.Data.All.Where(r => r.Value != null && r.Value.Any()))
 	{
 		<div class="col-12 col-lg-6">
 			<div class="card-highlighted card mb-3">
 				<div class="card-body no-activity-log">
-					@await Html.PartialAsync("CourseInfo", new CourseResultsViewModel { Course = course, Config = Model.Config })
+					@await Html.PartialAsync("CourseInfo", course)
 
 					<dl class="row mb-0 mt-3">
-						@if (!Model.Summary.Athlete.Private)
+						@if (!Model.Data.Athlete.IsPrivate)
 						{
-							var defaultView = course.IsFieldEvent ? "Farthest" : "Fastest";
-							var fastest = Model.Summary.Fastest[course];
-							var farthest = Model.Summary.Farthest[course];
-							var value = course.IsFieldEvent ? farthest.Value?.Display : fastest.Value?.Display;
-							var rank = course.IsFieldEvent ? farthest.Rank?.Display : fastest.Rank?.Display;
-							var points = course.IsFieldEvent ? farthest.Points?.Display : fastest.Points?.Display;
-							var ageGrade = course.IsFieldEvent ? farthest.AgeGrade?.Display : fastest.AgeGrade?.Display;
+							var defaultView = course.Race.IsFieldEvent ? "Farthest" : "Fastest";
+							var fastest = Model.Data.Fastest[course];
+							var farthest = new Ranked<Performance, Result>();
+							var value = course.Race.IsFieldEvent ? farthest.Value?.Display : fastest.Value?.Display;
+							var rank = course.Race.IsFieldEvent ? farthest.Rank?.Display : fastest.Rank?.Display;
+							var points = course.Race.IsFieldEvent ? farthest.Points?.Display : fastest.Points?.Display;
+							var ageGrade = course.Race.IsFieldEvent ? farthest.AgeGrade?.Display : fastest.AgeGrade?.Display;
+
 							<dt class="col-6">
-								@(Model.Config.Features.MultiAttempt ? defaultView : string.Empty) @(course.EventMetric)
+								@(true ? defaultView : string.Empty) @(course.Race.EventMetric)
 							</dt>
 							<dd class="col-6">
 								@value
-								(<a href="/Course/@course.ID/@course.ShortName/@defaultView/@Model.Summary.Athlete.Category?.Value">@rank</a>)
+								(<a href="/Results/Fastest/@course.ID?c=@Model.Data.Athlete.Category">@rank</a>)
 							</dd>
 							<dt class="col-6">
 								Points
@@ -66,18 +70,18 @@
 							</dd>
 						}
 
-						@if (Model.Config.Features.MultiAttemptCompetitions)
+						@if (true)
 						{
-							@if (!Model.Summary.Athlete.Private)
+							@if (!Model.Data.Athlete.IsPrivate)
 							{
 								<dt class="col-6">
-									Average (Top @course.AverageThreshold(new Filter(Model.Summary.Athlete.Category)))
+									Average (Top @course.Results.AverageThreshold(new Filter(Category.Parse(Model.Data.Athlete.Category.ToString()))))
 								</dt>
 								<dd class="col-6">
-									@if (Model.Summary.Average[course] != null)
+									@if (Model.Data.Average[course] != null)
 									{
-										@Model.Summary.Average[course].Value?.Display
-										@:(<a href="/Course/@course.ID/@course.ShortName/BestAverage/@Model.Summary.Athlete.Category?.Value">@Model.Summary.Average[course].Rank.Display</a>)
+										@Model.Data.Average[course].Value?.Display
+										@:(<a href="/Results/BestAverage/@course.ID?c=@Model.Data.Athlete.Category">@Model.Data.Average[course].Rank.Display</a>)
 									}
 									else
 									{
@@ -90,25 +94,25 @@
 								# of Runs
 							</dt>
 							<dd class="col-6">
-								@Model.Summary.Runs[course].Value
-								(<a href="/Course/@course.ID/MostRuns">@Model.Summary.Runs[course].Rank.Display</a>)
+								@Model.Data.Runs[course].Value
+								(<a href="/Course/@course.ID/MostRuns">@Model.Data.Runs[course].Rank.Display</a>)
 							</dd>
 						}
-						@if (Model.Config.Features.CommunityStars)
+						@if (false)
 						{
 							<dt class="col-6">
 								Community Stars
 							</dt>
 							<dd class="col-6">
-								@(Model.Summary.CommunityStars[course]?.Value.Display ?? "0")
+								@(Model.Data.CommunityStars[course]?.Value.Display ?? "0")
 							</dd>
 						}
 					</dl>
 				</div>
-				@if (Model.Config.Features.MultiAttempt)
+				@if (true)
 				{
 					<div class="card-footer">
-						<a href="/Athlete/@Model.Summary.Athlete.ID/Course/@course.ID">View All Efforts</a>
+						<a href="/Athlete/@Model.Data.Athlete.ID/Course/@course.ID">View All Efforts</a>
 					</div>
 				}
 			</div>

@@ -1,27 +1,28 @@
-﻿@using FLRC.Leaderboards.Core.Athletes
-@model AthleteSummaryViewModel
+﻿@using FLRC.Leaderboards.Web
+@using FLRC.Leaderboards.Web.ViewModels
+@model AthleteSummary
 
 <dl class="row mb-0">
 	<dt class="col-6">
 		Team
 	</dt>
 	<dd class="col-6">
-		@Model.Summary.Athlete.Team.Display
-		(<a href="/Overall/Team">@Model.Summary.TeamResults?.Rank.Display</a>)
+		@Model.Athlete.Team(Model.Iteration).Display
+		(<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
 	</dd>
 
-	@if (Model.Summary.Athlete.Category != null && !Model.Summary.Athlete.Private)
+	@if (Model.Athlete.Category != null && !Model.Athlete.IsPrivate)
 	{
 		<dt class="col-6">
 			Overall Points
 		</dt>
 		<dd class="col-6">
-			@Model.Summary.OverallPoints?.Value?.Display
-			(<a href="/Overall/Points/@Model.Summary.Athlete.Category.Display">@Model.Summary.OverallPoints?.Rank?.Display</a>)
+			@Model.OverallPoints?.Value?.Display
+			(<a href="/Overall/Points/@Model.Athlete.Category">@Model.OverallPoints?.Rank?.Display</a>)
 		</dd>
 	}
 
-	@if (!Model.Summary.Athlete.Private)
+	@if (!Model.Athlete.IsPrivate)
 	{
 		<dt class="col-6">
 			<span class="d-none d-sm-inline">Average</span>
@@ -29,8 +30,8 @@
 			Age Grade
 		</dt>
 		<dd class="col-6">
-			@Model.Summary.OverallAgeGrade?.Value?.Display
-			(<a href="/Overall/AgeGrade">@Model.Summary.OverallAgeGrade?.Rank?.Display</a>)
+			@Model.OverallAgeGrade?.Value?.Display
+			(<a href="/Overall/AgeGrade">@Model.OverallAgeGrade?.Rank?.Display</a>)
 		</dd>
 	}
 
@@ -38,18 +39,18 @@
 		Total Miles
 	</dt>
 	<dd class="col-6">
-		@Model.Summary.OverallMiles?.Value?.Display
-		(<a href="/Overall/Miles">@Model.Summary.OverallMiles?.Rank?.Display</a>)
+		@Model.OverallMiles?.Value?.Display
+		(<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
 	</dd>
 
-	@if (Model.Config.Features.CommunityStars)
+	@if (false)
 	{
 		<dt class="col-6">
 			Community Stars
 		</dt>
 		<dd class="col-6">
-			@Model.Summary.OverallCommunityStars?.Value?.Display
-			(<a href="/Overall/Community">@Model.Summary.OverallCommunityStars?.Rank?.Display</a>)
+			@Model.OverallCommunityStars?.Value?.Display
+			(<a href="/Overall/Community">@Model.OverallCommunityStars?.Rank?.Display</a>)
 		</dd>
 	}
 </dl>

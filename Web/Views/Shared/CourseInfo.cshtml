@@ -23,7 +23,7 @@
 			@link.Name
 		</a>
 	}
-	@if (Model.Race.Iterations.Any(i => i.Series.Feature[nameof(FeatureSet.MultiAttempt)]))
+	@if (true)
 	{
 		<a class="activity-log btn btn-sm btn-outline-dark ml-2" href="/Log/Index/@Model.ID">
 			<i aria-hidden="true" class="fas fa-file-lines"></i>
@@ -34,7 +34,7 @@
 <h4 class="mb-0">
 	@Model.Race.Name
 </h4>
-@if (Model.Race.Iterations.Any(i => i.Series.Feature[nameof(FeatureSet.ShowBadges)]))
+@if (true)
 {
 	<div class="mb-2">
 		<span class="badge badge-pill badge-secondary">@Model.Race.Type</span>

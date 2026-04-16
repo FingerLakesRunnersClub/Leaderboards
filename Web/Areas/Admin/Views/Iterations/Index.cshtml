@@ -2,7 +2,7 @@
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<IGrouping<Series, Iteration>[]>
 
-@await Html.PartialAsync("../AdminHeader")
+@await Html.PartialAsync("../AdminHeader", Model.Title)
 
 <article class="card card-highlighted">
 	@foreach (var group in Model.Data)

@@ -2,7 +2,7 @@
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<Race[]>
 
-@await Html.PartialAsync("../AdminHeader")
+@await Html.PartialAsync("../AdminHeader", Model.Title)
 
 <article class="card card-highlighted">
 	<section class="card-body">

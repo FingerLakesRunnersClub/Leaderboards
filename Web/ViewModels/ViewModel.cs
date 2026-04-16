@@ -1,12 +1,6 @@
-using FLRC.Leaderboards.Core;
-
 namespace FLRC.Leaderboards.Web.ViewModels;
 
-public sealed class ViewModel<T>(string title, T data) : ViewModel
+public sealed record ViewModel<T>(string Title, T Data)
 {
-	public override string Title => title;
-
-	public T Data => data;
-
 	public string Error { get; init; }
 }

@@ -115,7 +115,7 @@ public sealed class IterationsControllerTests
 		var result = await controller.Edit(Guid.NewGuid());
 
 		//assert
-		var model = result.Model as Core.ViewModel;
+		var model = result.Model as ViewModel<IterationForm>;
 		Assert.Equal("Edit Test Iteration", model!.Title);
 	}
 

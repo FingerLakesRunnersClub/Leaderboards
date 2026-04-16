@@ -1,9 +1,9 @@
-using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Reports;
 using FLRC.Leaderboards.Model;
+using Category = FLRC.Leaderboards.Core.Athletes.Category;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -11,6 +11,12 @@ public static class ResultsExtensions
 {
 	extension(ICollection<Result> results)
 	{
+		public Result[] For(Iteration iteration)
+			=> results
+				.Where(r => r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue)
+				            && r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue))
+				.ToArray();
+
 		public RankedList<Time, Result> Fastest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), rs => rs.Any(r => r.Duration > TimeSpan.Zero || r.Athlete.IsPrivate), rs => rs.OrderBy(r => r.Duration).First(), rs => new Time(rs.Min(r => r.Duration > TimeSpan.Zero ? r.Duration : TimeSpan.MaxValue)));
 

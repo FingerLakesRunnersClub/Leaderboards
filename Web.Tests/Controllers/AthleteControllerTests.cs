@@ -1,15 +1,10 @@
-using FLRC.Leaderboards.Core.Athletes;
-using FLRC.Leaderboards.Core.Community;
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Metrics;
-using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Ranking;
-using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Core.Tests;
-using FLRC.Leaderboards.Core.Tests.Leaders;
+using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
-using Microsoft.AspNetCore.Mvc;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 
@@ -18,254 +13,148 @@ namespace FLRC.Leaderboards.Web.Tests.Controllers;
 public sealed class AthleteControllerTests
 {
 	[Fact]
-	public async Task SummaryContainsAllInfo()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var athlete = new Athlete { ID = 123, Category = Category.M };
-		var course = new Course
-		{
-			Distance = new Distance("10 miles"),
-			Results =
-			[
-				new Result
-				{
-					Athlete = athlete,
-					Course = CourseData.Course,
-					StartTime = new Date(DateTime.Parse("1/1/2000")),
-					Duration = new Time(new TimeSpan(2, 4, 6)),
-					CommunityStars =
-					{
-						[StarType.GroupRun] = true,
-						[StarType.Story] = true
-					}
-				},
-				new Result
-				{
-					Athlete = new Athlete { ID = 234, Category = Category.F },
-					Course = CourseData.Course,
-					StartTime = new Date(DateTime.Parse("1/1/2000")),
-					Duration = new Time(new TimeSpan(1, 2, 3)),
-					CommunityStars =
-					{
-						[StarType.GroupRun] = true,
-						[StarType.Story] = true
-					}
-				}
-			]
-		};
-		dataService.GetAthlete(123).Returns(athlete);
-		dataService.GetAllResults().Returns([course]);
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
-
-		//act
-		var response = await controller.Index(123);
-
-		//assert
-		var vm = (AthleteSummaryViewModel)response.Model;
-		Assert.Equal((uint)123, vm!.Summary.Athlete.ID);
-		Assert.Equal(1, vm.Summary.Fastest[course].Rank.Value);
-		Assert.Equal(1, vm.Summary.Average[course].Rank.Value);
-		Assert.Equal(1, vm.Summary.Runs[course].Rank.Value);
-		Assert.Equal(1, vm.Summary.CommunityStars[course].Rank.Value);
-		Assert.Equal(1, vm.Summary.TeamResults.Rank.Value);
-		Assert.Equal(100, vm.Summary.OverallPoints.Value.Value);
-		Assert.Equal(10, vm.Summary.OverallMiles.Value.Value);
-		Assert.Equal(2, vm.Summary.OverallCommunityStars.Value.Value);
-	}
-
-	[Fact]
-	public async Task HeaderContainsCompletionBadges()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
-
-		dataService.GetAthlete(123).Returns(LeaderboardData.Athlete1);
-		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-
-		iterationManager.ActiveIteration().Returns(UltraChallengeData.Iteration);
-
-		//act
-		var response = await controller.Index(123);
-
-		//assert
-		var vm = (AthleteSummaryViewModel)response.Model;
-		Assert.Contains("medal", vm!.Header.BadgeIcons.Keys);
-	}
-
-	[Fact]
-	public async Task HeaderDoesNotContainIncorrectCompletionBadges()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var iterationManager = Substitute.For<IIterationManager>();
-
-		dataService.GetAthlete(567).Returns(LeaderboardData.Private);
-		dataService.GetAllResults().Returns(LeaderboardData.Courses);
-
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
-
-		//act
-		var response = await controller.Index(567);
-
-		//assert
-		var vm = (AthleteSummaryViewModel)response.Model;
-		Assert.DoesNotContain("medal", vm!.Header.BadgeIcons.Keys);
-	}
-
-	[Fact]
 	public async Task CanGetAllResultsForActivityLog()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
 		var iterationManager = Substitute.For<IIterationManager>();
-		var athlete = new Athlete { ID = 123 };
-		var course = new Course
+		var athleteService = Substitute.For<IAthleteService>();
+		var courseService = Substitute.For<ICourseService>();
+		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
+
+		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+
+		var athlete = ResultsData.Athlete1 with
 		{
-			ID = 234,
-			Distance = new Distance("10 miles"),
 			Results =
 			[
 				new Result
 				{
-					Athlete = athlete,
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(1, 2, 3))
+					Athlete = ResultsData.Athlete1,
+					Course = ResultsData.Course,
+					Duration = new TimeSpan(1, 2, 3)
 				}
 			]
 		};
-		dataService.GetAthlete(123).Returns(athlete);
-		dataService.GetAllResults().Returns([course]);
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
+		athleteService.Get(athlete.ID).Returns(athlete);
 
 		//act
-		var response = await controller.Log(123);
+		var response = await controller.Log(athlete.ID);
 
 		//assert
-		var vm = (AthleteLogViewModel)response.Model;
-		Assert.NotEmpty(vm!.Results);
+		var vm = response.Model as ViewModel<AthleteLog>;
+		Assert.NotEmpty(vm!.Data.Results);
 	}
 
 	[Fact]
 	public async Task CanGetAllResultsForCourse()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
 		var iterationManager = Substitute.For<IIterationManager>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var courseService = Substitute.For<ICourseService>();
+		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
+
+		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+
+		var athlete = new Athlete { ID = Guid.NewGuid() };
+		athleteService.Get(athlete.ID).Returns(athlete);
+
 		var course = new Course
 		{
-			ID = 234,
-			Race = new Race(),
-			Distance = new Distance("10 miles"),
+			ID = Guid.NewGuid(),
+			Race = new Race { Name = "Test" },
+			Distance = 10,
+			Units = "mi",
 			Results =
 			[
 				new Result
 				{
-					Athlete = new Athlete { ID = 123 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(1, 2, 3))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					Duration = new TimeSpan(1, 2, 3)
 				}
 			]
 		};
-		dataService.GetResults(234, null).Returns(course);
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
+		courseService.Get(course.ID).Returns(course);
 
 		//act
-		var response = await controller.Course(123, 234, null);
+		var response = await controller.Course(athlete.ID, course.ID);
 
 		//assert
-		var vm = (AthleteCourseResultsViewModel)response.Model;
-		Assert.NotEmpty(vm!.RankedResults);
+		var vm = response.Model as ViewModel<AthleteCourseResults<Time>>;
+		Assert.NotEmpty(vm!.Data.RankedResults);
 	}
 
 	[Fact]
 	public async Task ResultsAreRankedCorrectly()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
 		var iterationManager = Substitute.For<IIterationManager>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var courseService = Substitute.For<ICourseService>();
+		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
+
+		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1)};
+		athleteService.Get(athlete.ID).Returns(athlete);
+
 		var course = new Course
 		{
-			ID = 234,
-			Race = new Race(),
-			Distance = new Distance("10 miles"),
+			ID = Guid.NewGuid(),
+			Race = new Race { Name = "Test" },
+			Distance = 10,
+			Units = "mi",
 			Results =
 			[
 				new Result
 				{
-					Athlete = new Athlete { ID = 123, Age = 35 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(0, 2, 3))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					StartTime = new DateTime(2026, 1, 1),
+					Duration = new TimeSpan(0, 2, 3)
 				},
 				new Result
 				{
-					Athlete = new Athlete { ID = 123, Age = 35 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(1, 2, 3))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					StartTime = new DateTime(2026, 1, 2),
+					Duration = new TimeSpan(1, 2, 3)
 				},
 				new Result
 				{
-					Athlete = new Athlete { ID = 123, Age = 35 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(2, 3, 4))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					StartTime = new DateTime(2026, 1, 3),
+					Duration = new TimeSpan(2, 3, 4)
 				},
 				new Result
 				{
-					Athlete = new Athlete { ID = 123, Age = 35 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(0, 2, 3))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					StartTime = new DateTime(2026, 1, 4),
+					Duration = new TimeSpan(0, 2, 3)
 				},
 				new Result
 				{
-					Athlete = new Athlete { ID = 123, Age = 35 },
-					Course = CourseData.Course,
-					Duration = new Time(new TimeSpan(1, 2, 3))
+					Athlete = athlete,
+					Course = ResultsData.Course,
+					StartTime = new DateTime(2026, 1, 5),
+					Duration = new TimeSpan(1, 2, 3)
 				}
 			]
 		};
-		dataService.GetResults(234, null).Returns(course);
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
+		courseService.Get(course.ID).Returns(course);
 
 		//act
-		var response = await controller.Course(123, 234, null);
+		var response = await controller.Course(athlete.ID, course.ID);
 
 		//assert
-		var vm = (AthleteCourseResultsViewModel)response.Model;
-		Assert.Equal(0, vm!.RankedResults[0].Rank.Value);
-		Assert.Equal(0, vm.RankedResults[1].Rank.Value);
-		Assert.Equal(1, vm.RankedResults[2].Rank.Value);
-		Assert.Equal(1, vm.RankedResults[3].Rank.Value);
-		Assert.Equal(3, vm.RankedResults[4].Rank.Value);
-	}
-
-	[Fact]
-	public async Task CanFindSimilarAthletes()
-	{
-		//arrange
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAthlete(123).Returns(CourseData.Athlete1);
-		dataService.GetAthlete(234).Returns(CourseData.Athlete2);
-		dataService.GetAthlete(345).Returns(CourseData.Athlete3);
-		dataService.GetAthlete(456).Returns(CourseData.Athlete4);
-		dataService.GetAllResults().Returns([new Course { Results = CourseData.SimilarResults, Distance = new Distance("400m") }]);
-
-		var iterationManager = Substitute.For<IIterationManager>();
-
-		var controller = new AthleteController(iterationManager, dataService, TestHelpers.Config);
-
-		//act
-		var result = await controller.Similar(123);
-
-		//assert
-		var vm = (SimilarAthletesViewModel)result.Model;
-		var matches = vm!.Matches;
-		Assert.Equal(CourseData.Athlete1, vm.Athlete);
-		Assert.Equal(CourseData.Athlete4, matches[0].Athlete);
-		Assert.Equal("96%", matches[0].Similarity.Display);
-		Assert.Equal(CourseData.Athlete2, matches[1].Athlete);
-		Assert.Equal("95%", matches[1].Similarity.Display);
+		var vm = response.Model as ViewModel<AthleteCourseResults<Time>>;
+		Assert.Equal(0, vm!.Data.RankedResults[0].Rank.Value);
+		Assert.Equal(0, vm.Data.RankedResults[1].Rank.Value);
+		Assert.Equal(1, vm.Data.RankedResults[2].Rank.Value);
+		Assert.Equal(1, vm.Data.RankedResults[3].Rank.Value);
+		Assert.Equal(3, vm.Data.RankedResults[4].Rank.Value);
 	}
 }

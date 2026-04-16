@@ -1,0 +1,16 @@
+@using FLRC.Leaderboards.Web.ViewModels
+@model AthleteHeader
+
+<h2 id="athlete-header">
+	@Model.Athlete.Name
+	<small>
+		@($"{Model.Athlete.AgeToday} {Model.Athlete.Category}".Trim())
+		<span id="completion-badges">
+			@foreach (var badge in Model.Badges)
+			{
+				<i aria-hidden="true" class="fas fa-@badge.Key" title="@badge.Value Complete"></i>
+			}
+		</span>
+	</small>
+</h2>
+

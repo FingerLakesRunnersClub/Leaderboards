@@ -32,10 +32,7 @@ public class Dashboard(IAuthService authService, IAthleteService athleteService,
         if (challenge is null)
             return View("Select");
 
-        var allIterationResults = athlete.Results
-            .Where(r => r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue)
-                        && r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue))
-            .ToArray();
+        var allIterationResults = athlete.Results.For(iteration);
 
         var challengeCoursesCompleted = challenge.Courses
             .Where(c => allIterationResults.Any(r => r.CourseID == c.ID))

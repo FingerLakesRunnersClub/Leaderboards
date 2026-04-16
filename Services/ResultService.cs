@@ -19,6 +19,13 @@ public sealed class ResultService(DB db) : IResultService
 			.Where(r => r.CourseID == courseID)
 			.ToArrayAsync();
 
+	public async Task<Result[]> Find(Iteration iteration)
+		=> await db.Set<Result>()
+			.Include(r => r.Athlete)
+			.Where(r => (iteration.StartDate == null || r.StartTime >= iteration.StartDate.Value.ToDateTime(TimeOnly.MinValue))
+				&& (iteration.EndDate == null || r.StartTime <= iteration.EndDate.Value.ToDateTime(TimeOnly.MaxValue)))
+			.ToArrayAsync();
+
 	public async Task Import(Result[] results)
 	{
 		var newResults = results.Where(newR => !db.Set<Result>().Any(r => r.AthleteID == newR.AthleteID && r.CourseID == newR.CourseID && r.StartTime == newR.StartTime && r.Duration == newR.Duration));

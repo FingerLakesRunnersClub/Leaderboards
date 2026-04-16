@@ -3,6 +3,7 @@ using FLRC.AgeGradeCalculator;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -12,7 +13,7 @@ public static class ResultExtensions
 	private static readonly ConcurrentDictionary<(Category, byte, TrackEvent, TimeSpan), double> TrackAgeGradeCache = new();
 	private static readonly ConcurrentDictionary<(Category, byte, FieldEvent, double), double> FieldAgeGradeCache = new();
 
-	extension(Model.Result result)
+	extension(Result result)
 	{
 		public bool IsValid()
 			=> result.AgeGrade()?.Value <= 100;

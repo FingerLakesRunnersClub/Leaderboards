@@ -36,7 +36,7 @@ public sealed class SeriesControllerTests
 		var result = controller.Add();
 
 		//assert
-		var model = result.Model as Core.ViewModel;
+		var model = result.Model as ViewModel<Series>;
 		Assert.Equal("Add Series", model!.Title);
 	}
 
@@ -71,7 +71,7 @@ public sealed class SeriesControllerTests
 		var result = await controller.Edit(Guid.NewGuid());
 
 		//assert
-		var model = result!.Model as Core.ViewModel;
+		var model = result!.Model as ViewModel<Series>;
 		Assert.Equal("Edit Series", model!.Title);
 	}
 
