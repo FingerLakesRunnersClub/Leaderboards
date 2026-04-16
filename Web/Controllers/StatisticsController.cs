@@ -16,12 +16,12 @@ public sealed class StatisticsController(IIterationManager iterationManager) : C
 	public async Task<ViewResult> Index()
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var stats = await GetStatistics(iteration);
+		var stats = GetStatistics(iteration);
 		var vm = new ViewModel<StatisticsViewModel>("Statistics", stats);
 		return View(vm);
 	}
 
-	private async Task<StatisticsViewModel> GetStatistics(Iteration iteration)
+	private static StatisticsViewModel GetStatistics(Iteration iteration)
 	{
 		var officialCourses = iteration.OfficialChallenge.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters);
 		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(officialCourses).OrderBy(c => new Distance(c.DistanceDisplay).Meters);
