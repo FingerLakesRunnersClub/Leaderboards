@@ -1,11 +1,13 @@
-using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Reports;
 using FLRC.Leaderboards.Core.Tests;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
+using Athlete = FLRC.Leaderboards.Core.Athletes.Athlete;
+using Race = FLRC.Leaderboards.Model.Race;
 
 namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
@@ -15,24 +17,39 @@ public sealed class CompletedControllerTests
 	public async Task CanGetListOfCompletions()
 	{
 		//arrange
+		var iterationManager = Substitute.For<IIterationManager>();
+		var dataService = Substitute.For<IDataService>();
+
+		var controller = new CompletedController(iterationManager, dataService);
+
+		var iteration = new Iteration
+		{
+			Races =
+			[
+				new Race
+				{
+					Courses =
+					[
+						ResultsData.Course with { Results = ResultsData.Results }
+					]
+				}
+			]
+		};
+		iterationManager.ActiveIteration().Returns(iteration);
+
 		var personal = new Dictionary<Athlete, DateOnly>
 		{
 			{ CourseData.Athlete1, new DateOnly(2023, 08, 09) },
 			{ CourseData.Athlete2, new DateOnly(2023, 08, 09) }
 		};
-		var course = new Course { Results = CourseData.Results, Distance = new Distance("10K") };
-		var dataService = Substitute.For<IDataService>();
-		dataService.GetAllResults().Returns([course]);
 		dataService.GetPersonalCompletions().Returns(personal);
-
-		var controller = new CompletedController(dataService, TestHelpers.Config);
 
 		//act
 		var response = await controller.Index();
 
 		//assert
-		var vm = (CompletedViewModel)response.Model;
-		Assert.Equal(4, vm!.RankedResults.Count);
-		Assert.Equal(2, vm!.PersonalResults.Count);
+		var vm = response.Model as ViewModel<Completed>;
+		Assert.Equal(4, vm!.Data.Results.Count);
+		Assert.Equal(2, vm!.Data.PersonalResults.Count);
 	}
 }

@@ -1,37 +1,30 @@
-using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Overall;
-using FLRC.Leaderboards.Core.Reports;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class CompletedController : Controller
+public sealed class CompletedController(IIterationManager iterationManager, IDataService dataService) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public CompletedController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index()
-		=> View(await GetCompleted());
-
-	private async Task<CompletedViewModel> GetCompleted()
 	{
-		var results = await _dataService.GetAllResults();
-		var overall = new OverallResults(results);
-		var personal = await _dataService.GetPersonalCompletions();
+		var completed = await GetCompleted();
+		var vm = new ViewModel<Completed>("Completions", completed);
+		return View(vm);
+	}
 
-		return new CompletedViewModel
+	private async Task<Completed> GetCompleted()
+	{
+		var iteration = await iterationManager.ActiveIteration();
+		var overall = new OverallResultsCalculator(iteration);
+
+		return new Completed
 		{
-			Config = _config,
-			RankedResults = overall.Completed(),
-			PersonalResults = personal
+			Results = overall.Completed(),
+			PersonalResults = await dataService.GetPersonalCompletions()
 		};
 	}
 }

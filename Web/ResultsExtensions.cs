@@ -3,17 +3,18 @@ using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Reports;
+using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web;
 
 public static class ResultsExtensions
 {
-	extension(ICollection<Model.Result> results)
+	extension(ICollection<Result> results)
 	{
-		public RankedList<Time, Model.Result> Fastest(Filter filter = null)
+		public RankedList<Time, Result> Fastest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), rs => rs.Any(r => r.Duration > TimeSpan.Zero || r.Athlete.IsPrivate), rs => rs.OrderBy(r => r.Duration).First(), rs => new Time(rs.Min(r => r.Duration > TimeSpan.Zero ? r.Duration : TimeSpan.MaxValue)));
 
-		public RankedList<Time, Model.Result> BestAverage(Filter filter = null)
+		public RankedList<Time, Result> BestAverage(Filter filter = null)
 		{
 			filter ??= new Filter();
 			var threshold = results.AverageThreshold(filter);
@@ -29,24 +30,24 @@ public static class ResultsExtensions
 				: (ushort)0;
 		}
 
-		public RankedList<ushort, Model.Result> MostRuns(Filter filter = null)
+		public RankedList<ushort, Result> MostRuns(Filter filter = null)
 			=> results.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(r.First().Course), r => (ushort)r.Count());
 
-		public RankedList<Miles, Model.Result> MostMiles(Filter filter = null)
+		public RankedList<Miles, Result> MostMiles(Filter filter = null)
 			=> results.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(r.First().Course), r => new Miles(r.Count() * new Distance(r.First().Course.DistanceDisplay).Miles));
 
-		public RankedList<Date, Model.Result> Earliest(Filter filter = null)
+		public RankedList<Date, Result> Earliest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
-		private RankedList<T, Model.Result> Rank<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> sort)
+		private RankedList<T, Result> Rank<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> sort)
 			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort);
 
-		private RankedList<T, Model.Result> RankDescending<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> sort)
+		private RankedList<T, Result> RankDescending<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> sort)
 			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
-		private static RankedList<T, Model.Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Model.Result> getResult, Func<GroupedModelResult, T> getValue)
+		private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> getValue)
 		{
-			var ranks = new RankedList<T, Model.Result>();
+			var ranks = new RankedList<T, Result>();
 			byte skippedRanks = 0;
 
 			var list = sorted.ThenBy(rs => getResult(rs).Duration).ToArray();
@@ -61,7 +62,7 @@ public static class ResultsExtensions
 				var firstPlace = !isInFirstPlace ? ranks.First(r => r.Value is not null) : null;
 				var lastPlace = !isInFirstPlace ? ranks[^1] : null;
 
-				var rankedResult = new Ranked<T, Model.Result>
+				var rankedResult = new Ranked<T, Result>
 				{
 					All = ranks,
 					Rank = Rank(isInFirstPlace, lastPlace, value, (ushort)(rank - skippedRanks)),
@@ -76,10 +77,10 @@ public static class ResultsExtensions
 				ranks.Add(rankedResult);
 			}
 
-			return new RankedList<T, Model.Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
+			return new RankedList<T, Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
 		}
 
-		private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Model.Result> lastPlace, T value, ushort rank)
+		private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Result> lastPlace, T value, ushort rank)
 			=> !isInFirstPlace && lastPlace.Value.Equals(value)
 				? lastPlace.Rank
 				: new Rank((ushort)(isInFirstPlace ? 1 : rank));
@@ -89,7 +90,7 @@ public static class ResultsExtensions
 				.GroupBy(r => r.Athlete).Select(g => new GroupedModelResult(g))
 				.ToArray();
 
-		private Model.Result[] Filter(Filter filter)
+		private Result[] Filter(Filter filter)
 			=> results.Where(r => filter == null || filter.IsMatch(r)).ToArray();
 
 		public Statistics Statistics()
