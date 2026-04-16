@@ -15,12 +15,12 @@
 		<form method="post" class="row">
 			<div class="col-lg-6">
 				<div class="bg-white border rounded shadow-sm p-3 my-4">
-					<h4>@Challenge.Types.Default</h4>
+					<h4>@Challenge.Types.Classic</h4>
 					<p>The canonical 10 courses for this year's Challenge:</p>
 					@await Html.PartialAsync("CourseTable", Model.Data.Official.Courses)
 					<div class="d-flex justify-content-center">
-						<button type="submit" name="Selection" value="@Challenge.Types.Default" class="btn btn-primary">
-							Select @Challenge.Types.Default Challenge
+						<button type="submit" name="Selection" value="@Challenge.Types.Classic" class="btn btn-primary">
+							Select @Challenge.Types.Classic Challenge
 						</button>
 					</div>
 				</div>

@@ -24,7 +24,7 @@ public record Challenge : Identifiable<Guid>
 
 	public static class Types
 	{
-		public const string Default = nameof(Default);
+		public const string Classic = nameof(Classic);
 		public const string Personal = nameof(Personal);
 		public const string Ultra = nameof(Ultra);
 	}

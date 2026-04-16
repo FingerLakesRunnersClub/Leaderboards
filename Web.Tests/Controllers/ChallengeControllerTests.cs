@@ -261,7 +261,7 @@ public sealed class ChallengeControllerTests
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
 		//act
-		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Default });
+		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Classic });
 
 		//assert
 		await challengeService.DidNotReceive().Add(Arg.Any<Challenge>());

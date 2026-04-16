@@ -124,7 +124,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (athlete.HasChallenge(iteration))
 			return RedirectToAction(nameof(Dashboard));
 
-		var courses = form.Selection == Model.Challenge.Types.Default
+		var courses = form.Selection == Model.Challenge.Types.Classic
 			? iteration.OfficialChallenge.Courses
 			: SelectedCourses(iteration, form.Selected);
 
@@ -157,7 +157,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (athlete.HasChallenge(iteration))
 			return RedirectToAction(nameof(Dashboard));
 
-		if (form.Selection == Model.Challenge.Types.Default)
+		if (form.Selection == Model.Challenge.Types.Classic)
 		{
 			var official = iteration.Challenges.First(c => c is { IsPrimary: true, IsOfficial: true });
 			await challengeService.AddConnection(athlete, official);
