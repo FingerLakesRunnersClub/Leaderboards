@@ -1,5 +1,4 @@
 using FLRC.Leaderboards.Core.Metrics;
-using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
@@ -17,11 +16,13 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
+		var authService = Substitute.For<IAuthService>();
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var courseService = Substitute.For<ICourseService>();
 		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
 
-		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, authService, adminService, athleteService, courseService, summaryCalculator);
 
 		var athlete = ResultsData.Athlete1 with
 		{
@@ -50,11 +51,13 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
+		var authService = Substitute.For<IAuthService>();
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var courseService = Substitute.For<ICourseService>();
 		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
 
-		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, authService, adminService, athleteService, courseService, summaryCalculator);
 
 		var athlete = new Athlete { ID = Guid.NewGuid() };
 		athleteService.Get(athlete.ID).Returns(athlete);
@@ -90,11 +93,13 @@ public sealed class AthleteControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
+		var authService = Substitute.For<IAuthService>();
+		var adminService = Substitute.For<IAdminService>();
 		var athleteService = Substitute.For<IAthleteService>();
 		var courseService = Substitute.For<ICourseService>();
 		var summaryCalculator = Substitute.For<IAthleteSummaryCalculator>();
 
-		var controller = new AthleteController(iterationManager, athleteService, courseService, summaryCalculator, TestHelpers.Config);
+		var controller = new AthleteController(iterationManager, authService, adminService, athleteService, courseService, summaryCalculator);
 
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1)};
 		athleteService.Get(athlete.ID).Returns(athlete);

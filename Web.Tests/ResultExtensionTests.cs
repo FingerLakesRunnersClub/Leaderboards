@@ -62,6 +62,25 @@ public sealed class ResultExtensionTests
 	}
 
 	[Fact]
+	public void ResultIsNotValidWhenRunInTheFuture()
+	{
+		//arrange
+		var result = new Result
+		{
+			StartTime = DateTime.Now.AddMinutes(1),
+			Duration = new TimeSpan(1, 2, 3),
+			Course = new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } },
+			Athlete = new Athlete()
+		};
+
+		//act
+		var isValid = result.IsValid();
+
+		//assert
+		Assert.False(isValid);
+	}
+
+	[Fact]
 	public void CanGetTimeBehindOtherResult()
 	{
 		//arrange

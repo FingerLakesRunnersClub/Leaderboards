@@ -16,7 +16,7 @@ using Result = FLRC.Leaderboards.Model.Result;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService) : Controller
+public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Fastest(Guid id, [FromQuery] char? c = null, [FromQuery] byte? ag = null, [FromQuery] Guid? i = null)
@@ -123,6 +123,84 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		await resultService.Add(result);
 		return RedirectToAction(nameof(Fastest), new { id });
+	}
+
+	[HttpGet]
+	[Authorize]
+	public async Task<IActionResult> Edit(Guid id)
+	{
+		var athlete = await CurrentAthlete();
+		var result = await resultService.Get(id);
+
+		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+			return Forbid();
+
+		var vm = new ViewModel<Result>("Edit Result", result);
+		return View("Form", vm);
+	}
+
+	[HttpPost]
+	[Authorize]
+	public async Task<IActionResult> Edit(Guid id, IFormCollection form)
+	{
+		var athlete = await CurrentAthlete();
+		var result = await resultService.Get(id);
+
+		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+			return Forbid();
+
+		if (!byte.TryParse(form["Duration[h]"], out var hours)
+		    || !byte.TryParse(form["Duration[m]"], out var minutes)
+		    || !byte.TryParse(form["Duration[s]"], out var seconds))
+			throw new ArgumentException(nameof(Result.Duration));
+
+		var updated = new Result
+		{
+			Course = result.Course,
+			Athlete = result.Athlete,
+			StartTime = DateTime.Parse(form["StartTime"]),
+			Duration = new TimeSpan(hours, minutes, seconds)
+		};
+
+		if (!updated.IsValid())
+		{
+			var vm = new ViewModel<Result>("Add Result", result)
+			{
+				Error = "The result entered is invalid, please double-check your entry!"
+			};
+			return View("Form", vm);
+		}
+
+		await resultService.Update(result, updated);
+		return RedirectToAction(nameof(AthleteController.Log), nameof(Athlete), new { id = result.AthleteID });
+	}
+
+	[HttpGet]
+	[Authorize]
+	public async Task<IActionResult> Delete(Guid id)
+	{
+		var athlete = await CurrentAthlete();
+		var result = await resultService.Get(id);
+
+		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+			return Forbid();
+
+		var vm = new ViewModel<Result>("Delete Result", result);
+		return View(vm);
+	}
+
+	[HttpPost]
+	[Authorize]
+	public async Task<IActionResult> Delete(Guid id, IFormCollection form)
+	{
+		var athlete = await CurrentAthlete();
+		var result = await resultService.Get(id);
+
+		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+			return Forbid();
+
+		await resultService.Delete(result);
+		return RedirectToAction(nameof(AthleteController.Log), nameof(Athlete), new { id = result.AthleteID });
 	}
 
 	private async Task<Athlete> CurrentAthlete()

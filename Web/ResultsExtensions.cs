@@ -13,8 +13,8 @@ public static class ResultsExtensions
 	{
 		public Result[] For(Iteration iteration)
 			=> results
-				.Where(r => r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue)
-				            && r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue))
+				.Where(r => (iteration.StartDate is null || r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue))
+				            && (iteration.EndDate is null || r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue)))
 				.ToArray();
 
 		public RankedList<Time, Result> Fastest(Filter filter = null)

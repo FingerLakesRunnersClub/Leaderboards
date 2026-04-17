@@ -138,4 +138,75 @@ public sealed class ResultServiceTests
 		//assert
 		Assert.Equal(16, db.Set<Result>().Count());
 	}
+
+	[Fact]
+	public async Task CanAddResult()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var result = new Result();
+
+		//act
+		await service.Add(result);
+
+		//assert
+		Assert.Equal(1, db.Set<Result>().Count());
+	}
+
+	[Fact]
+	public async Task CanEditResult()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			StartTime = new DateTime(2000, 1, 1),
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var updated = new Result
+		{
+			ID = Guid.NewGuid(),
+			StartTime = new DateTime(2001, 2, 3),
+			Duration = new TimeSpan(2, 3, 4)
+		};
+
+		//act
+		await service.Update(result, updated);
+
+		//assert
+		var newResult = db.Set<Result>().Single();
+		Assert.Equal(new DateTime(2001, 2, 3), newResult.StartTime);
+		Assert.Equal(new TimeSpan(2, 3, 4), newResult.Duration);
+	}
+
+	[Fact]
+	public async Task CanDeleteResult()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			StartTime = new DateTime(2000, 1, 1),
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.Delete(result);
+
+		//assert
+		Assert.Empty(db.Set<Result>());
+	}
 }

@@ -22,7 +22,8 @@ public sealed class ResultService(DB db) : IResultService
 	public async Task<Result[]> Find(Iteration iteration)
 		=> await db.Set<Result>()
 			.Include(r => r.Athlete)
-			.Where(r => (iteration.StartDate == null || r.StartTime >= iteration.StartDate.Value.ToDateTime(TimeOnly.MinValue))
+			.Where(r => iteration.Races.Contains(r.Course.Race)
+				&& (iteration.StartDate == null || r.StartTime >= iteration.StartDate.Value.ToDateTime(TimeOnly.MinValue))
 				&& (iteration.EndDate == null || r.StartTime <= iteration.EndDate.Value.ToDateTime(TimeOnly.MaxValue)))
 			.ToArrayAsync();
 
@@ -33,12 +34,22 @@ public sealed class ResultService(DB db) : IResultService
 		await db.SaveChangesAsync();
 	}
 
-	public Task Add(Result result)
-		=> throw new NotImplementedException();
+	public async Task Add(Result result)
+	{
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+	}
 
-	public Task Update(Result result, Result updated)
-		=> throw new NotImplementedException();
+	public async Task Update(Result result, Result updated)
+	{
+		result.StartTime = updated.StartTime;
+		result.Duration = updated.Duration;
+		await db.SaveChangesAsync();
+	}
 
-	public Task Delete(Result result)
-		=> throw new NotImplementedException();
+	public async Task Delete(Result result)
+	{
+		db.Remove(result);
+		await db.SaveChangesAsync();
+	}
 }

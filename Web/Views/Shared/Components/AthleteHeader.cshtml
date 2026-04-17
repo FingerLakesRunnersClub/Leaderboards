@@ -4,7 +4,7 @@
 <h2 id="athlete-header">
 	@Model.Athlete.Name
 	<small>
-		@($"{Model.Athlete.AgeToday} {Model.Athlete.Category}".Trim())
+		@($"({$"{Model.Athlete.AgeToday} {Model.Athlete.Category}".Trim()})")
 		<span id="completion-badges">
 			@foreach (var badge in Model.Badges)
 			{
