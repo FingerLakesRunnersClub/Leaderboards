@@ -68,7 +68,8 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	public async Task<ViewResult> Registration(Guid id)
 	{
 		var iteration = await iterationService.Get(id);
-		var vm = new ViewModel<Athlete[]>($"{iteration.Series.Name} {iteration.Name} Registered Athletes", iteration.Athletes.ToArray());
+		var athletes = iteration.Athletes.OrderBy(a => a.Name).ToArray();
+		var vm = new ViewModel<Athlete[]>($"{iteration.Series.Name} {iteration.Name} Registered Athletes", athletes);
 		return View(vm);
 	}
 
