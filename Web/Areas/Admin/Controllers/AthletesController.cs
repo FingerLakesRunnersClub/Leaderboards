@@ -23,7 +23,13 @@ public sealed class AthletesController(IAdminService adminService, IAthleteServi
 	public async Task<ViewResult> Edit(Guid id)
 	{
 		var athlete = await athleteService.Get(id);
-		var vm = new ViewModel<Athlete>("Edit Athlete", athlete);
+		var admin = await adminService.Verify(id);
+		var form = new AthleteForm
+		{
+			Athlete = athlete,
+			IsAdmin = admin
+		};
+		var vm = new ViewModel<AthleteForm>("Edit Athlete", form);
 		return View("Form", vm);
 	}
 
