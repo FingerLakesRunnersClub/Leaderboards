@@ -79,12 +79,16 @@
 						<ul id="account" class="dropdown-menu" onclick="event.stopPropagation();">
 							@if (Model.Athlete is not null)
 							{
-								<li class="dropdown-item">
-									<a href="/Athlete/Index/@Model.Athlete.ID">
-										<img src="@Model.User.ClaimDictionary["avatar_url"]" alt="@Model.Athlete.Name avatar"/>
-										@Model.Athlete.Name
-									</a>
-								</li>
+								if (Model.User.ClaimDictionary.TryGetValue("avatar_url", out var avatar))
+								{
+									<li class="dropdown-item">
+										<a href="/Athlete/Index/@Model.Athlete.ID">
+											<img src="@avatar" alt="@Model.Athlete.Name avatar"/>
+											@Model.Athlete.Name
+										</a>
+									</li>
+								}
+
 								@if (Model.IsAdmin)
 								{
 									<li class="dropdown-item">
