@@ -1,0 +1,38 @@
+@using FLRC.Leaderboards.Model
+@model (FLRC.Leaderboards.Model.Course Course, FLRC.Leaderboards.Web.ViewModels.LeaderboardTable[] Tables, bool ShowBadges)
+@{
+	var url = Model.Course.Race.Links.FirstOrDefault(l => l.Type == RaceLink.Types.Info);
+	var width = 12 / Model.Tables.Length;
+}
+
+<div class="card card-highlighted mb-3">
+	<div class="card-header">
+		@Model.Course.Race.Name
+
+		@{  }
+		@if (url is not null)
+		{
+			<a style="margin: 2px 5px 0;" class="float-right" href="@url" title="Course Info" target="_blank">
+				<i aria-hidden="true" class="fas fa-info-circle"></i>
+			</a>
+		}
+		@if (Model.ShowBadges)
+		{
+			<span class="float-right">
+				<span class="badge badge-pill badge-secondary">@Model.Course.Race.Type</span>
+				<span class="badge badge-pill badge-warning">@Model.Course.Race.DistanceDisplay</span>
+			</span>
+		}
+	</div>
+	<div class="card-body">
+		<div class="row">
+			@foreach (var table in Model.Tables)
+			{
+				var margin = table == Model.Tables[^1] ? "mb-0" : "mb-3 mb-lg-0";
+				<div class="col-12 col-lg-@width @margin">
+					@await Html.PartialAsync("Table", table)
+				</div>
+			}
+		</div>
+	</div>
+</div>

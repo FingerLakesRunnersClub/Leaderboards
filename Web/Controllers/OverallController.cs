@@ -1,78 +1,54 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
-using FLRC.Leaderboards.Core.Results;
-using FLRC.Leaderboards.Core.Teams;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class OverallController : Controller
+public sealed class OverallController(IIterationManager iterationManager, IConfig config) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public OverallController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Points(string id)
 	{
-		var filter = new Core.Results.Filter { Category = Category.Parse(id) };
-		return View(await GetResults(_config.Competitions[$"Points/{id}"], overall => overall.MostPoints(filter)));
+		var filter = new Filter(Category.Parse(id));
+		return View(await GetResults(config.Competitions[$"Points/{id}"], overall => overall.MostPoints(filter)));
 	}
 
 	[HttpGet]
 	public async Task<ViewResult> PointsTop3(string id)
 	{
-		var filter = new Core.Results.Filter { Category = Category.Parse(id) };
-		return View("Points", await GetResults(_config.Competitions[$"PointsTop3/{id}"], overall => overall.MostPoints(3, filter)));
+		var filter = new Filter(Category.Parse(id));
+		return View("Points", await GetResults(config.Competitions[$"PointsTop3/{id}"], overall => overall.MostPoints(3, filter)));
 	}
 
 	[HttpGet]
 	public async Task<ViewResult> Miles()
-		=> View(await GetResults(_config.Competitions["Miles"], overall => overall.MostMiles(Core.Results.Filter.None)));
+		=> View(await GetResults(config.Competitions["Miles"], overall => overall.MostMiles(new Filter())));
+
+	[HttpGet]
+	public async Task<ViewResult> Courses()
+		=> View(await GetResults(config.Competitions["Courses"], overall => overall.MostCourses(new Filter())));
 
 	[HttpGet]
 	public async Task<ViewResult> AgeGrade()
-		=> View(await GetResults(_config.Competitions["AgeGrade"], overall => overall.AgeGrade(Core.Results.Filter.None)));
+		=> View(await GetResults(config.Competitions["AgeGrade"], overall => overall.AgeGrade(new Filter())));
 
-	[HttpGet]
-	public async Task<ViewResult> Community()
-		=> View(await GetResults(_config.Competitions["Community"], overall => overall.CommunityStars(Core.Results.Filter.None)));
-
-	[HttpGet]
-	public async Task<ViewResult> Team()
-		=> View(await GetTeamResults(_config.Competitions["Team"], overall => overall.TeamPoints(Core.Results.Filter.None)));
-
-	private async Task<OverallResultsViewModel<T>> GetResults<T>(string title, Func<OverallResults, RankedList<T, Result>> results)
+	private async Task<ViewModel<OverallResults<T>>> GetResults<T>(string title, Func<OverallResultsCalculator, RankedList<T, Result>> results)
 	{
-		var allResults = await _dataService.GetAllResults();
-		var overall = new OverallResults(allResults);
-		var rankedResults = results(overall);
+		var iteration = await iterationManager.ActiveIteration();
+		var calculator = new OverallResultsCalculator(iteration);
+		var rankedResults = results(calculator);
 
-		return new OverallResultsViewModel<T>
+		var overall = new OverallResults<T>
 		{
-			Config = _config,
+			Config = config,
 			ResultType = title,
 			RankedResults = rankedResults
 		};
-	}
-
-	private async Task<OverallResultsViewModel<TeamResults>> GetTeamResults(string title, Func<OverallResults, RankedList<TeamResults, Result>> results)
-	{
-		var allResults = await _dataService.GetAllResults();
-		var overall = new OverallResults(allResults);
-		return new OverallResultsViewModel<TeamResults>
-		{
-			Config = _config,
-			ResultType = title,
-			RankedResults = results(overall)
-		};
+		return new ViewModel<OverallResults<T>>("Overall Results", overall);
 	}
 }

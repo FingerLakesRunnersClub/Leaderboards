@@ -11,7 +11,7 @@ public static class OverallData
 	public static readonly Athlete Private = new() { ID = Guid.NewGuid(), Name = "A5", DateOfBirth = new DateOnly(1980, 1, 1), Category = 'F', IsPrivate = true };
 
 	private static readonly Race Race2 = new() { ID = Guid.NewGuid(), Name = "Test", Type = "Road" };
-	private static readonly Course Course2 = new() { ID = Guid.NewGuid(), Distance = 10, Units = "mi", Race = Race2};
+	private static readonly Course Course2 = new() { ID = Guid.NewGuid(), Distance = 10, Units = "mi", Race = Race2 };
 
 	private static Result[] Results
 		=>
@@ -30,5 +30,10 @@ public static class OverallData
 
 	private static readonly Course Course1 = new() { ID = Guid.NewGuid(), Distance = 10, Units = "mi", Results = Results };
 	private static readonly Race Race1 = new() { ID = Guid.NewGuid(), Name = "Test", Type = "Road", Courses = [Course1] };
-	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race1] };
+
+	private static readonly Course Course3 = new() { ID = Guid.NewGuid(), Distance = 10, Units = "mi", Results = Results };
+	private static readonly Race Race3 = new() { ID = Guid.NewGuid(), Name = "Test", Type = "Road", Courses = [Course3] };
+
+	private static readonly Challenge OfficialChallenge = new() { IsOfficial = true, IsPrimary = true, Courses = [Course1] };
+	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race1, Race3], Challenges = [OfficialChallenge] };
 }

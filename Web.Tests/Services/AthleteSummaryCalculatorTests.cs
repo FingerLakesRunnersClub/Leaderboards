@@ -35,7 +35,12 @@ public sealed class AthleteSummaryCalculatorTests
 				Duration = new TimeSpan(1, 2, 3)
 			}
 		};
-		var iteration = new Iteration { Races = [new Race { Courses = [course with { Results = results }] }] };
+		var fullCourse = course with { Results = results };
+		var iteration = new Iteration
+		{
+			Races = [new Race { Courses = [fullCourse] }],
+			Challenges = [new Challenge { IsOfficial = true, IsPrimary = true, Courses = [fullCourse]}]
+		};
 
 		resultService.Find(Arg.Any<Iteration>()).Returns(results);
 

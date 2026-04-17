@@ -7,7 +7,6 @@ using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 using Athlete = FLRC.Leaderboards.Core.Athletes.Athlete;
-using Race = FLRC.Leaderboards.Model.Race;
 
 namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
@@ -22,18 +21,11 @@ public sealed class CompletedControllerTests
 
 		var controller = new CompletedController(iterationManager, dataService);
 
+		var course = ResultsData.Course with { Results = ResultsData.Results };
 		var iteration = new Iteration
 		{
-			Races =
-			[
-				new Race
-				{
-					Courses =
-					[
-						ResultsData.Course with { Results = ResultsData.Results }
-					]
-				}
-			]
+			Challenges = [new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course] }],
+			Races = [new Race { Courses = [course]}]
 		};
 		iterationManager.ActiveIteration().Returns(iteration);
 

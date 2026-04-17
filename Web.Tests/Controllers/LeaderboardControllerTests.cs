@@ -1,6 +1,7 @@
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Tests;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
 
@@ -9,16 +10,20 @@ namespace FLRC.Leaderboards.Web.Tests.Controllers;
 public sealed class LeaderboardControllerTests
 {
 	[Fact]
-	public async Task CanGetAllCourses()
+	public async Task ContainsOverallAndCourseData()
 	{
 		//arrange
-		var dataService = Substitute.For<IDataService>();
-		var controller = new LeaderboardController(dataService, TestHelpers.Config);
+		var iterationManager = Substitute.For<IIterationManager>();
+		var controller = new LeaderboardController(iterationManager, TestHelpers.Config);
+
+		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
 		//act
-		await controller.Index();
+		var result = await controller.Index();
 
 		//assert
-		await dataService.Received().GetAllResults();
+		var vm = result.Model as ViewModel<Leaderboard>;
+		Assert.NotEmpty(vm!.Data.OverallResults);
+		Assert.NotEmpty(vm!.Data.OtherCourses);
 	}
 }

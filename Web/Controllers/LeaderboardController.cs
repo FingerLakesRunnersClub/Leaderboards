@@ -1,21 +1,14 @@
 using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Leaders;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class LeaderboardController : Controller
+public sealed class LeaderboardController(IIterationManager iterationManager, IConfig config) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public LeaderboardController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index(string id = null)
 	{
@@ -24,13 +17,11 @@ public sealed class LeaderboardController : Controller
 		return View(await GetLeaderboard(type));
 	}
 
-	private async Task<LeaderboardViewModel> GetLeaderboard(LeaderboardResultType type)
+	private async Task<ViewModel<Leaderboard>> GetLeaderboard(LeaderboardResultType type)
 	{
-		var results = await _dataService.GetAllResults();
-		var tableSize = _config.FileSystemResults is not null ? 10 : 3;
-		return new LeaderboardViewModel(results, type, (byte)tableSize)
-		{
-			Config = _config
-		};
+		var iteration = await iterationManager.ActiveIteration();
+		var calculator = new LeaderboardCalculator(config, iteration, type, 3);
+		var leaderboard = calculator.GetLeaderboard(type);
+		return new ViewModel<Leaderboard>("Leaderboard", leaderboard);
 	}
 }

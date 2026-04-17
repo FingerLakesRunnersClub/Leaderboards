@@ -1,25 +1,25 @@
 ﻿@using FLRC.Leaderboards.Core.Leaders
-@model LeaderboardViewModel
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<Leaderboard>
 
 @functions
 {
-	string style(LeaderboardResultType type) => Model.LeaderboardResultType == type
+	string Style(LeaderboardResultType type) => Model.Data.LeaderboardResultType == type
 		? "secondary"
 		: "light";
 }
 
 @await Component.InvokeAsync("Dashboard")
 
-@if (Model.Config.Competitions.Any())
+@if (Model.Data.Config.Competitions.Any())
 {
 	<h2>Overall Leaders</h2>
 	<div class="card card-highlighted">
 		<div class="card-body">
 			<div class="row justify-content-center">
-				@{ var overallResults = Model.OverallResults(); }
-				@foreach (var table in overallResults)
+				@foreach (var table in Model.Data.OverallResults)
 				{
-					var width = table.Link.Contains("/Points/") && overallResults.Length % 2 == 1 ? "col-lg-6" : "col-lg-4";
+					var width = table.Link.Contains("/Points/") && Model.Data.OverallResults.Length % 2 == 1 ? "col-lg-6" : "col-lg-4";
 					<div class="col-12 @width mb-3">
 						@await Html.PartialAsync("Table", table)
 					</div>
@@ -28,48 +28,23 @@
 		</div>
 	</div>
 }
-<h2 class="mt-3">@Model.Config.CourseLabel Leaders</h2>
-@if (Model.Config.Features.MultiAttemptCompetitions)
+<h2 class="mt-3">@Model.Data.Config.CourseLabel Leaders</h2>
+@if (Model.Data.Config.Features.MultiAttemptCompetitions)
 {
 	<div class="btn-group mb-2">
 		@foreach (var type in Enum.GetValues<LeaderboardResultType>())
 		{
-			<a class="btn btn-sm btn-@style(type)" href="/Leaderboard/Index/@type">@type</a>
+			<a class="btn btn-sm btn-@Style(type)" href="/Leaderboard/Index/@type">@type</a>
 		}
 	</div>
 }
 
-@foreach (var (course, tables) in Model.CourseResults.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
+@foreach (var (course, tables) in Model.Data.OfficialCourses.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
 {
-	var width = 12 / tables.Length;
+	@await Html.PartialAsync("Course", (course, tables, Model.Data.Config.Features.ShowBadges))
+}
 
-	<div class="card card-highlighted mb-3">
-		<div class="card-header">
-			@course.Name
-			@if (course.Race.URL is not null)
-			{
-				<a style="margin: 2px 5px 0;" class="float-right" href="@course.Race.URL" title="@Model.Config.CourseLabel Info" target="_blank">
-					<i aria-hidden="true" class="fas fa-info-circle"></i>
-				</a>
-			}
-			@if (Model.Config.Features.ShowBadges)
-			{
-				<span class="float-right">
-					<span class="badge badge-pill badge-secondary">@course.Race.Type</span>
-					<span class="badge badge-pill badge-warning">@course.ShortName</span>
-				</span>
-			}
-		</div>
-		<div class="card-body">
-			<div class="row">
-				@foreach (var table in tables)
-				{
-					var margin = table == tables[^1] ? "mb-0" : "mb-3 mb-lg-0";
-					<div class="col-12 col-lg-@width @margin">
-						@await Html.PartialAsync("Table", table)
-					</div>
-				}
-			</div>
-		</div>
-	</div>
+@foreach (var (course, tables) in Model.Data.OtherCourses.Where(r => r.Value.Any(t => t.Rows.Value.Any())))
+{
+	@await Html.PartialAsync("Course", (course, tables, Model.Data.Config.Features.ShowBadges))
 }

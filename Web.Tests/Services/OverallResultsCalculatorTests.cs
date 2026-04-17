@@ -5,7 +5,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Services;
 
-public sealed class OverallResultsCalculatorCalculatorTests
+public sealed class OverallResultsCalculatorTests
 {
 	[Fact]
 	public void CanGetMostPoints()
@@ -141,33 +141,26 @@ public sealed class OverallResultsCalculatorCalculatorTests
 	public void PrivateAthletesInAllNonTimeBasedCompetitions()
 	{
 		//arrange
+		var result = new Result
+		{
+			Course = new Course { Distance = 10, Units = "mi", Race = new Race { Type = "Road" }},
+			StartTime = new DateTime(2024, 04, 15, 9, 36, 00),
+			Duration = TimeSpan.FromHours(2),
+			Athlete = OverallData.Private
+		};
+		var course = new Course
+		{
+			Race = new Race { Name = "Test" },
+			Distance = 10,
+			Units = "mi",
+			Results = [result]
+		};
+		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course] };
+		var race = new Race { Courses = [course] };
 		var iteration = new Iteration
 		{
-			Races =
-			[
-				new Race
-				{
-					Courses =
-					[
-						new Course
-						{
-							Race = new Race { Name = "Test" },
-							Distance = 10,
-							Units = "mi",
-							Results =
-							[
-								new Result
-								{
-									Course = new Course { Distance = 10, Units = "mi", Race = new Race { Type = "Road" }},
-									StartTime = new DateTime(2024, 04, 15, 9, 36, 00),
-									Duration = TimeSpan.FromHours(2),
-									Athlete = OverallData.Private
-								}
-							]
-						}
-					]
-				}
-			]
+			Challenges = [challenge],
+			Races = [race]
 		};
 
 		//act

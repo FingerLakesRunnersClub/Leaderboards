@@ -1,9 +1,9 @@
-﻿@using FLRC.Leaderboards.Core.Overall
-@model OverallResultsViewModel
+﻿@using FLRC.Leaderboards.Web.ViewModels
+@model OverallResults
 
 @functions
 {
-	string style(string type) => Model.ResultType == type
+	string Style(string type) => Model.ResultType == type
 		? "secondary"
 		: "light";
 }
@@ -13,6 +13,6 @@
 	{
 		var category = key.Contains("/") ? string.Empty : "X";
 		var url = $"/Overall/{key}/{category}".Replace("//", "/");
-		<a class="btn btn-sm btn-@style(Model.Config.Competitions[key])" href="@url">@Model.Config.Competitions[key]</a>
+		<a class="btn btn-sm btn-@Style(Model.Config.Competitions[key])" href="@url">@Model.Config.Competitions[key]</a>
 	}
 </div>
