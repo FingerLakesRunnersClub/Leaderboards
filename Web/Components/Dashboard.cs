@@ -10,7 +10,7 @@ namespace FLRC.Leaderboards.Web.Components;
 public class Dashboard(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager)
     : ViewComponent
 {
-    public async Task<IViewComponentResult> InvokeAsync()
+    public async Task<IViewComponentResult> InvokeAsync(bool showLinkButton)
     {
         if (!authService.IsLoggedIn())
             return Content(string.Empty);
@@ -47,7 +47,8 @@ public class Dashboard(IAuthService authService, IAthleteService athleteService,
             Challenge = challenge,
             CompletedCourses = challengeCoursesCompleted,
             AllCourses = challenge.Courses.ToArray(),
-            PercentComplete = percentComplete
+            PercentComplete = percentComplete,
+            ShowLinkButton = showLinkButton
         };
         return View("Progress", progress);
     }

@@ -1,9 +1,13 @@
-@model FLRC.Leaderboards.Web.ViewModels.ChallengeProgress
+@using FLRC.Leaderboards.Web.ViewModels
+@model ChallengeProgress
 
 <div class="alert alert-primary">
     <div class="d-flex justify-content-between align-items-center">
 	    <h3>Your Challenge</h3>
-	    <a class="btn btn-primary" href="/Challenge/Dashboard">More Info</a>
+	    @if (Model.ShowLinkButton)
+	    {
+		    <a class="btn btn-primary" href="/Challenge/Dashboard">More Info</a>
+	    }
     </div>
 
 	<p>You've completed @Model.CompletedCourses.Length of @Model.AllCourses.Length courses</p>

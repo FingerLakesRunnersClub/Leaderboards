@@ -9,7 +9,7 @@
 		: "light";
 }
 
-@await Component.InvokeAsync("Dashboard")
+@await Component.InvokeAsync("Dashboard", true)
 
 @if (Model.Data.Config.Competitions.Any())
 {

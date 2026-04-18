@@ -8,4 +8,5 @@ public sealed record ChallengeProgress
     public Course[] CompletedCourses { get; init; }
     public Course[] AllCourses { get; init; }
     public int PercentComplete { get; init; }
+    public bool ShowLinkButton { get; init; }
 }

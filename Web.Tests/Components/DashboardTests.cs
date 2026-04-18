@@ -13,7 +13,7 @@ namespace FLRC.Leaderboards.Web.Tests.Components;
 public sealed class DashboardTests
 {
     private static readonly ClaimsPrincipal User =
-        new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+        new (new ClaimsIdentity([new Claim("external_id", "123")]));
 
     [Fact]
     public async Task EmptyWhenNotLoggedIn()
@@ -26,7 +26,7 @@ public sealed class DashboardTests
         var dashboard = new Dashboard(authService, athleteService, iterationManager);
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ContentViewComponentResult;
@@ -47,7 +47,7 @@ public sealed class DashboardTests
         authService.GetCurrentUser().Returns(User);
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ContentViewComponentResult;
@@ -72,7 +72,7 @@ public sealed class DashboardTests
         iterationManager.ActiveIteration().Returns(new Iteration { EndDate = new DateOnly(2025, 12, 31) });
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ContentViewComponentResult;
@@ -97,7 +97,7 @@ public sealed class DashboardTests
         iterationManager.ActiveIteration().Returns(new Iteration { RegistrationType = nameof(WebScorer) });
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ViewViewComponentResult;
@@ -124,7 +124,7 @@ public sealed class DashboardTests
         athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ViewViewComponentResult;
@@ -152,7 +152,7 @@ public sealed class DashboardTests
         athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 
         //act
-        var result = await dashboard.InvokeAsync();
+        var result = await dashboard.InvokeAsync(false);
 
         //assert
         var content = result as ViewViewComponentResult;
