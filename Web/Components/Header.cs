@@ -15,7 +15,7 @@ public sealed class Header(IAuthService authService, IAdminService adminService,
 	{
 		var iteration = await iterationManager.ActiveIteration();
 		var officialCourses = iteration.OfficialChallenge?.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters).ToArray();
-		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallenge?.Courses ?? []).OrderBy(c => new Distance(c.DistanceDisplay).Meters).ToArray();
+		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallenge?.Courses ?? []).OrderBy(c => c.Race.Name).ToArray();
 
 		var enableAuth = iteration.Series.Features.FirstOrDefault(f => f.Key == nameof(FeatureSet.EnableAuth))?.Value ?? false;
 
