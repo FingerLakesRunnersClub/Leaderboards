@@ -18,15 +18,15 @@ public static class ResultExtensions
 		public bool IsValid()
 			=> result.AgeGrade()?.Value <= 100 && result.StartTime <= DateTime.Now;
 
-		public Time BehindLeader<T>(bool isInFirstPlace, Ranked<T, Model.Result> firstPlace)
+		public Time BehindLeader<T>(bool isInFirstPlace, Ranked<T, Result> firstPlace)
 			=> isInFirstPlace || result.Duration == TimeSpan.Zero || firstPlace?.Result.Duration is null
 				? new Time(TimeSpan.Zero)
 				: result.Behind(firstPlace.Result);
 
-		public Time Behind(Model.Result other)
+		public Time Behind(Result other)
 			=> new(result.Duration.Subtract(other.Duration));
 
-		public Points Points<T>(bool isInFirstPlace, Ranked<T, Model.Result> firstPlace)
+		public Points Points<T>(bool isInFirstPlace, Ranked<T, Result> firstPlace)
 			=> result.Duration > TimeSpan.Zero && (isInFirstPlace || firstPlace?.Result.Duration is not null)
 				? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.TotalSeconds / result.Duration.TotalSeconds * 100)
 				: null;

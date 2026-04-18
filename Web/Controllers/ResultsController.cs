@@ -99,7 +99,9 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	[Authorize]
 	public async Task<IActionResult> Add(Guid id, IFormCollection form)
 	{
-		if (!byte.TryParse(form["Duration[h]"], out var hours)
+		form.TryGetValue("Duration[h]", out var h);
+		var hString = string.IsNullOrWhiteSpace(h.ToString()) ? "0" : h.ToString();
+		if (!byte.TryParse(hString, out var hours)
 		    || !byte.TryParse(form["Duration[m]"], out var minutes)
 		    || !byte.TryParse(form["Duration[s]"], out var seconds))
 			throw new ArgumentException(nameof(Result.Duration));
@@ -149,7 +151,9 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
 			return Forbid();
 
-		if (!byte.TryParse(form["Duration[h]"], out var hours)
+		form.TryGetValue("Duration[h]", out var h);
+		var hString = string.IsNullOrWhiteSpace(h.ToString()) ? "0" : h.ToString();
+		if (!byte.TryParse(hString, out var hours)
 		    || !byte.TryParse(form["Duration[m]"], out var minutes)
 		    || !byte.TryParse(form["Duration[s]"], out var seconds))
 			throw new ArgumentException(nameof(Result.Duration));
