@@ -171,7 +171,30 @@ public sealed class AthleteControllerTests
 		await athleteService.Received().MigrateResults(a1, a2);
 		await athleteService.Received().MigrateRegistrations(a1, a2);
 		await athleteService.Received().MigrateLinkedAccounts(a1, a2);
-		await adminService.Received().Delete(Arg.Any<Model.Admin>());
+		await adminService.DidNotReceive().Delete(Arg.Any<Model.Admin>());
 		await athleteService.Received().Delete(a1);
+	}
+
+	[Fact]
+	public async Task MergePerformsAdminDeleteIfAdmin()
+	{
+		//arrange
+		var adminService = Substitute.For<IAdminService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var controller = new AthletesController(adminService, athleteService);
+
+		var id1 = Guid.NewGuid();
+		var id2 = Guid.NewGuid();
+		var a1 = new Athlete { ID = id1 };
+		var a2 = new Athlete { ID = id2 };
+		athleteService.Get(id1).Returns(a1);
+		athleteService.Get(id2).Returns(a2);
+	adminService.Verify(id1).Returns(true);
+
+		//act
+		await controller.Merge(id1, id1, id2);
+
+		//assert
+		await adminService.Received().Delete(Arg.Any<Model.Admin>());
 	}
 }

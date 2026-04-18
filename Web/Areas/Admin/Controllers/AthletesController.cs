@@ -82,7 +82,9 @@ public sealed class AthletesController(IAdminService adminService, IAthleteServi
 		await athleteService.MigrateRegistrations(old, athlete);
 		await athleteService.MigrateLinkedAccounts(old, athlete);
 
-		await adminService.Delete(new Model.Admin { ID = old.ID });
+		if (await adminService.Verify(old.ID))
+			await adminService.Delete(new Model.Admin { ID = old.ID });
+
 		await athleteService.Delete(old);
 
 		return RedirectToAction(nameof(Edit), new { id = to });
