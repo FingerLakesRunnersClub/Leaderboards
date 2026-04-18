@@ -1,0 +1,19 @@
+@using FLRC.Leaderboards.Core.Athletes
+@using FLRC.Leaderboards.Core.Reports
+@model Statistics
+
+<td>@Model.Participants[string.Empty]</td>
+<td>@Model.Participants[Category.F.Display]</td>
+<td>@Model.Participants[Category.M.Display]</td>
+
+<td>@Model.Runs[string.Empty]</td>
+<td>@Model.Runs[Category.F.Display]</td>
+<td>@Model.Runs[Category.M.Display]</td>
+
+<td>@Model.Miles[string.Empty].ToString("F1")</td>
+<td>@Model.Miles[Category.F.Display].ToString("F1")</td>
+<td>@Model.Miles[Category.M.Display].ToString("F1")</td>
+
+<td>@Model.Average[string.Empty].ToString("F1")</td>
+<td>@Model.Average[Category.F.Display].ToString("F1")</td>
+<td>@Model.Average[Category.M.Display].ToString("F1")</td>

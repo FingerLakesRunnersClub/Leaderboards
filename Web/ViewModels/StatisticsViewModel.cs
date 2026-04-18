@@ -5,6 +5,8 @@ namespace FLRC.Leaderboards.Web.ViewModels;
 
 public sealed record StatisticsViewModel
 {
+	public IDictionary<Course, Statistics> OfficialCourses { get; init; }
+	public IDictionary<Course, Statistics> OtherCourses { get; init; }
 	public IDictionary<Course, Statistics> Courses { get; init; }
 	public IDictionary<DateOnly, Statistics> History { get; init; }
 	public Statistics Total { get; init; }

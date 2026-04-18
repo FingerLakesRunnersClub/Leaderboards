@@ -23,8 +23,8 @@ public sealed class StatisticsController(IIterationManager iterationManager) : C
 
 	private static StatisticsViewModel GetStatistics(Iteration iteration)
 	{
-		var officialCourses = iteration.OfficialChallenge.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters);
-		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(officialCourses).OrderBy(c => new Distance(c.DistanceDisplay).Meters);
+		var officialCourses = iteration.OfficialChallenge.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters).ToArray();
+		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(officialCourses).OrderBy(c => c.Race.Name).ToArray();
 		var courses = officialCourses.Concat(otherCourses).ToArray();
 
 		var courseStats = courses.ToDictionary(c => c, c => c.Results.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate).ToArray().Statistics());
@@ -38,6 +38,8 @@ public sealed class StatisticsController(IIterationManager iterationManager) : C
 
 		return new StatisticsViewModel
 		{
+			OfficialCourses = courseStats.Where(c => officialCourses.Contains(c.Key)).ToDictionary(),
+			OtherCourses = courseStats.Where(c => otherCourses.Contains(c.Key)).ToDictionary(),
 			Courses = courseStats,
 			History = history,
 			Total = GetTotals(athletes, courseStats)
