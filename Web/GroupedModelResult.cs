@@ -7,7 +7,10 @@ public sealed class GroupedModelResult(IGrouping<Model.Athlete, Model.Result> gr
 {
 	public Model.Result Average(Model.Course course, ushort? threshold = null)
 	{
-		var timedResults = _group.Where(r => r.Duration > TimeSpan.Zero).ToArray();
+		var timedResults = _group
+			.Where(r => r.Duration > TimeSpan.Zero)
+			.OrderBy(r => r.StartTime)
+			.ToArray();
 		var average = timedResults.Length > 0
 			? timedResults.OrderBy(r => r.Duration)
 				.Take(threshold ?? timedResults.Length)
@@ -18,6 +21,7 @@ public sealed class GroupedModelResult(IGrouping<Model.Athlete, Model.Result> gr
 		{
 			Athlete = Key,
 			Course = course,
+			StartTime = timedResults.LastOrDefault()?.StartTime ?? DateTime.MinValue,
 			Duration = !Key.IsPrivate && timedResults.Length > 0
 				? TimeSpan.FromSeconds(average)
 				: TimeSpan.Zero
