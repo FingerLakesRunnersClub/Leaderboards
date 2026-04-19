@@ -62,7 +62,7 @@
 		<div class="btn-group d-flex flex-wrap">
 			@if (Model.HasMultiAttemptCompetitions)
 			{
-				foreach (var type in Enum.GetValues<ResultType>().Except([ResultType.Farthest]).Select(t => new FormattedResultType(t)))
+				foreach (var type in Enum.GetValues<ResultType>().Except([ResultType.Farthest, ResultType.MostCourses]).Select(t => new FormattedResultType(t)))
 				{
 					<a class="btn btn-sm btn-@Style(type.Value)" href="/Results/@type.Value/@Model.Course.ID@QueryString(Model.Filter)">
 						@type.Display
