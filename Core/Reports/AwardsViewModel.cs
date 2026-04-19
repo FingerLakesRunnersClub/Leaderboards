@@ -68,7 +68,7 @@ public sealed class AwardsViewModel : ViewModel
 			.Select(r => new Award
 			{
 				Name = $"{r.Result.CourseName} {title}",
-				Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/{type}",
+				Link = $"/Results/{type}/{r.Result.CourseID}",
 				Value = Config.Awards[Config.CourseLabel],
 				Athlete = r.Result.Athlete
 			})
@@ -92,7 +92,6 @@ public sealed class AwardsViewModel : ViewModel
 			.Select(r => new Award
 			{
 				Name = $"{r.Result.CourseName} {team.Display} ({category.Display})",
-				Link = $"/Course/{r.Result.CourseID}/{r.Result.CourseDistance}/Fastest/{category.Display}?ag={team.Value}",
 				Value = Config.Awards["Age Group"],
 				Athlete = r.Result.Athlete
 			}).ToArray();
