@@ -5,4 +5,4 @@ WHERE iterationid =
   AND RaceID IN (SELECT RaceID
                  FROM RaceIterations
                  WHERE IterationID IN
-                       (SELECT ID FROM Iterations WHERE SeriesID IN (SELECT ID FROM Series WHERE Key = 'TrailCircuit')))
+                       (SELECT ID FROM Iterations WHERE SeriesID IN (SELECT ID FROM Series WHERE Key = 'TrailCircuit')));
