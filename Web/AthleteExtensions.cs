@@ -13,7 +13,7 @@ public static class AthleteExtensions
 				return null;
 
 			var ageOnStart = athlete.AgeAsOf(iteration.StartDate.Value);
-			var team = Core.Teams.Team.Teams.First(t => ageOnStart >= t.Value.MinAge && ageOnStart <= t.Value.MaxAge);
+			var team = Core.Teams.Team.Teams.First(t => ageOnStart >= t.Value.MinAge && ageOnStart <= (t.Value.MaxAge ?? byte.MaxValue));
 			return team.Value;
 		}
 	}
