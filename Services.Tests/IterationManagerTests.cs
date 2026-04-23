@@ -11,15 +11,13 @@ public sealed class IterationManagerTests
 	public async Task CanGetActiveIteration()
 	{
 		//arrange
-		var contextProvider = Substitute.For<IContextProvider>();
+		var contextProvider = Substitute.For<IContextManager>();
 		var iterationService = Substitute.For<IIterationService>();
-		var seriesService = Substitute.For<ISeriesService>();
 
-		var manager = new IterationManager(contextProvider, iterationService, seriesService);
+		var manager = new IterationManager(contextProvider, iterationService);
 
 		var id = Guid.NewGuid();
-		contextProvider.App.Returns("tests");
-		seriesService.Find("tests").Returns(new Series { ID = id });
+		contextProvider.Series().Returns(new Series { ID = id });
 		iterationService.Current(id).Returns(new Iteration { Name = "Test" });
 
 		//act

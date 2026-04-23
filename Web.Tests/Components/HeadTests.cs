@@ -14,12 +14,11 @@ public sealed class HeadTests
 	public async Task CanRenderComponent()
 	{
 		//arrange
-		var seriesService = Substitute.For<ISeriesService>();
-		seriesService.Find("test").Returns(new Series());
+		var contextManager = Substitute.For<IContextManager>();
+		var component = new Head(contextManager);
 
-		var context = new AppContextProvider("test");
-		var component = new Head(seriesService, context);
-
+		contextManager.Series().Returns(new Series());
+		
 		//act
 		var result = await component.InvokeAsync("test page");
 

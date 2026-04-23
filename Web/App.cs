@@ -75,6 +75,7 @@ public sealed class App(string context)
 		services.AddScoped<IResultService, ResultService>();
 		services.AddScoped<ISeriesService, SeriesService>();
 
+		services.AddScoped<IContextManager, ContextManager>();
 		services.AddScoped<IImportManager, ImportManager>();
 		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
 		services.AddScoped<IIterationManager, IterationManager>();
