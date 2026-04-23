@@ -19,7 +19,7 @@ public sealed record AppConfig : IConfig
 
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
-	public ushort CommunityRetryDelay { get; }
+	public string DiscourseAuthSecret { get; }
 	public IDictionary<byte, string> CommunityGroups { get; }
 
 	public string SeriesTitle { get; }
@@ -42,8 +42,8 @@ public sealed record AppConfig : IConfig
 
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = config.GetValue<string>("CommunityKey");
+		CommunityKey = config.GetValue<string>("DiscourseAuthSecret");
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
-		CommunityRetryDelay = config.GetValue<ushort>("CommunityRetryDelay");
 
 		SeriesTitle = config.GetValue<string>("SeriesTitle");
 

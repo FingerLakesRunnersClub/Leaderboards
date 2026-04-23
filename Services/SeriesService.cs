@@ -13,10 +13,14 @@ public sealed class SeriesService(DB db) : ISeriesService
 
 	public async Task<Series> Get(Guid id)
 		=> await db.Set<Series>()
+			.Include(s => s.Features)
+			.Include(s => s.Settings)
 			.FirstAsync(s => s.ID == id);
 
 	public async Task<Series?> Find(string key)
 		=> await db.Set<Series>()
+			.Include(s => s.Features)
+			.Include(s => s.Settings)
 			.FirstAsync(s => s.Key == key);
 
 	public async Task Add(Series series)

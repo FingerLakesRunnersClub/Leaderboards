@@ -17,7 +17,7 @@ public interface IConfig
 
 	string CommunityURL { get; }
 	string CommunityKey { get; }
-	ushort CommunityRetryDelay { get; }
+	string DiscourseAuthSecret { get; }
 	IDictionary<byte, string> CommunityGroups { get; }
 
 	string SeriesTitle { get; }
