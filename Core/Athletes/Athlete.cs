@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Teams;
 
 namespace FLRC.Leaderboards.Core.Athletes;
 
-public sealed class Athlete : IEquatable<Athlete>
+public sealed record Athlete
 {
 	public uint ID { get; init; }
 	public string Name { get; init; }
@@ -31,6 +31,5 @@ public sealed class Athlete : IEquatable<Athlete>
 	public byte AgeToday => AgeAsOf(DateTime.Today);
 
 	public bool Equals(Athlete other) => ID == other?.ID;
-	public override bool Equals(object obj) => Equals((Athlete) obj);
 	public override int GetHashCode() => (int) ID;
 }

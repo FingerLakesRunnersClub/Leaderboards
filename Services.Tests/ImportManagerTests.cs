@@ -17,10 +17,12 @@ public sealed class ImportManagerTests
 		var converter = Substitute.For<ILegacyDataConverter>();
 		var service = Substitute.For<IResultService>();
 		var results = Substitute.For<IResultsAPI>();
-		var api = new Dictionary<string, IResultsAPI> { { nameof(WebScorer), results } };
+		var startList = Substitute.For<IResultsAPI>();
+		var api = new Dictionary<string, IResultsAPI> { { nameof(WebScorer), results }, { nameof(WebScorerStartList), startList } };
 		var manager = new ImportManager(converter, service, api);
 
 		results.GetResults(123).Returns(JsonElement.Parse(@"{""Racers"":[{},{}]}"));
+		startList.GetResults(123).Returns(JsonElement.Parse(@"{""StartList"":[{},{}]}"));
 
 		//act
 		await manager.ImportAthletes(nameof(WebScorer), 123);
