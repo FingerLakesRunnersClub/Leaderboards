@@ -70,8 +70,11 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			IsPrivate = athlete.Private,
 			LinkedAccounts = new[]
 			{
-				new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString() },
-				new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email }
-			}.Where(a => !string.IsNullOrWhiteSpace(a.Value)).ToList()
+				athlete.ID > 0 ? new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString().ToLowerInvariant() } : null,
+				athlete.Email is not null ? new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email.ToLowerInvariant() } : null
+			}
+				.Where(a => a is not null)
+				.Cast<LinkedAccount>()
+				.ToList()
 		};
 }

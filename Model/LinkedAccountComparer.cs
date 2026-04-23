@@ -6,7 +6,7 @@ public sealed class LinkedAccountComparer : IEqualityComparer<LinkedAccount>
 		=> x is not null
 		   && y is not null
 		   && x.Type == y.Type
-		   && x.Value == y.Value;
+		   && x.Value.Equals(y.Value, StringComparison.InvariantCultureIgnoreCase);
 
 	public int GetHashCode(LinkedAccount obj)
 	{

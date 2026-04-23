@@ -87,7 +87,10 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 
 	private async Task AddAccountIfNeeded(Athlete athlete, string type, string value)
 	{
-		var account = new LinkedAccount { Type = type, Value = value };
+		if (value is null)
+			return;
+
+		var account = new LinkedAccount { Type = type, Value = value.ToLowerInvariant() };
 		if (!athlete.LinkedAccounts.Contains(account, LinkedAccount.Comparer))
 			await athleteService.AddLinkedAccount(athlete, account);
 	}

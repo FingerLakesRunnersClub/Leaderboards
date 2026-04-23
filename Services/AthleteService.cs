@@ -61,7 +61,7 @@ public sealed class AthleteService(DB db) : IAthleteService
 			ID = Guid.NewGuid(),
 			AthleteID = athlete.ID,
 			Type = account.Type,
-			Value = account.Value
+			Value = account.Value.ToLowerInvariant()
 		};
 		await db.AddAsync(newAccount);
 		await db.SaveChangesAsync();
