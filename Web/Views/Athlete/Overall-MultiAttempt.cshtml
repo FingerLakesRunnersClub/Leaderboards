@@ -11,7 +11,7 @@
 		(<a href="/Overall/Team">@Model.TeamResults?.Rank.Display</a>)
 	</dd>
 
-	@if (Model.Athlete.Category != null && !Model.Athlete.IsPrivate)
+	@if (Model.Athlete.Category is 'M' or 'F' && !Model.Athlete.IsPrivate)
 	{
 		<dt class="col-6">
 			Overall Points
