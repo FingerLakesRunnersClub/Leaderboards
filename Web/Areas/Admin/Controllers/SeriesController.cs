@@ -29,7 +29,7 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 	{
 		await seriesService.Add(series);
 		await seriesService.UpdateFeatures(series, features);
-		await seriesService.UpdateSettings(series, settings);
+		await seriesService.UpdateSettings(series, settings.Where(s => s.Value is not null).ToDictionary());
 
 		return RedirectToAction(nameof(Index));
 	}
@@ -49,7 +49,7 @@ public sealed class SeriesController(ISeriesService seriesService) : Controller
 
 		await seriesService.Update(series, updated);
 		await seriesService.UpdateFeatures(series, features);
-		await seriesService.UpdateSettings(series, settings);
+		await seriesService.UpdateSettings(series, settings.Where(s => s.Value is not null).ToDictionary());
 
 		return RedirectToAction(nameof(Index));
 	}

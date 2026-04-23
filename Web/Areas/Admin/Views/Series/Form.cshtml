@@ -21,7 +21,7 @@
 		</section>
 
 		<section class="row">
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<h4>Features</h4>
 				<div class="form-group">
 					@foreach (var feature in typeof(IFeatureSet).GetProperties())
@@ -36,11 +36,11 @@
 				</div>
 			</div>
 
-			<div class="col-md-6">
+			<div class="col-md-8">
 				<h4>Settings</h4>
 				@foreach (var setting in typeof(IConfig).GetProperties().Where(p => p.PropertyType == typeof(string)))
 				{
-					var value = Model.Data.Settings.FirstOrDefault(f => f.Key == setting.Name)?.Value;
+					var value = Model.Data.Setting[setting.Name];
 					<div class="form-group">
 						<label for="@setting.Name">@setting.Name</label>
 						<input type="text" id="@setting.Name" name="Settings[@setting.Name]" value="@value" class="form-control"/>

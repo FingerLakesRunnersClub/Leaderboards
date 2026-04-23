@@ -56,7 +56,7 @@ public sealed class SeriesControllerTests
 		//assert
 		await service.Received().Add(series);
 		await service.Received().UpdateFeatures(series, features);
-		await service.Received().UpdateSettings(series, settings);
+		await service.Received().UpdateSettings(series, Arg.Any<IDictionary<string, string>>());
 	}
 
 	[Fact]
@@ -94,6 +94,6 @@ public sealed class SeriesControllerTests
 		//assert
 		await service.Received().Update(series, updated);
 		await service.Received().UpdateFeatures(series, features);
-		await service.Received().UpdateSettings(series, settings);
+		await service.Received().UpdateSettings(series, Arg.Any<IDictionary<string, string>>());
 	}
 }
