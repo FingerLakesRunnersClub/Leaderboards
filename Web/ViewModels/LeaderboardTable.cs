@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.ViewModels;
 
-public sealed class LeaderboardTable
+public sealed record LeaderboardTable
 {
 	public string Link { get; init; }
 	public string Title { get; init; }

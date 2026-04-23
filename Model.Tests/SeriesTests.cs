@@ -2,7 +2,7 @@ using Xunit;
 
 namespace FLRC.Leaderboards.Model.Tests;
 
-public class SeriesTests
+public sealed class SeriesTests
 {
 	[Fact]
 	public void CanGetSettingByName()

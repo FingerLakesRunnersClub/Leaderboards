@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public class UltraChallengesController(IIterationManager iterationManager) : Controller
+public sealed class UltraChallengesController(IIterationManager iterationManager) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Results(Guid? id)

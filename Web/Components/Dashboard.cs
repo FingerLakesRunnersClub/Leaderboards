@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public class Dashboard(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager)
+public sealed class Dashboard(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager)
     : ViewComponent
 {
     public async Task<IViewComponentResult> InvokeAsync(bool showLinkButton)

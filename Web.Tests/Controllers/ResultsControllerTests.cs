@@ -14,7 +14,7 @@ using Result = FLRC.Leaderboards.Model.Result;
 
 namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
-public class ResultsControllerTests
+public sealed class ResultsControllerTests
 {
 	[Fact]
 	public async Task CanGetFastestResults()

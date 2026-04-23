@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public class AddResultButton(IIterationManager iterationManager, IAuthService authService, IAthleteService athleteService) : ViewComponent
+public sealed class AddResultButton(IIterationManager iterationManager, IAuthService authService, IAthleteService athleteService) : ViewComponent
 {
 	public async Task<IViewComponentResult> InvokeAsync(Course course)
 	{
