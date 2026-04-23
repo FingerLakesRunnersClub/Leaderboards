@@ -42,7 +42,7 @@ public sealed record AppConfig : IConfig
 
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = config.GetValue<string>("CommunityKey");
-		CommunityKey = config.GetValue<string>("DiscourseAuthSecret");
+		DiscourseAuthSecret = config.GetValue<string>("DiscourseAuthSecret");
 		CommunityGroups = GetByteKeyedStringDictionary(config.GetSection("CommunityGroups"));
 
 		SeriesTitle = config.GetValue<string>("SeriesTitle");
