@@ -14,8 +14,8 @@
 			<thead>
 			<tr>
 				<th scope="col">Name</th>
-				<th scope="col">Category</th>
-				<th scope="col">Age</th>
+				<th scope="col" class="text-center">Category</th>
+				<th scope="col" class="text-center">Age</th>
 				<th scope="col">Linked Accounts</th>
 			</tr>
 			</thead>
@@ -28,8 +28,8 @@
 							@athlete.Name
 						</a>
 					</th>
-					<td>@athlete.Category</td>
-					<td>@athlete.AgeToday</td>
+					<td class="text-center">@athlete.Category</td>
+					<td class="text-center">@athlete.AgeToday</td>
 					<td>@string.Join(", ", athlete.LinkedAccounts.Select(a => a.Type).Distinct().OrderBy(a => a))</td>
 				</tr>
 			}
