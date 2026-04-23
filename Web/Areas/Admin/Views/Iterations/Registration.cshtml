@@ -30,7 +30,7 @@
 					</th>
 					<td>@athlete.Category</td>
 					<td>@athlete.AgeToday</td>
-					<td>@string.Join(", ", athlete.LinkedAccounts.Select(a => a.Type))</td>
+					<td>@string.Join(", ", athlete.LinkedAccounts.Select(a => a.Type).Distinct().OrderBy(a => a))</td>
 				</tr>
 			}
 			</tbody>

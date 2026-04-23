@@ -46,7 +46,7 @@
 						</tr>
 						</thead>
 						<tbody>
-						@foreach (var account in Model.Data.Athlete.LinkedAccounts)
+						@foreach (var account in Model.Data.Athlete.LinkedAccounts.OrderBy(a => a.Type))
 						{
 							<tr>
 								<td>@account.Type</td>
