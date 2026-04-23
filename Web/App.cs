@@ -63,12 +63,14 @@ public sealed class App(string context)
 
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();
+		services.AddSingleton<WebScorerStartList>();
 
 		services.AddSingleton<IFileSystem, FileSystem>();
 		services.AddSingleton<IFileSystemResultsLoader, FileSystemResultsLoader>();
 
 		services.AddSingleton<ResultsAPI<UltraSignup>>();
 		services.AddSingleton<ResultsAPI<WebScorer>>();
+		services.AddSingleton<ResultsAPI<WebScorerStartList>>();
 		services.AddSingleton(ResultsAPI);
 
 		services.AddScoped<IAdminService, AdminService>();
@@ -93,7 +95,8 @@ public sealed class App(string context)
 		new Dictionary<string, IResultsAPI>
 		{
 			{ nameof(UltraSignup), s.GetService<ResultsAPI<UltraSignup>>() },
-			{ nameof(WebScorer), s.GetService<ResultsAPI<WebScorer>>() }
+			{ nameof(WebScorer), s.GetService<ResultsAPI<WebScorer>>() },
+			{ nameof(WebScorerStartList), s.GetService<ResultsAPI<WebScorerStartList>>() }
 		};
 
 	private static void AddAdminRequirement(AuthorizationPolicyBuilder policyBuilder)

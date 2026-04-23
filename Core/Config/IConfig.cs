@@ -15,6 +15,9 @@ public interface IConfig
 	string GroupAPI { get; }
 	string PersonalAPI { get; }
 
+	string WebScorerOrg { get; }
+	string WebScorerSecret { get; }
+
 	string CommunityURL { get; }
 	string CommunityKey { get; }
 	string DiscourseAuthSecret { get; }

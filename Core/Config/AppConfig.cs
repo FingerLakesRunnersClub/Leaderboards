@@ -17,6 +17,9 @@ public sealed record AppConfig : IConfig
 	public string GroupAPI { get; }
 	public string PersonalAPI { get; }
 
+	public string WebScorerOrg { get; }
+	public string WebScorerSecret { get; }
+
 	public string CommunityURL { get; }
 	public string CommunityKey { get; }
 	public string DiscourseAuthSecret { get; }
@@ -40,6 +43,9 @@ public sealed record AppConfig : IConfig
 		GroupAPI = config.GetValue<string>("GroupAPI");
 		PersonalAPI = config.GetValue<string>("PersonalAPI");
 
+		WebScorerOrg = config.GetValue<string>("WebScorerOrg");
+		WebScorerSecret = config.GetValue<string>("WebScorerSecret");
+
 		CommunityURL = config.GetValue<string>("CommunityURL");
 		CommunityKey = config.GetValue<string>("CommunityKey");
 		DiscourseAuthSecret = config.GetValue<string>("DiscourseAuthSecret");
@@ -58,7 +64,7 @@ public sealed record AppConfig : IConfig
 		=> GetStringDictionary(section)
 			.ToDictionary(c => c.Key, c => byte.Parse(c.Value));
 
-	private static Dictionary<byte,string> GetByteKeyedStringDictionary(IConfiguration section)
+	private static Dictionary<byte, string> GetByteKeyedStringDictionary(IConfiguration section)
 		=> GetStringDictionary(section)
 			.ToDictionary(c => byte.Parse(c.Key), c => c.Value);
 }
