@@ -6,15 +6,16 @@
 
 <article class="card card-highlighted">
 	<section class="card-body">
-		<table class="table table-striped table-bordered table-sm">
+		<table class="table table-striped table-bordered table-sm table-responsive-sm">
 			<thead>
 			<tr>
 				<th scope="col">Name</th>
-				<th scope="col">Category</th>
-				<th scope="col">Age</th>
-				<th scope="col">Results</th>
-				<th scope="col">Series Registrations</th>
-				<th scope="col">Linked Accounts</th>
+				<th scope="col" class="text-center">Category</th>
+				<th scope="col" class="text-center">Age</th>
+				<th scope="col" class="text-center">Private</th>
+				<th scope="col" class="text-right">Results</th>
+				<th scope="col" class="text-right">Series Registrations</th>
+				<th scope="col" class="text-right">Linked Accounts</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -26,11 +27,12 @@
 							@athlete.Name
 						</a>
 					</th>
-					<td>@athlete.Category</td>
-					<td>@athlete.AgeToday</td>
-					<td>@athlete.Results.Count</td>
-					<td>@athlete.Registrations.Count</td>
-					<td>@athlete.LinkedAccounts.Count</td>
+					<td class="text-center">@athlete.Category</td>
+					<td class="text-center">@athlete.AgeToday</td>
+					<td class="text-center">@(athlete.IsPrivate ? Html.Raw(@"<i class=""fas fa-check""></i>") : "")</td>
+					<td class="text-right">@athlete.Results.Count</td>
+					<td class="text-right">@athlete.Registrations.Count</td>
+					<td class="text-right">@athlete.LinkedAccounts.Count</td>
 				</tr>
 			}
 			</tbody>

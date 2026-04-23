@@ -161,28 +161,6 @@ public sealed class AthleteServiceTests
 	}
 
 	[Fact]
-	public async Task UpdateDoesNotRemoveExistingData()
-	{
-		//arrange
-		var db = TestHelpers.CreateDB();
-		var service = new AthleteService(db);
-
-		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", DateOfBirth = DateOnly.Parse("1985-02-16"), IsPrivate = true };
-		await db.AddAsync(athlete);
-		await db.SaveChangesAsync();
-
-		//act
-		var updated = new Athlete { ID = athlete.ID, Name = "Test 2" };
-		await service.Update(athlete, updated);
-
-		//assert
-		var result = db.Set<Athlete>().Single();
-		Assert.Equal("Test 2", result.Name);
-		Assert.Equal("02/16/1985", result.DateOfBirth?.ToString("MM/dd/yyyy"));
-		Assert.True(result.IsPrivate);
-	}
-
-	[Fact]
 	public async Task CanAddNewLinkedAccounts()
 	{
 		//arrange

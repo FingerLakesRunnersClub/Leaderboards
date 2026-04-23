@@ -38,7 +38,7 @@ public sealed class AthletesController(IAdminService adminService, IAthleteServi
 	{
 		var athlete = await athleteService.Get(id);
 		await athleteService.Update(athlete, updated);
-		return RedirectToAction(nameof(Edit));
+		return RedirectToAction(nameof(Index));
 	}
 
 	[HttpGet]

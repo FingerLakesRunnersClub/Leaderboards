@@ -49,8 +49,16 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			await athleteService.Add(athlete);
 		}
 
-		if ((athlete.DateOfBirth is null && newAthlete.DateOfBirth is not null)
-		    || (athlete.Category == Athlete.UnknownCategory && newAthlete.Category != Athlete.UnknownCategory))
+		if (newAthlete.DateOfBirth is null && athlete.DateOfBirth is not null)
+			newAthlete.DateOfBirth = athlete.DateOfBirth;
+
+		if (newAthlete.Category is Athlete.UnknownCategory && athlete.Category != Athlete.UnknownCategory)
+			newAthlete.Category = athlete.Category;
+
+		if (athlete.IsPrivate && !newAthlete.IsPrivate)
+			newAthlete.IsPrivate = athlete.IsPrivate;
+
+		if (!newAthlete.Equals(athlete))
 			await athleteService.Update(athlete, newAthlete);
 
 		var newAccounts = newAthlete.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer).ToArray();

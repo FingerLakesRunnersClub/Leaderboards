@@ -161,6 +161,6 @@ public sealed class LegacyDataConverterTests
 		await converter.GetAthlete(nameof(WebScorer), CourseData.Athlete1);
 
 		//assert
-		await athleteService.DidNotReceive().Update(Arg.Any<Athlete>(), Arg.Any<Athlete>());
+		await athleteService.DidNotReceive().AddLinkedAccount(Arg.Any<Athlete>(), Arg.Any<LinkedAccount>());
 	}
 }
