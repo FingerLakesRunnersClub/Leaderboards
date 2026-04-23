@@ -1,9 +1,10 @@
 using FLRC.Leaderboards.Model;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace FLRC.Leaderboards.Data;
 
-public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
+public sealed class DB(DbContextOptions<DB> options) : DbContext(options), IDataProtectionKeyContext
 {
 	protected override void OnModelCreating(ModelBuilder build)
 	{
@@ -49,5 +50,8 @@ public sealed class DB(DbContextOptions<DB> options) : DbContext(options)
 		var aRaceLink = build.Entity<RaceLink>().Table("RaceLinks");
 		aRaceLink.HasOne(l => l.Race).WithMany(r => r.Links);
 
+		build.Entity<DataProtectionKey>().Table("_DataProtectionKeys");
 	}
+
+	public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 }

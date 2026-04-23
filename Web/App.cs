@@ -3,6 +3,7 @@ using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
+using FLRC.Leaderboards.Data;
 using FLRC.Leaderboards.Data.Migrations;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Areas.Admin.Policies;
@@ -10,6 +11,7 @@ using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -46,6 +48,7 @@ public sealed class App(string context)
 		services.AddControllersWithViews();
 		services.AddHttpClient();
 		services.AddHttpContextAccessor();
+		services.AddDataProtection().PersistKeysToDbContext<DB>().SetApplicationName("Leaderboards");
 
 		services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(AddCookieOptions);
 		services.AddAuthorizationBuilder().AddPolicy(nameof(Admin), AddAdminRequirement);
