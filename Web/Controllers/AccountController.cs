@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
@@ -8,10 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AccountController(IAdminService adminService, IAthleteService athleteService, IAuthService authService, IDiscourseAuthenticator discourse) : Controller
+public sealed class AccountController(IAdminService adminService, IAthleteService athleteService, IAuthService authService, IDiscourseFactory discourseFactory) : Controller
 {
-	public RedirectResult Login(string returnUrl = null)
+	public async Task<RedirectResult> Login(string returnUrl = null)
 	{
+		var discourse = await discourseFactory.Authenticator();
 		var host = authService.GetCurrentHost();
 		var url = discourse.GetLoginURL(host, returnUrl);
 		return Redirect(url);
@@ -20,6 +20,7 @@ public sealed class AccountController(IAdminService adminService, IAthleteServic
 	[HttpGet]
 	public async Task<IActionResult> Redirect(string sso, string sig, string url = null)
 	{
+		var discourse = await discourseFactory.Authenticator();
 		var valid = discourse.IsValidResponse(sso, sig);
 		if (!valid)
 			return Unauthorized();

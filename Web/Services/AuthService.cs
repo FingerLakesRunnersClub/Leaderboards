@@ -8,7 +8,11 @@ namespace FLRC.Leaderboards.Web.Services;
 public sealed class AuthService(IHttpContextAccessor contextAccessor) : IAuthService
 {
 	public async Task LogIn(IIdentity identity)
-		=> await contextAccessor.HttpContext!.SignInAsync(new ClaimsPrincipal(identity));
+	{
+		var principal = new ClaimsPrincipal(identity);
+		var options = new AuthenticationProperties { IsPersistent = true };
+		await contextAccessor.HttpContext!.SignInAsync(principal, options);
+	}
 
 	public bool IsLoggedIn()
 		=> GetCurrentUser()?.Identity?.IsAuthenticated ?? false;

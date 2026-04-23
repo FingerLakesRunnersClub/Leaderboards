@@ -1,10 +1,14 @@
 ﻿using System.IO.Abstractions;
+using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Data.Migrations;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Areas.Admin.Policies;
 using FLRC.Leaderboards.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,19 +35,25 @@ public sealed class App(string context)
 
 		Configure(app);
 		Initialize(app.Services);
-		await app.Services.GetRequiredService<IDataService>().GetAthletes();
 
 		await app.RunAsync();
 	}
 
 	public static void ConfigureServices(IServiceCollection services)
 	{
+		services.AddDatabase();
+
 		services.AddControllersWithViews();
 		services.AddHttpClient();
 		services.AddHttpContextAccessor();
 
-		services.AddDatabase();
-		services.AddAuthentication();
+		services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(AddCookieOptions);
+		services.AddAuthorizationBuilder().AddPolicy(nameof(Admin), AddAdminRequirement);
+
+		services.AddSingleton<IDiscourseFactory, DiscourseFactory>();
+		services.AddSingleton<IDiscourseAuthenticator, DiscourseAuthenticator>();
+		services.AddSingleton<IAuthService, AuthService>();
+		services.AddSingleton<IWebScorerAuthenticator, WebScorerAuthenticator>();
 
 		services.AddSingleton<IConfig, AppConfig>();
 
@@ -59,12 +69,7 @@ public sealed class App(string context)
 
 		services.AddSingleton<ResultsAPI<UltraSignup>>();
 		services.AddSingleton<ResultsAPI<WebScorer>>();
-
-		services.AddSingleton<IDictionary<string, IResultsAPI>>(s => new Dictionary<string, IResultsAPI>
-		{
-			{ nameof(UltraSignup), s.GetRequiredService<ResultsAPI<UltraSignup>>() },
-			{ nameof(WebScorer), s.GetRequiredService<ResultsAPI<WebScorer>>() }
-		});
+		services.AddSingleton(ResultsAPI);
 
 		services.AddScoped<IAdminService, AdminService>();
 		services.AddScoped<IAthleteService, AthleteService>();
@@ -82,6 +87,22 @@ public sealed class App(string context)
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
 
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();
+	}
+
+	private static IDictionary<string, IResultsAPI> ResultsAPI(IServiceProvider s) =>
+		new Dictionary<string, IResultsAPI>
+		{
+			{ nameof(UltraSignup), s.GetService<ResultsAPI<UltraSignup>>() },
+			{ nameof(WebScorer), s.GetService<ResultsAPI<WebScorer>>() }
+		};
+
+	private static void AddAdminRequirement(AuthorizationPolicyBuilder policyBuilder)
+		=> policyBuilder.Requirements.Add(new Admin());
+
+	private static void AddCookieOptions(CookieAuthenticationOptions options)
+	{
+		options.ExpireTimeSpan = TimeSpan.FromDays(30);
+		options.SlidingExpiration = true;
 	}
 
 	public static void Configure(IApplicationBuilder app)

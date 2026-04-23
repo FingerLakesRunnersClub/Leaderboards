@@ -12,125 +12,138 @@ namespace FLRC.Leaderboards.Web.Tests.Controllers;
 
 public sealed class AccountControllerTests
 {
-	[Fact]
-	public void LoginRedirectsToAuthPage()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
+    [Fact]
+    public async Task LoginRedirectsToAuthPage()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
 
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		discourse.GetLoginURL(Arg.Any<string>(), Arg.Any<string>()).Returns("https://example.com/login-page");
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
 
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+        var discourse = Substitute.For<IDiscourseAuthenticator>();
+        discourse.GetLoginURL(Arg.Any<string>(), Arg.Any<string>()).Returns("https://example.com/login-page");
+        discourseFactory.Authenticator().Returns(discourse);
 
-		//act
-		var result = controller.Login();
+        //act
+        var result = await controller.Login();
 
-		//assert
-		Assert.IsType<RedirectResult>(result);
-	}
+        //assert
+        Assert.IsType<RedirectResult>(result);
+    }
 
-	[Fact]
-	public async Task RedirectPerformsLogin()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
+    [Fact]
+    public async Task RedirectPerformsLogin()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
 
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
 
-		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        var discourse = Substitute.For<IDiscourseAuthenticator>();
+        discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        discourseFactory.Authenticator().Returns(discourse);
 
-		//act
-		await controller.Redirect("test", "123");
+        //act
+        await controller.Redirect("test", "123");
 
-		//assert
-		await authService.Received().LogIn(Arg.Any<IIdentity>());
-	}
+        //assert
+        await authService.Received().LogIn(Arg.Any<IIdentity>());
+    }
 
-	[Fact]
-	public async Task RedirectGoesToWizardIfUserHasNoAthlete()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
+    [Fact]
+    public async Task RedirectGoesToWizardIfUserHasNoAthlete()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
 
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
 
-		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        var discourse = Substitute.For<IDiscourseAuthenticator>();
+        discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        discourseFactory.Authenticator().Returns(discourse);
 
-		//act
-		var result = await controller.Redirect("test", "123", "/test");
+        //act
+        var result = await controller.Redirect("test", "123", "/test");
 
-		//assert
-		var redirect = result as RedirectResult;
-		Assert.Equal("/Wizard", redirect!.Url);
-	}
+        //assert
+        var redirect = result as RedirectResult;
+        Assert.Equal("/Wizard", redirect!.Url);
+    }
 
-	[Fact]
-	public async Task RedirectGoesToReturnURLIfSetForAthlete()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
+    [Fact]
+    public async Task RedirectGoesToReturnURLIfSetForAthlete()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
 
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
 
-		var claims = new Dictionary<string, string> { { "external_id", "123"} };
-		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
-		discourse.ParseResponse(Arg.Any<string>()).Returns(claims);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete());
+        var claims = new Dictionary<string, string> { { "external_id", "123" } };
 
-		//act
-		var result = await controller.Redirect("test", "123", "/test");
+        var discourse = Substitute.For<IDiscourseAuthenticator>();
+        discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(true);
+        discourse.ParseResponse(Arg.Any<string>()).Returns(claims);
+        discourseFactory.Authenticator().Returns(discourse);
 
-		//assert
-		var redirect = result as RedirectResult;
-		Assert.Equal("/test", redirect!.Url);
-	}
+        athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete());
 
-	[Fact]
-	public async Task RedirectDoesNotAttemptLoginOnValidationFailure()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
+        //act
+        var result = await controller.Redirect("test", "123", "/test");
 
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+        //assert
+        var redirect = result as RedirectResult;
+        Assert.Equal("/test", redirect!.Url);
+    }
 
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+    [Fact]
+    public async Task RedirectDoesNotAttemptLoginOnValidationFailure()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
 
-		//act
-		await controller.Redirect("test", "123");
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
 
-		//assert
-		await authService.DidNotReceive().LogIn(Arg.Any<IIdentity>());
-	}
+        var discourse = Substitute.For<IDiscourseAuthenticator>();
+        discourse.IsValidResponse(Arg.Any<string>(), Arg.Any<string>()).Returns(false);
+        discourseFactory.Authenticator().Returns(discourse);
 
-	[Fact]
-	public async Task LogoutSignsOutUser()
-	{
-		//arrange
-		var adminService = Substitute.For<IAdminService>();
-		var athleteService = Substitute.For<IAthleteService>();
-		var authService = Substitute.For<IAuthService>();
-		var discourse = Substitute.For<IDiscourseAuthenticator>();
-		var controller = new AccountController(adminService, athleteService, authService, discourse);
+        //act
+        await controller.Redirect("test", "123");
 
-		//act
-		await controller.Logout();
+        //assert
+        await authService.DidNotReceive().LogIn(Arg.Any<IIdentity>());
+    }
 
-		//assert
-		await authService.Received().LogOut();
-	}
+    [Fact]
+    public async Task LogoutSignsOutUser()
+    {
+        //arrange
+        var adminService = Substitute.For<IAdminService>();
+        var athleteService = Substitute.For<IAthleteService>();
+        var authService = Substitute.For<IAuthService>();
+        var discourseFactory = Substitute.For<IDiscourseFactory>();
+
+        var controller = new AccountController(adminService, athleteService, authService, discourseFactory);
+
+        //act
+        await controller.Logout();
+
+        //assert
+        await authService.Received().LogOut();
+    }
 }
