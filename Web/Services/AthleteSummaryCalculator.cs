@@ -16,7 +16,8 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 	public async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration)
 	{
 		var results = await resultService.Find(iteration);
-		var courses = results.GroupBy(r => r.Course).ToArray();
+		var iterationCourses = iteration.AllCourses;
+		var courses = results.OrderBy(r => iterationCourses.IndexOf(r.Course)).GroupBy(r => r.Course).ToArray();
 		var filter = new Filter(Category.Parse(athlete.Category.ToString()));
 		var summary = new AthleteSummary
 		{

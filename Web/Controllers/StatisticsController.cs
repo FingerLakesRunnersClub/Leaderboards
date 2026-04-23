@@ -23,9 +23,9 @@ public sealed class StatisticsController(IIterationManager iterationManager) : C
 
 	private static StatisticsViewModel GetStatistics(Iteration iteration)
 	{
-		var officialCourses = iteration.OfficialChallenge.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters).ToArray();
-		var otherCourses = iteration.Races.SelectMany(r => r.Courses).Except(officialCourses).OrderBy(c => c.Race.Name).ToArray();
-		var courses = officialCourses.Concat(otherCourses).ToArray();
+		var officialCourses = iteration.OfficialChallengeCourses;
+		var otherCourses = iteration.OtherCourses;
+		var courses = iteration.AllCourses;
 
 		var courseStats = courses.ToDictionary(c => c, c => c.Results.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate).ToArray().Statistics());
 		var athletes = courseStats.SelectMany(stats => stats.Key.Results.Where(r => DateOnly.FromDateTime(r.StartTime) >= iteration.StartDate && DateOnly.FromDateTime(r.StartTime) <= iteration.EndDate).Select(r => r.Athlete)).Distinct().ToArray();
