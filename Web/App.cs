@@ -61,7 +61,6 @@ public sealed class App(string context)
 		services.AddSingleton<IConfig, AppConfig>();
 
 		services.AddSingleton<IDataService, DataService>();
-		services.AddSingleton<ICommunityAPI, DiscourseAPI>();
 		services.AddSingleton<ICustomInfoAPI, CustomInfoAPI>();
 
 		services.AddSingleton<UltraSignup>();
@@ -90,6 +89,9 @@ public sealed class App(string context)
 		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
 		services.AddScoped<IIterationManager, IterationManager>();
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
+
+		services.AddScoped<ICommunityAPI, DiscourseAPI>();
+		services.AddScoped<ICommunityManager, CommunityManager>();
 
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();
 	}

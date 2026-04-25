@@ -1,11 +1,13 @@
-@using FLRC.Leaderboards.Core.Community
-@model CommunityAdminViewModel
+@using FLRC.Leaderboards.Web
+@using FLRC.Leaderboards.Web.Areas.Admin.ViewModels
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<CommunityAdmin>
 
 <h2>@Model.Title</h2>
 
 <div class="card card-highlighted">
 	<div class="card-body">
-		@if (Model.MissingRows.Any())
+		@if (Model.Data.MissingRows.Any())
 		{
 			<form method="post">
 				<button type="submit" class="btn btn-primary float-right">
@@ -24,7 +26,7 @@
 					</tr>
 					</thead>
 					<tbody>
-					@foreach (var row in Model.MissingRows)
+					@foreach (var row in Model.Data.MissingRows)
 					{
 						<tr>
 							<td class="text-center align-middle">
@@ -35,7 +37,7 @@
 									@row.Athlete.Name
 								</label>
 							</th>
-							<td class="text-center">@row.Athlete.Team.Display</td>
+							<td class="text-center">@row.Athlete.Team(Model.Data.Iteration).Display</td>
 							<td>@row.User.Username</td>
 							<td>
 								@foreach (var group in row.CurrentGroups)
@@ -69,11 +71,11 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var row in Model.NoUserRows.Select(r => r.Athlete))
+			@foreach (var row in Model.Data.NoUserRows.Select(r => r.Athlete))
 			{
 				<tr>
 					<td>@row.Name</td>
-					<td>@row.Team.Display</td>
+					<td>@row.Team(Model.Data.Iteration).Display</td>
 				</tr>
 			}
 			</tbody>
@@ -90,11 +92,11 @@
 			</tr>
 			</thead>
 			<tbody>
-			@foreach (var row in Model.SyncedRows)
+			@foreach (var row in Model.Data.SyncedRows)
 			{
 				<tr>
 					<td>@row.Athlete.Name</td>
-					<td>@row.Athlete.Team.Display</td>
+					<td>@row.Athlete.Team(Model.Data.Iteration).Display</td>
 					<td>@row.User.Username</td>
 					<td>
 						@foreach (var group in row.CurrentGroups)

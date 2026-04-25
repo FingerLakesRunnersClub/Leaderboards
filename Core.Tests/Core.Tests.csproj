@@ -13,5 +13,6 @@
 		<PackageReference Include="coverlet.collector" Version="10.0.0" />
 		<ProjectReference Include="../Core/Core.csproj" />
 		<None Include="json/*.json" CopyToOutputDirectory="Always" />
+		<ProjectReference Include="..\Model\Model.csproj" />
 	</ItemGroup>
 </Project>

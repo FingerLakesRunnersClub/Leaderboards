@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Tests;
 
-internal class MockHttpMessageHandler : HttpMessageHandler
+public class MockHttpMessageHandler : HttpMessageHandler
 {
 	public HttpRequestMessage LastRequested => Requests.LastOrDefault();
 	public List<HttpRequestMessage> Requests { get; } = [];

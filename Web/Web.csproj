@@ -16,13 +16,4 @@
 		<None Include="wwwroot/**" CopyToOutputDirectory="PreserveNewest" />
 		<None Include="../*.json" CopyToOutputDirectory="PreserveNewest" />
 	</ItemGroup>
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Views\Course\BestAverage.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\Community.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\Farthest.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\Fastest.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\MostRuns.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\ResultFilter.cshtml" />
-	  <UpToDateCheckInput Remove="Views\Course\Team.cshtml" />
-	</ItemGroup>
 </Project>

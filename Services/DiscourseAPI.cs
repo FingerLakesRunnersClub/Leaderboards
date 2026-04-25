@@ -1,27 +1,23 @@
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
+using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
 
-namespace FLRC.Leaderboards.Core.Community;
+namespace FLRC.Leaderboards.Services;
 
 public sealed class DiscourseAPI : ICommunityAPI
 {
 	private readonly HttpClient _http;
 
-	public DiscourseAPI(HttpClient http, IConfig config)
+	public DiscourseAPI(HttpClient http, IContextManager contextManager)
 	{
-		if (string.IsNullOrWhiteSpace(config.CommunityURL))
-		{
-			return;
-		}
+		var series = contextManager.Series().GetAwaiter().GetResult();
+		var settings = series.Setting;
 
 		_http = http;
-		_http.BaseAddress = new Uri(config.CommunityURL);
-		if (!string.IsNullOrWhiteSpace(config.CommunityKey))
-		{
-			_http.DefaultRequestHeaders.Add("Api-Key", config.CommunityKey);
-		}
+		_http.BaseAddress = new Uri(settings[nameof(IConfig.CommunityURL)]);
+		_http.DefaultRequestHeaders.Add("Api-Key", settings[nameof(IConfig.CommunityKey)]);
 	}
 
 	public async Task<JsonElement[]> GetPosts(ushort id)

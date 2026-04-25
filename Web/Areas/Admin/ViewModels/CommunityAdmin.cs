@@ -1,18 +1,19 @@
-using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Community;
+using FLRC.Leaderboards.Model;
 
-namespace FLRC.Leaderboards.Core.Community;
+namespace FLRC.Leaderboards.Web.Areas.Admin.ViewModels;
 
-public sealed class CommunityAdminViewModel : ViewModel
+public sealed record CommunityAdmin
 {
-	public override string Title => "Community Admin";
-
+	public Iteration Iteration { get; }
 	public Row[] MissingRows { get; }
 	public Row[] NoUserRows { get; }
 	public Row[] SyncedRows { get; }
 
-	public CommunityAdminViewModel(Row[] rows)
+	public CommunityAdmin(Iteration iteration, Row[] rows)
 	{
-		MissingRows = rows.Where(r => r.User is not null && r.MissingGroups.Length != 0).ToArray();
+		Iteration = iteration;
+		MissingRows = rows.Where(r => r.User is not null && r.MissingGroups.Length > 0).ToArray();
 		NoUserRows = rows.Where(r => r.User is null).ToArray();
 		SyncedRows = rows.Where(r => r.User is not null && r.MissingGroups.Length == 0).ToArray();
 	}
