@@ -38,6 +38,8 @@ public sealed class AthleteControllerTests
 		};
 		athleteService.Get(athlete.ID).Returns(athlete);
 
+		iterationManager.ActiveIteration().Returns(ResultsData.Iteration);
+
 		//act
 		var response = await controller.Log(athlete.ID);
 
@@ -79,6 +81,8 @@ public sealed class AthleteControllerTests
 			]
 		};
 		courseService.Get(course.ID).Returns(course);
+
+		iterationManager.ActiveIteration().Returns(ResultsData.Iteration);
 
 		//act
 		var response = await controller.Course(athlete.ID, course.ID);
@@ -150,6 +154,8 @@ public sealed class AthleteControllerTests
 			]
 		};
 		courseService.Get(course.ID).Returns(course);
+
+		iterationManager.ActiveIteration().Returns(ResultsData.Iteration);
 
 		//act
 		var response = await controller.Course(athlete.ID, course.ID);

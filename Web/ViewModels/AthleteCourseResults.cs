@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Model;
 

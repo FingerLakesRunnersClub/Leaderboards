@@ -75,7 +75,7 @@
 							@if (!Model.Data.Athlete.IsPrivate)
 							{
 								<dt class="col-6">
-									Average (Top @course.Results.AverageThreshold(new Filter(Category.Parse(Model.Data.Athlete.Category.ToString()))))
+									Average (Top @course.Results.For(Model.Data.Iteration).AverageThreshold(new Filter(Category.Parse(Model.Data.Athlete.Category.ToString()))))
 								</dt>
 								<dd class="col-6">
 									@if (Model.Data.Average[course] != null)

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using FLRC.Leaderboards.Core.Metrics;
+using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Ranking;
@@ -15,6 +16,7 @@ public class Ranked<T,R>
 	public T Value { get; init; }
 	public uint Count { get; init; }
 
+	public Date StartTime { get; init; }
 	public AgeGrade AgeGrade { get; init; }
 
 	public Time BehindLeader { get; init; }

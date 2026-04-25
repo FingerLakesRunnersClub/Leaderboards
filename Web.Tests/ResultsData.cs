@@ -25,6 +25,8 @@ public static class ResultsData
 		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/4/2020"), Duration = TimeSpan.Parse("2:00:00.0") }
 	];
 
+	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race] };
+
 	private static readonly Course SimilarCourse = new() { Distance = 400, Units = "m", Race = new Race { Type = "Road" } };
 
 	public static Result[] SimilarResults =>

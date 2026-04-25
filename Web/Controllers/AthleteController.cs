@@ -28,7 +28,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 
 		return Enum.TryParse<FieldEvent>(course.Race.Name.ToFieldEvent(), out _)
 			? View("FieldEvent", GetFieldEventViewModel(athlete, course))
-			: View(GetRunViewModel(athlete, course));
+			: View(await GetRunViewModel(athlete, course));
 	}
 
 	[HttpGet]
@@ -47,9 +47,11 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 		return new ViewModel<AthleteSummary>(athlete.Name, summary);
 	}
 
-	private static ViewModel<AthleteCourseResults<Time>> GetRunViewModel(Athlete athlete, Course course)
+	private async Task<ViewModel<AthleteCourseResults<Time>>> GetRunViewModel(Athlete athlete, Course course)
 	{
-		var myResults = course.Results.Where(r => r.Athlete.Equals(athlete)).ToArray();
+		var iteration = await iterationManager.ActiveIteration();
+		var myResults = course.Results.For(iteration)
+			.Where(r => r.Athlete.Equals(athlete)).ToArray();
 
 		var data = new AthleteCourseResults<Time>
 		{
@@ -87,6 +89,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 				All = ranks,
 				Rank = RankRun(result, rank, ranks),
 				Result = result,
+				StartTime = new Date(result.StartTime),
 				Value = new Time(result.Duration),
 				AgeGrade = result.AgeGrade()
 			});
@@ -113,8 +116,10 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 
 	private async Task<ViewModel<AthleteLog>> GetLog(Guid id)
 	{
+		var iteration = await iterationManager.ActiveIteration();
+
 		var athlete = await athleteService.Get(id);
-		var results = athlete.Results.ToArray();
+		var results = athlete.Results.For(iteration).ToArray();
 
 		var user = await CurrentAthlete();
 		var admin = user is not null && await adminService.Verify(user.ID);
