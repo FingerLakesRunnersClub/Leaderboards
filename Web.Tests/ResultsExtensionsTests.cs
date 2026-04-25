@@ -281,7 +281,7 @@ public sealed class ResultsExtensionsTests
 		//arrange
 		var results = new[]
 		{
-			new Result { Athlete = ResultsData.Private, StartTime = new DateTime(2023, 1, 1), Course = new Course() }
+			new Result { Athlete = ResultsData.Private, StartTime = new DateTime(2023, 1, 1), Course = new Course(), Duration = new TimeSpan(1, 2, 3) }
 		};
 
 		//act

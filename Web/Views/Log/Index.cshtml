@@ -1,7 +1,6 @@
 ﻿@using FLRC.Leaderboards.Core.Metrics
 @using FLRC.Leaderboards.Core.Races
 @using FLRC.Leaderboards.Core.Reports
-@using FLRC.Leaderboards.Web.Controllers
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<ActivityLog>
 
@@ -63,7 +62,7 @@
 							</td>
 						}
 						<td class="text-right">
-							@(new Time(result.Duration).Display)
+							@(!result.Athlete.IsPrivate ? new Time(result.Duration).Display : "")
 						</td>
 					</tr>
 				}

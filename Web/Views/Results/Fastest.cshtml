@@ -23,7 +23,7 @@
                 { name: 'Points', center: true, value: r => r.Points?.Display, sort: r => r.Points?.Value, descending: true, show: @((Model.Data.Filter.Category != null && Model.Data.Filter.AgeGroup == null).ToString().ToLowerInvariant()) }
             ];
 
-            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
+            const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results.Where(r => r.Result.Duration > TimeSpan.Zero)));
         </script>
 
 		@await Html.PartialAsync("DataTable", (Model.Title, "md"))

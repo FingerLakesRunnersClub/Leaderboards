@@ -33,7 +33,7 @@ public static class ResultExtensions
 
 		public AgeGrade AgeGrade()
 		{
-			if (result.Duration == TimeSpan.Zero || result.AthleteAge is null or 0)
+			if (result.Duration == TimeSpan.Zero || result.AthleteAge is null or 0 || result.Athlete.IsPrivate)
 				return null;
 
 			var category = result.Athlete.Category == 'F' ? Category.F : Category.M;

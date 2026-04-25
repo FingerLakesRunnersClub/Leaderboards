@@ -18,7 +18,7 @@ public static class ResultsExtensions
 				.ToArray();
 
 		public RankedList<Time, Result> Fastest(Filter filter = null)
-			=> results.Rank(filter ?? new Filter(), rs => rs.Any(r => r.Duration > TimeSpan.Zero || r.Athlete.IsPrivate), rs => rs.OrderBy(r => r.Duration).First(), rs => new Time(rs.Min(r => r.Duration > TimeSpan.Zero ? r.Duration : TimeSpan.MaxValue)));
+			=> results.Rank(filter ?? new Filter(), _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => !rs.Key.IsPrivate ? new Time(rs.Min(r => r.Duration)) : Time.Max);
 
 		public RankedList<Time, Result> BestAverage(Filter filter = null)
 		{
@@ -72,7 +72,7 @@ public static class ResultsExtensions
 				{
 					All = ranks,
 					Rank = Rank(isInFirstPlace, lastPlace, value, (ushort)(rank - skippedRanks)),
-					Result = result,
+					Result = !result.Athlete.IsPrivate ? result : result with { Duration = TimeSpan.Zero },
 					Value = value,
 					Count = (uint)group.Count(),
 					BehindLeader = result.BehindLeader(isInFirstPlace, firstPlace),
