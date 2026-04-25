@@ -45,7 +45,10 @@ public sealed class ImportManager(ILegacyDataConverter legacyConverter, IResultS
 		var json = source is nameof(WebScorer)
 			? await resultsAPI[nameof(WebScorerStartList)].GetResults(externalID)
 			: JsonElement.Parse(@"{""StartList"":[]}");
-		return json.GetProperty("StartList").EnumerateArray();
+
+		return json.TryGetProperty("StartList", out var startList)
+			? startList.EnumerateArray()
+			: [];
 	}
 
 	public async Task<Result[]> ImportResults(Course course, string source, uint externalID, DateTime? dateOverride = null)
