@@ -7,7 +7,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 	public async Task<Result[]> ConvertResults(Guid courseID, string source, Core.Results.Result[] legacyResults, DateTime? dateOverride = null)
 	{
 		var results = new List<Result>();
-		foreach (var legacyResult in legacyResults.Where(r => r.Duration is not null))
+		foreach (var legacyResult in legacyResults)
 		{
 			var result = await ConvertResult(courseID, source, legacyResult, dateOverride);
 

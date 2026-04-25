@@ -52,9 +52,7 @@ public sealed class WebScorer : IDataSource
 			Course = course,
 			Athlete = athlete,
 			StartTime = ParseStart(r.GetProperty("StartTime").GetString()),
-			Duration = !athlete.Private
-				? ParseDuration(r.GetProperty("RaceTime").GetDouble())
-				: null
+			Duration = ParseDuration(r.GetProperty("RaceTime").GetDouble())
 		};
 	}
 

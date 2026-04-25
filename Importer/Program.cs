@@ -1,4 +1,5 @@
-﻿using FLRC.Leaderboards.Importer;
+﻿using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Importer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -6,6 +7,7 @@ var builder = Host.CreateDefaultBuilder(args);
 builder.ConfigureServices((_, services) =>
 	{
 		FLRC.Leaderboards.Web.App.ConfigureServices(services);
+		services.AddSingleton<IContextProvider>(_ => new AppContextProvider("Challenge"));
 		services.AddSingleton<Action<string>>(Console.WriteLine);
 		services.AddSingleton<Importer>();
 		services.AddHostedService<App>();

@@ -29,8 +29,8 @@ public sealed class ImportManager(ILegacyDataConverter legacyConverter, IResultS
 			var fullLegacyAthlete = newInfo.ValueKind is JsonValueKind.Object
 				? legacyAthlete with
 				{
-					DateOfBirth = legacyAthlete.DateOfBirth ?? newInfo.GetProperty("Info1").GetDateTime(),
-					Private = legacyAthlete.Private || newInfo.GetProperty("Info2").GetString() is "Y",
+					DateOfBirth = legacyAthlete.DateOfBirth ?? (newInfo.TryGetProperty("Info1", out var dob) ? dob.GetDateTime() : null),
+					Private = legacyAthlete.Private || (newInfo.TryGetProperty("Info2", out var isPrivate) && isPrivate.GetString() is "Y"),
 				}
 				: legacyAthlete;
 			var athlete = await legacyConverter.GetAthlete(source, fullLegacyAthlete);

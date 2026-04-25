@@ -9,7 +9,7 @@ public sealed class App(IFileSystem fs, Importer importer, Action<string> log) :
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
 		await Run("Challenge");
-		await Run("TrailCircuit");
+		// await Run("TrailCircuit");
 	}
 
 	private async Task Run(string series)
