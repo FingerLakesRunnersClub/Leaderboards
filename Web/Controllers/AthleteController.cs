@@ -91,7 +91,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 				Result = result,
 				StartTime = new Date(result.StartTime),
 				Value = new Time(result.Duration),
-				AgeGrade = result.AgeGrade()
+				AgeGrade = !result.Athlete.IsPrivate ? result.AgeGrade() : null
 			});
 		}
 

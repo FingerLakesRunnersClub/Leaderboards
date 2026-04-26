@@ -78,7 +78,7 @@ public static class ResultsExtensions
 					Count = (uint)group.Count(),
 					BehindLeader = result.BehindLeader(isInFirstPlace, firstPlace),
 					Points = result.Points(isInFirstPlace, firstPlace),
-					AgeGrade = result.AgeGrade()
+					AgeGrade = !result.Athlete.IsPrivate ? result.AgeGrade() : null
 				};
 
 				ranks.Add(rankedResult);
