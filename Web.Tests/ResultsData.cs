@@ -10,7 +10,7 @@ public static class ResultsData
 	public static readonly Athlete Athlete4 = new() { ID = Guid.NewGuid(), Name = "A4", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1990") };
 	public static readonly Athlete Private = new() { ID = Guid.NewGuid(), Name = "AP", Category = 'F', DateOfBirth = DateOnly.Parse("1/1/1980"), IsPrivate = true };
 
-	private static readonly Race Race = new() { Name = "10K", Type = "Road" };
+	public static readonly Race Race = new() { Name = "10K", Type = "Road" };
 	public static readonly Course Course = new() { Race = Race, Distance = 10, Units = "km" };
 
 	public static Result[] Results =>
@@ -25,7 +25,7 @@ public static class ResultsData
 		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/4/2020"), Duration = TimeSpan.Parse("2:00:00.0") }
 	];
 
-	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race] };
+	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race], StartDate = new DateOnly(2020, 1, 1) };
 
 	private static readonly Course SimilarCourse = new() { Distance = 400, Units = "m", Race = new Race { Type = "Road" } };
 

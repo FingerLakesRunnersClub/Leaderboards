@@ -1,4 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.Services;
 using Xunit;
@@ -138,6 +139,33 @@ public sealed class OverallResultsCalculatorTests
 	}
 
 	[Fact]
+	public void CanGetTeamPoints()
+	{
+		//arrange
+		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+
+		//act
+		var teamPoints = calculator.TeamPoints();
+
+		//assert
+		Assert.Equal("1–29", teamPoints.First().Value.Team.Display);
+	}
+
+	[Fact]
+	public void CanFilterTeamMembers()
+	{
+		//arrange
+		var iteration = OverallData.Iteration;
+		var calculator = new OverallResultsCalculator(iteration);
+
+		//act
+		var members = calculator.TeamMembers(Team.Teams[2]);
+
+		//assert
+		Assert.Equal("1–29", members.First().Result.Athlete.Team(iteration).Display);
+	}
+
+	[Fact]
 	public void PrivateAthletesInAllNonTimeBasedCompetitions()
 	{
 		//arrange
@@ -160,7 +188,8 @@ public sealed class OverallResultsCalculatorTests
 		var iteration = new Iteration
 		{
 			Challenges = [challenge],
-			Races = [race]
+			Races = [race],
+			StartDate = new DateOnly(2020, 1, 1)
 		};
 
 		//act
@@ -171,5 +200,7 @@ public sealed class OverallResultsCalculatorTests
 		Assert.Empty(calculator.AgeGrade());
 		Assert.NotEmpty(calculator.MostMiles());
 		Assert.NotEmpty(calculator.Completed());
+		Assert.NotEmpty(calculator.TeamPoints());
+        Assert.NotEmpty(calculator.TeamMembers(new Team(4)));
 	}
 }

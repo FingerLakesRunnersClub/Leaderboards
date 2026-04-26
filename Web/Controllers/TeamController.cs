@@ -1,23 +1,13 @@
-using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Overall;
-using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Teams;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class TeamController : Controller
+public sealed class TeamController(IIterationManager iterationManager) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public TeamController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index(byte id)
 		=> View(await GetTeam(Team.Teams[id]));
@@ -26,29 +16,31 @@ public sealed class TeamController : Controller
 	public async Task<ViewResult> Members(byte id)
 		=> View(await GetMembers(Team.Teams[id]));
 
-	private async Task<TeamMembersViewModel> GetMembers(Team team)
+	private async Task<ViewModel<TeamMembers>> GetMembers(Team team)
 	{
-		var overall = new OverallResults(await _dataService.GetAllResults());
-		return new TeamMembersViewModel
+		var iteration = await iterationManager.ActiveIteration();
+		var overall = new OverallResultsCalculator(iteration);
+
+		var results = new TeamMembers
 		{
-			Config = _config,
-			ResultType = "Members",
 			Team = team,
+			ResultType = "Members",
 			RankedResults = overall.TeamMembers(team)
 		};
+		return new ViewModel<TeamMembers>($"Team {team.Display} Members", results);
 	}
 
-	private async Task<TeamSummaryViewModel> GetTeam(Team team)
+	private async Task<ViewModel<TeamSummary>> GetTeam(Team team)
 	{
-		var courses = await _dataService.GetAllResults();
-		var overall = new OverallResults(courses);
+		var iteration = await iterationManager.ActiveIteration();
+		var overall = new OverallResultsCalculator(iteration);
 
-		return new TeamSummaryViewModel
+		var summary = new TeamSummary
 		{
-			Config = _config,
 			Team = team,
 			Overall = overall.TeamPoints().Find(r => r.Value.Team == team),
-			Courses = courses.ToDictionary(c => c, c => c.TeamPoints().Find(r => r.Value.Team == team))
+			Courses = iteration.OfficialChallenge.Courses.ToDictionary(c => c, c => c.Results.TeamPoints(iteration).Find(r => r.Value.Team == team))
 		};
+		return new ViewModel<TeamSummary>($"Team {team.Display}", summary);
 	}
 }

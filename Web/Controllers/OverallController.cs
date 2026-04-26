@@ -1,11 +1,14 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using OverallResults = FLRC.Leaderboards.Web.ViewModels.OverallResults;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
@@ -50,5 +53,21 @@ public sealed class OverallController(IIterationManager iterationManager, IConfi
 			RankedResults = rankedResults
 		};
 		return new ViewModel<OverallResults<T>>("Overall Results", overall);
+	}
+
+	public async Task<ViewResult> Team()
+		=> View(await GetTeamResults(config.Competitions["Team"], overall => overall.TeamPoints()));
+
+	private async Task<ViewModel<OverallResults<TeamResults>>> GetTeamResults(string title, Func<OverallResultsCalculator, RankedList<TeamResults, Result>> results)
+	{
+		var iteration = await iterationManager.ActiveIteration();
+		var overall = new OverallResultsCalculator(iteration);
+		var data = new OverallResults<TeamResults>
+		{
+			Config = config,
+			ResultType = title,
+			RankedResults = results(overall)
+		};
+		return new ViewModel<OverallResults<TeamResults>>("Team", data);
 	}
 }

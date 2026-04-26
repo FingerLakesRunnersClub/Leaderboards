@@ -39,7 +39,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	}
 
 	[HttpGet]
-	public async Task<ViewResult> MostRuns(Guid id, char? c = null, byte? ag = null, Guid? i = null)
+	public async Task<ViewResult> MostRuns(Guid id, Guid? i = null)
 	{
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
@@ -48,11 +48,21 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		return View(vm);
 	}
 
+	[HttpGet]
+	public async Task<ViewResult> Team(Guid id, Guid? i = null)
+	{
+		var filter = await Filter(null, null, i);
+		var iteration = await iterationManager.ActiveIteration();
+		var results = await GetResults(id, iteration, filter, ResultType.Team, (r, f) => r.TeamPoints(iteration, filter));
+		var vm = new ViewModel<CourseResults<TeamResults>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		return View(vm);
+	}
+
 	private async Task<Filter> Filter(char? c, byte? ag, Guid? i)
 		=> new()
 		{
 			Category = c is not null ? Category.Parse(c.ToString()) : null,
-			AgeGroup = ag is not null ? Team.Teams[ag.Value] : null,
+			AgeGroup = ag is not null ? Core.Teams.Team.Teams[ag.Value] : null,
 			Iteration = await FilterIteration(i)
 		};
 

@@ -32,6 +32,7 @@ public sealed class AthleteControllerTests
 				{
 					Athlete = ResultsData.Athlete1,
 					Course = ResultsData.Course,
+					StartTime = new DateTime(2020, 1, 1),
 					Duration = new TimeSpan(1, 2, 3)
 				}
 			]
@@ -64,18 +65,15 @@ public sealed class AthleteControllerTests
 		var athlete = new Athlete { ID = Guid.NewGuid() };
 		athleteService.Get(athlete.ID).Returns(athlete);
 
-		var course = new Course
+		var course = ResultsData.Course with
 		{
-			ID = Guid.NewGuid(),
-			Race = new Race { Name = "Test" },
-			Distance = 10,
-			Units = "mi",
 			Results =
 			[
 				new Result
 				{
 					Athlete = athlete,
 					Course = ResultsData.Course,
+					StartTime = new DateTime(2020, 1, 1),
 					Duration = new TimeSpan(1, 2, 3)
 				}
 			]
@@ -105,7 +103,7 @@ public sealed class AthleteControllerTests
 
 		var controller = new AthleteController(iterationManager, authService, adminService, athleteService, courseService, summaryCalculator);
 
-		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1)};
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		athleteService.Get(athlete.ID).Returns(athlete);
 
 		var course = new Course

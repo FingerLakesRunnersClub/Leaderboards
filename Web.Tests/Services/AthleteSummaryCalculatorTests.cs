@@ -16,42 +16,49 @@ public sealed class AthleteSummaryCalculatorTests
 		var resultService = Substitute.For<IResultService>();
 		var calculator = new AthleteSummaryCalculator(resultService, TestHelpers.Config);
 
-		var athlete = new Athlete { ID = Guid.NewGuid(), Category = 'M' };
+		var athlete1 = new Athlete { ID = Guid.NewGuid(), Category = 'M', DateOfBirth = new DateOnly(2000, 1, 1) };
+		var athlete2 = new Athlete { ID = Guid.NewGuid(), Category = 'F', DateOfBirth = new DateOnly(2000, 1, 1) };
+
 		var course = ResultsData.Course with { Distance = 10, Units = "mi" };
+
 		var results = new[]
 		{
 			new Result
 			{
-				Athlete = athlete,
+				Athlete = athlete1,
 				Course = course,
-				StartTime = DateTime.Parse("1/1/2000"),
+				StartTime = DateTime.Parse("1/1/2020"),
 				Duration = new TimeSpan(2, 4, 6)
 			},
 			new Result
 			{
-				Athlete = new Athlete { ID = Guid.NewGuid(), Category = 'F' },
+				Athlete = athlete2,
 				Course = course,
-				StartTime = DateTime.Parse("1/1/2000"),
+				StartTime = DateTime.Parse("1/1/2020"),
 				Duration = new TimeSpan(1, 2, 3)
 			}
 		};
+
 		var fullCourse = course with { Results = results };
+
 		var iteration = new Iteration
 		{
-			Races = [new Race { Courses = [fullCourse] }],
-			Challenges = [new Challenge { IsOfficial = true, IsPrimary = true, Courses = [fullCourse]}]
+			Races = [fullCourse.Race with { Courses = [fullCourse]}],
+			Challenges = [new Challenge { IsOfficial = true, IsPrimary = true, Courses = [fullCourse] }],
+			StartDate = new DateOnly(2020, 1, 1)
 		};
 
 		resultService.Find(Arg.Any<Iteration>()).Returns(results);
 
 		//act
-		var summary = await calculator.GetSummary(athlete, iteration);
+		var summary = await calculator.GetSummary(athlete1, iteration);
 
 		//assert
-		Assert.Equal(athlete.ID, summary.Athlete.ID);
+		Assert.Equal(athlete1.ID, summary.Athlete.ID);
 		Assert.Equal(1, summary.Fastest[course].Rank.Value);
 		Assert.Equal(1, summary.Average[course].Rank.Value);
 		Assert.Equal(1, summary.Runs[course].Rank.Value);
+		Assert.Equal(1, summary.TeamResults.Rank.Value);
 		Assert.Equal(100, summary.OverallPoints.Value.Value);
 		Assert.Equal(10, summary.OverallMiles.Value.Value);
 	}

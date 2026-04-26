@@ -27,30 +27,40 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.Athlete.Equals(athlete))),
-			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.Athlete.Equals(athlete)).ToArray()),
+			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.Athlete.Equals(athlete)).ToArray())
 		};
 
 		if (config.FileSystemResults is not null)
 			return summary;
 
 		var overall = new OverallResultsCalculator(iteration);
+
+		var points = overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete));
+		var pointsTop3 = overall.MostPoints(3, filter).Find(r => r.Result.Athlete.Equals(athlete));
+		var ageGrade = overall.AgeGrade().Find(r => r.Result.Athlete.Equals(athlete));
+		var miles = overall.MostMiles().Find(r => r.Result.Athlete.Equals(athlete));
+		var team = overall.TeamPoints().Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
+		var total = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null);
+
 		return summary with
 		{
 			Competitions = new[]
 				{
-					OverallRow("Points/F", Category.F, athlete, () => overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete))),
-					OverallRow("Points/M", Category.M, athlete, () => overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete))),
-					OverallRow("PointsTop3/F", Category.F, athlete, () => overall.MostPoints(3, filter).Find(r => r.Result.Athlete.Equals(athlete))),
-					OverallRow("PointsTop3/M", Category.M, athlete, () => overall.MostPoints(3, filter).Find(r => r.Result.Athlete.Equals(athlete))),
-					OverallRow("AgeGrade", null, athlete, () => overall.AgeGrade().Find(r => r.Result.Athlete.Equals(athlete))),
-					OverallRow("Miles", null, athlete, () => overall.MostMiles().Find(r => r.Result.Athlete.Equals(athlete)))
+					OverallRow("Points/F", Category.F, athlete, () => points),
+					OverallRow("Points/M", Category.M, athlete, () => points),
+					OverallRow("PointsTop3/F", Category.F, athlete, () => pointsTop3),
+					OverallRow("PointsTop3/M", Category.M, athlete, () => pointsTop3),
+					OverallRow("AgeGrade", null, athlete, () => ageGrade),
+					OverallRow("Miles", null, athlete, () => miles),
+					OverallRow("Team", null, athlete, () => team)
 				}.Where(c => c?.Value != null)
 				.ToArray(),
 
-			OverallPoints = overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete)),
-			OverallAgeGrade = overall.AgeGrade().Find(r => r.Result.Athlete.Equals(athlete)),
-			OverallMiles = overall.MostMiles().Find(r => r.Result.Athlete.Equals(athlete)),
-			TotalResults = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null)
+			OverallPoints = points,
+			OverallAgeGrade = ageGrade,
+			OverallMiles = miles,
+			TeamResults = team,
+			TotalResults = total
 		};
 	}
 

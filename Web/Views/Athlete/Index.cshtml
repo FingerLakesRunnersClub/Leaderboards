@@ -1,10 +1,9 @@
-﻿@using FLRC.Leaderboards.Core.Athletes
-@using FLRC.Leaderboards.Core.Metrics
+﻿@using FLRC.Leaderboards.Core.Metrics
 @using FLRC.Leaderboards.Core.Ranking
 @using FLRC.Leaderboards.Model
 @using FLRC.Leaderboards.Web
 @using FLRC.Leaderboards.Web.ViewModels
-@model ViewModel<FLRC.Leaderboards.Web.ViewModels.AthleteSummary>
+@model ViewModel<AthleteSummary>
 
 @await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete.ID)
 
@@ -75,7 +74,7 @@
 							@if (!Model.Data.Athlete.IsPrivate)
 							{
 								<dt class="col-6">
-									Average (Top @course.Results.For(Model.Data.Iteration).AverageThreshold(new Filter(Category.Parse(Model.Data.Athlete.Category.ToString()))))
+									Average (Top @course.Results.For(Model.Data.Iteration).AverageThreshold(new Filter(FLRC.Leaderboards.Core.Athletes.Category.Parse(Model.Data.Athlete.Category.ToString()))))
 								</dt>
 								<dd class="col-6">
 									@if (Model.Data.Average[course] != null)

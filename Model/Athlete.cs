@@ -5,7 +5,6 @@ namespace FLRC.Leaderboards.Model;
 public record Athlete : Identifiable<Guid>
 {
 	public const char UnknownCategory = ' ';
-	private const double DaysPerYear = 365.2425;
 
 	public Guid ID { get; set; }
 	public string Name { get; set; } = null!;
@@ -29,9 +28,15 @@ public record Athlete : Identifiable<Guid>
 		=> AgeAsOf(date.ToDateTime(TimeOnly.MinValue));
 
 	public byte? AgeAsOf(DateTime date)
-		=> DateOfBirth.HasValue
-			? (byte)((date - new DateTime(DateOfBirth.Value.Year, DateOfBirth.Value.Month, DateOfBirth.Value.Day).ToUniversalTime()).TotalDays / DaysPerYear)
-			: null;
+	{
+		if (!DateOfBirth.HasValue)
+			return null;
+
+		var years = date.Year - DateOfBirth.Value.Year;
+		return date < DateOfBirth.Value.ToDateTime(TimeOnly.MinValue).AddYears(years)
+			? (byte)(years - 1)
+			: (byte)years;
+	}
 
 	public byte? AgeToday => AgeAsOf(DateTime.Today);
 

@@ -35,5 +35,5 @@ public static class OverallData
 	private static readonly Race Race3 = new() { ID = Guid.NewGuid(), Name = "Test", Type = "Road", Courses = [Course3] };
 
 	private static readonly Challenge OfficialChallenge = new() { IsOfficial = true, IsPrimary = true, Courses = [Course1] };
-	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race1, Race3], Challenges = [OfficialChallenge] };
+	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race1, Race3], Challenges = [OfficialChallenge], StartDate = new DateOnly(2020, 1, 1)};
 }

@@ -1,23 +1,25 @@
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
+using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 using Course = FLRC.Leaderboards.Model.Course;
+using TeamMember = FLRC.Leaderboards.Web.ViewModels.TeamMember;
 
 namespace FLRC.Leaderboards.Web.Services;
 
 public sealed class OverallResultsCalculator
 {
-	private readonly IEnumerable<Course> _courses;
-	private readonly IEnumerable<Course> _officialCourses;
+	private readonly Course[] _courses;
+	private readonly Course[] _officialCourses;
 	private readonly DateTime _start;
 	private readonly Iteration _iteration;
 
 	public OverallResultsCalculator(Iteration iteration)
 	{
 		_iteration = iteration;
-		_courses = _iteration.Races.SelectMany(r => r.Courses);
-		_officialCourses = _iteration.OfficialChallenge?.Courses ?? [];
+		_courses = _iteration.Races.SelectMany(r => r.Courses).ToArray();
+		_officialCourses = _iteration.OfficialChallenge?.Courses.ToArray() ?? [];
 		_start = _iteration.StartDate?.ToDateTime(TimeOnly.MinValue) ?? DateTime.MinValue;
 	}
 
@@ -73,6 +75,46 @@ public sealed class OverallResultsCalculator
 				AgeGrade = !result.Key.IsPrivate
 					? new AgeGrade(avgAgeGrade)
 					: null,
+				Value = value
+			});
+		}
+
+		return ranks;
+	}
+
+	public RankedList<TeamResults, Result> TeamPoints(Filter filter = null)
+		=> _officialCourses.SelectMany(c => c.Results.For(_iteration).TeamPoints(_iteration, filter))
+			.GroupBy(r => r.Value.Team)
+			.Select(g => new TeamResults
+			{
+				Team = g.Key,
+				AgeGradePoints = (byte)(g.Sum(r => r.Value.AgeGradePoints) + Team.Teams.Count * (_officialCourses.Length - g.Count())),
+				MostRunsPoints = (byte)(g.Sum(r => r.Value.MostRunsPoints) + Team.Teams.Count * (_officialCourses.Length - g.Count()))
+			})
+			.Rank();
+
+	public RankedList<TeamMember, Result> TeamMembers(Team team, Filter filter = null)
+		=> RankTeam(_courses.SelectMany(c => c.Results.For(_iteration).Fastest(filter).Where(r => r.Result.Athlete.Team(_iteration) == team)).ToArray());
+
+	private RankedList<TeamMember, Result> RankTeam(Ranked<Time, Result>[] results)
+	{
+		var ranked = results
+			.GroupBy(r => r.Result.Athlete)
+			.Select(g => new TeamMember(g.ToArray()) { Athlete = g.Key })
+			.OrderByDescending(m => m.Score)
+			.ToArray();
+
+		var ranks = new RankedList<TeamMember, Result>();
+		for (byte rank = 1; rank <= ranked.Length; rank++)
+		{
+			var value = ranked[rank - 1];
+			ranks.Add(new Ranked<TeamMember, Result>
+			{
+				All = ranks,
+				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
+				Result = new Result { Athlete = value.Athlete, StartTime = _iteration.StartDate.Value.ToDateTime(TimeOnly.MinValue) },
+				Count = value.Courses,
+				AgeGrade = value.AgeGrade,
 				Value = value
 			});
 		}

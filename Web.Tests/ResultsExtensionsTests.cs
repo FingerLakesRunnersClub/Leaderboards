@@ -428,6 +428,19 @@ public sealed class ResultsExtensionsTests
 	}
 
 	[Fact]
+	public void AverageAgeGradeBasedOnIndividualFastestTime()
+	{
+		//arrange
+		var course = new Course { Results = ResultsData.Results, Distance = 10, Units = "km" };
+
+		//act
+		var results = course.Results.TeamPoints(ResultsData.Iteration);
+
+		//assert
+		Assert.Equal("8.59%", results.First().Value.AverageAgeGrade.Display);
+	}
+
+	[Fact]
 	public void PrivateAthleteCanBeInFirstForMostRuns()
 	{
 		//arrange

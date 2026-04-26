@@ -66,6 +66,10 @@ public sealed class LeaderboardCalculator
 
 			OverallTable("Courses", ResultType.MostCourses, new Filter(), () => vm.MostCourses().Take(_tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
+				.ToArray()),
+
+			OverallTable("Team", ResultType.Team, new Filter(), () => vm.TeamPoints().Take(_tableSize)
+				.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
 				.ToArray())
 		};
 
