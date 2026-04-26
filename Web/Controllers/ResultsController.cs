@@ -53,7 +53,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	{
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
-		var results = await GetResults(id, iteration, filter, ResultType.Team, (r, f) => r.TeamPoints(iteration, filter));
+		var results = await GetResults(id, iteration, filter, ResultType.Team, (r, f) => r.TeamPoints(iteration, f));
 		var vm = new ViewModel<CourseResults<TeamResults>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
@@ -126,10 +126,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		if (!result.IsValid())
 		{
-			var vm = new ViewModel<Result>("Add Result", result)
-			{
-				Error = "The result entered is invalid, please double-check your entry!"
-			};
+			var vm = new ViewModel<Result>("Add Result", result) { Error = GetError(result) };
 			return View("Form", vm);
 		}
 
@@ -178,16 +175,18 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		if (!updated.IsValid())
 		{
-			var vm = new ViewModel<Result>("Add Result", result)
-			{
-				Error = "The result entered is invalid, please double-check your entry!"
-			};
+			var vm = new ViewModel<Result>("Add Result", result) { Error = GetError(updated) };
 			return View("Form", vm);
 		}
 
 		await resultService.Update(result, updated);
 		return RedirectToAction(nameof(AthleteController.Log), nameof(Athlete), new { id = result.AthleteID });
 	}
+
+	private static string GetError(Result result)
+		=> result.AgeGrade()?.Value > 100 ? "Please enter a realistic duration"
+			: result.StartTime > DateTime.Now ? "Please enter a start time that is not in the future"
+			: "Unknown result validation error";
 
 	[HttpGet]
 	[Authorize]
