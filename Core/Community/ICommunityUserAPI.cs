@@ -2,11 +2,8 @@ using System.Text.Json;
 
 namespace FLRC.Leaderboards.Core.Community;
 
-public interface ICommunityAPI
+public interface ICommunityUserAPI
 {
-	Task<JsonElement[]> GetPosts(ushort id);
-	Post[] ParsePosts(JsonElement[] json);
-
 	Task<JsonElement[]> GetUsers();
 	Task<JsonElement> GetGroup(string groupID);
 	Task<JsonElement[]> GetMembers(string groupID);

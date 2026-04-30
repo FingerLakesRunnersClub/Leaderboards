@@ -3,10 +3,11 @@ using System.Net.Http.Json;
 using System.Text.Json;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
+using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Services;
 
-public sealed class DiscourseAPI : ICommunityAPI
+public sealed class DiscourseAPI : ICommunityPostAPI, ICommunityUserAPI
 {
 	private readonly HttpClient _http;
 
@@ -26,12 +27,13 @@ public sealed class DiscourseAPI : ICommunityAPI
 		return json.GetProperty("post_stream").GetProperty("posts").EnumerateArray().ToArray();
 	}
 
-	public Post[] ParsePosts(JsonElement[] json)
-		=> json.Select(p => new Post
+	public CommunityPost[] ParsePosts(JsonElement[] json)
+		=> json.Select(p => new CommunityPost
 		{
-			Name = p.GetProperty("name").GetString(),
+			ID = p.GetProperty("user_id").GetUInt16(),
+			Name = p.GetProperty("name").GetString() ?? string.Empty,
 			Date = p.GetProperty("created_at").GetDateTime().ToLocalTime(),
-			Content = p.GetProperty("raw").GetString()
+			Content = p.GetProperty("raw").GetString() ?? string.Empty
 		}).ToArray();
 
 	public async Task<JsonElement[]> GetUsers()

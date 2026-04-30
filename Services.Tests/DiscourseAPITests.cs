@@ -100,7 +100,7 @@ public sealed class DiscourseAPITests
 	{
 		//arrange
 		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]}}""");
-		var json = JsonDocument.Parse("""{"name":"User 123", "created_at":"2022-04-07T06:51:23Z","raw":"test 123"}""");
+		var json = JsonDocument.Parse("""{"user_id":123,"name":"User 123", "created_at":"2022-04-07T06:51:23Z","raw":"test 123"}""");
 		var contextManager = Substitute.For<IContextManager>();
 
 		var id = Guid.NewGuid();
@@ -131,7 +131,7 @@ public sealed class DiscourseAPITests
 	{
 		//arrange
 		var http = new MockHttpMessageHandler("""{"post_stream":{"posts":[{}]}}""");
-		var json = JsonDocument.Parse("""{"name":"User 123", "created_at":"2022-04-08T03:51:23Z","raw":"test 123"}""");
+		var json = JsonDocument.Parse("""{"user_id":123,"name":"User 123", "created_at":"2022-04-08T03:51:23Z","raw":"test 123"}""");
 		var contextManager = Substitute.For<IContextManager>();
 
 		var id = Guid.NewGuid();

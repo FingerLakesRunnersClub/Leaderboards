@@ -14,13 +14,13 @@ public sealed class DataService : IDataService
 	private readonly IDictionary<string, IResultsAPI> _resultsAPI;
 	private readonly IFileSystemResultsLoader _fsrl;
 	private readonly ICustomInfoAPI _customInfoAPI;
-	private readonly ICommunityAPI _communityAPI;
+	private readonly ICommunityUserAPI _communityAPI;
 	private readonly ILogger _logger;
 	private readonly TimeSpan _cacheLength;
 	private readonly Race[] _races;
 	private readonly uint _startListID;
 
-	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IFileSystemResultsLoader fsrl, ICustomInfoAPI customInfoAPI, ICommunityAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
+	public DataService(IDictionary<string, IResultsAPI> resultsAPI, IFileSystemResultsLoader fsrl, ICustomInfoAPI customInfoAPI, ICommunityUserAPI communityAPI, IConfiguration configuration, ILoggerFactory loggerFactory)
 	{
 		_resultsAPI = resultsAPI;
 		_fsrl = fsrl;
@@ -128,7 +128,6 @@ public sealed class DataService : IDataService
 		if (course.LastUpdated < DateTime.Now.Subtract(_cacheLength))
 		{
 			await UpdateResults(course);
-			await UpdateCommunityPosts(course.Race);
 			SetCommunityStars(course);
 			course.LastUpdated = DateTime.Now;
 		}
@@ -176,30 +175,6 @@ public sealed class DataService : IDataService
 		}
 
 		return _cachedAliases;
-	}
-
-	private async Task UpdateCommunityPosts(Race race)
-	{
-		try
-		{
-			if (race.CommunityID == 0)
-			{
-				return;
-			}
-
-			var posts = await _communityAPI.GetPosts(race.CommunityID);
-			var communityHash = string.Join(string.Empty, posts.Select(p => p.ToString().GetHashCode())).GetHashCode();
-
-			if (communityHash != race.CommunityHash)
-			{
-				race.CommunityPosts = _communityAPI.ParsePosts(posts);
-				race.CommunityHash = communityHash;
-			}
-		}
-		catch (Exception e)
-		{
-			_logger.LogWarning(e, "Could not retrieve community posts");
-		}
 	}
 
 	private static void SetCommunityStars(Course course)

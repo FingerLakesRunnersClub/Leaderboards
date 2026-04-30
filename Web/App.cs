@@ -90,7 +90,8 @@ public sealed class App(string context)
 		services.AddScoped<IIterationManager, IterationManager>();
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
 
-		services.AddScoped<ICommunityAPI, DiscourseAPI>();
+		services.AddScoped<ICommunityPostAPI, DiscourseAPI>();
+		services.AddScoped<ICommunityUserAPI, DiscourseAPI>();
 		services.AddScoped<ICommunityManager, CommunityManager>();
 
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();

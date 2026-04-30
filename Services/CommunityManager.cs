@@ -10,7 +10,7 @@ public interface ICommunityManager
 	Task AddCommunityGroupMembers(IDictionary<string, string[]> groupAdditions);
 }
 
-public class CommunityManager(ICommunityAPI communityAPI) : ICommunityManager
+public class CommunityManager(ICommunityUserAPI communityAPI) : ICommunityManager
 {
 	public async Task<User[]> GetCommunityUsers()
 	{
