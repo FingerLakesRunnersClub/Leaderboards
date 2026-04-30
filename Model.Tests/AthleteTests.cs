@@ -93,6 +93,20 @@ public sealed class AthleteTests
 	}
 
 	[Fact]
+	public void CanGetChallengeForIteration()
+	{
+		//arrange
+		var i1 = new Iteration { Name = "i1" };
+		var athlete = new Athlete { Challenges = [new Challenge { Name = "c1", Iteration = i1 }] };
+
+		//act
+		var challenge = athlete.Challenge(i1);
+
+		//assert
+		Assert.Equal("c1", challenge!.Name);
+	}
+
+	[Fact]
 	public void DoesNotHaveChallengeIfIterationDoesNotMatch()
 	{
 		//arrange
