@@ -37,13 +37,13 @@
 				{
 					<tr>
 						<td>
-							<a href="/Athlete/Index/@row.Key.ID">
-								@row.Key.Name
+							<a href="/Athlete/Index/@row.Result.Athlete.ID">
+								@row.Result.Athlete.Name
 							</a>
 						</td>
-						<td class="text-center">@row.Key.AgeAsOf(row.Value.ToDateTime(TimeOnly.MinValue, DateTimeKind.Local))</td>
-						<td class="text-center">@row.Key.Category.Display</td>
-						<td class="text-center">@row.Value.ToShortDateString()</td>
+						<td class="text-center">@row.Result.Athlete.AgeAsOf(row.Value.Value)</td>
+						<td class="text-center">@row.Result.Athlete.Category</td>
+						<td class="text-center">@row.Value.Display</td>
 					</tr>
 				}
 				</tbody>

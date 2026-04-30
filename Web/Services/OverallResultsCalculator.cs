@@ -35,6 +35,9 @@ public sealed class OverallResultsCalculator
 	public RankedList<Date, Result> Completed(Filter filter = null)
 		=> RankedList(_officialCourses.SelectMany(c => c.Results.For(_iteration).Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Count() == _officialCourses.Count()), g => g.Max(r => r.Value), g => _start.Subtract(g.Max(r => r.Value)?.Value ?? _start), g => (uint)g.Count());
 
+	public RankedList<Date, Result> CompletedPersonal(Filter filter = null)
+		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).Earliest(filter)).GroupBy(r => r.Result.Athlete).Where(a => a.Key.Challenge(_iteration) != _iteration.OfficialChallenge && (a.Key.Challenge(_iteration)?.Courses.All(c => a.Any(r => r.Result.Course == c)) ?? false)), g => g.Max(r => r.Value), g => _start.Subtract(g.Max(r => r.Value)?.Value ?? _start), g => (uint)g.Count());
+
 	public RankedList<Miles, Result> MostMiles(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)), g => (uint)g.Sum(r => r.Count));
 

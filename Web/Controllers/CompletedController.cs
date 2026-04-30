@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
@@ -6,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class CompletedController(IIterationManager iterationManager, IDataService dataService) : Controller
+public sealed class CompletedController(IIterationManager iterationManager) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Index()
@@ -24,7 +23,7 @@ public sealed class CompletedController(IIterationManager iterationManager, IDat
 		return new Completed
 		{
 			Results = overall.Completed(),
-			PersonalResults = await dataService.GetPersonalCompletions()
+			PersonalResults = overall.CompletedPersonal()
 		};
 	}
 }
