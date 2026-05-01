@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Leaders;
 using FLRC.Leaderboards.Core.Races;
+using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.ViewModels;
@@ -160,6 +161,39 @@ public sealed class LeaderboardCalculator
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray())
 			},
+			new()
+			{
+				Title = "Age Grade",
+				Course = course,
+				ResultType = new FormattedResultType(ResultType.Team),
+				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = new Filter(),
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).OrderByDescending(p => p.Value.AverageAgeGrade).Take(tableSize)
+					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
+					.ToArray())
+			},
+			new()
+			{
+				Title = "Most Runs",
+				Course = course,
+				ResultType = new FormattedResultType(ResultType.Team),
+				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = new Filter(),
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).OrderByDescending(p => p.Value.TotalRuns).Take(tableSize)
+					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
+					.ToArray())
+			},
+			new()
+			{
+				Title = "Team Points",
+				Course = course,
+				ResultType = new FormattedResultType(ResultType.Team),
+				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Filter = new Filter(),
+				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).Take(tableSize)
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
+					.ToArray())
+			}
 		];
 
 	private static Func<LeaderboardTable, bool> GetFilter(LeaderboardResultType type)
