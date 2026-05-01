@@ -17,11 +17,10 @@ public sealed class CommunityPostService(ICommunityPostAPI communityAPI) : IComm
 		if (link is null)
 			return [];
 
-		var id = ushort.Parse(link.URL.Split("/")[^1]);
-		var response = await communityAPI.GetPosts(id);
-
 		try
 		{
+			var id = ushort.Parse(link.URL.Split("/")[^1]);
+			var response = await communityAPI.GetPosts(id);
 			var posts = communityAPI.ParsePosts(response);
 			Cache.Set(course, posts, TimeSpan.FromMinutes(1));
 			PermaCache.Set(course, posts, TimeSpan.FromDays(365));
