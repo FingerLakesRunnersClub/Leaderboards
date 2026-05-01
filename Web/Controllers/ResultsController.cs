@@ -16,7 +16,7 @@ using Result = FLRC.Leaderboards.Model.Result;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService) : Controller
+public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService, ICommunityStarCalculator starCalculator) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Fastest(Guid id, [FromQuery] char? c = null, [FromQuery] byte? ag = null, [FromQuery] Guid? i = null)
@@ -55,6 +55,16 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.Team, (r, f) => r.TeamPoints(iteration, f));
 		var vm = new ViewModel<CourseResults<TeamResults>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		return View(vm);
+	}
+
+	[HttpGet]
+	public async Task<ViewResult> Community(Guid id, Guid? i = null)
+	{
+		var filter = await Filter(null, null, i);
+		var iteration = await iterationManager.ActiveIteration();
+		var results = await GetResults(id, iteration, filter, ResultType.Community, (r, f) => r.CommunityStars(starCalculator, f).GetAwaiter().GetResult());
+		var vm = new ViewModel<CourseResults<Stars>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 

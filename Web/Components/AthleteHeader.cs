@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class AthleteHeader(IIterationManager iterationManager, IAthleteService athleteService) : ViewComponent
+public sealed class AthleteHeader(IIterationManager iterationManager, IAthleteService athleteService, ICommunityStarCalculator starCalculator) : ViewComponent
 {
 	public async Task<IViewComponentResult> InvokeAsync(Guid id)
 	{
@@ -19,7 +19,7 @@ public sealed class AthleteHeader(IIterationManager iterationManager, IAthleteSe
 
 	private async Task<IDictionary<string, string>> GetBadges(Athlete athlete, Iteration iteration)
 	{
-		var overall = new OverallResultsCalculator(iteration);
+		var overall = new OverallResultsCalculator(starCalculator, iteration);
 		var completed = overall.Completed().Any(r => r.Result.Athlete == athlete);
 
 		var challengeResults = await UltraChallengeResultsCalculator.Earliest(iteration);

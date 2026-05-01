@@ -4,6 +4,7 @@ using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Reports;
 using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Web.Services;
 using Category = FLRC.Leaderboards.Core.Athletes.Category;
 
 namespace FLRC.Leaderboards.Web;
@@ -46,6 +47,44 @@ public static class ResultsExtensions
 		public RankedList<Date, Result> Earliest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
+		public async Task<RankedList<Stars, Result>> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
+		{
+			var all = results.Filter(filter ?? new Filter()).OrderBy(r => r.StartTime).ToArray();
+			if (all.Length == 0)
+				return [];
+
+			var stars = new List<CommunityStars>();
+			foreach (var result in all)
+			{
+				var newStars = await calculator.GetStars(result, all, stars);
+				if (newStars is not null)
+					stars.Add(newStars);
+			}
+
+			var startTime = all.Max(r => r.StartTime);
+			var dictionary = stars.GroupBy(s => s.Result.Athlete).ToDictionary(g => g.Key, g => new Stars((ushort)g.Sum(s => (s.GroupRun ? 1 : 0) + (s.StoryPost ? 1 : 0))));
+			var ranks = new RankedList<Stars, Result>();
+			var list = dictionary.Where(s => s.Value.Value > 0).OrderByDescending(s => s.Value).ToArray();
+
+			for (ushort rank = 1; rank <= list.Length; rank++)
+			{
+				var result = list[rank - 1];
+				var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
+				var lastPlace = !isInFirstPlace ? ranks[^1] : null;
+
+				var rankedResult = new Ranked<Stars, Result>
+				{
+					All = ranks,
+					Rank = Rank(isInFirstPlace, lastPlace, result.Value, rank),
+					Result = new Result { Athlete = result.Key, StartTime = startTime },
+					Value = result.Value
+				};
+				ranks.Add(rankedResult);
+			}
+
+			return ranks;
+		}
+
 		private RankedList<T, Result> Rank<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> sort)
 			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderBy(sort), getResult, sort);
 
@@ -55,7 +94,6 @@ public static class ResultsExtensions
 		private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> getValue)
 		{
 			var ranks = new RankedList<T, Result>();
-			byte skippedRanks = 0;
 
 			var list = sorted.ThenBy(rs => getResult(rs).Duration).ToArray();
 			for (ushort rank = 1; rank <= list.Length; rank++)
@@ -72,7 +110,7 @@ public static class ResultsExtensions
 				var rankedResult = new Ranked<T, Result>
 				{
 					All = ranks,
-					Rank = Rank(isInFirstPlace, lastPlace, value, (ushort)(rank - skippedRanks)),
+					Rank = Rank(isInFirstPlace, lastPlace, value, rank),
 					Result = !result.Athlete.IsPrivate ? result : result with { Duration = TimeSpan.Zero },
 					Value = value,
 					Count = (uint)group.Count(),

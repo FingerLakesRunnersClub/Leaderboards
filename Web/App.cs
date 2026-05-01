@@ -93,6 +93,8 @@ public sealed class App(string context)
 		services.AddScoped<ICommunityPostAPI, DiscourseAPI>();
 		services.AddScoped<ICommunityUserAPI, DiscourseAPI>();
 		services.AddScoped<ICommunityManager, CommunityManager>();
+		services.AddScoped<ICommunityPostService, CommunityPostService>();
+		services.AddScoped<ICommunityStarCalculator, CommunityStarCalculator>();
 
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();
 	}

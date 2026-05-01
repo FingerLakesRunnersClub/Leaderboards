@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
@@ -14,7 +15,8 @@ public sealed class LeaderboardControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new LeaderboardController(iterationManager, TestHelpers.Config);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new LeaderboardController(iterationManager, TestHelpers.Config, starCalculator);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 

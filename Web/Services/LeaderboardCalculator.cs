@@ -16,10 +16,12 @@ public sealed class LeaderboardCalculator
 	private readonly Iteration _iteration;
 	private readonly byte _tableSize;
 	private readonly Func<LeaderboardTable, bool> _leaderboardFilter;
+	private readonly ICommunityStarCalculator _starCalculator;
 	private readonly IConfig _config;
 
-	public LeaderboardCalculator(IConfig config, Iteration iteration, LeaderboardResultType type, byte tableSize)
+	public LeaderboardCalculator(ICommunityStarCalculator starCalculator, IConfig config, Iteration iteration, LeaderboardResultType type, byte tableSize)
 	{
+		_starCalculator = starCalculator;
 		_config = config;
 		_iteration = iteration;
 		_leaderboardFilter = GetFilter(type);
@@ -38,7 +40,7 @@ public sealed class LeaderboardCalculator
 
 	private LeaderboardTable[] OverallResults()
 	{
-		var vm = new OverallResultsCalculator(_iteration);
+		var vm = new OverallResultsCalculator(_starCalculator, _iteration);
 		var leaderboards = new List<LeaderboardTable>
 		{
 			OverallTable("Points/F", ResultType.Fastest, new Filter(Category.F), () => vm.MostPoints(new Filter(Category.F)).Take(_tableSize)
@@ -67,6 +69,10 @@ public sealed class LeaderboardCalculator
 
 			OverallTable("Courses", ResultType.MostCourses, new Filter(), () => vm.MostCourses().Take(_tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
+				.ToArray()),
+
+			OverallTable("Community", ResultType.Community, new Filter(), () => vm.Community().Take(_tableSize)
+				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
 			OverallTable("Team", ResultType.Team, new Filter(), () => vm.TeamPoints().Take(_tableSize)

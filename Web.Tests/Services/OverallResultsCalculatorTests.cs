@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Web.Services;
+using NSubstitute;
 using Xunit;
 
 namespace FLRC.Leaderboards.Web.Tests.Services;
@@ -12,7 +13,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostPoints()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostPoints = calculator.MostPoints();
@@ -25,7 +27,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostPointsForCategory()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostPoints = calculator.MostPoints(new Filter(Category.F));
@@ -38,7 +41,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostPointsForTopRaces()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostPoints = calculator.MostPoints(1);
@@ -51,7 +55,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostPointsForCategoryTopRaces()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostPoints = calculator.MostPoints(1, new Filter(Category.F));
@@ -64,7 +69,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostMiles()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostMiles = calculator.MostMiles();
@@ -77,7 +83,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetMostMilesForCategory()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var mostMiles = calculator.MostMiles(new Filter(Category.F));
@@ -90,7 +97,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetBestAverageAgeGrade()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var ageGrade = calculator.AgeGrade();
@@ -103,7 +111,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetBestAverageAgeGradeForCategory()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var ageGrade = calculator.AgeGrade(new Filter(Category.F));
@@ -116,7 +125,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetCompleted()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var completed = calculator.Completed();
@@ -129,7 +139,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetCompletedForCategory()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var completed = calculator.Completed(new Filter(Category.M));
@@ -142,7 +153,8 @@ public sealed class OverallResultsCalculatorTests
 	public void CanGetTeamPoints()
 	{
 		//arrange
-		var calculator = new OverallResultsCalculator(OverallData.Iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
 
 		//act
 		var teamPoints = calculator.TeamPoints();
@@ -156,7 +168,8 @@ public sealed class OverallResultsCalculatorTests
 	{
 		//arrange
 		var iteration = OverallData.Iteration;
-		var calculator = new OverallResultsCalculator(iteration);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var calculator = new OverallResultsCalculator(starCalculator, iteration);
 
 		//act
 		var members = calculator.TeamMembers(Team.Teams[2]);
@@ -171,7 +184,7 @@ public sealed class OverallResultsCalculatorTests
 		//arrange
 		var result = new Result
 		{
-			Course = new Course { Distance = 10, Units = "mi", Race = new Race { Type = "Road" }},
+			Course = new Course { Distance = 10, Units = "mi", Race = new Race { Type = "Road" } },
 			StartTime = new DateTime(2024, 04, 15, 9, 36, 00),
 			Duration = TimeSpan.FromHours(2),
 			Athlete = OverallData.Private
@@ -192,8 +205,10 @@ public sealed class OverallResultsCalculatorTests
 			StartDate = new DateOnly(2020, 1, 1)
 		};
 
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+
 		//act
-		var calculator = new OverallResultsCalculator(iteration);
+		var calculator = new OverallResultsCalculator(starCalculator, iteration);
 
 		//assert
 		Assert.Empty(calculator.MostPoints());
@@ -201,6 +216,6 @@ public sealed class OverallResultsCalculatorTests
 		Assert.NotEmpty(calculator.MostMiles());
 		Assert.NotEmpty(calculator.Completed());
 		Assert.NotEmpty(calculator.TeamPoints());
-        Assert.NotEmpty(calculator.TeamMembers(new Team(4)));
+		Assert.NotEmpty(calculator.TeamMembers(new Team(4)));
 	}
 }

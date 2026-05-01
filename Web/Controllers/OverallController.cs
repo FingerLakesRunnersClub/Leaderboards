@@ -1,6 +1,5 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Overall;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
@@ -8,11 +7,10 @@ using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using OverallResults = FLRC.Leaderboards.Web.ViewModels.OverallResults;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class OverallController(IIterationManager iterationManager, IConfig config) : Controller
+public sealed class OverallController(IIterationManager iterationManager, ICommunityStarCalculator starCalculator, IConfig config) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Points(string id)
@@ -40,10 +38,14 @@ public sealed class OverallController(IIterationManager iterationManager, IConfi
 	public async Task<ViewResult> AgeGrade()
 		=> View(await GetResults(config.Competitions["AgeGrade"], overall => overall.AgeGrade(new Filter())));
 
+	[HttpGet]
+	public async Task<ViewResult> Community()
+		=> View(await GetResults(config.Competitions["Community"], overall => overall.Community(new Filter())));
+
 	private async Task<ViewModel<OverallResults<T>>> GetResults<T>(string title, Func<OverallResultsCalculator, RankedList<T, Result>> results)
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var calculator = new OverallResultsCalculator(iteration);
+		var calculator = new OverallResultsCalculator(starCalculator, iteration);
 		var rankedResults = results(calculator);
 
 		var overall = new OverallResults<T>
@@ -61,7 +63,7 @@ public sealed class OverallController(IIterationManager iterationManager, IConfi
 	private async Task<ViewModel<OverallResults<TeamResults>>> GetTeamResults(string title, Func<OverallResultsCalculator, RankedList<TeamResults, Result>> results)
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var overall = new OverallResultsCalculator(iteration);
+		var overall = new OverallResultsCalculator(starCalculator, iteration);
 		var data = new OverallResults<TeamResults>
 		{
 			Config = config,

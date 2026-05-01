@@ -13,10 +13,12 @@ public sealed class OverallResultsCalculator
 	private readonly Course[] _courses;
 	private readonly Course[] _officialCourses;
 	private readonly DateTime _start;
+	private readonly ICommunityStarCalculator _starCalculator;
 	private readonly Iteration _iteration;
 
-	public OverallResultsCalculator(Iteration iteration)
+	public OverallResultsCalculator(ICommunityStarCalculator starCalculator, Iteration iteration)
 	{
+		_starCalculator = starCalculator;
 		_iteration = iteration;
 		_courses = _iteration.Races.SelectMany(r => r.Courses).ToArray();
 		_officialCourses = _iteration.OfficialChallenge?.Courses.ToArray() ?? [];
@@ -43,6 +45,9 @@ public sealed class OverallResultsCalculator
 
 	public RankedList<int, Result> MostCourses(Filter filter = null)
 		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => g.Count(), g => g.Count(), g => (uint)g.Count());
+
+	public RankedList<Stars, Result> Community(Filter filter = null)
+		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).CommunityStars(_starCalculator, filter).GetAwaiter().GetResult()).GroupBy(g => g.Result.Athlete), g => new Stars((ushort)g.Sum(r => r.Value.Value)), g => g.Count(), g => (uint)g.Count());
 
 	private RankedList<T1, Result> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort)
 		=> RankedList(results, getValue, sort, getValue, g => (uint)g.Count());

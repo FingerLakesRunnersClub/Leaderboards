@@ -1,5 +1,6 @@
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
@@ -13,7 +14,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new TeamController(iterationManager);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new TeamController(iterationManager, starCalculator);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -30,7 +32,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new TeamController(iterationManager);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new TeamController(iterationManager, starCalculator);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -47,7 +50,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new TeamController(iterationManager);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new TeamController(iterationManager, starCalculator);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -64,7 +68,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new TeamController(iterationManager);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new TeamController(iterationManager, starCalculator);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 

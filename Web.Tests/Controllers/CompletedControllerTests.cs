@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using NSubstitute;
 using Xunit;
@@ -14,7 +15,8 @@ public sealed class CompletedControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var controller = new CompletedController(iterationManager);
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
+		var controller = new CompletedController(iterationManager, starCalculator);
 
 		var course = ResultsData.Course with { Results = ResultsData.Results };
 		var iteration = new Iteration

@@ -27,8 +27,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -60,8 +61,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -93,8 +95,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -126,8 +129,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
 
@@ -149,8 +153,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2000, 1, 1) });
@@ -183,8 +188,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
@@ -217,8 +223,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -248,8 +255,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -279,8 +287,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -312,8 +321,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -351,8 +361,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -391,8 +402,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -432,8 +444,9 @@ public sealed class ResultsControllerTests
 		var iterationService = Substitute.For<IIterationService>();
 		var resultService = Substitute.For<IResultService>();
 		var adminService = Substitute.For<IAdminService>();
+		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService);
+		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });

@@ -11,7 +11,7 @@ using SimilarAthlete = FLRC.Leaderboards.Web.ViewModels.SimilarAthlete;
 
 namespace FLRC.Leaderboards.Web.Services;
 
-public sealed class AthleteSummaryCalculator(IResultService resultService, IConfig config) : IAthleteSummaryCalculator
+public sealed class AthleteSummaryCalculator(IResultService resultService, IConfig config, ICommunityStarCalculator starCalculator) : IAthleteSummaryCalculator
 {
 	public async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration)
 	{
@@ -27,18 +27,20 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.Athlete.Equals(athlete))),
+			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).GetAwaiter().GetResult().Find(r => r.Result.Athlete.Equals(athlete))),
 			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.Athlete.Equals(athlete)).ToArray())
 		};
 
 		if (config.FileSystemResults is not null)
 			return summary;
 
-		var overall = new OverallResultsCalculator(iteration);
+		var overall = new OverallResultsCalculator(starCalculator, iteration);
 
 		var points = overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete));
 		var pointsTop3 = overall.MostPoints(3, filter).Find(r => r.Result.Athlete.Equals(athlete));
 		var ageGrade = overall.AgeGrade().Find(r => r.Result.Athlete.Equals(athlete));
 		var miles = overall.MostMiles().Find(r => r.Result.Athlete.Equals(athlete));
+		var stars = overall.Community().Find(r => r.Result.Athlete.Equals(athlete));
 		var team = overall.TeamPoints().Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
 		var total = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null);
 
@@ -52,6 +54,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 					OverallRow("PointsTop3/M", Category.M, athlete, () => pointsTop3),
 					OverallRow("AgeGrade", null, athlete, () => ageGrade),
 					OverallRow("Miles", null, athlete, () => miles),
+					OverallRow("Community", null, athlete, () => stars),
 					OverallRow("Team", null, athlete, () => team)
 				}.Where(c => c?.Value != null)
 				.ToArray(),
@@ -59,6 +62,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 			OverallPoints = points,
 			OverallAgeGrade = ageGrade,
 			OverallMiles = miles,
+			OverallCommunityStars = stars,
 			TeamResults = team,
 			TotalResults = total
 		};

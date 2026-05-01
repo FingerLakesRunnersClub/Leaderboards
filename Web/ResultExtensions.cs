@@ -79,5 +79,13 @@ public static class ResultExtensions
 				return null;
 			}
 		}
+
+		public bool IsGroupRun(Result[] others)
+			=> others.Any(other
+				=> other.Athlete != result.Athlete
+				   && other.Course == result.Course
+				   && other.StartTime - result.StartTime <= TimeSpan.FromMinutes(5)
+				   && result.StartTime - other.StartTime <= TimeSpan.FromMinutes(5)
+			);
 	}
 }
