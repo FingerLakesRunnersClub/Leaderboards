@@ -9,6 +9,9 @@
 			"Info": "https://fingerlakesrunners.org/flrc-trail-circuit"
 		},
 		{
+			"2025 Results": "https://2025.trailcircuit.fingerlakesrunners.org/"
+		},
+		{
 			"2024 Results": "https://2024.trailcircuit.fingerlakesrunners.org/"
 		},
 		{
@@ -43,14 +46,14 @@
 	"Races": [
 		{
 			"Source": "WebScorer",
-			"ID": 379806,
+			"ID": 420691,
 			"Name": "Super Frosty Loomis",
 			"Type": "Trail",
 			"Courses": {
-				"5K": 379806,
-				"10K": 379806
+				"5K": 420691,
+				"10K": 420691
 			},
-			"URL": "https://fingerlakesrunners.org/race/super-frosty-loomis-2025/"
+			"URL": "https://fingerlakesrunners.org/race/super-frosty-loomis-2026/"
 		},
 		{
 			"Source": "WebScorer",
@@ -58,37 +61,37 @@
 			"Name": "Thom B Trail Runs",
 			"Type": "Trail",
 			"Courses": {
-				"8.5 mile": 390385,
-				"17 mile": 390385,
-				"26.2 mile": 390385
+				"8.5 mile": 0,
+				"17 mile": 0,
+				"26.2 mile": 0
 			},
-			"URL": "https://fingerlakesrunners.org/race/thom-b-trail-runs-2025/"
+			"URL": "https://fingerlakesrunners.org/race/thom-b-trail-runs-2026/"
 		},
 		{
 			"Source": "UltraSignup",
-			"ID": 120352,
+			"ID": 131125,
 			"Name": "Lucifer's Crossing",
 			"Type": "Trail",
-			"Date": "2024-06-02",
+			"Date": "2026-05-31",
 			"Courses": {
-				"5K": 120354,
-				"6.66 miles": 120353,
-				"Half Marathon": 120352
+				"5K": 131127,
+				"6.66 miles": 131126,
+				"Half Marathon": 131125
 			},
 			"URL": "https://www.rednewtracing.com/lucifers-crossing"
 		},
 		{
 			"Source": "UltraSignup",
-			"ID": 122060,
+			"ID": 133554,
 			"Name": "Finger Lakes 50s",
 			"Type": "Trail",
-			"Date": "2024-06-29",
+			"Date": "2026-07-04",
 			"Courses": {
-				"25K": 122062,
-				"50K": 122061,
-				"50 miles": 122060
+				"25K": 133556,
+				"50K": 133555,
+				"50 miles": 133554
 			},
-			"URL": "https://fingerlakesrunners.org/race/finger-lakes-50s-2025/"
+			"URL": "https://fingerlakesrunners.org/race/finger-lakes-50s-2026/"
 		},
 		{
 			"Source": "WebScorer",
@@ -97,20 +100,20 @@
 			"Type": "Trail",
 			"Distance": "6.7 miles",
 			"Courses": {
-				"Default": 396159
+				"Default": 0
 			},
-			"URL": "https://fingerlakesrunners.org/race/tortoise-hare-trail-run-2025/"
+			"URL": "https://fingerlakesrunners.org/race/tortoise-hare-trail-run-2026/"
 		},
 		{
 			"Source": "WebScorer",
-			"ID": 399232,
+			"ID": 0,
 			"Name": "Forest Frolic",
 			"Type": "Trail",
 			"Courses": {
-				"7k": 399232,
-				"15k": 399232
+				"7k": 0,
+				"15k": 0
 			},
-			"URL": "https://fingerlakesrunners.org/race/forest-frolic-2025/"
+			"URL": "https://fingerlakesrunners.org/race/forest-frolic-2026/"
 		},
 		{
 			"Source": "WebScorer",
@@ -118,22 +121,22 @@
 			"Name": "Forge the Gorge",
 			"Type": "Trail",
 			"Courses": {
-				"3 miles": 400452,
-				"8 miles": 400452
+				"3 miles": 0,
+				"8 miles": 0
 			},
-			"URL": "https://fingerlakesrunners.org/race/forge-the-gorge-2025/"
+			"URL": "https://fingerlakesrunners.org/race/forge-the-gorge-2026/"
 		},
 		{
 			"Source": "UltraSignup",
-			"ID": 123289,
+			"ID": 133971,
 			"Name": "Monster Marathon",
 			"Type": "Trail",
-			"Date": "2025-08-24",
+			"Date": "2026-08-30",
 			"Courses": {
-				"Half Marathon": 123290,
-				"Marathon": 123289
+				"Half Marathon": 133972,
+				"Marathon": 133971
 			},
-			"URL": "https://fingerlakesrunners.org/race/monster-marathon-2025/"
+			"URL": "https://fingerlakesrunners.org/race/monster-marathon-2026/"
 		},
 		{
 			"Source": "WebScorer",
@@ -141,10 +144,10 @@
 			"Name": "Danby Down and Dirty",
 			"Type": "Trail",
 			"Courses": {
-				"10K": 409644,
-				"23K": 409644
+				"10K": 0,
+				"23K": 0
 			},
-			"URL": "https://fingerlakesrunners.org/race/danby-down-and-dirty-2025/"
+			"URL": "https://fingerlakesrunners.org/race/danby-down-and-dirty-2026/"
 		}
 	]
 }
