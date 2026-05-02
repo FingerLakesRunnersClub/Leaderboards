@@ -5,9 +5,9 @@ namespace FLRC.Leaderboards.Web.Services;
 
 public sealed class CommunityStarCalculator(ICommunityPostService service) : ICommunityStarCalculator
 {
-	public async Task<CommunityStars> GetStars(Result result, Result[] all, IList<CommunityStars> existing)
+	public CommunityStars GetStars(Result result, Result[] all, IList<CommunityStars> existing)
 	{
-		var posts = await service.GetPosts(result.Course);
+		var posts = service.GetPosts(result.Course);
 		var stars = new CommunityStars
 		{
 			Result = result,

@@ -63,7 +63,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	{
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
-		var results = await GetResults(id, iteration, filter, ResultType.Community, (r, f) => r.CommunityStars(starCalculator, f).GetAwaiter().GetResult());
+		var results = await GetResults(id, iteration, filter, ResultType.Community, (r, f) => r.CommunityStars(starCalculator, f));
 		var vm = new ViewModel<CourseResults<Stars>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}

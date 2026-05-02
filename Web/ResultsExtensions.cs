@@ -47,7 +47,7 @@ public static class ResultsExtensions
 		public RankedList<Date, Result> Earliest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
-		public async Task<RankedList<Stars, Result>> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
+		public RankedList<Stars, Result> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
 		{
 			var all = results.Filter(filter ?? new Filter()).OrderBy(r => r.StartTime).ToArray();
 			if (all.Length == 0)
@@ -56,7 +56,7 @@ public static class ResultsExtensions
 			var stars = new List<CommunityStars>();
 			foreach (var result in all)
 			{
-				var newStars = await calculator.GetStars(result, all, stars);
+				var newStars = calculator.GetStars(result, all, stars);
 				if (newStars is not null)
 					stars.Add(newStars);
 			}

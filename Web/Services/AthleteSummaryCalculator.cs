@@ -27,7 +27,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.Athlete.Equals(athlete))),
-			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).GetAwaiter().GetResult().Find(r => r.Result.Athlete.Equals(athlete))),
+			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).Find(r => r.Result.Athlete.Equals(athlete))),
 			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.Athlete.Equals(athlete)).ToArray())
 		};
 

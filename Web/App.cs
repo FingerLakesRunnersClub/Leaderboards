@@ -95,6 +95,7 @@ public sealed class App(string context)
 		services.AddScoped<ICommunityManager, CommunityManager>();
 		services.AddScoped<ICommunityPostService, CommunityPostService>();
 		services.AddScoped<ICommunityStarCalculator, CommunityStarCalculator>();
+		services.AddHostedService<CommunityPostService>();
 
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();
 	}

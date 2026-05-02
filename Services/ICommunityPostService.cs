@@ -4,5 +4,5 @@ namespace FLRC.Leaderboards.Services;
 
 public interface ICommunityPostService
 {
-	Task<CommunityPost[]> GetPosts(Course course);
+	CommunityPost[] GetPosts(Course course);
 }
