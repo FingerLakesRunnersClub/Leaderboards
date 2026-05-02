@@ -7,24 +7,25 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Services;
 
-public sealed class DiscourseAPI : ICommunityPostAPI, ICommunityUserAPI
+public sealed class DiscourseAPI(HttpClient http, IContextManager contextManager) : ICommunityPostAPI, ICommunityUserAPI
 {
-	private readonly HttpClient _http;
-
-	public DiscourseAPI(HttpClient http, IContextManager contextManager)
-	{
-		var series = contextManager.Series().GetAwaiter().GetResult();
-		var settings = series.Setting;
-
-		_http = http;
-		_http.BaseAddress = new Uri(settings[nameof(IConfig.CommunityURL)]);
-		_http.DefaultRequestHeaders.Add("Api-Key", settings[nameof(IConfig.CommunityKey)]);
-	}
-
 	public async Task<JsonElement[]> GetPosts(ushort id)
 	{
-		var json = await _http.GetFromJsonAsync<JsonElement>($"/t/{id}.json?include_raw=true&print=true");
+		await SetHttpHeaders();
+		var json = await http.GetFromJsonAsync<JsonElement>($"/t/{id}.json?include_raw=true&print=true");
 		return json.GetProperty("post_stream").GetProperty("posts").EnumerateArray().ToArray();
+	}
+
+	private async Task SetHttpHeaders()
+	{
+		if (http.BaseAddress is not null && http.DefaultRequestHeaders.Any())
+			return;
+
+		var series = await contextManager.Series();
+		var settings = series.Setting;
+
+		http.BaseAddress = new Uri(settings[nameof(IConfig.CommunityURL)]);
+		http.DefaultRequestHeaders.Add("Api-Key", settings[nameof(IConfig.CommunityKey)]);
 	}
 
 	public CommunityPost[] ParsePosts(JsonElement[] json)
@@ -54,19 +55,22 @@ public sealed class DiscourseAPI : ICommunityPostAPI, ICommunityUserAPI
 	private async Task<JsonElement[]> GetMembers(string groupID, int pageSize, int pageNumber)
 	{
 		var offset = pageSize * (pageNumber - 1);
-		var json = await _http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
+		await SetHttpHeaders();
+		var json = await http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
 		return json.GetProperty("members").EnumerateArray().ToArray();
 	}
 
 	public async Task<JsonElement> GetGroup(string groupID)
 	{
-		var json = await _http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}.json");
+		await SetHttpHeaders();
+		var json = await http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}.json");
 		return json.GetProperty("group");
 	}
 
 	public async Task AddMembers(ushort groupID, string[] usernames)
 	{
 		var data = new StringContent($$"""{"usernames":"{{string.Join(',', usernames)}}"}""", MediaTypeHeaderValue.Parse("application/json"));
-		await _http.PutAsync($"/groups/{groupID}/members.json", data);
+		await SetHttpHeaders();
+		await http.PutAsync($"/groups/{groupID}/members.json", data);
 	}
 }

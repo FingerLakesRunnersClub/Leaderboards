@@ -16,7 +16,7 @@ public sealed class ResultsAPI<T> : IResultsAPI where T : IDataSource
 
 	public async Task<JsonElement> GetResults(uint id)
 	{
-		var url = Source.URL(id);
+		var url = await Source.URL(id);
 		return await _http.GetFromJsonAsync<JsonElement>(url);
 	}
 }

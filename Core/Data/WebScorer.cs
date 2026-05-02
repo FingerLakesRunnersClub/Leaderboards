@@ -8,18 +8,14 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public sealed class WebScorer : IDataSource
+public sealed class WebScorer(IConfig config) : IDataSource
 {
-	private readonly IConfig _config;
 	public string Name => nameof(WebScorer);
 
 	public const string DefaultDistance = "Default";
 
-	public string URL(uint courseID)
-		=> $"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}";
-
-	public WebScorer(IConfig config)
-		=> _config = config;
+	public Task<string> URL(uint courseID)
+		=> Task.FromResult($"https://api.webscorer.com/racetimer/webscorerapi/results?raceid={courseID}");
 
 	public Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
 	{
@@ -35,7 +31,7 @@ public sealed class WebScorer : IDataSource
 	private Result[] ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
 		=> results.EnumerateArray()
 			.Where(r => r.GetProperty("Finished").GetByte() == 1
-	            && (_config.Features.GenerateAthleteID
+	            && (config.Features.GenerateAthleteID
 					|| r.GetProperty("UserId").GetUInt32() > 0)
 	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
 	               || r.GetProperty("Distance").GetString() == DefaultDistance
@@ -71,7 +67,7 @@ public sealed class WebScorer : IDataSource
 			name = alias;
 		}
 
-		var id = (_config.Features.GenerateAthleteID
+		var id = (config.Features.GenerateAthleteID
 			         ? name?.GetID()
 			         : null)
 		         ?? element.GetProperty("UserId").GetUInt32();

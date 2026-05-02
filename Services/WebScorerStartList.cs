@@ -6,9 +6,9 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class WebScorerStartList(IContextManager contextManager) : IDataSource
 {
-	public string URL(uint courseID)
+	public async Task<string> URL(uint courseID)
 	{
-		var series = contextManager.Series().GetAwaiter().GetResult();
+		var series = await contextManager.Series();
 		var org = series.Setting[nameof(IConfig.WebScorerOrg)];
 		var secret = series.Setting[nameof(IConfig.WebScorerSecret)];
 		return $"https://www.webscorer.com/json/startlist?raceid={courseID}&apiid={org}&apipriv={secret}";

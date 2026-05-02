@@ -8,7 +8,7 @@ namespace FLRC.Leaderboards.Services.Tests;
 public sealed class WebScorerStartListTests
 {
 	[Fact]
-	public void URLContainsAllParams()
+	public async Task URLContainsAllParams()
 	{
 		//arrange
 		var contextManager = Substitute.For<IContextManager>();
@@ -27,7 +27,7 @@ public sealed class WebScorerStartListTests
 		contextManager.Series().Returns(series);
 
 		//act
-		var url = source.URL(123);
+		var url = await source.URL(123);
 
 		//assert
 		Assert.Contains("123", url);

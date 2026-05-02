@@ -106,13 +106,13 @@ public sealed class UltraSignupTests
 	}
 
 	[Fact]
-	public void CanParseURL()
+	public async Task CanParseURL()
 	{
 		//arrange
 		var source = new UltraSignup(TestHelpers.Config);
 
 		//act
-		var url = source.URL(123);
+		var url = await source.URL(123);
 
 		//assert
 		Assert.StartsWith("https://ultrasignup.com/", url);

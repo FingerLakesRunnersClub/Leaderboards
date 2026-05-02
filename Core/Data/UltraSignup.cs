@@ -8,16 +8,10 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public sealed class UltraSignup : IDataSource
+public sealed class UltraSignup(IConfig config) : IDataSource
 {
-	private readonly IConfig _config;
-	public string Name => nameof(UltraSignup);
-
-	public string URL(uint courseID)
-		=> $"https://ultrasignup.com/service/events.svc/results/{courseID}/1/json";
-
-	public UltraSignup(IConfig config)
-		=> _config = config;
+	public Task<string> URL(uint courseID)
+		=> Task.FromResult($"https://ultrasignup.com/service/events.svc/results/{courseID}/1/json");
 
 	private static readonly byte[] ValidStatusTypes = [1, 6];
 	public Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
@@ -44,7 +38,7 @@ public sealed class UltraSignup : IDataSource
 			name = alias;
 		}
 
-		var id = _config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
+		var id = config.Features.GenerateAthleteID ? name.GetID() : element.GetProperty("participant_id").GetUInt32();
 
 		return _athletes.TryGetValue(id, out var athlete)
 			? athlete

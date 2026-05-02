@@ -7,7 +7,7 @@ namespace FLRC.Leaderboards.Core.Data;
 
 public interface IDataSource
 {
-	public string URL(uint courseID);
+	public Task<string> URL(uint courseID);
 	Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases);
 	Athlete ParseAthlete(JsonElement element, IDictionary<string, string> aliases);
 }
