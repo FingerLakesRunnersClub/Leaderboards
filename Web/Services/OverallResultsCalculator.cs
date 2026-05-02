@@ -47,7 +47,7 @@ public sealed class OverallResultsCalculator
 		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => g.Count(), g => g.Count(), g => (uint)g.Count());
 
 	public RankedList<Stars, Result> Community(Filter filter = null)
-		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).CommunityStars(_starCalculator, filter)).GroupBy(g => g.Result.Athlete), g => new Stars((ushort)g.Sum(r => r.Value.Value)), g => g.Count(), g => (uint)g.Count());
+		=> RankedList(_courses.SelectMany(c => c.Results.For(_iteration).CommunityStars(_starCalculator, filter)).GroupBy(g => g.Result.Athlete), g => new Stars((ushort)g.Sum(r => r.Value.Value)), g => g.Sum(s => s.Value.Value), g => (uint)g.Count());
 
 	private RankedList<T1, Result> RankedList<T1, T2, T3>(IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort)
 		=> RankedList(results, getValue, sort, getValue, g => (uint)g.Count());
@@ -120,7 +120,7 @@ public sealed class OverallResultsCalculator
 			{
 				All = ranks,
 				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
-				Result = new Result { Athlete = value.Athlete, StartTime = _iteration.StartDate.Value.ToDateTime(TimeOnly.MinValue) },
+				Result = new Result { Athlete = value.Athlete, StartTime = _iteration.StartDate?.ToDateTime(TimeOnly.MinValue) ?? DateTime.Now },
 				Count = value.Courses,
 				AgeGrade = value.AgeGrade,
 				Value = value

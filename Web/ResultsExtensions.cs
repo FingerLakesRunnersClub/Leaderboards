@@ -62,7 +62,7 @@ public static class ResultsExtensions
 			}
 
 			var startTime = all.Max(r => r.StartTime);
-			var dictionary = stars.GroupBy(s => s.Result.Athlete).ToDictionary(g => g.Key, g => new Stars((ushort)g.Sum(s => (s.GroupRun ? 1 : 0) + (s.StoryPost ? 1 : 0))));
+			var dictionary = stars.GroupBy(s => s.Result.Athlete).ToDictionary(g => g.Key, g => new Stars((ushort)g.Sum(s => s.Score)));
 			var ranks = new RankedList<Stars, Result>();
 			var list = dictionary.Where(s => s.Value.Value > 0).OrderByDescending(s => s.Value).ToArray();
 
