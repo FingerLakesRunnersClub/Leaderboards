@@ -11,27 +11,14 @@ using LeaderboardTable = FLRC.Leaderboards.Web.ViewModels.LeaderboardTable;
 
 namespace FLRC.Leaderboards.Web.Services;
 
-public sealed class LeaderboardCalculator
+public sealed class LeaderboardCalculator(ICommunityStarCalculator starCalculator, IConfig config, Iteration iteration, LeaderboardResultType type, byte tableSize)
 {
-	private readonly Iteration _iteration;
-	private readonly byte _tableSize;
-	private readonly Func<LeaderboardTable, bool> _leaderboardFilter;
-	private readonly ICommunityStarCalculator _starCalculator;
-	private readonly IConfig _config;
-
-	public LeaderboardCalculator(ICommunityStarCalculator starCalculator, IConfig config, Iteration iteration, LeaderboardResultType type, byte tableSize)
-	{
-		_starCalculator = starCalculator;
-		_config = config;
-		_iteration = iteration;
-		_leaderboardFilter = GetFilter(type);
-		_tableSize = tableSize;
-	}
+	private readonly Func<LeaderboardTable, bool> _leaderboardFilter = GetFilter(type);
 
 	public Leaderboard GetLeaderboard(LeaderboardResultType type)
 		=> new()
 		{
-			Config = _config,
+			Config = config,
 			LeaderboardResultType = type,
 			OverallResults = OverallResults(),
 			OfficialCourses = OfficialCourses(),
@@ -40,42 +27,42 @@ public sealed class LeaderboardCalculator
 
 	private LeaderboardTable[] OverallResults()
 	{
-		var vm = new OverallResultsCalculator(_starCalculator, _iteration);
+		var vm = new OverallResultsCalculator(starCalculator, iteration);
 		var leaderboards = new List<LeaderboardTable>
 		{
-			OverallTable("Points/F", ResultType.Fastest, new Filter(Category.F), () => vm.MostPoints(new Filter(Category.F)).Take(_tableSize)
+			OverallTable("Points/F", ResultType.Fastest, new Filter(Category.F), () => vm.MostPoints(new Filter(Category.F)).Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("Points/M", ResultType.Fastest, new Filter(Category.M), () => vm.MostPoints(new Filter(Category.M)).Take(_tableSize)
+			OverallTable("Points/M", ResultType.Fastest, new Filter(Category.M), () => vm.MostPoints(new Filter(Category.M)).Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("PointsTop3/F", ResultType.Fastest, new Filter(Category.F), () => vm.MostPoints(_tableSize, new Filter(Category.F)).Take(_tableSize)
+			OverallTable("PointsTop3/F", ResultType.Fastest, new Filter(Category.F), () => vm.MostPoints(tableSize, new Filter(Category.F)).Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("PointsTop3/M", ResultType.Fastest, new Filter(Category.M), () => vm.MostPoints(_tableSize, new Filter(Category.M)).Take(_tableSize)
+			OverallTable("PointsTop3/M", ResultType.Fastest, new Filter(Category.M), () => vm.MostPoints(tableSize, new Filter(Category.M)).Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("AgeGrade", ResultType.BestAverage, new Filter(), () => vm.AgeGrade().Take(_tableSize)
+			OverallTable("AgeGrade", ResultType.BestAverage, new Filter(), () => vm.AgeGrade().Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })
 				.ToArray()),
 
-			OverallTable("Miles", ResultType.MostRuns, new Filter(), () => vm.MostMiles().Take(_tableSize)
+			OverallTable("Miles", ResultType.MostRuns, new Filter(), () => vm.MostMiles().Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("Courses", ResultType.MostCourses, new Filter(), () => vm.MostCourses().Take(_tableSize)
+			OverallTable("Courses", ResultType.MostCourses, new Filter(), () => vm.MostCourses().Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 				.ToArray()),
 
-			OverallTable("Community", ResultType.Community, new Filter(), () => vm.Community().Take(_tableSize)
+			OverallTable("Community", ResultType.Community, new Filter(), () => vm.Community().Take(tableSize)
 				.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				.ToArray()),
 
-			OverallTable("Team", ResultType.Team, new Filter(), () => vm.TeamPoints().Take(_tableSize)
+			OverallTable("Team", ResultType.Team, new Filter(), () => vm.TeamPoints().Take(tableSize)
 				.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
 				.ToArray())
 		};
@@ -84,7 +71,7 @@ public sealed class LeaderboardCalculator
 	}
 
 	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<LeaderboardRow[]> rows)
-		=> _config.Competitions.TryGetValue(id, out var title)
+		=> config.Competitions.TryGetValue(id, out var title)
 			? new LeaderboardTable
 			{
 				Link = $"/Overall/{id}",
@@ -96,111 +83,120 @@ public sealed class LeaderboardCalculator
 			: null;
 
 	private Dictionary<Course, LeaderboardTable[]> OfficialCourses()
-		=> CourseResults(_iteration.OfficialChallenge?.Courses.ToArray() ?? []);
+		=> CourseResults(iteration.OfficialChallenge?.Courses.ToArray() ?? []);
 
 	private Dictionary<Course, LeaderboardTable[]> OtherCourses()
-		=> CourseResults(_iteration.Races.SelectMany(r => r.Courses).Except(_iteration.OfficialChallenge?.Courses ?? []).ToArray());
+		=> CourseResults(iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallenge?.Courses ?? []).ToArray());
 
 	private Dictionary<Course, LeaderboardTable[]> CourseResults(Course[] courses)
 		=> courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters)
-			.ToDictionary(c => c, c => CourseTables(c, _tableSize)
-				.Where(t => _config.Features.MultiAttemptCompetitions
-					? _leaderboardFilter(t)
-					: t.ResultType.Value is ResultType.Fastest or ResultType.Farthest)
-			.Where(t => t.Rows.Value.Length > 0)
-			.ToArray());
+			.ToDictionary(c => c, GetLeaderboardTables);
 
-	private LeaderboardTable[] CourseTables(Course course, byte tableSize)
-		=> [
-			new()
+	private LeaderboardTable[] GetLeaderboardTables(Course c)
+		=> AllCourseTables(c)
+			.Where(t => t.Rows.Value.Length > 0 && FilterMatches(t))
+			.ToArray();
+
+	private bool FilterMatches(LeaderboardTable t)
+		=> config.Features.MultiAttemptCompetitions
+			? _leaderboardFilter(t)
+			: t.ResultType.Value is ResultType.Fastest or ResultType.Farthest;
+
+	private LeaderboardTable[] AllCourseTables(Course course)
+	{
+		var results = course.Results.For(iteration);
+		return
+		[
+			new LeaderboardTable
 			{
 				Title = "Fastest (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = new Filter(Category.F),
 				Link = $"/Results/Fastest/{course.ID}?c=F",
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.For(_iteration).Fastest(new Filter(Category.F)).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.Fastest(new Filter(Category.F)).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Fastest (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
 				Filter = new Filter(Category.M),
 				Link = $"/Results/Fastest/{course.ID}?c=M",
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.For(_iteration).Fastest(new Filter(Category.M)).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.Fastest(new Filter(Category.M)).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Best Average (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Filter = new Filter(Category.F),
 				Link = $"/Results/BestAverage/{course.ID}?c=F",
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.For(_iteration).BestAverage(new Filter(Category.F)).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.BestAverage(new Filter(Category.F)).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Best Average (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
 				Filter = new Filter(Category.M),
 				Link = $"/Results/BestAverage/{course.ID}?c=M",
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.For(_iteration).BestAverage(new Filter(Category.M)).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.BestAverage(new Filter(Category.M)).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Most Runs",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.MostRuns),
 				Link = $"/Results/MostRuns/{course.ID}",
 				Filter = new Filter(),
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.For(_iteration).MostRuns().Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.MostRuns().Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Age Grade",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
-				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Link = $"/Results/Team/{course.ID}",
 				Filter = new Filter(),
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).OrderByDescending(p => p.Value.AverageAgeGrade).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.TeamPoints(iteration, new Filter()).OrderByDescending(p => p.Value.AverageAgeGrade).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Most Runs",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
-				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Link = $"/Results/Team/{course.ID}",
 				Filter = new Filter(),
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).OrderByDescending(p => p.Value.TotalRuns).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.TeamPoints(iteration, new Filter()).OrderByDescending(p => p.Value.TotalRuns).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 					.ToArray())
 			},
-			new()
+			new LeaderboardTable
 			{
 				Title = "Team Points",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
-				Link = $"/Course/{course.ID}/{ResultType.Team}",
+				Link = $"/Results/Team/{course.ID}",
 				Filter = new Filter(),
-				Rows = new Lazy<LeaderboardRow[]>(() => course.Results.TeamPoints(_iteration, new Filter()).Take(tableSize)
+				Rows = new Lazy<LeaderboardRow[]>(() => results.TeamPoints(iteration, new Filter()).Take(tableSize)
 					.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 					.ToArray())
 			}
 		];
+	}
 
 	private static Func<LeaderboardTable, bool> GetFilter(LeaderboardResultType type)
 	{
