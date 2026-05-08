@@ -126,7 +126,15 @@ public sealed class OverallResultsCalculatorTests
 	{
 		//arrange
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
+		var iteration = OverallData.Iteration;
+		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
+		iteration.Challenges.Clear();
+		iteration.Challenges.Add(challenge);
+		foreach (var athlete in athletes)
+			athlete.Challenges.Add(challenge);
+
+		var calculator = new OverallResultsCalculator(starCalculator, iteration);
 
 		//act
 		var completed = calculator.Completed();
@@ -140,7 +148,15 @@ public sealed class OverallResultsCalculatorTests
 	{
 		//arrange
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var calculator = new OverallResultsCalculator(starCalculator, OverallData.Iteration);
+		var iteration = OverallData.Iteration;
+		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
+		iteration.Challenges.Clear();
+		iteration.Challenges.Add(challenge);
+		foreach (var athlete in athletes)
+			athlete.Challenges.Add(challenge);
+
+		var calculator = new OverallResultsCalculator(starCalculator, iteration);
 
 		//act
 		var completed = calculator.Completed(new Filter(Category.M));
@@ -182,12 +198,13 @@ public sealed class OverallResultsCalculatorTests
 	public void PrivateAthletesInAllNonTimeBasedCompetitions()
 	{
 		//arrange
+		var athlete = OverallData.Private;
 		var result = new Result
 		{
 			Course = new Course { Distance = 10, Units = "mi", Race = new Race { Type = "Road" } },
 			StartTime = new DateTime(2024, 04, 15, 9, 36, 00),
 			Duration = TimeSpan.FromHours(2),
-			Athlete = OverallData.Private
+			Athlete = athlete
 		};
 		var course = new Course
 		{
@@ -196,14 +213,15 @@ public sealed class OverallResultsCalculatorTests
 			Units = "mi",
 			Results = [result]
 		};
-		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course] };
 		var race = new Race { Courses = [course] };
 		var iteration = new Iteration
 		{
-			Challenges = [challenge],
 			Races = [race],
 			StartDate = new DateOnly(2020, 1, 1)
 		};
+		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course], Iteration = iteration };
+		athlete.Challenges.Add(challenge);
+		iteration.Challenges.Add(challenge);
 
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 

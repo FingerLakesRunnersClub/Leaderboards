@@ -19,11 +19,13 @@ public sealed class CompletedControllerTests
 		var controller = new CompletedController(iterationManager, starCalculator);
 
 		var course = ResultsData.Course with { Results = ResultsData.Results };
-		var iteration = new Iteration
-		{
-			Challenges = [new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course] }],
-			Races = [new Race { Courses = [course] }]
-		};
+		var iteration = new Iteration { Races = [new Race { Courses = [course] }] };
+		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course], Iteration = iteration };
+		iteration.Challenges.Add(challenge);
+		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		foreach (var athlete in athletes)
+			athlete.Challenges.Add(challenge);
+
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		//act
