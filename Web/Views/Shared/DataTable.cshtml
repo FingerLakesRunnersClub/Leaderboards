@@ -1,9 +1,11 @@
 @addTagHelper "*, Microsoft.AspNetCore.Mvc.TagHelpers"
 @model (string Title, string ResponsiveBreakpoint)
 
+@{ var breakpoint = string.IsNullOrWhiteSpace(Model.ResponsiveBreakpoint) ? string.Empty : $"-{Model.ResponsiveBreakpoint}"; }
+
 <app v-cloak>
     <div v-if="!show_table" class="alert alert-secondary">No data found</div>
-    <table aria-label="Results for @Model.Title" v-if="show_table" class="table table-bordered table-striped table-hover table-sm table-responsive-@Model.ResponsiveBreakpoint">
+    <table aria-label="Results for @Model.Title" v-if="show_table" class="table table-bordered table-striped table-hover table-sm table-responsive@(breakpoint)">
         <thead>
             <tr>
                 <th scope="col" v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">
