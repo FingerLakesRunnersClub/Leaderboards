@@ -102,7 +102,7 @@ public sealed class OverallResultsCalculator
 			.Rank();
 
 	public RankedList<TeamMember, Result> TeamMembers(Team team, Filter filter = null)
-		=> RankTeam(_courses.SelectMany(c => c.Results.For(_iteration).Fastest(filter).Where(r => r.Result.Athlete.Team(_iteration) == team)).ToArray());
+		=> RankTeam(_officialCourses.SelectMany(c => c.Results.For(_iteration).Fastest(filter).Where(r => r.Result.Athlete.Team(_iteration) == team)).ToArray());
 
 	private RankedList<TeamMember, Result> RankTeam(Ranked<Time, Result>[] results)
 	{
