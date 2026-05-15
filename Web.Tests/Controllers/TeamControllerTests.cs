@@ -14,8 +14,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new TeamController(iterationManager, starCalculator);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new TeamController(iterationManager, overall);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -32,8 +32,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new TeamController(iterationManager, starCalculator);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new TeamController(iterationManager, overall);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -50,8 +50,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new TeamController(iterationManager, starCalculator);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new TeamController(iterationManager, overall);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -68,8 +68,8 @@ public sealed class TeamControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new TeamController(iterationManager, starCalculator);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new TeamController(iterationManager, overall);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 

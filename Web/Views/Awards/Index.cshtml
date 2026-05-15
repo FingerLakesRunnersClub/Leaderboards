@@ -1,7 +1,8 @@
-@using FLRC.Leaderboards.Core.Reports
-@model AwardsViewModel
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<Dictionary<Athlete, Award[]>>
 
-<h2 id="table-header">@Model.Title</h2>
+<h2 id="table-header"></h2>
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
@@ -14,7 +15,7 @@
 				<th scope="col" class="text-right">Score</th>
 			</tr>
 			</thead>
-			@foreach (var athlete in Model.Awards.OrderBy(a => a.Key.Name))
+			@foreach (var athlete in Model.Data.OrderBy(a => a.Key.Name))
 			{
 				<tbody>
 				<tr>
@@ -44,8 +45,8 @@
 			<tfoot>
 			<tr>
 				<th scope="row">Total</th>
-				<th scope="row" class="text-right">@Model.Awards.Sum(athlete => athlete.Value.Sum(award => award.Value)).ToString("C0")</th>
-				<td colspan="2">Athletes: @Model.Awards.Count / Awards: @Model.Awards.Sum(a => a.Value.Length)</td>
+				<th scope="row" class="text-right">@Model.Data.Sum(athlete => athlete.Value.Sum(award => award.Value)).ToString("C0")</th>
+				<td colspan="2">Athletes: @Model.Data.Count / Awards: @Model.Data.Sum(a => a.Value.Length)</td>
 			</tr>
 			</tfoot>
 		</table>

@@ -94,10 +94,13 @@ public sealed class App(string context)
 		services.AddScoped<ICommunityUserAPI, DiscourseAPI>();
 		services.AddScoped<ICommunityManager, CommunityManager>();
 		services.AddScoped<ICommunityPostService, CommunityPostService>();
-		services.AddScoped<ICommunityStarCalculator, CommunityStarCalculator>();
 		services.AddHostedService<CommunityPostService>();
 
+		services.AddScoped<ICommunityStarCalculator, CommunityStarCalculator>();
+		services.AddScoped<IOverallResultsCalculator, OverallResultsCalculator>();
+		services.AddScoped<ILeaderboardCalculator, LeaderboardCalculator>();
 		services.AddScoped<IAthleteSummaryCalculator, AthleteSummaryCalculator>();
+		services.AddScoped<IAwardsCalculator, AwardsCalculator>();
 	}
 
 	private static IDictionary<string, IResultsAPI> ResultsAPI(IServiceProvider s) =>

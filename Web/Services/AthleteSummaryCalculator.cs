@@ -11,7 +11,7 @@ using SimilarAthlete = FLRC.Leaderboards.Web.ViewModels.SimilarAthlete;
 
 namespace FLRC.Leaderboards.Web.Services;
 
-public sealed class AthleteSummaryCalculator(IResultService resultService, IConfig config, ICommunityStarCalculator starCalculator) : IAthleteSummaryCalculator
+public sealed class AthleteSummaryCalculator(IResultService resultService, IOverallResultsCalculator overall, ICommunityStarCalculator starCalculator, IConfig config) : IAthleteSummaryCalculator
 {
 	public async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration)
 	{
@@ -34,14 +34,12 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IConf
 		if (config.FileSystemResults is not null)
 			return summary;
 
-		var overall = new OverallResultsCalculator(starCalculator, iteration);
-
-		var points = overall.MostPoints(filter).Find(r => r.Result.Athlete.Equals(athlete));
-		var pointsTop3 = overall.MostPoints(3, filter).Find(r => r.Result.Athlete.Equals(athlete));
-		var ageGrade = overall.AgeGrade().Find(r => r.Result.Athlete.Equals(athlete));
-		var miles = overall.MostMiles().Find(r => r.Result.Athlete.Equals(athlete));
-		var stars = overall.Community().Find(r => r.Result.Athlete.Equals(athlete));
-		var team = overall.TeamPoints().Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
+		var points = overall.MostPoints(iteration, filter).Find(r => r.Result.Athlete.Equals(athlete));
+		var pointsTop3 = overall.MostPoints(iteration, 3, filter).Find(r => r.Result.Athlete.Equals(athlete));
+		var ageGrade = overall.AgeGrade(iteration).Find(r => r.Result.Athlete.Equals(athlete));
+		var miles = overall.MostMiles(iteration).Find(r => r.Result.Athlete.Equals(athlete));
+		var stars = overall.Community(iteration).Find(r => r.Result.Athlete.Equals(athlete));
+		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
 		var total = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null);
 
 		return summary with

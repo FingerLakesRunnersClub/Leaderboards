@@ -15,8 +15,8 @@ public sealed class CompletedControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new CompletedController(iterationManager, starCalculator);
+		var overall = Substitute.For<IOverallResultsCalculator>();
+		var controller = new CompletedController(iterationManager, overall);
 
 		var course = ResultsData.Course with { Results = ResultsData.Results };
 		var iteration = new Iteration { Races = [new Race { Courses = [course] }] };
@@ -27,6 +27,8 @@ public sealed class CompletedControllerTests
 			athlete.Challenges.Add(challenge);
 
 		iterationManager.ActiveIteration().Returns(iteration);
+		var completed = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>()).Completed(iteration);
+		overall.Completed(iteration).Returns(completed);
 
 		//act
 		var response = await controller.Index();

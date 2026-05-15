@@ -15,7 +15,8 @@ public sealed class SimilarAthletesCalculatorTests
 		//arrange
 		var resultService = Substitute.For<IResultService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var calculator = new AthleteSummaryCalculator(resultService, TestHelpers.Config, starCalculator);
+		var overall = new OverallResultsCalculator(starCalculator);
+		var calculator = new AthleteSummaryCalculator(resultService, overall, starCalculator, TestHelpers.Config);
 
 		resultService.Find(Arg.Any<Iteration>()).Returns(ResultsData.SimilarResults);
 

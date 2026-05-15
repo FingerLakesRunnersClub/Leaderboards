@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Leaders;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class LeaderboardController(IIterationManager iterationManager, IConfig config, ICommunityStarCalculator starCalculator) : Controller
+public sealed class LeaderboardController(IIterationManager iterationManager, ILeaderboardCalculator calculator) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Index(string id = null)
@@ -20,8 +19,7 @@ public sealed class LeaderboardController(IIterationManager iterationManager, IC
 	private async Task<ViewModel<Leaderboard>> GetLeaderboard(LeaderboardResultType type)
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var calculator = new LeaderboardCalculator(starCalculator, config, iteration, type, 3);
-		var leaderboard = calculator.GetLeaderboard(type);
+		var leaderboard = calculator.GetLeaderboard(iteration, type, 3);
 		return new ViewModel<Leaderboard>("Leaderboard", leaderboard);
 	}
 }

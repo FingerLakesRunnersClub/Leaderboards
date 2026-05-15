@@ -1,25 +1,19 @@
-using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Data;
-using FLRC.Leaderboards.Core.Reports;
+using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
+using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AwardsController : Controller
+public sealed class AwardsController(IIterationManager iterationManager, IAwardsCalculator calculator) : Controller
 {
-	private readonly IDataService _dataService;
-	private readonly IConfig _config;
-
-	public AwardsController(IDataService dataService, IConfig config)
-	{
-		_dataService = dataService;
-		_config = config;
-	}
-
 	[HttpGet]
 	public async Task<ViewResult> Index()
-		=> View(await GetAwards());
-
-	private async Task<AwardsViewModel> GetAwards()
-		=> new(_config, await _dataService.GetAllResults());
+	{
+		var iteration = await iterationManager.ActiveIteration();
+		var awards = calculator.GetAwards(iteration);
+		var vm = new ViewModel<Dictionary<Athlete, Award[]>>("Awards", awards);
+		return View(vm);
+	}
 }

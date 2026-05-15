@@ -15,7 +15,8 @@ public sealed class AthleteSummaryCalculatorTests
 		//arrange
 		var resultService = Substitute.For<IResultService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var calculator = new AthleteSummaryCalculator(resultService, TestHelpers.Config, starCalculator);
+		var overall = new OverallResultsCalculator(starCalculator);
+		var calculator = new AthleteSummaryCalculator(resultService, overall, starCalculator, TestHelpers.Config);
 
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), Category = 'M', DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), Category = 'F', DateOfBirth = new DateOnly(2000, 1, 1) };
@@ -70,7 +71,8 @@ public sealed class AthleteSummaryCalculatorTests
 		//arrange
 		var resultService = Substitute.For<IResultService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var athleteSummaryCalculator = new AthleteSummaryCalculator(resultService, TestHelpers.Config, starCalculator);
+		var overall = new OverallResultsCalculator(starCalculator);
+		var athleteSummaryCalculator = new AthleteSummaryCalculator(resultService, overall, starCalculator, TestHelpers.Config);
 
 		resultService.Find(Arg.Any<Iteration>()).Returns(ResultsData.SimilarResults);
 

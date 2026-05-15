@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class CompletedController(IIterationManager iterationManager, ICommunityStarCalculator starCalculator) : Controller
+public sealed class CompletedController(IIterationManager iterationManager, IOverallResultsCalculator overall) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Index()
@@ -18,12 +18,11 @@ public sealed class CompletedController(IIterationManager iterationManager, ICom
 	private async Task<Completed> GetCompleted()
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var overall = new OverallResultsCalculator(starCalculator, iteration);
 
 		return new Completed
 		{
-			Results = overall.Completed(),
-			PersonalResults = overall.CompletedPersonal()
+			Results = overall.Completed(iteration),
+			PersonalResults = overall.CompletedPersonal(iteration)
 		};
 	}
 }

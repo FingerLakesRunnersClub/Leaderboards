@@ -17,8 +17,8 @@ public sealed class OverallControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new OverallController(iterationManager, starCalculator, TestHelpers.Config);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new OverallController(iterationManager, overall, TestHelpers.Config);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -35,8 +35,8 @@ public sealed class OverallControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new OverallController(iterationManager, starCalculator, TestHelpers.Config);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new OverallController(iterationManager, overall, TestHelpers.Config);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -53,8 +53,8 @@ public sealed class OverallControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new OverallController(iterationManager, starCalculator, TestHelpers.Config);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new OverallController(iterationManager, overall, TestHelpers.Config);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -71,8 +71,8 @@ public sealed class OverallControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new OverallController(iterationManager, starCalculator, TestHelpers.Config);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new OverallController(iterationManager, overall, TestHelpers.Config);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
@@ -89,8 +89,8 @@ public sealed class OverallControllerTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
-		var starCalculator = Substitute.For<ICommunityStarCalculator>();
-		var controller = new OverallController(iterationManager, starCalculator, TestHelpers.Config);
+		var overall = new OverallResultsCalculator(Substitute.For<ICommunityStarCalculator>());
+		var controller = new OverallController(iterationManager, overall, TestHelpers.Config);
 
 		iterationManager.ActiveIteration().Returns(OverallData.Iteration);
 
