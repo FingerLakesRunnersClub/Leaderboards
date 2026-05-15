@@ -42,6 +42,6 @@
 			const rows = @Html.Raw(JsonSerializer.Serialize(Model.Results));
 		</script>
 
-		@await Html.PartialAsync("LegacyDataTable")
+		@await Html.PartialAsync("DataTable", (Model.Title, "xl"))
 	</div>
 </div>

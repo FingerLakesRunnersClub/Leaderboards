@@ -15,4 +15,8 @@
 		<None Include="json/*.json" CopyToOutputDirectory="Always" />
 		<ProjectReference Include="..\Model\Model.csproj" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Overall\" />
+	  <Folder Include="Reports\" />
+	</ItemGroup>
 </Project>

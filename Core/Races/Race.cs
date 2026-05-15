@@ -11,11 +11,5 @@ public sealed class Race
 	public string Source { get; init; }
 	public string URL { get; init; }
 
-	public ushort CommunityID { get; init; }
-
-	public Post[] CommunityPosts { get; set; } = [];
-
-	public int CommunityHash { get; set; }
-
 	public Course[] Courses { get; set; } = [];
 }

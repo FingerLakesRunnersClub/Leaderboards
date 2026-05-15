@@ -60,9 +60,6 @@ public sealed class App(string context)
 
 		services.AddSingleton<IConfig, AppConfig>();
 
-		services.AddSingleton<IDataService, DataService>();
-		services.AddSingleton<ICustomInfoAPI, CustomInfoAPI>();
-
 		services.AddSingleton<UltraSignup>();
 		services.AddSingleton<WebScorer>();
 		services.AddSingleton<WebScorerStartList>();
