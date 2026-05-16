@@ -15,7 +15,7 @@ public interface IOverallResultsCalculator
 	RankedList<Date, Result> Completed(Iteration iteration, Filter filter = null);
 	RankedList<Date, Result> CompletedPersonal(Iteration iteration, Filter filter = null);
 	RankedList<Miles, Result> MostMiles(Iteration iteration, Filter filter = null);
-	RankedList<int, Result> MostCourses(Iteration iteration, Filter filter = null);
+	RankedList<Count, Result> MostCourses(Iteration iteration, Filter filter = null);
 	RankedList<Stars, Result> Community(Iteration iteration, Filter filter = null);
 	RankedList<TeamResults, Result> TeamPoints(Iteration iteration, Filter filter = null);
 	RankedList<TeamMember, Result> TeamMembers(Iteration iteration, Team team, Filter filter = null);

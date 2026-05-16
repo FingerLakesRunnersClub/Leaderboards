@@ -38,6 +38,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 		var pointsTop3 = overall.MostPoints(iteration, 3, filter).Find(r => r.Result.Athlete.Equals(athlete));
 		var ageGrade = overall.AgeGrade(iteration).Find(r => r.Result.Athlete.Equals(athlete));
 		var miles = overall.MostMiles(iteration).Find(r => r.Result.Athlete.Equals(athlete));
+		var mostCourses = overall.MostCourses(iteration).Find(r => r.Result.Athlete.Equals(athlete));
 		var stars = overall.Community(iteration).Find(r => r.Result.Athlete.Equals(athlete));
 		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
 		var total = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null);
@@ -52,6 +53,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 					OverallRow("PointsTop3/M", Category.M, athlete, () => pointsTop3),
 					OverallRow("AgeGrade", null, athlete, () => ageGrade),
 					OverallRow("Miles", null, athlete, () => miles),
+					OverallRow("Courses", null, athlete, () => mostCourses),
 					OverallRow("Community", null, athlete, () => stars),
 					OverallRow("Team", null, athlete, () => team)
 				}.Where(c => c?.Value != null)
@@ -60,6 +62,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 			OverallPoints = points,
 			OverallAgeGrade = ageGrade,
 			OverallMiles = miles,
+			OverallCourses = mostCourses,
 			OverallCommunityStars = stars,
 			TeamResults = team,
 			TotalResults = total

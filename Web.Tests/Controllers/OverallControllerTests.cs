@@ -80,7 +80,7 @@ public sealed class OverallControllerTests
 		var response = await controller.Courses();
 
 		//assert
-		var vm = response.Model as ViewModel<OverallResults<int>>;
+		var vm = response.Model as ViewModel<OverallResults<Count>>;
 		Assert.Equal(OverallData.Athlete1, vm!.Data.RankedResults.First().Result.Athlete);
 	}
 

@@ -28,8 +28,8 @@ public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalcul
 	public RankedList<Miles, Result> MostMiles(Iteration iteration, Filter filter = null)
 		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)), g => (uint)g.Sum(r => r.Count));
 
-	public RankedList<int, Result> MostCourses(Iteration iteration, Filter filter = null)
-		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => g.Count(), g => g.Count(), g => (uint)g.Count());
+	public RankedList<Count, Result> MostCourses(Iteration iteration, Filter filter = null)
+		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Count(g.Count()), g => g.Count(), g => (uint)g.Count());
 
 	public RankedList<Stars, Result> Community(Iteration iteration, Filter filter = null)
 		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).CommunityStars(starCalculator, filter)).GroupBy(g => g.Result.Athlete), g => new Stars((ushort)g.Sum(r => r.Value.Value)), g => g.Sum(s => s.Value.Value), g => (uint)g.Count());

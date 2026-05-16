@@ -51,7 +51,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 					.ToArray()),
 
 				OverallTable("Courses", ResultType.MostCourses, new Filter(), () => overall.MostCourses(iteration).Take(tableSize)
-					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.ToString() })
+					.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					.ToArray()),
 
 				OverallTable("Community", ResultType.Community, new Filter(), () => overall.Community(iteration).Take(tableSize)

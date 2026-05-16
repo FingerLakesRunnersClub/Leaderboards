@@ -44,6 +44,14 @@
 		(<a href="/Overall/Miles">@Model.OverallMiles?.Rank?.Display</a>)
 	</dd>
 
+	<dt class="col-6">
+		Total Courses
+	</dt>
+	<dd class="col-6">
+		@Model.OverallCourses?.Value?.Display
+		(<a href="/Overall/Courses">@Model.OverallCourses?.Rank?.Display</a>)
+	</dd>
+
 	@if (Model.Iteration.Series.Feature[nameof(FeatureSet.CommunityStars)])
 	{
 		<dt class="col-6">

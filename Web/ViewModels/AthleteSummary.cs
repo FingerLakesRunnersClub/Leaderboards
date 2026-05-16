@@ -24,6 +24,7 @@ public sealed record AthleteSummary
 	public Ranked<Points, Result> OverallPoints { get; init; }
 	public Ranked<AgeGrade, Result> OverallAgeGrade { get; init; }
 	public Ranked<Miles, Result> OverallMiles { get; init; }
+	public Ranked<Count, Result> OverallCourses { get; init; }
 	public Ranked<Stars, Result> OverallCommunityStars { get; init; }
 	public Ranked<TeamResults, Result> TeamResults { get; init; }
 
