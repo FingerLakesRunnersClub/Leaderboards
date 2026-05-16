@@ -15,7 +15,7 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(iteration, new Filter(Category.F)), 5));
 		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(iteration, new Filter(Category.M)), 5));
 		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(iteration), 10));
-		//awards.AddRange(Overall("Courses", "Most Courses", overall.MostCourses(iteration), 10));
+		awards.AddRange(Overall("Courses", "Most Courses", overall.MostCourses(iteration), 10));
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(iteration), 10));
 		awards.AddRange(Overall("Community", "Overall Community", overall.Community(iteration), 10));
 		awards.AddRange(Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration));

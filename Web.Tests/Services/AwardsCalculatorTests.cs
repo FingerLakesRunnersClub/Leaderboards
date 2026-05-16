@@ -35,8 +35,8 @@ public sealed class AwardsCalculatorTests
 		var count = awards.Sum(athlete => athlete.Value.Length);
 		var amount = awards.Sum(athlete => athlete.Value.Sum(award => award.Value));
 		Assert.Equal(4, athletes);
-		Assert.Equal(26, count);
-		Assert.Equal(90, amount);
+		Assert.Equal(30, count);
+		Assert.Equal(110, amount);
 
 		var athlete1 = awards[OverallData.Athlete1].Select(a => a.Name).ToArray();
 		Assert.Contains("1st Overall Points (M)", athlete1);
