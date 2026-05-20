@@ -1,4 +1,5 @@
 using FLRC.AgeGradeCalculator;
+using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Races;
@@ -11,6 +12,12 @@ public sealed class Course
 	public string ShortName => Distance?.Display ?? Race?.Name;
 	public Distance Distance { get; init; }
 	public bool ShowDecimals { get; init; }
+
+	public Time FormatTime(TimeSpan time)
+		=> ShowDecimals
+			? new SprintTime(time)
+			: new Time(time);
+
 
 	public bool IsFieldEvent => Enum.TryParse<FieldEvent>(Name.ToFieldEvent(), out _);
 	public string EventMetric => IsFieldEvent ? FieldEventMetric : "Time";
