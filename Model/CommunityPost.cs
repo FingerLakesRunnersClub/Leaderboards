@@ -5,9 +5,9 @@ namespace FLRC.Leaderboards.Model;
 public sealed record CommunityPost
 {
 	public ushort ID { get; init; }
-	public string Name { get; init; }
+	public string Name { get; init; } = null!;
 	public DateTime Date { get; init; }
-	public string Content { get; init; }
+	public string Content { get; init; } = null!;
 
 	public bool Matches(Result result)
 		=> result.Athlete.LinkedAccounts.Any(l => l.Type == LinkedAccount.Keys.Discourse && l.Value == ID.ToString())
