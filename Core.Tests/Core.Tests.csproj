@@ -12,11 +12,7 @@
 		<PackageReference Include="xunit.runner.visualstudio" Version="3.1.5" />
 		<PackageReference Include="coverlet.collector" Version="10.0.1" />
 		<ProjectReference Include="../Core/Core.csproj" />
-		<None Include="json/*.json" CopyToOutputDirectory="Always" />
 		<ProjectReference Include="..\Model\Model.csproj" />
-	</ItemGroup>
-	<ItemGroup>
-	  <Folder Include="Overall\" />
-	  <Folder Include="Reports\" />
+		<None Include="json/*.json" CopyToOutputDirectory="Always" />
 	</ItemGroup>
 </Project>
