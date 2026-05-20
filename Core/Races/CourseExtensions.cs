@@ -20,8 +20,8 @@ public static class CourseExtensions
 		private RankedList<T, Result> RankDescending<T>(Filter filter, Func<GroupedResult, bool> groupFilter, Func<GroupedResult, Result> getResult, Func<GroupedResult, T> sort)
 			=> RankedList(course.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
-		public RankedList<Stars, Result> CommunityStars(Filter filter = null)
-			=> course.RankDescending(filter ?? new Filter(), g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(course), g => new Stars((ushort)g.Sum(r => r.CommunityStars.Count(p => p.Value))));
+		public RankedList<Count, Result> CommunityStars(Filter filter = null)
+			=> course.RankDescending(filter ?? new Filter(), g => g.Sum(r => r.CommunityStars?.Count(s => s.Value)) > 0, g => g.Average(course), g => new Count((ushort)g.Sum(r => r.CommunityStars.Count(p => p.Value))));
 
 		public GroupedResult[] GroupedResults(Filter filter = null)
 			=> course.Results.Filter(filter)

@@ -1,9 +1,9 @@
 namespace FLRC.Leaderboards.Core.Metrics;
 
-public sealed record Count(int Value) : Formatted<int>(Value), IComparable<Count>
+public record Count(ushort Value) : Formatted<ushort>(Value), IComparable<Count>
 {
 	public override string Display
-		=> Value.ToString();
+		=> Value.ToString("N0");
 
 	public int CompareTo(Count other)
 		=> Value.CompareTo(other.Value);

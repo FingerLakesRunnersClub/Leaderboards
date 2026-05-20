@@ -47,7 +47,7 @@ public static class ResultsExtensions
 		public RankedList<Date, Result> Earliest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
-		public RankedList<Stars, Result> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
+		public RankedList<Count, Result> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
 		{
 			var all = results.Filter(filter ?? new Filter()).OrderBy(r => r.StartTime).ToArray();
 			if (all.Length == 0)
@@ -62,8 +62,8 @@ public static class ResultsExtensions
 			}
 
 			var startTime = all.Max(r => r.StartTime);
-			var dictionary = stars.GroupBy(s => s.Result.Athlete).ToDictionary(g => g.Key, g => new Stars((ushort)g.Sum(s => s.Score)));
-			var ranks = new RankedList<Stars, Result>();
+			var dictionary = stars.GroupBy(s => s.Result.Athlete).ToDictionary(g => g.Key, g => new Count((ushort)g.Sum(s => s.Score)));
+			var ranks = new RankedList<Count, Result>();
 			var list = dictionary.Where(s => s.Value.Value > 0).OrderByDescending(s => s.Value).ToArray();
 
 			for (ushort rank = 1; rank <= list.Length; rank++)
@@ -72,7 +72,7 @@ public static class ResultsExtensions
 				var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
 				var lastPlace = !isInFirstPlace ? ranks[^1] : null;
 
-				var rankedResult = new Ranked<Stars, Result>
+				var rankedResult = new Ranked<Count, Result>
 				{
 					All = ranks,
 					Rank = Rank(isInFirstPlace, lastPlace, result.Value, rank),

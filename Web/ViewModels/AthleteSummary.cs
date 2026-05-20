@@ -16,7 +16,7 @@ public sealed record AthleteSummary
 	public Dictionary<Course, Ranked<Performance, Result>> Farthest { get; init; }
 	public Dictionary<Course, Ranked<Time, Result>> Average { get; init; }
 	public Dictionary<Course, Ranked<ushort, Result>> Runs { get; init; }
-	public Dictionary<Course, Ranked<Stars, Result>> CommunityStars { get; init; }
+	public Dictionary<Course, Ranked<Count, Result>> CommunityStars { get; init; }
 	public Dictionary<Course, Result[]> All { get; init; }
 
 	public AthleteOverallRow[] Competitions { get; init; }
@@ -25,7 +25,7 @@ public sealed record AthleteSummary
 	public Ranked<AgeGrade, Result> OverallAgeGrade { get; init; }
 	public Ranked<Miles, Result> OverallMiles { get; init; }
 	public Ranked<Count, Result> OverallCourses { get; init; }
-	public Ranked<Stars, Result> OverallCommunityStars { get; init; }
+	public Ranked<Count, Result> OverallCommunityStars { get; init; }
 	public Ranked<TeamResults, Result> TeamResults { get; init; }
 
 	public int TotalResults { get; init; }

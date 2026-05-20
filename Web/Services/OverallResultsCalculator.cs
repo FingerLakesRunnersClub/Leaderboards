@@ -29,10 +29,10 @@ public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalcul
 		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).MostMiles(filter)).GroupBy(r => r.Result.Athlete), g => new Miles(g.Sum(r => r.Value.Value)), g => new Points(g.Sum(r => r.Value.Value)), g => (uint)g.Sum(r => r.Count));
 
 	public RankedList<Count, Result> MostCourses(Iteration iteration, Filter filter = null)
-		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Count(g.Count()), g => g.Count(), g => (uint)g.Count());
+		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete), g => new Count((ushort)g.Count()), g => g.Count(), g => (uint)g.Count());
 
-	public RankedList<Stars, Result> Community(Iteration iteration, Filter filter = null)
-		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).CommunityStars(starCalculator, filter)).GroupBy(g => g.Result.Athlete), g => new Stars((ushort)g.Sum(r => r.Value.Value)), g => g.Sum(s => s.Value.Value), g => (uint)g.Count());
+	public RankedList<Count, Result> Community(Iteration iteration, Filter filter = null)
+		=> RankedList(iteration, AllCourses(iteration).SelectMany(c => c.Results.For(iteration).CommunityStars(starCalculator, filter)).GroupBy(g => g.Result.Athlete), g => new Count((ushort)g.Sum(r => r.Value.Value)), g => g.Sum(s => s.Value.Value), g => (uint)g.Count());
 
 	private static RankedList<T1, Result> RankedList<T1, T2, T3>(Iteration iteration, IEnumerable<IGrouping<Athlete, Ranked<T2, Result>>> results, Func<IGrouping<Athlete, Ranked<T2, Result>>, T1> getValue, Func<IGrouping<Athlete, Ranked<T2, Result>>, T3> sort)
 		=> RankedList(iteration, results, getValue, sort, getValue, g => (uint)g.Count());
