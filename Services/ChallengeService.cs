@@ -31,6 +31,19 @@ public sealed class ChallengeService(DB db) : IChallengeService
 		await db.SaveChangesAsync();
 	}
 
+	public async Task RemoveConnection(Athlete athlete, Challenge challenge)
+	{
+		athlete.Challenges.Remove(challenge);
+
+		if (!challenge.IsOfficial)
+		{
+			challenge.Courses.Clear();
+			db.Remove(challenge);
+		}
+
+		await db.SaveChangesAsync();
+	}
+
 	public async Task Update(Challenge challenge, Challenge updated)
 	{
 		challenge.Name = updated.Name;

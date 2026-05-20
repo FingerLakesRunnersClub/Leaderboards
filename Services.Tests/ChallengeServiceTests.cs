@@ -78,6 +78,66 @@ public sealed class ChallengeServiceTests
 	}
 
 	[Fact]
+	public async Task CanRemoveAthleteFromChallenge()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ChallengeService(db);
+
+		var challenge = new Challenge { ID = Guid.NewGuid(), Name = "Test" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", Challenges = [challenge]};
+		await db.AddAsync(challenge);
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.RemoveConnection(athlete, challenge);
+
+		//assert
+		Assert.Empty(athlete.Challenges);
+	}
+
+	[Fact]
+	public async Task RemovingPersonalChallengeDeletesChallenge()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ChallengeService(db);
+
+		var challenge = new Challenge { ID = Guid.NewGuid(), Name = "Test", IsOfficial = false };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", Challenges = [challenge]};
+		await db.AddAsync(challenge);
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.RemoveConnection(athlete, challenge);
+
+		//assert
+		Assert.Empty(db.Set<Challenge>());
+	}
+
+	[Fact]
+	public async Task RemovingOfficialChallengeDoesNotDeleteChallenge()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ChallengeService(db);
+
+		var challenge = new Challenge { ID = Guid.NewGuid(), Name = "Test", IsOfficial = true };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test", Challenges = [challenge]};
+		await db.AddAsync(challenge);
+		await db.AddAsync(athlete);
+		await db.SaveChangesAsync();
+
+		//act
+		await service.RemoveConnection(athlete, challenge);
+
+		//assert
+		Assert.NotEmpty(db.Set<Challenge>());
+	}
+
+	[Fact]
 	public async Task CanUpdateChallenge()
 	{
 		//arrange
