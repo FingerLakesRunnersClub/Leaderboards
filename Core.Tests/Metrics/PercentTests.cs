@@ -30,4 +30,20 @@ public sealed class PercentTests
 		//assert
 		Assert.Equal("77%", display);
 	}
+
+	[Fact]
+	public void CanComparePercentages()
+	{
+		//arrange
+		var p1 = new Percent(76.51);
+		var p2 = new Percent(67.89);
+
+		//act
+		var c1 = p1.CompareTo(p2);
+		var c2 = p2.CompareTo(p1);
+
+		//assert
+		Assert.Equal(1, c1);
+		Assert.Equal(-1, c2);
+	}
 }
