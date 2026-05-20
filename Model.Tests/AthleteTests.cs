@@ -24,6 +24,19 @@ public sealed class AthleteTests
 	}
 
 	[Fact]
+	public void CanGetAgeToday()
+	{
+		//arrange
+		var athlete = new Athlete { DateOfBirth = new DateOnly(DateTime.Today.Year - 40, DateTime.Today.Month, DateTime.Today.Day) };
+
+		//act
+		var age = athlete.AgeToday;
+
+		//assert
+		Assert.Equal((byte)40, age);
+	}
+
+	[Fact]
 	public void HasLinkedAccountIfTypeMatches()
 	{
 		//arrange
