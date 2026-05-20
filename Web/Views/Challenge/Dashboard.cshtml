@@ -7,5 +7,9 @@
 	<section class="card-body">
 		@await Component.InvokeAsync("Dashboard", false)
 		@await Html.PartialAsync("MyCourseTable")
+
+		<h4>Select a Different Challenge</h4>
+		<p>Whether you're already done or you don't think you'll be able to finish, you can select a new Challenge instead of this one.</p>
+		<a href="/Challenge/Delete" class="btn btn-warning">Select a Different Challenge</a>
 	</section>
 </article>

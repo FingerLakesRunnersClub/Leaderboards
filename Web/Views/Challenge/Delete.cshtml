@@ -1,0 +1,22 @@
+@using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<string>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<p>Are you sure you want to select a new Challenge?</p>
+		<ul>
+			<li>All of your existing results will still be saved</li>
+			<li>You will be redirected to the Challenge selection form</li>
+			<li>Once you select a new Challenge, your progress will automatically be recalculated</li>
+			<li>If you are modifying a @nameof(Challenge.Types.Personal) Challenge, you'll need to re-select each course</li>
+		</ul>
+
+		<form action="" method="post">
+			<button type="submit" class="btn btn-danger">Confirm, I want a different Challenge</button>
+			<a href="/Challenge/Dashboard" class="btn btn-light">Cancel, keep my current Challenge</a>
+		</form>
+	</section>
+</article>

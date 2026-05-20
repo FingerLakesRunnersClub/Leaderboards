@@ -295,4 +295,107 @@ public sealed class ChallengeControllerTests
 		await challengeService.Received().Add(Arg.Any<Challenge>());
 		await challengeService.Received().AddConnection(athlete, Arg.Is<Challenge>(c => c.IsPrimary && !c.IsOfficial));
 	}
+
+	[Fact]
+	public async Task CanViewDeleteConfirmationForm()
+	{
+		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var challengeService = Substitute.For<IChallengeService>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var registrationManager = Substitute.For<IRegistrationManager>();
+		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
+
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+
+		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
+		iterationManager.ActiveIteration().Returns(iteration);
+
+		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+
+		//act
+		var result = await controller.Delete();
+
+		//assert
+		Assert.NotNull(result.Model);
+	}
+
+	[Fact]
+	public async Task DeleteConfirmationFormRedirectsToDashboardWhenNoIterationFound()
+	{
+		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var challengeService = Substitute.For<IChallengeService>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var registrationManager = Substitute.For<IRegistrationManager>();
+		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
+
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+
+		//act
+		var result = await controller.Delete(new FormCollection([]));
+
+		//assert
+		Assert.Equal(nameof(ChallengeController.Dashboard), result.ActionName);
+	}
+
+	[Fact]
+	public async Task DeleteConfirmationFormRedirectsToRegistrationWhenNotRegistered()
+	{
+		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var challengeService = Substitute.For<IChallengeService>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var registrationManager = Substitute.For<IRegistrationManager>();
+		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
+
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+
+		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
+		iterationManager.ActiveIteration().Returns(iteration);
+
+		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+
+		//act
+		var result = await controller.Delete(new FormCollection([]));
+
+		//assert
+		Assert.Equal(nameof(ChallengeController.Registration), result.ActionName);
+	}
+
+	[Fact]
+	public async Task DeleteConfirmationRemovesConnectionWhenChallengeExists()
+	{
+		//arrange
+		var authService = Substitute.For<IAuthService>();
+		var athleteService = Substitute.For<IAthleteService>();
+		var challengeService = Substitute.For<IChallengeService>();
+		var iterationManager = Substitute.For<IIterationManager>();
+		var registrationManager = Substitute.For<IRegistrationManager>();
+		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
+
+		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
+		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+
+		var challenge = new Challenge { IsOfficial = true, IsPrimary = true };
+		var iteration = new Iteration { Challenges = [challenge] };
+		iterationManager.ActiveIteration().Returns(iteration);
+
+		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Challenges = [challenge]};
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+
+		//act
+		await controller.Delete(new FormCollection([]));
+
+		//assert
+		await challengeService.RemoveConnection(athlete, challenge);
+	}
 }

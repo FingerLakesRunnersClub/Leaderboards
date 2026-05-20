@@ -26,6 +26,9 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		var challenge = athlete.Challenges
 			.FirstOrDefault(c => c.Iteration == iteration && c.IsPrimary);
 
+		if (challenge is null)
+			return RedirectToAction(nameof(Select));
+
 		var allIterationResults = athlete.Results
 			.Where(r => r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue)
 			            && r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue))
@@ -177,5 +180,26 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		await challengeService.AddConnection(athlete, challenge);
 
 		return RedirectToAction(nameof(Dashboard));
+	}
+
+	[HttpGet]
+	public async Task<ViewResult> Delete() => View(new ViewModel<string>("Challenge Confirmation", null));
+
+	[HttpPost]
+	public async Task<RedirectToActionResult> Delete(IFormCollection form)
+	{
+		var iteration = await iterationManager.ActiveIteration();
+		if (iteration is null)
+			return RedirectToAction(nameof(Dashboard));
+
+		var athlete = await CurrentAthlete();
+		if (!athlete.IsRegistered(iteration))
+			return RedirectToAction(nameof(Registration));
+
+		var challenge = athlete.Challenge(iteration);
+		if (challenge is not null)
+			await challengeService.RemoveConnection(athlete, challenge);
+
+		return RedirectToAction(nameof(Select));
 	}
 }
