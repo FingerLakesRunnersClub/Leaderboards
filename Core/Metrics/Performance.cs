@@ -1,16 +1,18 @@
+using System.Text.RegularExpressions;
 using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Metrics;
 
 public sealed record Performance(string Value) : Distance(Value)
 {
-	private const double InchesPerMeter = 1 / 0.0254;
-
 	public override double Meters { get; } = ParsePerformance(Value) ?? ParseDistance(Value);
+
+	private const double InchesPerMeter = 1 / 0.0254;
+	private static readonly Regex RegexPattern = Patterns.ImperialMeasurement();
 
 	private static double? ParsePerformance(string value)
 	{
-		var split = Patterns.ImperialMeasurement().Match(value).Groups;
+		var split = RegexPattern.Match(value).Groups;
 		if (split.Count < 2)
 			return null;
 
@@ -20,6 +22,4 @@ public sealed record Performance(string Value) : Distance(Value)
 
 		return totalInches / InchesPerMeter;
 	}
-
-	public static readonly Performance Zero = new("0'0\"");
 }

@@ -1,4 +1,6 @@
-﻿namespace FLRC.Leaderboards.Core.Races;
+﻿using System.Text.RegularExpressions;
+
+namespace FLRC.Leaderboards.Core.Races;
 
 public record Distance(string Value) : Formatted<string>(Value), IComparable<Distance>
 {
@@ -9,8 +11,9 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 	public virtual double Meters { get; } = ParseDistance(Value);
 	public double Miles => Meters / MetersPerMile;
 
-
 	public override string Display => Value;
+
+	private static readonly Regex RegexPattern = Patterns.Distance();
 
 	protected static double ParseDistance(string value)
 	{
@@ -19,7 +22,7 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 				? MetersPerMarathon / 2
 				: MetersPerMarathon;
 
-		var split = Patterns.Distance().Match(value).Groups;
+		var split = RegexPattern.Match(value).Groups;
 		if (split.Count < 2)
 			return 0;
 
