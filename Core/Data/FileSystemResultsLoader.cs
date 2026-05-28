@@ -6,31 +6,23 @@ using FLRC.Leaderboards.Core.Races;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
+public sealed class FileSystemResultsLoader(IFileSystem fs, IConfig config) : IFileSystemResultsLoader
 {
 	private static readonly Regex RegexPattern = Patterns.TrackFile();
-	private readonly IFileSystem _fs;
-	private readonly IConfig _config;
-
-	public FileSystemResultsLoader(IFileSystem fs, IConfig config)
-	{
-		_fs = fs;
-		_config = config;
-	}
 
 	private Race[] _cachedRaces;
 
 	public Race[] GetRaces()
 	{
-		_cachedRaces ??= _fs.Directory
-			.GetFiles(_config.FileSystemResults, "*.txt", SearchOption.AllDirectories)
+		_cachedRaces ??= fs.Directory
+			.GetFiles(config.FileSystemResults, "*.txt", SearchOption.AllDirectories)
 			.Select(p => RegexPattern.Match(p))
 			.Where(ShouldIncludeEvent)
 			.Select(GetRace)
 			.OrderBy(r => r.Courses[0].Distance?.Meters ?? Distance.MetersPerMarathon)
 			.ToArray();
 
-		_config.CourseNames = _cachedRaces
+		config.CourseNames = _cachedRaces
 			.DistinctBy(r => r.ID)
 			.ToDictionary(r => r.ID, r => r.Name);
 
@@ -87,9 +79,9 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 		if (_allResults is not null)
 			return _allResults;
 
-		var paths = _cachedRaces.Select(r => Path.Combine(_config.FileSystemResults, r.Date.ToString("yyyy-MM-dd"), $"{GetFileName(r.Name)}.txt"));
+		var paths = _cachedRaces.Select(r => Path.Combine(config.FileSystemResults, r.Date.ToString("yyyy-MM-dd"), $"{GetFileName(r.Name)}.txt"));
 		var tasks = paths
-			.Select(async path => await _fs.File.ReadAllTextAsync(path))
+			.Select(async path => await fs.File.ReadAllTextAsync(path))
 			.Select(async task => GetCourse(await task, aliases));
 		var courses = await Task.WhenAll(tasks);
 		var events = courses.GroupBy(c => c.Name);
