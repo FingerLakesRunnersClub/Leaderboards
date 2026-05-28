@@ -4,13 +4,11 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.ViewModels;
 
-public sealed class ChallengeViewModel : DataTableViewModel
+public sealed class ChallengeViewModel : ViewModel
 {
 	public override string Title => Challenge.Name;
 
 	public Challenge[] Challenges { get; init; }
 	public Challenge Challenge { get; init; }
 	public RankedList<ChallengeResult, Result> Results { get; init; }
-
-	public override string ResponsiveBreakpoint => "xl";
 }
