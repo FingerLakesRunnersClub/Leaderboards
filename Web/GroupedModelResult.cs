@@ -1,4 +1,6 @@
 using FLRC.Leaderboards.Core.Results;
+using FLRC.Leaderboards.Model;
+using Result = FLRC.Leaderboards.Model.Result;
 
 namespace FLRC.Leaderboards.Web;
 
@@ -7,7 +9,7 @@ public sealed class GroupedModelResult(IGrouping<Model.Athlete, Model.Result> gr
 {
 	public Model.Result Average(Model.Course course, ushort? threshold = null)
 	{
-		var timedResults = _group
+		var timedResults = group
 			.Where(r => r.Duration > TimeSpan.Zero)
 			.OrderBy(r => r.StartTime)
 			.ToArray();
@@ -29,5 +31,5 @@ public sealed class GroupedModelResult(IGrouping<Model.Athlete, Model.Result> gr
 	}
 
 	public override int CompareTo(Grouped<Model.Athlete, Model.Result> other)
-		=> _group.Key.ID.CompareTo(other.Key.ID);
+		=> group.Key.ID.CompareTo(other.Key.ID);
 }
