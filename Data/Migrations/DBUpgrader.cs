@@ -7,7 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace FLRC.Leaderboards.Data.Migrations;
 
-public sealed class DBUpgrader
+public sealed class DBUpgrader(IDbConnection connection, ILogger logger)
 {
 	private const string TableName = "_Migrations";
 
@@ -18,19 +18,10 @@ public sealed class DBUpgrader
 			), "Migrations"
 		);
 
-	private readonly IDbConnection _connection;
-	private readonly ILogger _logger;
-
-	public DBUpgrader(IDbConnection connection, ILogger logger)
-	{
-		_connection = connection;
-		_logger = logger;
-	}
-
 	public void MigrateDatabase()
 	{
-		var upgradeLog = new LoggerUpgradeLog(_logger);
-		var upgrader = CreateBuilder(_connection, upgradeLog)
+		var upgradeLog = new LoggerUpgradeLog(logger);
+		var upgrader = CreateBuilder(connection, upgradeLog)
 			.WithScriptsFromFileSystem(MigrationDirectory)
 			.LogTo(upgradeLog)
 			.Build();
@@ -38,14 +29,14 @@ public sealed class DBUpgrader
 		var scriptsToExecute = upgrader.GetScriptsToExecute()
 			.Select(s => s.Name)
 			.ToArray();
-		_logger.Log(LogLevel.Information, "Starting database migrations: {scripts}", string.Join(", ", scriptsToExecute));
+		logger.Log(LogLevel.Information, "Starting database migrations: {scripts}", string.Join(", ", scriptsToExecute));
 
 		var result = upgrader.PerformUpgrade();
 
 		if (result.Successful)
-			_logger.Log(LogLevel.Information, "All scripts migrated successfully!");
+			logger.Log(LogLevel.Information, "All scripts migrated successfully!");
 		else
-			_logger.Log(LogLevel.Critical, "Database migration failed!");
+			logger.Log(LogLevel.Critical, "Database migration failed!");
 	}
 
 	private static UpgradeEngineBuilder CreateBuilder(IDbConnection connection, IUpgradeLog log)

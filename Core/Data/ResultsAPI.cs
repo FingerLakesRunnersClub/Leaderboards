@@ -3,20 +3,13 @@ using System.Text.Json;
 
 namespace FLRC.Leaderboards.Core.Data;
 
-public sealed class ResultsAPI<T> : IResultsAPI where T : IDataSource
+public sealed class ResultsAPI<T>(HttpClient http, T source) : IResultsAPI where T : IDataSource
 {
-	private readonly HttpClient _http;
-	public IDataSource Source { get; }
-
-	public ResultsAPI(HttpClient http, T source)
-	{
-		_http = http;
-		Source = source;
-	}
+	public IDataSource Source { get; } = source;
 
 	public async Task<JsonElement> GetResults(uint id)
 	{
 		var url = await Source.URL(id);
-		return await _http.GetFromJsonAsync<JsonElement>(url);
+		return await http.GetFromJsonAsync<JsonElement>(url);
 	}
 }

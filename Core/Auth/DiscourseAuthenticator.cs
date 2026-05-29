@@ -6,16 +6,9 @@ using System.Web;
 
 namespace FLRC.Leaderboards.Core.Auth;
 
-public sealed class DiscourseAuthenticator : IDiscourseAuthenticator
+public sealed class DiscourseAuthenticator(string baseURL, string secret) : IDiscourseAuthenticator
 {
-	private readonly string _baseURL;
-	private readonly byte[] _secret;
-
-	public DiscourseAuthenticator(string baseURL, string secret)
-	{
-		_baseURL = baseURL;
-		_secret = Encoding.UTF8.GetBytes(secret);
-	}
+	private readonly byte[] _secret = Encoding.UTF8.GetBytes(secret);
 
 	public string GetLoginURL(string currentHost, string url)
 	{
@@ -31,7 +24,7 @@ public sealed class DiscourseAuthenticator : IDiscourseAuthenticator
 		var sso = WebUtility.UrlEncode(payloadBase64);
 		var sig = Convert.ToHexString(hash).ToLowerInvariant();
 
-		return $"{_baseURL}/session/sso_provider?sso={sso}&sig={sig}";
+		return $"{baseURL}/session/sso_provider?sso={sso}&sig={sig}";
 	}
 
 	public bool IsValidResponse(string sso, string sig)
