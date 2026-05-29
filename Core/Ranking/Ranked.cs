@@ -1,18 +1,15 @@
 using System.Text.Json.Serialization;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Core.Races;
-using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Ranking;
 
-public class Ranked<T> : Ranked<T, Result>;
-
-public class Ranked<T,R>
+public record Ranked<T,TR>
 {
 	[JsonIgnore]
-	public RankedList<T,R> All { get; init; }
+	public RankedList<T,TR> All { get; init; }
 	public Rank Rank { get; init; }
-	public R Result { get; init; }
+	public TR Result { get; init; }
 	public T Value { get; init; }
 	public uint Count { get; init; }
 

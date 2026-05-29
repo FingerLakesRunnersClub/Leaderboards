@@ -1,16 +1,12 @@
-using FLRC.Leaderboards.Core.Results;
-
 namespace FLRC.Leaderboards.Core.Ranking;
 
-public sealed class RankedList<T> : List<Ranked<T, Result>>;
-
-public sealed class RankedList<T,R> : List<Ranked<T,R>>
+public sealed class RankedList<T,TR> : List<Ranked<T,TR>>
 {
 	public RankedList()
 	{
 	}
 
-	public RankedList(Ranked<T,R>[] list)
+	public RankedList(Ranked<T,TR>[] list)
 	{
 		AddRange(list);
 	}

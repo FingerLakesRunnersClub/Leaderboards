@@ -10,7 +10,7 @@ public sealed class RankedListTests
 	public void CanCreateEmptyRankedList()
 	{
 		//act
-		var rankedList = new RankedList<byte>();
+		var rankedList = new RankedList<byte, Result>();
 
 		//assert
 		Assert.Empty(rankedList);
