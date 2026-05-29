@@ -2,10 +2,10 @@ using System.Collections;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public abstract class Grouped<TG, TR>(IGrouping<TG, TR> group) : IGrouping<TG, TR>, IComparable<Grouped<TG, TR>>
+public abstract record Grouped<TG, TR>(IGrouping<TG, TR> Group) : IGrouping<TG, TR>, IComparable<Grouped<TG, TR>>
 {
-	public TG Key => group.Key;
-	public IEnumerator<TR> GetEnumerator() => group.GetEnumerator();
+	public TG Key => Group.Key;
+	public IEnumerator<TR> GetEnumerator() => Group.GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

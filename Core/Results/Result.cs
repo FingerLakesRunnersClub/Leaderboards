@@ -9,7 +9,7 @@ using Category = FLRC.AgeGradeCalculator.Category;
 
 namespace FLRC.Leaderboards.Core.Results;
 
-public sealed class Result : IComparable<Result>
+public sealed record Result : IComparable<Result>
 {
 	[JsonIgnore] public Course Course { get; init; }
 

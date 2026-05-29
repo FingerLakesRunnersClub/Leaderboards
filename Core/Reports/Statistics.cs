@@ -1,6 +1,6 @@
 namespace FLRC.Leaderboards.Core.Reports;
 
-public sealed class Statistics
+public sealed record Statistics
 {
 	public IDictionary<string, int> Participants { get; init; }
 	public IDictionary<string, int> Runs { get; init; }

@@ -2,7 +2,7 @@ using FLRC.Leaderboards.Core.Ranking;
 
 namespace FLRC.Leaderboards.Core.Leaders;
 
-public sealed class LeaderboardRow
+public sealed record LeaderboardRow
 {
 	public Rank Rank { get; init; }
 	public string Link { get; init; }

@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.ViewModels;
 
-public sealed class ChallengeViewModel : ViewModel
+public sealed record ChallengeViewModel : ViewModel
 {
 	public override string Title => Challenge.Name;
 

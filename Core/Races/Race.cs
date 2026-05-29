@@ -1,8 +1,6 @@
-﻿using FLRC.Leaderboards.Core.Community;
+﻿namespace FLRC.Leaderboards.Core.Races;
 
-namespace FLRC.Leaderboards.Core.Races;
-
-public sealed class Race
+public sealed record Race
 {
 	public uint ID { get; init; }
 	public string Name { get; init; }

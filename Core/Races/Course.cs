@@ -4,7 +4,7 @@ using FLRC.Leaderboards.Core.Results;
 
 namespace FLRC.Leaderboards.Core.Races;
 
-public sealed class Course
+public sealed record Course
 {
 	public Race Race { get; init; }
 	public uint ID { get; init; }

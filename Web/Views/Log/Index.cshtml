@@ -9,8 +9,8 @@
 	string Breakpoint() => Model.Data.Course is null ? "md" : "sm";
 
 	string Style(ActivityLogType type) => Model.Data.Type == type
-	? "secondary"
-	: "light";
+		? "secondary"
+		: "light";
 }
 
 <h2>@Model.Title</h2>
