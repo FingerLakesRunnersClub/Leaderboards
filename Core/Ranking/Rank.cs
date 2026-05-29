@@ -6,9 +6,7 @@ public sealed record Rank(ushort Value) : Formatted<ushort>(Value), IComparable<
 		Value > 0
 			? (Value % 100) switch
 			{
-				11 => Value + "th",
-				12 => Value + "th",
-				13 => Value + "th",
+				11 or 12 or 13 => Value + "th",
 				_ => (Value % 10) switch
 				{
 					1 => Value + "st",
