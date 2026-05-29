@@ -1,13 +1,10 @@
-using FLRC.Leaderboards.Core;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Model;
 
 namespace FLRC.Leaderboards.Web.ViewModels;
 
-public sealed record ChallengeViewModel : ViewModel
+public sealed record ChallengeData
 {
-	public override string Title => Challenge.Name;
-
 	public Challenge[] Challenges { get; init; }
 	public Challenge Challenge { get; init; }
 	public RankedList<ChallengeResult, Result> Results { get; init; }

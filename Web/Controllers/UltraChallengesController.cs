@@ -14,12 +14,13 @@ public sealed class UltraChallengesController(IIterationManager iterationManager
 		var challenges = iteration.UltraChallenges;
 		var challenge = id is not null ? challenges.First(c => c.ID == id) : challenges.FirstOrDefault();
 		var results = await UltraChallengeResultsCalculator.Earliest(iteration);
-		var vm = new ChallengeViewModel
+		var data = new ChallengeData
 		{
 			Challenges = challenges,
 			Challenge = challenge,
 			Results = results.TryGetValue(challenge, out var result) ?  result : []
 		};
+		var vm = new ViewModel<ChallengeData>(challenge.Name, data);
 		return View(vm);
 	}
 }

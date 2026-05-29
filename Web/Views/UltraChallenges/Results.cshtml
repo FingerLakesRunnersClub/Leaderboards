@@ -1,11 +1,11 @@
 @using System.Text.Json
 @using FLRC.Leaderboards.Model;
 @using FLRC.Leaderboards.Web.ViewModels
-@model ChallengeViewModel
+@model ViewModel<ChallengeData>
 
 @functions
 {
-	string Style(Challenge challenge) => Model.Challenge == challenge
+	string Style(Challenge challenge) => Model.Data.Challenge == challenge
 		? "secondary"
 		: "light";
 }
@@ -14,7 +14,7 @@
 
 <section class="mb-3">
 	<div class="btn-group">
-		@foreach (var challenge in Model.Challenges)
+		@foreach (var challenge in Model.Data.Challenges)
 		{
 			var url = $"/UltraChallenges/Results/{challenge.ID}";
 			<a class="btn btn-sm btn-@Style(challenge)" href="@url">@challenge.Name</a>
@@ -39,7 +39,7 @@
 				{ name: 'Age Grade', center: true, value: r => r.AgeGrade?.Display, sort: r => r.AgeGrade?.Value, descending: true }
 			];
 
-			const rows = @Html.Raw(JsonSerializer.Serialize(Model.Results));
+			const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data.Results));
 		</script>
 
 		@await Html.PartialAsync("DataTable", (Model.Title, "xl"))

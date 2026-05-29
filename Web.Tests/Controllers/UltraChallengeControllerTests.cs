@@ -21,7 +21,7 @@ public sealed class UltraChallengeControllerTests
 		var result = await controller.Results(UltraChallengeData.OneHundredK.ID);
 
 		//assert
-		var vm = result.Model as ChallengeViewModel;
-		Assert.Equal("Test 1", vm!.Challenge.Name);
+		var vm = result.Model as ViewModel<ChallengeData>;
+		Assert.Equal("Test 1", vm!.Data.Challenge.Name);
 	}
 }
