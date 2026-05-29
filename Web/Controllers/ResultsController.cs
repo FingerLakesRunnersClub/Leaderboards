@@ -24,7 +24,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var filter = await Filter(c, ag, i);
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.Fastest, (r, f) => r.Fastest(f));
-		var vm = new ViewModel<CourseResults<Time>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		var vm = new ViewModel<CourseResults<Time>>($"{iteration?.Series.Setting[nameof(IConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 
@@ -34,7 +34,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var filter = await Filter(c, null, i);
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.BestAverage, (r, f) => r.BestAverage(f));
-		var vm = new ViewModel<CourseResults<Time>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		var vm = new ViewModel<CourseResults<Time>>($"{iteration?.Series.Setting[nameof(IConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 
@@ -44,7 +44,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.MostRuns, (r, f) => r.MostRuns(f));
-		var vm = new ViewModel<CourseResults<ushort>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		var vm = new ViewModel<CourseResults<ushort>>($"{iteration?.Series.Setting[nameof(IConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 
@@ -54,7 +54,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.Team, (r, f) => r.TeamPoints(iteration, f));
-		var vm = new ViewModel<CourseResults<TeamResults>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		var vm = new ViewModel<CourseResults<TeamResults>>($"{iteration?.Series.Setting[nameof(IConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 
@@ -64,7 +64,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var filter = await Filter(null, null, i);
 		var iteration = await iterationManager.ActiveIteration();
 		var results = await GetResults(id, iteration, filter, ResultType.Community, (r, f) => r.CommunityStars(starCalculator, f));
-		var vm = new ViewModel<CourseResults<Count>>($"{iteration?.Series.Setting[nameof(AppConfig.CourseLabel)]} Results", results);
+		var vm = new ViewModel<CourseResults<Count>>($"{iteration?.Series.Setting[nameof(IConfig.CourseLabel)]} Results", results);
 		return View(vm);
 	}
 
