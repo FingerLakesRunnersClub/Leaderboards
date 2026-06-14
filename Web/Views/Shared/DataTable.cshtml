@@ -8,7 +8,7 @@
     <table aria-label="Results for @Model.Title" v-if="show_table" class="table table-bordered table-striped table-hover table-sm table-responsive@(breakpoint)">
         <thead>
             <tr>
-                <th scope="col" v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">
+                <th scope="col" v-for="field in fields_to_show" class="sortable" tabindex="0" :class="{'text-center': field.center, 'col-12': field.fullWidth}" @@click="toggleSort(field)" @@keypress="toggleSort(field)">
                     <span v-if="field.center" class="spacer"></span>
                     {{field.name}}
                     <div class="spacer">

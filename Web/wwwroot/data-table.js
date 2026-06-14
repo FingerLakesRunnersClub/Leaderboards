@@ -24,7 +24,7 @@ new Vue({
 	data: {
 		fields: fields,
 		sort: {
-			field: null,
+			field: typeof defaultSort !== 'undefined' ? defaultSort : null,
 			descending: false
 		},
 		rows: rows,

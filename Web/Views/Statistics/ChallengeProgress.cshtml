@@ -1,0 +1,64 @@
+@using System.Text.Json
+@using FLRC.Leaderboards.Web.ViewModels
+@model ViewModel<ChallengeProgress[]>
+
+<h2>@Model.Title</h2>
+
+<article class="card card-highlighted">
+	<section class="card-body">
+		<script>
+			const progressBar = (percentComplete) => `<div class="progress">
+				<div class="progress-bar" role="progressbar" style="width: ${percentComplete}%" aria-valuenow="${percentComplete}" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>`;
+
+			const fields = [
+				{ name: 'Name', value: p => p.Athlete.Name, link: p => `/Athlete/Index/${p.Athlete.ID}` },
+				{ name: 'Courses', center: true, value: p => p.AllCourses.length, descending: true },
+				{ name: 'Completed', center: true, value: p => p.CompletedCourses.length, descending: true },
+				{ name: 'Remaining', center: true, value: p => p.AllCourses.length - p.CompletedCourses.length },
+				{ name: 'Percent', center: true, value: p => `${p.PercentComplete}%`, sort: p => p.PercentComplete, descending: true },
+				{ name: 'Progress', raw: p => progressBar(p.PercentComplete), sort: p => p.PercentComplete, descending: true, fullWidth: true }
+			];
+
+			const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data));
+			const defaultSort = fields.filter(f => f.name === 'Progress')[0];
+		</script>
+
+		@await Html.PartialAsync("DataTable", (Model.Title, "xl"))
+
+		<table class="table table-striped table-bordered table-sm">
+			<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col" class="text-center">Courses</th>
+				<th scope="col" class="text-center">Completed</th>
+				<th scope="col" class="text-center">Remaining</th>
+				<th scope="col" class="text-center">Percent</th>
+				<th scope="col" style="width: 100%;">Progress</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var row in @Model.Data)
+			{
+				<tr>
+					<th scope="row">
+						<a href="/Athlete/Index/@row.Athlete.ID">
+							@row.Athlete.Name
+						</a>
+					</th>
+					<td class="text-center">@row.AllCourses.Length</td>
+					<td class="text-center">@row.CompletedCourses.Length</td>
+					<td class="text-center">@(row.AllCourses.Length - row.CompletedCourses.Length)</td>
+					<td class="text-center">@row.PercentComplete%</td>
+					<td>
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" style="width: @row.PercentComplete%" aria-valuenow="@row.PercentComplete" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
+					</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</section>
+</article>
+
