@@ -7,6 +7,7 @@
 @model ViewModel<AthleteSummary>
 
 @await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete)
+@await Component.InvokeAsync("AthleteProgress", Model.Data.Athlete)
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
