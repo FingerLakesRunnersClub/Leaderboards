@@ -8,48 +8,49 @@ using Microsoft.AspNetCore.Mvc;
 namespace FLRC.Leaderboards.Web.Components;
 
 public sealed class Dashboard(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager)
-    : ViewComponent
+	: ViewComponent
 {
-    public async Task<IViewComponentResult> InvokeAsync(bool showLinkButton)
-    {
-        if (!authService.IsLoggedIn())
-            return Content(string.Empty);
+	public async Task<IViewComponentResult> InvokeAsync(bool showLinkButton)
+	{
+		if (!authService.IsLoggedIn())
+			return Content(string.Empty);
 
-        var user = authService.GetCurrentUser();
-        var athlete = await athleteService.Find(LinkedAccount.Keys.Discourse, user.ClaimDictionary["external_id"]);
+		var user = authService.GetCurrentUser();
+		var athlete = await athleteService.Find(LinkedAccount.Keys.Discourse, user.ClaimDictionary["external_id"]);
 
-        if (athlete is null)
-            return Content(string.Empty);
+		if (athlete is null)
+			return Content(string.Empty);
 
-        var iteration = await iterationManager.ActiveIteration();
-        if (iteration is null || iteration.EndDate < DateOnly.FromDateTime(DateTime.Today))
-            return Content(string.Empty);
+		var iteration = await iterationManager.ActiveIteration();
+		if (iteration is null || iteration.EndDate < DateOnly.FromDateTime(DateTime.Today))
+			return Content(string.Empty);
 
-        if (iteration.RegistrationType == nameof(WebScorer) && !athlete.IsRegistered(iteration))
-            return View("Register", iteration);
+		if (iteration.RegistrationType == nameof(WebScorer) && !athlete.IsRegistered(iteration))
+			return View("Register", iteration);
 
-        var challenge = athlete.Challenges.FirstOrDefault(c => c.Iteration == iteration && c.IsPrimary);
-        if (challenge is null)
-            return View("Select");
+		var challenge = athlete.Challenges.FirstOrDefault(c => c.Iteration == iteration && c.IsPrimary);
+		if (challenge is null)
+			return View("Select");
 
-        var allIterationResults = athlete.Results.For(iteration);
+		var allIterationResults = athlete.Results.For(iteration);
 
-        var challengeCoursesCompleted = challenge.Courses
-            .Where(c => allIterationResults.Any(r => r.CourseID == c.ID))
-            .ToArray();
+		var challengeCoursesCompleted = challenge.Courses
+			.Where(c => allIterationResults.Any(r => r.CourseID == c.ID))
+			.ToArray();
 
-        var percentComplete = challenge.Courses.Count > 0
-            ? 100 * challengeCoursesCompleted.Length / challenge.Courses.Count
-            : 0;
+		var percentComplete = challenge.Courses.Count > 0
+			? 100 * challengeCoursesCompleted.Length / challenge.Courses.Count
+			: 0;
 
-        var progress = new ChallengeProgress
-        {
-            Challenge = challenge,
-            CompletedCourses = challengeCoursesCompleted,
-            AllCourses = challenge.Courses.ToArray(),
-            PercentComplete = percentComplete,
-            ShowLinkButton = showLinkButton
-        };
-        return View("Progress", progress);
-    }
+		var progress = new ChallengeProgress
+		{
+			Athlete = athlete,
+			Challenge = challenge,
+			CompletedCourses = challengeCoursesCompleted,
+			AllCourses = challenge.Courses.ToArray(),
+			PercentComplete = percentComplete,
+			ShowLinkButton = showLinkButton
+		};
+		return View("Progress", progress);
+	}
 }
