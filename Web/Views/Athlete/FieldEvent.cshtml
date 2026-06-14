@@ -4,7 +4,7 @@
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<AthleteCourseResults<Performance>>
 
-@await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete.ID)
+@await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete)
 
 <div class="card-highlighted card mb-3">
     <div class="card-header">

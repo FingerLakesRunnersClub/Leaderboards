@@ -2,7 +2,7 @@
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<AthleteLog>
 
-@await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete.ID)
+@await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete)
 
 @{ var showActions = Model.Data.User == Model.Data.Athlete || Model.Data.Admin; }
 

@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class AthleteHeader(IIterationManager iterationManager, IAthleteService athleteService, IOverallResultsCalculator overall) : ViewComponent
+public sealed class AthleteHeader(IIterationManager iterationManager, IOverallResultsCalculator overall) : ViewComponent
 {
-	public async Task<IViewComponentResult> InvokeAsync(Guid id)
+	public async Task<IViewComponentResult> InvokeAsync(Athlete athlete)
 	{
 		var iteration = await iterationManager.ActiveIteration();
-		var athlete = await athleteService.Get(id);
-		var badges = await GetBadges(athlete, iteration);
+		var badges = iteration is not null
+			? await GetBadges(athlete, iteration)
+			: null;
 
 		var vm = new ViewModels.AthleteHeader { Athlete = athlete, Badges = badges };
 		return View("../AthleteHeader", vm);
@@ -27,7 +28,7 @@ public sealed class AthleteHeader(IIterationManager iterationManager, IAthleteSe
 			.ToDictionary(s => BadgeIcon(s.Key), s => s.Key.Name);
 
 		return completed
-			? result.Prepend(new KeyValuePair<string, string>("medal", iteration.OfficialChallenge.Name)).ToDictionary(d => d.Key, d => d.Value)
+			? result.Prepend(new KeyValuePair<string, string>("medal", iteration.OfficialChallenge?.Name ?? "Challenge Completed")).ToDictionary(d => d.Key, d => d.Value)
 			: result;
 	}
 
