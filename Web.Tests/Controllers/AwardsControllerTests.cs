@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Tests;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;

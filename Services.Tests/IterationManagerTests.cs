@@ -1,4 +1,3 @@
-using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Model;
 using NSubstitute;
 using Xunit;
