@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
 using FLRC.Leaderboards.Web.ViewModels;
+using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using Xunit;
 
@@ -27,7 +28,8 @@ public sealed class AthletesControllerTests
 		var response = await controller.Index();
 
 		//assert
-		var vm = response.Model as ViewModel<Athlete[]>;
+		var result = response as ViewResult;
+		var vm = result!.Model as ViewModel<Athlete[]>;
 		Assert.Equal("Test 1", vm!.Data[0].Name);
 		Assert.Equal("Test 2", vm.Data[1].Name);
 	}
