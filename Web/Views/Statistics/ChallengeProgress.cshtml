@@ -25,40 +25,6 @@
 		</script>
 
 		@await Html.PartialAsync("DataTable", (Model.Title, "xl"))
-
-		<table class="table table-striped table-bordered table-sm">
-			<thead>
-			<tr>
-				<th scope="col">Name</th>
-				<th scope="col" class="text-center">Courses</th>
-				<th scope="col" class="text-center">Completed</th>
-				<th scope="col" class="text-center">Remaining</th>
-				<th scope="col" class="text-center">Percent</th>
-				<th scope="col" style="width: 100%;">Progress</th>
-			</tr>
-			</thead>
-			<tbody>
-			@foreach (var row in @Model.Data)
-			{
-				<tr>
-					<th scope="row">
-						<a href="/Athlete/Index/@row.Athlete.ID">
-							@row.Athlete.Name
-						</a>
-					</th>
-					<td class="text-center">@row.AllCourses.Length</td>
-					<td class="text-center">@row.CompletedCourses.Length</td>
-					<td class="text-center">@(row.AllCourses.Length - row.CompletedCourses.Length)</td>
-					<td class="text-center">@row.PercentComplete%</td>
-					<td>
-						<div class="progress">
-							<div class="progress-bar" role="progressbar" style="width: @row.PercentComplete%" aria-valuenow="@row.PercentComplete" aria-valuemin="0" aria-valuemax="100"></div>
-						</div>
-					</td>
-				</tr>
-			}
-			</tbody>
-		</table>
 	</section>
 </article>
 
