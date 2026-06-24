@@ -6,6 +6,11 @@
 
 <article class="card card-highlighted">
 	<section class="card-body">
+		<div class="btn-group mb-3">
+			<a href="/Completed" class="btn btn-light">Completed</a>
+			<a href="/Completed/Progress" class="btn btn-secondary">In Progress</a>
+		</div>
+
 		<script>
 			const progressBar = (percentComplete) => `<div class="progress">
 				<div class="progress-bar" role="progressbar" style="width: ${percentComplete}%" aria-valuenow="${percentComplete}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -16,8 +21,8 @@
 				{ name: 'Courses', center: true, value: p => p.AllCourses.length, descending: true },
 				{ name: 'Completed', center: true, value: p => p.CompletedCourses.length, descending: true },
 				{ name: 'Remaining', center: true, value: p => p.AllCourses.length - p.CompletedCourses.length },
-				{ name: 'Percent', center: true, value: p => `${p.PercentComplete}%`, sort: p => p.PercentComplete, descending: true },
-				{ name: 'Progress', raw: p => progressBar(p.PercentComplete), sort: p => p.PercentComplete, descending: true, fullWidth: true }
+				{ name: 'Percent', center: true, value: p => `${p.CoursePercent}%`, sort: p => p.CoursePercent, descending: true },
+				{ name: 'Progress', raw: p => progressBar(p.CoursePercent), sort: p => p.CoursePercent, descending: true, fullWidth: true }
 			];
 
 			const rows = @Html.Raw(JsonSerializer.Serialize(Model.Data));

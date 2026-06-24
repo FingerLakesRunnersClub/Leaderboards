@@ -132,48 +132,4 @@ public sealed class StatisticsController(IIterationManager iterationManager) : C
 			}
 		};
 	}
-
-	[HttpGet]
-	public async Task<IActionResult> ChallengeProgress()
-	{
-		var iteration = await iterationManager.ActiveIteration();
-		if (iteration is null)
-			return Redirect("/");
-
-		var data = iteration.Athletes
-			.Select(a => ChallengeProgress(a, iteration))
-			.Where(p => p is not null)
-			.OrderByDescending(p => p.PercentComplete)
-			.ThenBy(p => p.AllCourses.Length - p.CompletedCourses.Length)
-			.ToArray();
-
-		var vm = new ViewModel<ChallengeProgress[]>("Challenge Progress", data);
-		return View(vm);
-	}
-
-	private static ChallengeProgress ChallengeProgress(Athlete athlete, Iteration iteration)
-	{
-		var challenge = athlete.Challenge(iteration);
-		if (challenge is null)
-			return null;
-
-		var allIterationResults = athlete.Results.For(iteration);
-
-		var challengeCoursesCompleted = challenge.Courses
-			.Where(c => allIterationResults.Any(r => r.CourseID == c.ID))
-			.ToArray();
-
-		var percentComplete = challenge.Courses.Count > 0
-			? 100 * challengeCoursesCompleted.Length / challenge.Courses.Count
-			: 0;
-
-		return new ChallengeProgress
-		{
-			Athlete = athlete,
-			Challenge = challenge,
-			AllCourses = challenge.Courses.ToArray(),
-			CompletedCourses = challengeCoursesCompleted,
-			PercentComplete = percentComplete
-		};
-	}
 }

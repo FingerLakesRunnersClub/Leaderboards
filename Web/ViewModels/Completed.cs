@@ -6,6 +6,7 @@ namespace FLRC.Leaderboards.Web.ViewModels;
 
 public sealed record Completed
 {
+	public Iteration Iteration { get; init; }
 	public RankedList<Date, Result> Results { get; init; }
 	public RankedList<Date, Result> PersonalResults { get; init; }
 }

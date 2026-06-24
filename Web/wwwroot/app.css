@@ -1,72 +1,85 @@
 body {
 	background-color: var(--secondary-light);
 	font-family: "Roboto", sans-serif;
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
 }
 
 html, body {
-    height: 100%;
+	height: 100%;
 }
 
 h1, h2, h3 {
-    font-family: 'Raleway', sans-serif;
-    color: var(--primary);
+	font-family: 'Raleway', sans-serif;
+	color: var(--primary);
 }
 
 h2 .btn {
-    font-family: inherit;
+	font-family: inherit;
 }
 
 a {
-    color: var(--primary);
+	color: var(--primary);
 }
 
 a:hover, a:focus {
-    color: var(--primary-dark);
+	color: var(--primary-dark);
+}
+
+a.icon {
+	display: inline-block;
+	min-width: 2rem;
+}
+
+a.icon:hover {
+	text-decoration: none;
+}
+
+a.icon i {
+	padding: 0.25rem;
 }
 
 .navbar {
-    min-height: 7.5rem;
-    border-bottom: 0.5rem solid var(--primary);
-    background: var(--secondary-dark);
-    background: linear-gradient(0deg, var(--secondary-dark) 0%, var(--secondary) 30%, white 100%);
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+	min-height: 7.5rem;
+	border-bottom: 0.5rem solid var(--primary);
+	background: var(--secondary-dark);
+	background: linear-gradient(0deg, var(--secondary-dark) 0%, var(--secondary) 30%, white 100%);
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
 }
 
 .navbar .container {
-    position: relative;
-    align-self: flex-end;
+	position: relative;
+	align-self: flex-end;
 }
 
 .navbar-brand .logo {
-    max-width: min(9rem, 28vw);
-    position: absolute;
-    top: -4.6rem;
-    left: 0;
-    filter: drop-shadow(0 0 0.5rem #999);
+	max-width: min(9rem, 28vw);
+	position: absolute;
+	top: -4.6rem;
+	left: 0;
+	filter: drop-shadow(0 0 0.5rem #999);
 }
 
 .content-container {
-    flex: 1 0 auto;
+	flex: 1 0 auto;
 }
 
 footer {
-    border-top: 0.5rem solid var(--primary);
-    background-color: var(--primary);
-    color: white;
-    padding: 1rem 1rem 2rem;
-    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
-    margin-top: 2rem;
+	border-top: 0.5rem solid var(--primary);
+	background-color: var(--primary);
+	color: white;
+	padding: 1rem 1rem 2rem;
+	box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+	margin-top: 2rem;
 }
 
 footer a, footer a:hover, footer a:focus {
-    color: white;
+	color: white;
 }
 
 .dropdown-menu {
-    left: revert;
-    margin-left: -2rem;
+	left: revert;
+	margin-left: -2rem;
 	max-height: calc(100vh - 8rem);
 	overflow-y: auto;
 }
@@ -77,15 +90,15 @@ footer a, footer a:hover, footer a:focus {
 }
 
 #about {
-    right: 0.25rem;
+	right: 0.25rem;
 }
 
 .dropdown-item {
-    white-space: nowrap;
+	white-space: nowrap;
 }
 
 .dropdown-item:active {
-    background-color: #f0f2f0;
+	background-color: #f0f2f0;
 }
 
 .dropdown-item a {
@@ -101,61 +114,69 @@ footer a, footer a:hover, footer a:focus {
 }
 
 .btn {
-    border: 1px solid #dae0e5;
+	border: 1px solid #dae0e5;
 }
 
 .no-activity-log .btn.activity-log {
-    display: none;
+	display: none;
 }
 
 table {
-    white-space: nowrap;
-    background-color: white;
-    border-radius: 0.5rem;
+	white-space: nowrap;
+	background-color: white;
+	border-radius: 0.5rem;
 }
 
 th.sortable {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 th.sortable .spacer {
-    display: inline-block;
-    width: 1rem;
+	display: inline-block;
+	width: 1rem;
+}
+
+table.table td {
+	vertical-align: middle;
 }
 
 table.leaderboard td.rank {
-    width: 2rem;
+	width: 2rem;
 }
 
 table.leaderboard td.value {
-    width: 5rem;
+	width: 5rem;
+}
+
+td .progress {
+	height: 1.25rem;
 }
 
 dt {
-    text-align: right;
+	text-align: right;
 }
 
 [v-cloak] {
-    display: none;
+	display: none;
 }
 
 .course-icon {
-    margin-right: 0.25rem;
+	margin-right: 0.25rem;
 }
 
 .card-highlighted {
-    border-top: 0.25rem solid var(--primary-light);
+	border-top: 0.25rem solid var(--primary-light);
 }
 
 .btn-xs {
-    padding: 0.1rem 0.5rem;
-    font-size: 0.75rem;
-    line-height: 1.8;
-    border-radius: 0.2rem;
+	padding: 0.1rem 0.5rem;
+	font-size: 0.75rem;
+	line-height: 1.8;
+	border-radius: 0.2rem;
 }
 
 .btn i {
-    opacity: 0.5;
+	opacity: 0.5;
 }
 
 #completion-badges {
@@ -166,12 +187,12 @@ dt {
 }
 
 #completion-badges i {
-    width: 3rem;
-    padding: 0.5rem;
-    text-align: center;
-    background-color: white;
-    border-radius: 1.25rem;
-    box-shadow: 0 0 0.5rem var(--primary-light);
+	width: 3rem;
+	padding: 0.5rem;
+	text-align: center;
+	background-color: white;
+	border-radius: 1.25rem;
+	box-shadow: 0 0 0.5rem var(--primary-light);
 }
 
 .community .group {
@@ -191,12 +212,12 @@ dt {
 	width: 1rem;
 }
 
-.community .star i+i {
+.community .star i + i {
 	margin-left: -0.5rem;
 }
 
 .community .star .fa-star {
-	color:  var(--secondary-dark);
+	color: var(--secondary-dark);
 	text-shadow: 0 0 1px black;
 }
 
@@ -205,30 +226,30 @@ dt {
 }
 
 @media (max-width: 575px) {
-    .primary-nav {
-        flex: 1;
-    }
+	.primary-nav {
+		flex: 1;
+	}
 
-    .navbar {
-        min-height: revert;
-    }
+	.navbar {
+		min-height: revert;
+	}
 
-    .navbar .container {
-        align-self: revert;
-    }
+	.navbar .container {
+		align-self: revert;
+	}
 
-    .navbar-brand {
-        display: block;
-        padding: 0;
-        margin: -1rem 0 -2rem 0;
-        text-align: center;
-    }
+	.navbar-brand {
+		display: block;
+		padding: 0;
+		margin: -1rem 0 -2rem 0;
+		text-align: center;
+	}
 
-    .navbar-brand .logo {
-        position: revert;
-    }
+	.navbar-brand .logo {
+		position: revert;
+	}
 
-    #races {
-        right: 0.25rem;
-    }
+	#races {
+		right: 0.25rem;
+	}
 }

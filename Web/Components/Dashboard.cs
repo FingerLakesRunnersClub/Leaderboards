@@ -2,7 +2,6 @@ using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
-using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Components;
@@ -32,25 +31,7 @@ public sealed class Dashboard(IAuthService authService, IAthleteService athleteS
 		if (challenge is null)
 			return View("Select");
 
-		var allIterationResults = athlete.Results.For(iteration);
-
-		var challengeCoursesCompleted = challenge.Courses
-			.Where(c => allIterationResults.Any(r => r.CourseID == c.ID))
-			.ToArray();
-
-		var percentComplete = challenge.Courses.Count > 0
-			? 100 * challengeCoursesCompleted.Length / challenge.Courses.Count
-			: 0;
-
-		var progress = new ChallengeProgress
-		{
-			Athlete = athlete,
-			Challenge = challenge,
-			CompletedCourses = challengeCoursesCompleted,
-			AllCourses = challenge.Courses.ToArray(),
-			PercentComplete = percentComplete,
-			ShowLinkButton = showLinkButton
-		};
+		var progress = AthleteProgress.GetProgress(athlete, iteration, showLinkButton);
 		return View("Progress", progress);
 	}
 }

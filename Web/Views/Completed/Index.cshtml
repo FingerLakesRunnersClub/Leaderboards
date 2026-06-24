@@ -1,11 +1,17 @@
 ﻿@using System.Text.Json
+@using FLRC.Leaderboards.Core.Races
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<Completed>
 
 <h2 id="table-header">@Model.Title</h2>
 
-<div class="card card-highlighted">
-	<div class="card-body">
+<article class="card card-highlighted">
+	<section class="card-body">
+		<div class="btn-group mb-3">
+			<a href="/Completed" class="btn btn-secondary">Completed</a>
+			<a href="/Completed/Progress" class="btn btn-light">In Progress</a>
+		</div>
+
 		<script>
             const fields = [
                 { name: 'Rank', center: true, value: r => r.Rank.Value },
@@ -22,19 +28,22 @@
 
 		@if (Model.Data.PersonalResults.Any())
 		{
-			<h3>Personal Completions</h3>
+			<h3>Personal Challenges</h3>
 			<table aria-labelledby="table-header" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 				<thead>
 				<tr>
 					<th>Name</th>
 					<th class="text-center">Age</th>
 					<th class="text-center">Category</th>
+					<th class="text-center">Courses</th>
+					<th class="text-center">Miles</th>
 					<th class="text-center">Date Completed</th>
 				</tr>
 				</thead>
 				<tbody>
 				@foreach (var row in Model.Data.PersonalResults)
 				{
+					var challenge = row.Result.Athlete.Challenge(Model.Data.Iteration)!;
 					<tr>
 						<td>
 							<a href="/Athlete/Index/@row.Result.Athlete.ID">
@@ -43,11 +52,13 @@
 						</td>
 						<td class="text-center">@row.Result.Athlete.AgeAsOf(row.Value.Value)</td>
 						<td class="text-center">@row.Result.Athlete.Category</td>
+						<td class="text-center">@challenge.Courses.Count</td>
+						<td class="text-center">@challenge.Courses.Sum(c => new Distance(c.DistanceDisplay).Miles)</td>
 						<td class="text-center">@row.Value.Display</td>
 					</tr>
 				}
 				</tbody>
 			</table>
 		}
-	</div>
-</div>
+	</section>
+</article>
