@@ -53,7 +53,7 @@
 						<td class="text-center">@row.Result.Athlete.AgeAsOf(row.Value.Value)</td>
 						<td class="text-center">@row.Result.Athlete.Category</td>
 						<td class="text-center">@challenge.Courses.Count</td>
-						<td class="text-center">@challenge.Courses.Sum(c => new Distance(c.DistanceDisplay).Miles)</td>
+						<td class="text-center">@Math.Round(challenge.Courses.Sum(c => new Distance(c.DistanceDisplay).Miles), 1)</td>
 						<td class="text-center">@row.Value.Display</td>
 					</tr>
 				}

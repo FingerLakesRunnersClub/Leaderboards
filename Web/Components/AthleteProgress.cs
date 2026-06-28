@@ -44,7 +44,7 @@ public sealed class AthleteProgress(IIterationManager iterationManager) : ViewCo
 		var totalMiles = courses.Sum(c => new Distance(c.DistanceDisplay).Miles);
 
 		var mileagePercent = totalMiles > 0
-			? 100 * completedMiles / totalMiles
+			? (int)(100 * completedMiles / totalMiles)
 			: 0;
 
 		return new ChallengeProgress

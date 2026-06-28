@@ -17,6 +17,7 @@ public sealed class CompletedController(IIterationManager iterationManager, IOve
 
 		var completed = new Completed
 		{
+			Iteration = iteration,
 			Results = overall.Completed(iteration),
 			PersonalResults = overall.CompletedPersonal(iteration)
 		};

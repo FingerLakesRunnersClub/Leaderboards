@@ -14,7 +14,7 @@ public sealed record ChallengeProgress
     public double TotalMiles { get; init; }
 
     public int CoursePercent { get; init; }
-    public double MileagePercent { get; set; }
+    public int MileagePercent { get; set; }
 
     public bool ShowLinkButton { get; init; }
 }
