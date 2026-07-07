@@ -6,7 +6,7 @@ namespace FLRC.Leaderboards.Web.ViewModels;
 
 public sealed record SimilarAthlete
 {
-	public const double Weighting = 0.15;
+	public const double Weighting = 0.2;
 
 	public Rank Rank { get; init; }
 	public Athlete Athlete { get; init; }

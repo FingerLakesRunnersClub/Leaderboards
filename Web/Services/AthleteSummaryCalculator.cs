@@ -17,6 +17,9 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 	private Course[] _iterationCourses;
 
 	public async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration)
+		=> await GetSummary(athlete, iteration, false);
+
+	private async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration, bool skipCommunity)
 	{
 		_results ??= await resultService.Find(iteration);
 		_iterationCourses ??= iteration.AllCourses;
@@ -30,7 +33,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.AthleteID == athlete.ID)),
 			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.AthleteID == athlete.ID)),
 			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.AthleteID == athlete.ID)),
-			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).Find(r => r.Result.AthleteID == athlete.ID)),
+			CommunityStars = skipCommunity ? [] : courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).Find(r => r.Result.AthleteID == athlete.ID)),
 			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.AthleteID == athlete.ID).ToArray())
 		};
 
@@ -98,12 +101,13 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 
 		var athletes = new List<AthleteSummary>();
 		foreach (var match in matches)
-			athletes.Add(await GetSummary(match, summary.Iteration));
+			athletes.Add(await GetSummary(match, summary.Iteration, true));
 
 		return athletes.Select(their => SimilarAthleteCalculator.GetSimilarity(summary, their))
 			.Where(m => Math.Abs(m.FastestPercent.Value) < 10
 			            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
-			            && m.Similarity.Value >= 80)
+			            && m.Similarity.Value >= 100 * (1 - SimilarAthlete.Weighting)
+			            && m.Overlap.Value >= 100 * SimilarAthlete.Weighting)
 			.ToArray();
 	}
 
