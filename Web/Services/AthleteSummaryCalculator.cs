@@ -13,17 +13,20 @@ namespace FLRC.Leaderboards.Web.Services;
 
 public sealed class AthleteSummaryCalculator(IResultService resultService, IOverallResultsCalculator overall, ICommunityStarCalculator starCalculator, IConfig config) : IAthleteSummaryCalculator
 {
+	private Result[] _results;
+	private Course[] _iterationCourses;
+
 	public async Task<AthleteSummary> GetSummary(Athlete athlete, Iteration iteration)
 	{
-		var results = await resultService.Find(iteration);
-		var iterationCourses = iteration.AllCourses;
-		var courses = results.OrderBy(r => iterationCourses.IndexOf(r.Course)).GroupBy(r => r.Course).ToArray();
+		_results ??= await resultService.Find(iteration);
+		_iterationCourses ??= iteration.AllCourses;
+		var courses = _results.OrderBy(r => _iterationCourses.IndexOf(r.Course)).GroupBy(r => r.Course).ToArray();
 		var filter = new Filter(Category.Parse(athlete.Category.ToString()));
 		var summary = new AthleteSummary
 		{
 			Athlete = athlete,
 			Iteration = iteration,
-			AllResults = results,
+			AllResults = _results,
 			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete))),
 			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.Athlete.Equals(athlete))),
