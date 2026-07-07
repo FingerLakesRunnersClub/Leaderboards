@@ -1,4 +1,5 @@
-﻿@using FLRC.Leaderboards.Core.Config
+﻿@using FLRC.Leaderboards.Core.Athletes
+@using FLRC.Leaderboards.Core.Config
 @using FLRC.Leaderboards.Core.Metrics
 @using FLRC.Leaderboards.Core.Ranking
 @using FLRC.Leaderboards.Model
@@ -8,6 +9,8 @@
 
 @await Component.InvokeAsync("AthleteHeader", Model.Data.Athlete)
 @await Component.InvokeAsync("AthleteProgress", Model.Data.Athlete)
+
+@{ var category = new Filter(Category.Parse(Model.Data.Athlete.Category.ToString())); }
 
 <div class="card card-highlighted mb-3">
 	<div class="card-body">
@@ -32,7 +35,7 @@
 </div>
 
 <div class="row">
-	@foreach (var (course, _) in Model.Data.All.Where(r => r.Value != null && r.Value.Any()))
+	@foreach (var (course, _) in Model.Data.All.Where(r => r.Value is not null && r.Value.Any()))
 	{
 		<div class="col-12 col-lg-6">
 			<div class="card-highlighted card mb-3">
@@ -75,11 +78,14 @@
 						{
 							@if (!Model.Data.Athlete.IsPrivate)
 							{
+								var iterationResults = course.Results.For(Model.Data.Iteration);
+								var avgThreshold = iterationResults.AverageThreshold(category);
+
 								<dt class="col-6">
-									Average (Top @course.Results.For(Model.Data.Iteration).AverageThreshold(new Filter(FLRC.Leaderboards.Core.Athletes.Category.Parse(Model.Data.Athlete.Category.ToString()))))
+									Average (Top @avgThreshold)
 								</dt>
 								<dd class="col-6">
-									@if (Model.Data.Average[course] != null)
+									@if (Model.Data.Average[course] is not null)
 									{
 										@Model.Data.Average[course].Value?.Display
 										@:(<a href="/Results/BestAverage/@course.ID?c=@Model.Data.Athlete.Category">@Model.Data.Average[course].Rank.Display</a>)
