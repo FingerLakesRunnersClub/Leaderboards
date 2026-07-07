@@ -27,6 +27,4 @@ public sealed record AthleteSummary
 	public Ranked<Count, Result> OverallCourses { get; init; }
 	public Ranked<Count, Result> OverallCommunityStars { get; init; }
 	public Ranked<TeamResults, Result> TeamResults { get; init; }
-
-	public int TotalResults { get; init; }
 }

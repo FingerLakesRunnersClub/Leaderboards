@@ -17,7 +17,8 @@ public static class SimilarAthleteCalculator
 		var total = GetTotal(fastestToCompare, avgToCompare, their);
 
 		var similarity = new Percent(total / matches);
-		var overlap = new Percent(100.0 * matches / my.TotalResults);
+		var myTotalResults = my.Fastest.Count(r => r.Value is not null) + my.Average.Count(r => r.Value is not null);
+		var overlap = new Percent(100.0 * matches / myTotalResults);
 		return new SimilarAthlete
 		{
 			Athlete = their.Athlete,

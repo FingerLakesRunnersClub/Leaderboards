@@ -44,7 +44,6 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 		var mostCourses = overall.MostCourses(iteration).Find(r => r.Result.Athlete.Equals(athlete));
 		var stars = overall.Community(iteration).Find(r => r.Result.Athlete.Equals(athlete));
 		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
-		var total = summary.Fastest.Count(r => r.Value != null) + summary.Average.Count(r => r.Value != null);
 
 		return summary with
 		{
@@ -67,8 +66,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 			OverallMiles = miles,
 			OverallCourses = mostCourses,
 			OverallCommunityStars = stars,
-			TeamResults = team,
-			TotalResults = total
+			TeamResults = team
 		};
 	}
 
