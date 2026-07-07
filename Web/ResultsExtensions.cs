@@ -76,7 +76,7 @@ public static class ResultsExtensions
 				{
 					All = ranks,
 					Rank = Rank(isInFirstPlace, lastPlace, result.Value, rank),
-					Result = new Result { Athlete = result.Key, StartTime = startTime },
+					Result = new Result { Athlete = result.Key, AthleteID = result.Key.ID, StartTime = startTime },
 					Value = result.Value
 				};
 				ranks.Add(rankedResult);
@@ -90,45 +90,6 @@ public static class ResultsExtensions
 
 		private RankedList<T, Result> RankDescending<T>(Filter filter, Func<GroupedModelResult, bool> groupFilter, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> sort)
 			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
-
-		private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> getValue)
-		{
-			var ranks = new RankedList<T, Result>();
-
-			var list = sorted.ThenBy(rs => getResult(rs).Duration).ToArray();
-			for (ushort rank = 1; rank <= list.Length; rank++)
-			{
-				var group = list[rank - 1];
-				var result = getResult(group);
-
-				var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
-				var value = getValue(group);
-
-				var firstPlace = !isInFirstPlace ? ranks.First(r => r.Value is not null) : null;
-				var lastPlace = !isInFirstPlace ? ranks[^1] : null;
-
-				var rankedResult = new Ranked<T, Result>
-				{
-					All = ranks,
-					Rank = Rank(isInFirstPlace, lastPlace, value, rank),
-					Result = !result.Athlete.IsPrivate ? result : result with { Duration = TimeSpan.Zero },
-					Value = value,
-					Count = (uint)group.Count(),
-					BehindLeader = result.BehindLeader(isInFirstPlace, firstPlace),
-					Points = result.Points(isInFirstPlace, firstPlace),
-					AgeGrade = !result.Athlete.IsPrivate ? result.AgeGrade() : null
-				};
-
-				ranks.Add(rankedResult);
-			}
-
-			return new RankedList<T, Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
-		}
-
-		private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Result> lastPlace, T value, ushort rank)
-			=> !isInFirstPlace && lastPlace.Value.Equals(value)
-				? lastPlace.Rank
-				: new Rank((ushort)(isInFirstPlace ? 1 : rank));
 
 		public GroupedModelResult[] GroupedResults(Filter filter = null)
 			=> results.Filter(filter)
@@ -216,4 +177,43 @@ public static class ResultsExtensions
 			return teamResults.Rank();
 		}
 	}
+
+	private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> getValue)
+	{
+		var ranks = new RankedList<T, Result>();
+
+		var list = sorted.ThenBy(rs => getResult(rs).Duration).ToArray();
+		for (ushort rank = 1; rank <= list.Length; rank++)
+		{
+			var group = list[rank - 1];
+			var result = getResult(group);
+
+			var isInFirstPlace = !ranks.Exists(r => r.Value is not null);
+			var value = getValue(group);
+
+			var firstPlace = !isInFirstPlace ? ranks.First(r => r.Value is not null) : null;
+			var lastPlace = !isInFirstPlace ? ranks[^1] : null;
+
+			var rankedResult = new Ranked<T, Result>
+			{
+				All = ranks,
+				Rank = Rank(isInFirstPlace, lastPlace, value, rank),
+				Result = !result.Athlete.IsPrivate ? result : result with { Duration = TimeSpan.Zero },
+				Value = value,
+				Count = (uint)group.Count(),
+				BehindLeader = result.BehindLeader(isInFirstPlace, firstPlace),
+				Points = result.Points(isInFirstPlace, firstPlace),
+				AgeGrade = !result.Athlete.IsPrivate ? result.AgeGrade() : null
+			};
+
+			ranks.Add(rankedResult);
+		}
+
+		return new RankedList<T, Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
+	}
+
+	private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Result> lastPlace, T value, ushort rank)
+		=> !isInFirstPlace && lastPlace.Value.Equals(value)
+			? lastPlace.Rank
+			: new Rank((ushort)(isInFirstPlace ? 1 : rank));
 }

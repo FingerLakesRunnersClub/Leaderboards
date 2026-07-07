@@ -57,6 +57,7 @@ public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalcul
 			var overallResult = new Result
 			{
 				Athlete = result.Key,
+				AthleteID = result.Key.ID,
 				StartTime = iteration.StartDate?.ToDateTime(TimeOnly.MinValue) ?? DateTime.MinValue
 			};
 			ranks.Add(new Ranked<T1, Result>
@@ -106,7 +107,7 @@ public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalcul
 			{
 				All = ranks,
 				Rank = ranks.Any() && ranks[^1].Value.Score.Equals(value.Score) ? ranks[^1].Rank : new Rank(rank),
-				Result = new Result { Athlete = value.Athlete, StartTime = iteration.StartDate?.ToDateTime(TimeOnly.MinValue) ?? DateTime.Now },
+				Result = new Result { Athlete = value.Athlete, AthleteID = value.Athlete.ID, StartTime = iteration.StartDate?.ToDateTime(TimeOnly.MinValue) ?? DateTime.Now },
 				Count = value.Courses,
 				AgeGrade = value.AgeGrade,
 				Value = value

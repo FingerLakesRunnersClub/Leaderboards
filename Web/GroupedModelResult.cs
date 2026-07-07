@@ -21,6 +21,7 @@ public sealed record GroupedModelResult(IGrouping<Athlete, Result> Group) : Grou
 		return new Result
 		{
 			Athlete = Key,
+			AthleteID = Key.ID,
 			Course = course,
 			StartTime = timedResults.LastOrDefault()?.StartTime ?? DateTime.MinValue,
 			Duration = !Key.IsPrivate && timedResults.Length > 0
