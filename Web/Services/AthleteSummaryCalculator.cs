@@ -27,22 +27,22 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 			Athlete = athlete,
 			Iteration = iteration,
 			AllResults = _results,
-			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.Athlete.Equals(athlete))),
-			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.Athlete.Equals(athlete))),
-			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.Athlete.Equals(athlete))),
-			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).Find(r => r.Result.Athlete.Equals(athlete))),
-			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.Athlete.Equals(athlete)).ToArray())
+			Fastest = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest(filter).Find(r => r.Result.AthleteID == athlete.ID)),
+			Average = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage(filter).Find(r => r.Result.AthleteID == athlete.ID)),
+			Runs = courses.ToDictionary(c => c.Key, c => c.ToArray().MostRuns().Find(r => r.Result.AthleteID == athlete.ID)),
+			CommunityStars = courses.ToDictionary(c => c.Key, c => c.ToArray().CommunityStars(starCalculator).Find(r => r.Result.AthleteID == athlete.ID)),
+			All = courses.ToDictionary(c => c.Key, c => c.Where(r => r.AthleteID == athlete.ID).ToArray())
 		};
 
 		if (config.FileSystemResults is not null)
 			return summary;
 
-		var points = overall.MostPoints(iteration, filter).Find(r => r.Result.Athlete.Equals(athlete));
-		var pointsTop3 = overall.MostPoints(iteration, 3, filter).Find(r => r.Result.Athlete.Equals(athlete));
-		var ageGrade = overall.AgeGrade(iteration).Find(r => r.Result.Athlete.Equals(athlete));
-		var miles = overall.MostMiles(iteration).Find(r => r.Result.Athlete.Equals(athlete));
-		var mostCourses = overall.MostCourses(iteration).Find(r => r.Result.Athlete.Equals(athlete));
-		var stars = overall.Community(iteration).Find(r => r.Result.Athlete.Equals(athlete));
+		var points = overall.MostPoints(iteration, filter).Find(r => r.Result.AthleteID == athlete.ID);
+		var pointsTop3 = overall.MostPoints(iteration, 3, filter).Find(r => r.Result.AthleteID == athlete.ID);
+		var ageGrade = overall.AgeGrade(iteration).Find(r => r.Result.AthleteID == athlete.ID);
+		var miles = overall.MostMiles(iteration).Find(r => r.Result.AthleteID == athlete.ID);
+		var mostCourses = overall.MostCourses(iteration).Find(r => r.Result.AthleteID == athlete.ID);
+		var stars = overall.Community(iteration).Find(r => r.Result.AthleteID == athlete.ID);
 		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
 
 		return summary with

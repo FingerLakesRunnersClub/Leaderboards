@@ -28,6 +28,7 @@ public sealed class AthleteSummaryCalculatorTests
 			new Result
 			{
 				Athlete = athlete1,
+				AthleteID = athlete1.ID,
 				Course = course,
 				StartTime = DateTime.Parse("1/1/2020"),
 				Duration = new TimeSpan(2, 4, 6)
@@ -35,6 +36,7 @@ public sealed class AthleteSummaryCalculatorTests
 			new Result
 			{
 				Athlete = athlete2,
+				AthleteID = athlete2.ID,
 				Course = course,
 				StartTime = DateTime.Parse("1/1/2020"),
 				Duration = new TimeSpan(1, 2, 3)

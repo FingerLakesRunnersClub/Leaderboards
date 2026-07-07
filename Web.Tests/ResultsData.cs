@@ -15,14 +15,14 @@ public static class ResultsData
 
 	public static Result[] Results =>
 	[
-		new() { Course = Course, Athlete = Athlete1, StartTime = DateTime.Parse("2/1/2020"), Duration = TimeSpan.Parse("2:34:56.7") },
-		new() { Course = Course, Athlete = Athlete1, StartTime = DateTime.Parse("2/3/2020"), Duration = TimeSpan.Parse("1:20:00.0") },
-		new() { Course = Course, Athlete = Athlete2, StartTime = DateTime.Parse("2/7/2020"), Duration = TimeSpan.Parse("0:54:32.1") },
-		new() { Course = Course, Athlete = Athlete3, StartTime = DateTime.Parse("2/5/2020"), Duration = TimeSpan.Parse("1:02:03.4") },
-		new() { Course = Course, Athlete = Athlete3, StartTime = DateTime.Parse("2/2/2020"), Duration = TimeSpan.Parse("1:00:00.0") },
-		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/6/2020"), Duration = TimeSpan.Parse("2:03:04.5") },
-		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/8/2020"), Duration = TimeSpan.Parse("2:22:22.2") },
-		new() { Course = Course, Athlete = Athlete4, StartTime = DateTime.Parse("2/4/2020"), Duration = TimeSpan.Parse("2:00:00.0") }
+		new() { Course = Course, Athlete = Athlete1, AthleteID = Athlete1.ID, StartTime = DateTime.Parse("2/1/2020"), Duration = TimeSpan.Parse("2:34:56.7") },
+		new() { Course = Course, Athlete = Athlete1, AthleteID = Athlete1.ID, StartTime = DateTime.Parse("2/3/2020"), Duration = TimeSpan.Parse("1:20:00.0") },
+		new() { Course = Course, Athlete = Athlete2, AthleteID = Athlete2.ID, StartTime = DateTime.Parse("2/7/2020"), Duration = TimeSpan.Parse("0:54:32.1") },
+		new() { Course = Course, Athlete = Athlete3, AthleteID = Athlete3.ID, StartTime = DateTime.Parse("2/5/2020"), Duration = TimeSpan.Parse("1:02:03.4") },
+		new() { Course = Course, Athlete = Athlete3, AthleteID = Athlete3.ID, StartTime = DateTime.Parse("2/2/2020"), Duration = TimeSpan.Parse("1:00:00.0") },
+		new() { Course = Course, Athlete = Athlete4, AthleteID = Athlete4.ID, StartTime = DateTime.Parse("2/6/2020"), Duration = TimeSpan.Parse("2:03:04.5") },
+		new() { Course = Course, Athlete = Athlete4, AthleteID = Athlete4.ID, StartTime = DateTime.Parse("2/8/2020"), Duration = TimeSpan.Parse("2:22:22.2") },
+		new() { Course = Course, Athlete = Athlete4, AthleteID = Athlete4.ID, StartTime = DateTime.Parse("2/4/2020"), Duration = TimeSpan.Parse("2:00:00.0") }
 	];
 
 	public static readonly Iteration Iteration = new() { ID = Guid.NewGuid(), Races = [Race], StartDate = new DateOnly(2020, 1, 1) };
@@ -31,9 +31,9 @@ public static class ResultsData
 
 	public static Result[] SimilarResults =>
 	[
-		new() { Course = SimilarCourse, Athlete = Athlete1, StartTime = DateTime.Parse("2/1/2020"), Duration = TimeSpan.FromSeconds(100) },
-		new() { Course = SimilarCourse, Athlete = Athlete2, StartTime = DateTime.Parse("2/3/2020"), Duration = TimeSpan.FromSeconds(105) },
-		new() { Course = SimilarCourse, Athlete = Athlete3, StartTime = DateTime.Parse("2/7/2020"), Duration = TimeSpan.FromSeconds(110) },
-		new() { Course = SimilarCourse, Athlete = Athlete4, StartTime = DateTime.Parse("2/5/2020"), Duration = TimeSpan.FromSeconds(96) }
+		new() { Course = SimilarCourse, Athlete = Athlete1, AthleteID = Athlete1.ID, StartTime = DateTime.Parse("2/1/2020"), Duration = TimeSpan.FromSeconds(100) },
+		new() { Course = SimilarCourse, Athlete = Athlete2, AthleteID = Athlete2.ID, StartTime = DateTime.Parse("2/3/2020"), Duration = TimeSpan.FromSeconds(105) },
+		new() { Course = SimilarCourse, Athlete = Athlete3, AthleteID = Athlete3.ID, StartTime = DateTime.Parse("2/7/2020"), Duration = TimeSpan.FromSeconds(110) },
+		new() { Course = SimilarCourse, Athlete = Athlete4, AthleteID = Athlete4.ID, StartTime = DateTime.Parse("2/5/2020"), Duration = TimeSpan.FromSeconds(96) }
 	];
 }
