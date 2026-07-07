@@ -20,7 +20,8 @@ public sealed class AthleteHeader(IIterationManager iterationManager, IOverallRe
 
 	private async Task<IDictionary<string, string>> GetBadges(Athlete athlete, Iteration iteration)
 	{
-		var completed = overall.Completed(iteration).Any(r => r.Result.Athlete == athlete);
+		var completed = overall.Completed(iteration).Any(r => r.Result.Athlete == athlete)
+			|| overall.CompletedPersonal(iteration).Any(r => r.Result.Athlete == athlete);
 
 		var challengeResults = await UltraChallengeResultsCalculator.Earliest(iteration);
 		var result = challengeResults
