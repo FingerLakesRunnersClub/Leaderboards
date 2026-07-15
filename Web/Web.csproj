@@ -9,7 +9,7 @@
 	</PropertyGroup>
 	<ItemGroup>
 		<FrameworkReference Include="Microsoft.AspNetCore.App" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.9" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="10.0.10" />
 		<ProjectReference Include="../Core/Core.csproj" />
 		<ProjectReference Include="../Data/Data.csproj" />
 		<ProjectReference Include="..\Services\Services.csproj" />
