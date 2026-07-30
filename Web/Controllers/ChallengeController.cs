@@ -106,7 +106,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		{
 			Iteration = iteration,
 			Official = iteration.OfficialChallenge,
-			Courses = iteration.Races.SelectMany(r => r.Courses).ToArray()
+			Courses = iteration.AllCourses
 		};
 
 		var vm = new ViewModel<SelectChallengeForm>("Challenge Selection", form);
@@ -128,7 +128,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 			return RedirectToAction(nameof(Dashboard));
 
 		var courses = form.Selection == Model.Challenge.Types.Classic
-			? iteration.OfficialChallenge.Courses
+			? iteration.OfficialChallengeCourses
 			: SelectedCourses(iteration, form.Selected);
 
 		var confirmation = new SelectChallengeForm
@@ -136,15 +136,15 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 			Iteration = iteration,
 			Selection = form.Selection,
 			Selected = form.Selected,
-			Courses = courses.ToArray()
+			Courses = courses
 		};
 
 		var vm = new ViewModel<SelectChallengeForm>("Confirm Challenge Selection", confirmation);
 		return View("Confirm", vm);
 	}
 
-	private static IEnumerable<Course> SelectedCourses(Iteration iteration, Guid[] ids)
-		=> iteration.Races.SelectMany(r => r.Courses).Where(c => ids.Contains(c.ID));
+	private static Course[] SelectedCourses(Iteration iteration, Guid[] ids)
+		=> iteration.AllCourses.Where(c => ids.Contains(c.ID)).ToArray();
 
 	[HttpPost]
 	public async Task<IActionResult> Confirm(SelectChallengeForm form)
@@ -174,7 +174,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 			Name = $"{athlete.Name} {Model.Challenge.Types.Personal} Challenge",
 			IsPrimary = true,
 			IsOfficial = false,
-			Courses = SelectedCourses(iteration, form.Selected).ToArray(),
+			Courses = SelectedCourses(iteration, form.Selected),
 		};
 		await challengeService.Add(challenge);
 		await challengeService.AddConnection(athlete, challenge);

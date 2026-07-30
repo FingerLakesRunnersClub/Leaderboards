@@ -37,7 +37,7 @@ public sealed class TeamController(IIterationManager iterationManager, IOverallR
 		{
 			Team = team,
 			Overall = overall.TeamPoints(iteration).Find(r => r.Value.Team == team),
-			Courses = iteration.OfficialChallenge.Courses.ToDictionary(c => c, c => c.Results.TeamPoints(iteration).Find(r => r.Value.Team == team))
+			Courses = iteration.OfficialChallengeCourses.ToDictionary(c => c, c => c.Results.TeamPoints(iteration).Find(r => r.Value.Team == team))
 		};
 		return new ViewModel<TeamSummary>($"Team {team.Display}", summary);
 	}

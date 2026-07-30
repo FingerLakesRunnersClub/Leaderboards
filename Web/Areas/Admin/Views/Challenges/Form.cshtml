@@ -1,4 +1,5 @@
 @using FLRC.Leaderboards.Model
+@using FLRC.Leaderboards.Services
 @using FLRC.Leaderboards.Web.ViewModels
 @model ViewModel<Challenge>
 
@@ -30,7 +31,7 @@
 				</tr>
 				</thead>
 				<tbody>
-				@foreach (var course in Model.Data.Iteration.Races.SelectMany(c => c.Courses).OrderBy(c => c.Distance))
+				@foreach (var course in Model.Data.Iteration.AllCourses)
 				{
 					<tr>
 						<td class="text-center align-middle">

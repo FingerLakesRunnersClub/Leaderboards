@@ -2,7 +2,7 @@ using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Model;
 using Course = FLRC.Leaderboards.Model.Course;
 
-namespace FLRC.Leaderboards.Web;
+namespace FLRC.Leaderboards.Services;
 
 public static class IterationExtensions
 {

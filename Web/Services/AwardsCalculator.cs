@@ -2,6 +2,7 @@ using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Athlete = FLRC.Leaderboards.Model.Athlete;
 
@@ -20,7 +21,7 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 		awards.AddRange(Overall("Community", "Overall Community", overall.Community(iteration), 10));
 		awards.AddRange(Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration));
 
-		var officialCourses = iteration.OfficialChallenge?.Courses.ToArray() ?? [];
+		var officialCourses = iteration.OfficialChallengeCourses;
 		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.F))).ToArray()));
 		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.M))).ToArray()));
 		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.F))).ToArray()));

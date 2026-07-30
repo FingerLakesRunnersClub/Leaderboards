@@ -28,7 +28,7 @@ public sealed class RegistrationManager(IImportManager importManager, IIteration
 
 	private async Task<Athlete[]> AllRaceParticipants(Iteration iteration)
 	{
-		var courses = iteration.Races.SelectMany(r => r.Courses);
+		var courses = iteration.AllCourses;
 
 		var results = new List<Result>();
 		foreach (var course in courses)

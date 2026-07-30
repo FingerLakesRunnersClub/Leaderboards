@@ -5,6 +5,7 @@ using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Course = FLRC.Leaderboards.Model.Course;
 using LeaderboardTable = FLRC.Leaderboards.Web.ViewModels.LeaderboardTable;
@@ -78,10 +79,10 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 			: null;
 
 	private Dictionary<Course, LeaderboardTable[]> OfficialCourses(Iteration iteration, LeaderboardResultType type, byte tableSize)
-		=> CourseResults(iteration, iteration.OfficialChallenge?.Courses.ToArray() ?? [], type, tableSize);
+		=> CourseResults(iteration, iteration.OfficialChallengeCourses, type, tableSize);
 
 	private Dictionary<Course, LeaderboardTable[]> OtherCourses(Iteration iteration, LeaderboardResultType type, byte tableSize)
-		=> CourseResults(iteration, iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallenge?.Courses ?? []).ToArray(), type, tableSize);
+		=> CourseResults(iteration, iteration.OtherCourses, type, tableSize);
 
 	private Dictionary<Course, LeaderboardTable[]> CourseResults(Iteration iteration, Course[] courses, LeaderboardResultType type, byte tableSize)
 		=> courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters)

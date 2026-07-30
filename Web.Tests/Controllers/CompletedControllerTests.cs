@@ -23,7 +23,7 @@ public sealed class CompletedControllerTests
 		var iteration = new Iteration { Races = [new Race { Courses = [course] }] };
 		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course], Iteration = iteration };
 		iteration.Challenges.Add(challenge);
-		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
 		foreach (var athlete in athletes)
 			athlete.Challenges.Add(challenge);
 

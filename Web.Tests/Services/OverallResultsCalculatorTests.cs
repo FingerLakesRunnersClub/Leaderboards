@@ -1,6 +1,7 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
+using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
 using NSubstitute;
 using Xunit;
@@ -127,7 +128,7 @@ public sealed class OverallResultsCalculatorTests
 		//arrange
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 		var iteration = OverallData.Iteration;
-		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
 		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
 		iteration.Challenges.Clear();
 		iteration.Challenges.Add(challenge);
@@ -149,7 +150,7 @@ public sealed class OverallResultsCalculatorTests
 		//arrange
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 		var iteration = OverallData.Iteration;
-		var athletes = iteration.Races.SelectMany(r => r.Courses).SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
+		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
 		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
 		iteration.Challenges.Clear();
 		iteration.Challenges.Add(challenge);
