@@ -57,13 +57,13 @@
 		},
 		{
 			"Source": "WebScorer",
-			"ID": 390385,
+			"ID": 432337,
 			"Name": "Thom B Trail Runs",
 			"Type": "Trail",
 			"Courses": {
-				"8.5 mile": 0,
-				"17 mile": 0,
-				"26.2 mile": 0
+				"8.5 mile": 432337,
+				"17 mile": 432337,
+				"26.2 mile": 432337
 			},
 			"URL": "https://fingerlakesrunners.org/race/thom-b-trail-runs-2026/"
 		},
