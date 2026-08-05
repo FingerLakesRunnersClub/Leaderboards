@@ -38,7 +38,7 @@ public sealed class FileSystemResultsLoader : IFileSystemResultsLoader
 	}
 
 	private static bool ShouldIncludeEvent(Match info)
-		=> info.Groups[2].Value is not ("55m" or "300m" or "600m");
+		=> info.Groups[2].Value is not ("55m" or "55mH" or "300m" or "600m");
 
 	private Race GetRace(Match info)
 	{
