@@ -106,12 +106,12 @@
 		},
 		{
 			"Source": "WebScorer",
-			"ID": 399232,
+			"ID": 441442,
 			"Name": "Forest Frolic",
 			"Type": "Trail",
 			"Courses": {
-				"7k": 0,
-				"15k": 0
+				"7k": 441442,
+				"15k": 441442
 			},
 			"URL": "https://fingerlakesrunners.org/race/forest-frolic-2026/"
 		},
