@@ -117,12 +117,12 @@
 		},
 		{
 			"Source": "WebScorer",
-			"ID": 400452,
+			"ID": 442485,
 			"Name": "Forge the Gorge",
 			"Type": "Trail",
 			"Courses": {
-				"3 miles": 0,
-				"8 miles": 0
+				"3 miles": 442485,
+				"8 miles": 442485
 			},
 			"URL": "https://fingerlakesrunners.org/race/forge-the-gorge-2026/"
 		},
