@@ -1,7 +1,7 @@
 @using FLRC.Leaderboards.Model
 @model (FLRC.Leaderboards.Model.Course Course, FLRC.Leaderboards.Web.ViewModels.LeaderboardTable[] Tables, bool ShowBadges)
 @{
-	var url = Model.Course.Race.Links.FirstOrDefault(l => l.Type == RaceLink.Types.Info);
+	var link = Model.Course.Race.Links.FirstOrDefault(l => l.Type == RaceLink.Types.Info);
 	var width = 12 / Model.Tables.Length;
 }
 
@@ -9,10 +9,9 @@
 	<div class="card-header">
 		@Model.Course.Race.Name
 
-		@{  }
-		@if (url is not null)
+		@if (link is not null)
 		{
-			<a style="margin: 2px 5px 0;" class="float-right" href="@url" title="Course Info" target="_blank">
+			<a style="margin: 2px 5px 0;" class="float-right" href="@link.URL" title="Course Info" target="_blank">
 				<i aria-hidden="true" class="fas fa-info-circle"></i>
 			</a>
 		}
