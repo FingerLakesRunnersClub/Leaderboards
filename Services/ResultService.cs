@@ -27,9 +27,23 @@ public sealed class ResultService(DB db) : IResultService
 				&& (iteration.EndDate == null || r.StartTime <= iteration.EndDate.Value.ToDateTime(TimeOnly.MaxValue)))
 			.ToArrayAsync();
 
+	public async Task<Result[]> FindDuplicates(Result result)
+		=> await db.Set<Result>()
+			.Where(r => r.ID != result.ID
+				&& r.Athlete == result.Athlete
+				&& r.StartTime == result.StartTime
+				&& r.Duration == result.Duration)
+			.ToArrayAsync();
+
 	public async Task Import(Result[] results)
 	{
-		var newResults = results.Where(newR => !db.Set<Result>().Any(r => r.AthleteID == newR.AthleteID && r.CourseID == newR.CourseID && r.StartTime == newR.StartTime && r.Duration == newR.Duration));
+		var newResults = results
+			.Where(newR => !db.Set<Result>()
+				.Any(r => r.AthleteID == newR.AthleteID
+					&& r.CourseID == newR.CourseID
+					&& r.StartTime == newR.StartTime
+					&& r.Duration == newR.Duration));
+
 		await db.AddRangeAsync(newResults);
 		await db.SaveChangesAsync();
 	}

@@ -6,5 +6,6 @@ public interface IResultService : IDataService<Result>
 {
 	Task<Result[]> Find(Guid courseID);
 	Task<Result[]> Find(Iteration iteration);
+	Task<Result[]> FindDuplicates(Result result);
 	Task Import(Result[] results);
 }

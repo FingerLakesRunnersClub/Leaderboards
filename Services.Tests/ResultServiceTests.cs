@@ -66,6 +66,222 @@ public sealed class ResultServiceTests
 	}
 
 	[Fact]
+	public async Task CanFindDuplicateWhenAllFieldsMatch()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = result.StartTime,
+			Duration = result.Duration
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.NotEmpty(duplicates);
+	}
+
+	[Fact]
+	public async Task EditingSelfIsNotDuplicate()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = result.ID,
+			Course = course,
+			Athlete = athlete,
+			StartTime = result.StartTime,
+			Duration = result.Duration
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.Empty(duplicates);
+	}
+
+	[Fact]
+	public async Task MismatchedAthleteIsNotDuplicate()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = result.ID,
+			Course = course,
+			Athlete = new Athlete(),
+			StartTime = result.StartTime,
+			Duration = result.Duration
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.Empty(duplicates);
+	}
+
+	[Fact]
+	public async Task MismatchedStartTimeIsNotDuplicate()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = result.ID,
+			Course = course,
+			Athlete = athlete,
+			StartTime = result.StartTime.AddMinutes(1),
+			Duration = result.Duration
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.Empty(duplicates);
+	}
+
+	[Fact]
+	public async Task MismatchedDurationIsNotDuplicate()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = result.ID,
+			Course = course,
+			Athlete = athlete,
+			StartTime = result.StartTime,
+			Duration = result.Duration.Add(TimeSpan.FromSeconds(1))
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.Empty(duplicates);
+	}
+
+	[Fact]
+	public async Task MismatchedCourseCanBeDuplicate()
+	{
+		//arrange
+		var db = TestHelpers.CreateDB();
+		var service = new ResultService(db);
+
+		var course = new Course { ID = Guid.NewGuid(), Distance = 5, Units = "km" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Name = "Test" };
+		var result = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = course,
+			Athlete = athlete,
+			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
+			Duration = TimeSpan.FromMilliseconds(1234567)
+		};
+		await db.AddAsync(result);
+		await db.SaveChangesAsync();
+
+		var newResult = new Result
+		{
+			ID = Guid.NewGuid(),
+			Course = new Course(),
+			Athlete = athlete,
+			StartTime = result.StartTime,
+			Duration = result.Duration
+		};
+
+		//act
+		var duplicates = await service.FindDuplicates(newResult);
+
+		//assert
+		Assert.NotEmpty(duplicates);
+	}
+
+	[Fact]
 	public async Task CanImportResults()
 	{
 		//arrange
