@@ -18,6 +18,8 @@ namespace FLRC.Leaderboards.Web.Controllers;
 
 public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService, ICommunityStarCalculator starCalculator) : Controller
 {
+	private const string DuplicateError = "It looks like this result already exists, please double check the activity log.";
+
 	[HttpGet]
 	public async Task<ViewResult> Fastest(Guid id, [FromQuery] char? c = null, [FromQuery] byte? ag = null, [FromQuery] Guid? i = null)
 	{
@@ -140,6 +142,13 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 			return View("Form", vm);
 		}
 
+		var duplicates = await resultService.FindDuplicates(result);
+		if (duplicates.Length > 0)
+		{
+			var vm = new ViewModel<Result>("Add Result", result) { Error = DuplicateError };
+			return View("Form", vm);
+		}
+
 		await resultService.Add(result);
 		return RedirectToAction(nameof(Fastest), new { id });
 	}
@@ -177,6 +186,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		var updated = new Result
 		{
+			ID = result.ID,
 			Course = result.Course,
 			Athlete = result.Athlete,
 			StartTime = DateTime.Parse(form["StartTime"]),
@@ -185,7 +195,14 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		if (!updated.IsValid())
 		{
-			var vm = new ViewModel<Result>("Add Result", result) { Error = GetError(updated) };
+			var vm = new ViewModel<Result>("Edit Result", result) { Error = GetError(updated) };
+			return View("Form", vm);
+		}
+
+		var duplicates = await resultService.FindDuplicates(updated);
+		if (duplicates.Length > 0)
+		{
+			var vm = new ViewModel<Result>("Edit Result", result) { Error = DuplicateError };
 			return View("Form", vm);
 		}
 
