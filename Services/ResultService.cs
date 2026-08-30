@@ -7,10 +7,13 @@ namespace FLRC.Leaderboards.Services;
 public sealed class ResultService(DB db) : IResultService
 {
 	public async Task<Result[]> All()
-		=> await db.Set<Result>().ToArrayAsync();
+		=> await db.Set<Result>()
+			.Include(r => r.Athlete)
+			.ToArrayAsync();
 
 	public async Task<Result> Get(Guid id)
 		=> await db.Set<Result>()
+			.Include(r => r.Athlete)
 			.FirstAsync(r => r.ID == id);
 
 	public async Task<Result[]> Find(Guid courseID)
@@ -29,6 +32,7 @@ public sealed class ResultService(DB db) : IResultService
 
 	public async Task<Result[]> FindDuplicates(Result result)
 		=> await db.Set<Result>()
+			.Include(r => r.Athlete)
 			.Where(r => r.ID != result.ID
 				&& r.Athlete == result.Athlete
 				&& r.StartTime == result.StartTime
