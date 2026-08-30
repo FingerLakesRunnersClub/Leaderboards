@@ -29,17 +29,19 @@ public sealed class WebScorer(IConfig config) : IDataSource
 	private static readonly TimeSpan MinimumDuration = TimeSpan.FromMinutes(4);
 
 	private Result[] ParseResults(Course course, JsonElement results, IDictionary<string, string> aliases)
-		=> results.EnumerateArray()
-			.Where(r => r.GetProperty("Finished").GetByte() == 1
-	            && (config.Features.GenerateAthleteID
-					|| r.GetProperty("UserId").GetUInt32() > 0)
-	            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
-	               || r.GetProperty("Distance").GetString() == DefaultDistance
-	               || r.GetProperty("Distance").GetString() == course?.ShortName)
-			)
-			.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))
-			.Where(r => r.Duration is null || r.Duration.Value >= MinimumDuration)
-			.ToArray();
+		=>
+		[
+			.. results.EnumerateArray()
+				.Where(r => r.GetProperty("Finished").GetByte() == 1
+				            && (config.Features.GenerateAthleteID
+				                || r.GetProperty("UserId").GetUInt32() > 0)
+				            && (string.IsNullOrWhiteSpace(r.GetProperty("Distance").GetString())
+				                || r.GetProperty("Distance").GetString() == DefaultDistance
+				                || r.GetProperty("Distance").GetString() == course?.ShortName)
+				)
+				.Select(r => GetResult(course, r, ParseAthlete(r, aliases)))
+				.Where(r => r.Duration is null || r.Duration.Value >= MinimumDuration)
+		];
 
 	private static Result GetResult(Course course, JsonElement r, Athlete athlete)
 	{

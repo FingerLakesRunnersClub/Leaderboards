@@ -14,19 +14,21 @@ public sealed class FileSystemResultsLoader(IFileSystem fs, IConfig config) : IF
 
 	public Race[] GetRaces()
 	{
-		_cachedRaces ??= fs.Directory
-			.GetFiles(config.FileSystemResults, "*.txt", SearchOption.AllDirectories)
-			.Select(p => RegexPattern.Match(p))
-			.Where(ShouldIncludeEvent)
-			.Select(GetRace)
-			.OrderBy(r => r.Courses[0].Distance?.Meters ?? Distance.MetersPerMarathon)
-			.ToArray();
+		_cachedRaces ??=
+		[
+			.. fs.Directory
+				.GetFiles(config.FileSystemResults, "*.txt", SearchOption.AllDirectories)
+				.Select(p => RegexPattern.Match(p))
+				.Where(ShouldIncludeEvent)
+				.Select(GetRace)
+				.OrderBy(r => r.Courses[0].Distance?.Meters ?? Distance.MetersPerMarathon)
+		];
 
 		config.CourseNames = _cachedRaces
 			.DistinctBy(r => r.ID)
 			.ToDictionary(r => r.ID, r => r.Name);
 
-		return _cachedRaces.GroupBy(r => r.ID).Select(r => r.MaxBy(r2 => r2.Courses.Sum(c => c.Results.Length))).ToArray();
+		return [.. _cachedRaces.GroupBy(r => r.ID).Select(r => r.MaxBy(r2 => r2.Courses.Sum(c => c.Results.Length)))];
 	}
 
 	private static bool ShouldIncludeEvent(Match info)
@@ -85,7 +87,7 @@ public sealed class FileSystemResultsLoader(IFileSystem fs, IConfig config) : IF
 			.Select(async task => GetCourse(await task, aliases));
 		var courses = await Task.WhenAll(tasks);
 		var events = courses.GroupBy(c => c.Name);
-		return _allResults = events.Select(g => new Course { ID = g.First().ID, Race = g.First().Race, ShowDecimals = g.First().ShowDecimals, Results = g.SelectMany(r => r.Results).OrderBy(r => r.Duration).ToArray() }).ToArray();
+		return _allResults = [.. events.Select(g => new Course { ID = g.First().ID, Race = g.First().Race, ShowDecimals = g.First().ShowDecimals, Results = [.. g.SelectMany(r => r.Results).OrderBy(r => r.Duration)] })];
 	}
 
 	private Course GetCourse(string file, IDictionary<string, string> aliases)
@@ -105,7 +107,7 @@ public sealed class FileSystemResultsLoader(IFileSystem fs, IConfig config) : IF
 			ShowDecimals = ShouldShowDecimals(distance)
 		};
 
-		course.Results = lines.Skip(5).SkipLast(1).Select(l => ResultFileReader.ParseResult(course, l, aliases)).ToArray();
+		course.Results = [.. lines.Skip(5).SkipLast(1).Select(l => ResultFileReader.ParseResult(course, l, aliases))];
 		return course;
 	}
 }

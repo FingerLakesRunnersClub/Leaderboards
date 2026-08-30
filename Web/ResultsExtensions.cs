@@ -14,10 +14,12 @@ public static class ResultsExtensions
 	extension(ICollection<Result> results)
 	{
 		public Result[] For(Iteration iteration)
-			=> results
-				.Where(r => (iteration.StartDate is null || r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue))
-				            && (iteration.EndDate is null || r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue)))
-				.ToArray();
+			=>
+			[
+				.. results
+					.Where(r => (iteration.StartDate is null || r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue))
+					            && (iteration.EndDate is null || r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue)))
+			];
 
 		public RankedList<Time, Result> Fastest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => !rs.Key.IsPrivate ? new Time(rs.Min(r => r.Duration)) : Time.Max);
@@ -92,12 +94,14 @@ public static class ResultsExtensions
 			=> RankedList(results.GroupedResults(filter).Where(groupFilter).OrderByDescending(sort), getResult, sort);
 
 		public GroupedModelResult[] GroupedResults(Filter filter = null)
-			=> results.Filter(filter)
-				.GroupBy(r => r.Athlete).Select(g => new GroupedModelResult(g))
-				.ToArray();
+			=>
+			[
+				.. results.Filter(filter)
+					.GroupBy(r => r.Athlete).Select(g => new GroupedModelResult(g))
+			];
 
 		private Result[] Filter(Filter filter)
-			=> results.Where(r => filter == null || filter.IsMatch(r)).ToArray();
+			=> [.. results.Where(r => filter == null || filter.IsMatch(r))];
 
 		public Statistics Statistics()
 		{
@@ -209,7 +213,7 @@ public static class ResultsExtensions
 			ranks.Add(rankedResult);
 		}
 
-		return new RankedList<T, Result>(ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade).ToArray());
+		return new RankedList<T, Result>([.. ranks.OrderBy(r => r.Rank).ThenByDescending(r => r.AgeGrade)]);
 	}
 
 	private static Rank Rank<T>(bool isInFirstPlace, Ranked<T, Result> lastPlace, T value, ushort rank)

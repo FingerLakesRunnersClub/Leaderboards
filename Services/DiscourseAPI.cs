@@ -13,7 +13,7 @@ public sealed class DiscourseAPI(HttpClient http, IContextManager contextManager
 	{
 		await SetHttpHeaders();
 		var json = await http.GetFromJsonAsync<JsonElement>($"/t/{id}.json?include_raw=true&print=true");
-		return json.GetProperty("post_stream").GetProperty("posts").EnumerateArray().ToArray();
+		return [.. json.GetProperty("post_stream").GetProperty("posts").EnumerateArray()];
 	}
 
 	private async Task SetHttpHeaders()
@@ -29,13 +29,16 @@ public sealed class DiscourseAPI(HttpClient http, IContextManager contextManager
 	}
 
 	public CommunityPost[] ParsePosts(JsonElement[] json)
-		=> json.Select(p => new CommunityPost
-		{
-			ID = p.GetProperty("user_id").GetUInt16(),
-			Name = p.GetProperty("name").GetString() ?? string.Empty,
-			Date = p.GetProperty("created_at").GetDateTime().ToLocalTime(),
-			Content = p.GetProperty("raw").GetString() ?? string.Empty
-		}).ToArray();
+		=>
+		[
+			.. json.Select(p => new CommunityPost
+			{
+				ID = p.GetProperty("user_id").GetUInt16(),
+				Name = p.GetProperty("name").GetString() ?? string.Empty,
+				Date = p.GetProperty("created_at").GetDateTime().ToLocalTime(),
+				Content = p.GetProperty("raw").GetString() ?? string.Empty
+			})
+		];
 
 	public async Task<JsonElement[]> GetUsers()
 		=> await GetMembers("trust_level_0");
@@ -49,7 +52,7 @@ public sealed class DiscourseAPI(HttpClient http, IContextManager contextManager
 			return members;
 
 		var moreMembers = await GetMembers(groupID, pageSize, 2);
-		return members.Concat(moreMembers).ToArray();
+		return [.. members, .. moreMembers];
 	}
 
 	private async Task<JsonElement[]> GetMembers(string groupID, int pageSize, int pageNumber)
@@ -57,7 +60,7 @@ public sealed class DiscourseAPI(HttpClient http, IContextManager contextManager
 		var offset = pageSize * (pageNumber - 1);
 		await SetHttpHeaders();
 		var json = await http.GetFromJsonAsync<JsonElement>($"/groups/{groupID}/members.json?limit={pageSize}&offset={offset}&asc=true");
-		return json.GetProperty("members").EnumerateArray().ToArray();
+		return [.. json.GetProperty("members").EnumerateArray()];
 	}
 
 	public async Task<JsonElement> GetGroup(string groupID)

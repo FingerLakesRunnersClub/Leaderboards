@@ -36,6 +36,6 @@ public sealed class RegistrationManager(IImportManager importManager, IIteration
 
 		var start = iteration.StartDate.HasValue ? new DateTime(iteration.StartDate.Value, TimeOnly.MinValue) : (DateTime?)null;
 		var end = iteration.EndDate.HasValue ? new DateTime(iteration.EndDate.Value, TimeOnly.MaxValue) : (DateTime?)null;
-		return results.Where(r => r.StartTime >= start && r.StartTime <= end).Select(r => r.Athlete).Distinct().ToArray();
+		return [.. results.Where(r => r.StartTime >= start && r.StartTime <= end).Select(r => r.Athlete).Distinct()];
 	}
 }

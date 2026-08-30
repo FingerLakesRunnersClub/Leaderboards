@@ -8,13 +8,13 @@ public class CommunityManager(ICommunityUserAPI communityAPI) : ICommunityManage
 	public async Task<User[]> GetCommunityUsers()
 	{
 		var users = await communityAPI.GetUsers();
-		return users.Select(ParseUser).ToArray();
+		return [.. users.Select(ParseUser)];
 	}
 
 	public async Task<User[]> GetCommunityGroupMembers(string groupID)
 	{
 		var users = await communityAPI.GetMembers(groupID);
-		return users.Select(ParseUser).ToArray();
+		return [.. users.Select(ParseUser)];
 	}
 
 	public async Task AddCommunityGroupMembers(IDictionary<string, string[]> groupAdditions)

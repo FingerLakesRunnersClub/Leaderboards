@@ -28,7 +28,7 @@ public static class UltraChallengeResultsCalculator
 		return courses
 			.SelectMany(c => c.Results.Where(r => r.StartTime >= iterationStart && r.FinishTime <= iterationEnd))
 			.GroupBy(r => r.Athlete)
-			.SelectMany(a => FindCompletions(iteration.UltraChallenges, a.ToArray()))
+			.SelectMany(a => FindCompletions(iteration.UltraChallenges, [.. a]))
 			.GroupBy(r => r.Challenge)
 			.ToDictionary(s => s.Key, s => s.ToArray());
 	}
@@ -52,7 +52,7 @@ public static class UltraChallengeResultsCalculator
 			completions.Add(completion);
 		}
 
-		return completions.ToArray();
+		return [.. completions];
 	}
 
 	private static ChallengeResult FindCompletion(Challenge[] challenges, Result[] athletesResults, Result first)
@@ -86,7 +86,7 @@ public static class UltraChallengeResultsCalculator
 			FinishTime = new Date(last.FinishTime),
 			RunningTime = new Time(TimeSpan.FromMilliseconds(results.Sum(r => r.Duration.TotalMilliseconds))),
 			TotalTime = new Time(last.FinishTime - first.StartTime),
-			Results = results.ToArray()
+			Results = [.. results]
 		};
 	}
 

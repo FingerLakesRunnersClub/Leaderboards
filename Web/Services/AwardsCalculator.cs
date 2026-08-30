@@ -22,11 +22,11 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 		awards.AddRange(Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration));
 
 		var officialCourses = iteration.OfficialChallengeCourses;
-		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.F))).ToArray()));
-		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.M))).ToArray()));
-		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.F))).ToArray()));
-		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.M))).ToArray()));
-		awards.AddRange(Course("MostRuns", "Most Runs", officialCourses.SelectMany(c => c.Results.For(iteration).MostRuns()).ToArray()));
+		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.F)))]));
+		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.M)))]));
+		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.F)))]));
+		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.M)))]));
+		awards.AddRange(Course("MostRuns", "Most Runs", [.. officialCourses.SelectMany(c => c.Results.For(iteration).MostRuns())]));
 
 		awards.AddRange(AgeGroup(iteration, officialCourses, Category.F));
 		awards.AddRange(AgeGroup(iteration, officialCourses, Category.M));
@@ -35,42 +35,50 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 	}
 
 	private Award[] Overall<T>(string type, string title, RankedList<T, Result> results, byte top)
-		=> results.Where(r => r.Rank.Value <= top)
-			.Select(r => new Award
-			{
-				Name = $"{r.Rank.Display} {title}",
-				Link = $"/Overall/{type}",
-				Value = r.Rank.Value == 1 ? config.Awards["Overall"] : config.Awards["Top"],
-				Athlete = r.Result.Athlete
-			})
-			.ToArray();
+		=>
+		[
+			.. results.Where(r => r.Rank.Value <= top)
+				.Select(r => new Award
+				{
+					Name = $"{r.Rank.Display} {title}",
+					Link = $"/Overall/{type}",
+					Value = r.Rank.Value == 1 ? config.Awards["Overall"] : config.Awards["Top"],
+					Athlete = r.Result.Athlete
+				})
+		];
 
 	private Award[] Team(RankedList<TeamMember, Result> members, Iteration iteration)
-		=> members.Where(m => m.Rank.Value <= 10)
-			.Select(r => new Award
-			{
-				Name = $"{r.Rank.Display} Top Team Member",
-				Link = $"/Team/Members/{r.Result.Athlete.Team(iteration).Value}",
-				Value = config.Awards["Team"],
-				Athlete = r.Result.Athlete
-			})
-			.ToArray();
+		=>
+		[
+			.. members.Where(m => m.Rank.Value <= 10)
+				.Select(r => new Award
+				{
+					Name = $"{r.Rank.Display} Top Team Member",
+					Link = $"/Team/Members/{r.Result.Athlete.Team(iteration).Value}",
+					Value = config.Awards["Team"],
+					Athlete = r.Result.Athlete
+				})
+		];
 
 	private Award[] Course<T>(string type, string title, Ranked<T, Result>[] results)
-		=> results.Where(r => r.Rank.Value == 1)
-			.Select(r => new Award
-			{
-				Name = $"{r.Result.Course.Race.Name} {title}",
-				Link = $"/Results/{type}/{r.Result.CourseID}",
-				Value = config.Awards[config.CourseLabel],
-				Athlete = r.Result.Athlete
-			})
-			.ToArray();
+		=>
+		[
+			.. results.Where(r => r.Rank.Value == 1)
+				.Select(r => new Award
+				{
+					Name = $"{r.Result.Course.Race.Name} {title}",
+					Link = $"/Results/{type}/{r.Result.CourseID}",
+					Value = config.Awards[config.CourseLabel],
+					Athlete = r.Result.Athlete
+				})
+		];
 
 	private Award[] AgeGroup(Iteration iteration, Course[] courses, Category category)
-		=> Core.Teams.Team.Teams
-			.SelectMany(t => courses.SelectMany(course => CourseAgeGroupAwards(iteration, course, category, t.Value)))
-			.ToArray();
+		=>
+		[
+			.. Core.Teams.Team.Teams
+				.SelectMany(t => courses.SelectMany(course => CourseAgeGroupAwards(iteration, course, category, t.Value)))
+		];
 
 	private Award[] CourseAgeGroupAwards(Iteration iteration, Course course, Category category, Core.Teams.Team team)
 	{
@@ -81,12 +89,15 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 
 		var ageGroupResults = course.Results.For(iteration).Fastest(new Filter(category, team));
 		var winningRank = ageGroupResults.Find(r => !categoryWinners.Contains(r.Result.Athlete));
-		return ageGroupResults.Where(r => r.Rank == winningRank?.Rank && !categoryWinners.Contains(r.Result.Athlete))
-			.Select(r => new Award
-			{
-				Name = $"{r.Result.Course.Race.Name} {team.Display} ({category.Display})",
-				Value = config.Awards["Age Group"],
-				Athlete = r.Result.Athlete
-			}).ToArray();
+		return
+		[
+			.. ageGroupResults.Where(r => r.Rank == winningRank?.Rank && !categoryWinners.Contains(r.Result.Athlete))
+				.Select(r => new Award
+				{
+					Name = $"{r.Result.Course.Race.Name} {team.Display} ({category.Display})",
+					Value = config.Awards["Age Group"],
+					Athlete = r.Result.Athlete
+				})
+		];
 	}
 }

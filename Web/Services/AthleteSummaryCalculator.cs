@@ -50,7 +50,9 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 
 		return summary with
 		{
-			Competitions = new[]
+			Competitions =
+			[
+				.. new[]
 				{
 					OverallRow("Points/F", Category.F, athlete, () => points),
 					OverallRow("Points/M", Category.M, athlete, () => points),
@@ -62,7 +64,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 					OverallRow("Community", null, athlete, () => stars),
 					OverallRow("Team", null, athlete, () => team)
 				}.Where(c => c?.Value != null)
-				.ToArray(),
+			],
 
 			OverallPoints = points,
 			OverallAgeGrade = ageGrade,
@@ -103,12 +105,14 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 		foreach (var match in matches)
 			athletes.Add(await GetSummary(match, summary.Iteration, true));
 
-		return athletes.Select(their => SimilarAthleteCalculator.GetSimilarity(summary, their))
-			.Where(m => Math.Abs(m.FastestPercent.Value) < 10
-			            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
-			            && m.Similarity.Value >= 100 * (1 - SimilarAthlete.Weighting)
-			            && m.Overlap.Value >= 100 * SimilarAthlete.Weighting)
-			.ToArray();
+		return
+		[
+			.. athletes.Select(their => SimilarAthleteCalculator.GetSimilarity(summary, their))
+				.Where(m => Math.Abs(m.FastestPercent.Value) < 10
+				            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
+				            && m.Similarity.Value >= 100 * (1 - SimilarAthlete.Weighting)
+				            && m.Overlap.Value >= 100 * SimilarAthlete.Weighting)
+		];
 	}
 
 	private const byte PercentThreshold = 5;

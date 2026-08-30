@@ -15,7 +15,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 				results.Add(result);
 		}
 
-		return results.ToArray();
+		return [.. results];
 	}
 
 	private async Task<Result> ConvertResult(Guid courseID, string source, Core.Results.Result result, DateTime? dateOverride)
@@ -76,13 +76,15 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 			DateOfBirth = athlete.DateOfBirth.HasValue ? DateOnly.FromDateTime(athlete.DateOfBirth.Value) : null,
 			Category = athlete.Category?.Display[0] ?? Athlete.UnknownCategory,
 			IsPrivate = athlete.Private,
-			LinkedAccounts = new[]
-			{
-				athlete.ID > 0 ? new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString().ToLowerInvariant() } : null,
-				athlete.Email is not null ? new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email.ToLowerInvariant() } : null
-			}
-				.Where(a => a is not null)
-				.Cast<LinkedAccount>()
-				.ToList()
+			LinkedAccounts =
+			[
+				.. new[]
+					{
+						athlete.ID > 0 ? new LinkedAccount { ID = Guid.NewGuid(), Type = source, Value = athlete.ID.ToString().ToLowerInvariant() } : null,
+						athlete.Email is not null ? new LinkedAccount { ID = Guid.NewGuid(), Type = "Email", Value = athlete.Email.ToLowerInvariant() } : null
+					}
+					.Where(a => a is not null)
+					.Cast<LinkedAccount>()
+			]
 		};
 }

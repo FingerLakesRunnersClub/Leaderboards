@@ -9,12 +9,12 @@ public static class IterationExtensions
     extension(Iteration iteration)
     {
         public Course[] AllCourses
-            => iteration.OfficialChallengeCourses.Concat(iteration.OtherCourses).ToArray();
+            => [.. iteration.OfficialChallengeCourses, .. iteration.OtherCourses];
 
         public Course[] OfficialChallengeCourses
             => iteration.OfficialChallenge?.Courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters).ToArray() ?? [];
 
         public Course[] OtherCourses
-            => iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallengeCourses).OrderBy(c => c.Race.Name).ToArray();
+            => [.. iteration.Races.SelectMany(r => r.Courses).Except(iteration.OfficialChallengeCourses).OrderBy(c => c.Race.Name)];
     }
 }

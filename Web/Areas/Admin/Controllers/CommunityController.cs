@@ -69,13 +69,13 @@ public sealed class CommunityController(IIterationManager iterationManager, ICom
 			{
 				Athlete = athlete,
 				User = user,
-				CurrentGroups = currentGroups.ToArray(),
-				MissingGroups = missingGroups.ToArray()
+				CurrentGroups = [.. currentGroups],
+				MissingGroups = [.. missingGroups]
 			};
 			rows.Add(row);
 		}
 
-		var data = new CommunityAdmin(iteration, rows.ToArray());
+		var data = new CommunityAdmin(iteration, [.. rows]);
 		return new ViewModel<CommunityAdmin>("Community Admin", data);
 	}
 }

@@ -144,7 +144,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 	}
 
 	private static Course[] SelectedCourses(Iteration iteration, Guid[] ids)
-		=> iteration.AllCourses.Where(c => ids.Contains(c.ID)).ToArray();
+		=> [.. iteration.AllCourses.Where(c => ids.Contains(c.ID))];
 
 	[HttpPost]
 	public async Task<IActionResult> Confirm(SelectChallengeForm form)

@@ -13,9 +13,9 @@ public sealed record CommunityAdmin
 	public CommunityAdmin(Iteration iteration, Row[] rows)
 	{
 		Iteration = iteration;
-		MissingRows = rows.Where(r => r.User is not null && r.MissingGroups.Length > 0).ToArray();
-		NoUserRows = rows.Where(r => r.User is null).ToArray();
-		SyncedRows = rows.Where(r => r.User is not null && r.MissingGroups.Length == 0).ToArray();
+		MissingRows = [.. rows.Where(r => r.User is not null && r.MissingGroups.Length > 0)];
+		NoUserRows = [.. rows.Where(r => r.User is null)];
+		SyncedRows = [.. rows.Where(r => r.User is not null && r.MissingGroups.Length == 0)];
 	}
 
 	public sealed class Row

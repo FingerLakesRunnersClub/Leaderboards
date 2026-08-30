@@ -16,7 +16,7 @@ public sealed class IterationsController(ISeriesService seriesService, IIteratio
 	public async Task<ViewResult> Index()
 	{
 		var iterations = await iterationService.All();
-		var vm = new ViewModel<IGrouping<Series, Iteration>[]>("Iterations", iterations.GroupBy(i => i.Series).ToArray());
+		var vm = new ViewModel<IGrouping<Series, Iteration>[]>("Iterations", [.. iterations.GroupBy(i => i.Series)]);
 		return View(vm);
 	}
 

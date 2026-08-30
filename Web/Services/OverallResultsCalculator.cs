@@ -96,7 +96,7 @@ public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalcul
 		var results = iteration.OfficialChallengeCourses.SelectMany(c => c.Results.For(iteration).Fastest(filter).Where(r => r.Result.Athlete.Team(iteration) == team)).ToArray();
 		var ranked = results
 			.GroupBy(r => r.Result.Athlete)
-			.Select(g => new TeamMember(g.ToArray()) { Athlete = g.Key })
+			.Select(g => new TeamMember([.. g]) { Athlete = g.Key })
 			.OrderByDescending(m => m.Score)
 			.ToArray();
 

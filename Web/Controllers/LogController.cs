@@ -40,11 +40,13 @@ public sealed class LogController(ICourseService courseService, IResultService r
 		{
 			Type = type,
 			Course = course,
-			Results = results
-				.Where(r => filter is null || r.StartTime.Date > filter)
-				.OrderByDescending(r => r.StartTime)
-				.GroupBy(grouping)
-				.ToArray()
+			Results =
+			[
+				.. results
+					.Where(r => filter is null || r.StartTime.Date > filter)
+					.OrderByDescending(r => r.StartTime)
+					.GroupBy(grouping)
+			]
 		};
 	}
 

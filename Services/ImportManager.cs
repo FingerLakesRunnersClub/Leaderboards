@@ -8,7 +8,7 @@ namespace FLRC.Leaderboards.Services;
 
 public sealed class ImportManager(ILegacyDataConverter legacyConverter, IResultService resultService, IDictionary<string, IResultsAPI> resultsAPI) : IImportManager
 {
-	public string[] Sources => resultsAPI.Keys.ToArray();
+	public string[] Sources => [.. resultsAPI.Keys];
 
 	public async Task<Athlete[]> ImportAthletes(string source, uint externalID)
 	{
@@ -37,7 +37,7 @@ public sealed class ImportManager(ILegacyDataConverter legacyConverter, IResultS
 			athletes.Add(athlete);
 		}
 
-		return athletes.ToArray();
+		return [.. athletes];
 	}
 
 	private async Task<JsonElement.ArrayEnumerator> GetStartList(string source, uint externalID)

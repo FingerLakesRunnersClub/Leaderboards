@@ -32,7 +32,9 @@ public record Iteration : Identifiable<Guid>
 
 	[JsonIgnore]
 	public Challenge[] UltraChallenges
-		=> Challenges.Where(c => c is { IsOfficial: true, IsPrimary: false, Courses.Count: > 0 })
-			.OrderBy(c => c.Name)
-			.ToArray();
+		=>
+		[
+			.. Challenges.Where(c => c is { IsOfficial: true, IsPrimary: false, Courses.Count: > 0 })
+				.OrderBy(c => c.Name)
+		];
 }

@@ -15,15 +15,18 @@ public sealed class UltraSignup(IConfig config) : IDataSource
 
 	private static readonly byte[] ValidStatusTypes = [1, 6];
 	public Result[] ParseCourse(Course course, JsonElement json, IDictionary<string, string> aliases)
-		=> json.EnumerateArray()
-			.Where(r => ValidStatusTypes.Contains(r.GetProperty("status").GetByte()))
-			.Select(j => new Result
-			{
-				Course = course,
-				Athlete = ParseAthlete(j, aliases),
-				StartTime = course is not null ? new Date(course.Race.Date) : null,
-				Duration = ParseDuration(j.GetProperty("time").GetString())
-			}).ToArray();
+		=>
+		[
+			.. json.EnumerateArray()
+				.Where(r => ValidStatusTypes.Contains(r.GetProperty("status").GetByte()))
+				.Select(j => new Result
+				{
+					Course = course,
+					Athlete = ParseAthlete(j, aliases),
+					StartTime = course is not null ? new Date(course.Race.Date) : null,
+					Duration = ParseDuration(j.GetProperty("time").GetString())
+				})
+		];
 
 	public static Time ParseDuration(string milliseconds)
 		=> new(TimeSpan.FromMilliseconds(double.Parse(milliseconds)));

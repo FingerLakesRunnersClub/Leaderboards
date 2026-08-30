@@ -20,7 +20,7 @@ public sealed class LogControllerTests
 
 		var course = new Course { Results = ResultsData.Results };
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
-		resultService.All().Returns(course.Results.ToArray());
+		resultService.All().Returns([.. course.Results]);
 
 		//act
 		var response = await controller.Index();
@@ -49,7 +49,7 @@ public sealed class LogControllerTests
 
 		var course = new Course { Results = ResultsData.Results };
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
-		resultService.All().Returns(course.Results.ToArray());
+		resultService.All().Returns([.. course.Results]);
 
 		//act
 		var response = await controller.All();
@@ -79,9 +79,9 @@ public sealed class LogControllerTests
 
 		var results = ResultsData.Results.ToList();
 		results.Add(new Result { StartTime = new DateTime(2021, 2, 1) });
-		var course = new Course { Results = results.ToArray() };
+		var course = new Course { Results = [.. results] };
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
-		resultService.All().Returns(course.Results.ToArray());
+		resultService.All().Returns([.. course.Results]);
 
 		//act
 		var response = await controller.All();
@@ -105,7 +105,7 @@ public sealed class LogControllerTests
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Name = "Test" }, Results = ResultsData.Results };
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
-		resultService.Find(course.ID).Returns(course.Results.ToArray());
+		resultService.Find(course.ID).Returns([.. course.Results]);
 
 		//act
 		var response = await controller.Index(course.ID);
