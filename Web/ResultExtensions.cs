@@ -82,8 +82,8 @@ public static class ResultExtensions
 
 		public bool IsGroupRun(Result[] others)
 			=> others.Any(other
-				=> other.Athlete != result.Athlete
-				   && other.Course == result.Course
+				=> other.AthleteID != result.AthleteID
+				   && other.CourseID == result.CourseID
 				   && other.StartTime - result.StartTime <= TimeSpan.FromMinutes(5)
 				   && result.StartTime - other.StartTime <= TimeSpan.FromMinutes(5)
 			);
