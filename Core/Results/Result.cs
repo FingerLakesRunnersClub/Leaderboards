@@ -115,8 +115,8 @@ public sealed record Result : IComparable<Result>
 		= TimeSpan.FromMinutes(5);
 
 	public bool IsGroupRun()
-		=> Course.Results.Any(r => !r.Athlete.Equals(Athlete) && r.StartTime.Value.Subtract(StartTime.Value).Duration() < GroupRunStartTimeLimit);
+		=> Course.Results.Any(r => r.Athlete.ID != Athlete.ID && r.StartTime.Value.Subtract(StartTime.Value).Duration() < GroupRunStartTimeLimit);
 
 	public bool HasCommunityStarToday(StarType type)
-		=> Course.Results.Any(r => r != this && r.Athlete.Equals(Athlete) && r.StartTime.Value.Date == StartTime.Value.Date && r.CommunityStars[type]);
+		=> Course.Results.Any(r => r != this && r.Athlete.ID == Athlete.ID && r.StartTime.Value.Date == StartTime.Value.Date && r.CommunityStars[type]);
 }

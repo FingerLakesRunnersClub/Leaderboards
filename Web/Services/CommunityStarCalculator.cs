@@ -21,5 +21,5 @@ public sealed class CommunityStarCalculator(ICommunityPostService service) : ICo
 	}
 
 	private static bool AlreadyHasStarToday(Result result, IList<CommunityStars> existing, Func<CommunityStars, bool> starType)
-		=> existing.Any(s => s.Result.Athlete == result.Athlete && s.Result.Course == result.Course && s.Result.StartTime.Date == result.StartTime.Date && starType(s));
+		=> existing.Any(s => s.Result.AthleteID == result.AthleteID && s.Result.CourseID == result.CourseID && s.Result.StartTime.Date == result.StartTime.Date && starType(s));
 }

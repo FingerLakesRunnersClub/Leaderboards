@@ -58,7 +58,7 @@ public sealed class LegacyDataConverter(IAthleteService athleteService) : ILegac
 		if (athlete.IsPrivate && !newAthlete.IsPrivate)
 			newAthlete.IsPrivate = athlete.IsPrivate;
 
-		if (!newAthlete.Equals(athlete))
+		if (newAthlete.ID != athlete.ID)
 			await athleteService.Update(athlete, newAthlete);
 
 		var newAccounts = newAthlete.LinkedAccounts.Except(athlete.LinkedAccounts, LinkedAccount.Comparer).ToArray();

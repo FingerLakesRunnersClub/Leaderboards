@@ -40,13 +40,14 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 		if (config.FileSystemResults is not null)
 			return summary;
 
+		var currentTeam = athlete.Team(iteration);
 		var points = overall.MostPoints(iteration, filter).Find(r => r.Result.AthleteID == athlete.ID);
 		var pointsTop3 = overall.MostPoints(iteration, 3, filter).Find(r => r.Result.AthleteID == athlete.ID);
 		var ageGrade = overall.AgeGrade(iteration).Find(r => r.Result.AthleteID == athlete.ID);
 		var miles = overall.MostMiles(iteration).Find(r => r.Result.AthleteID == athlete.ID);
 		var mostCourses = overall.MostCourses(iteration).Find(r => r.Result.AthleteID == athlete.ID);
 		var stars = overall.Community(iteration).Find(r => r.Result.AthleteID == athlete.ID);
-		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team.Equals(athlete.Team(iteration)));
+		var team = overall.TeamPoints(iteration).Find(r => r.Value.Team == currentTeam);
 
 		return summary with
 		{
@@ -93,8 +94,8 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 	public async Task<SimilarAthlete[]> SimilarAthletes(AthleteSummary summary)
 	{
 		var courses = summary.AllResults.GroupBy(r => r.Course).ToArray();
-		var fastMatches = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest().Where(r => summary.Fastest.ContainsKey(c.Key) && !r.Result.Athlete.Equals(summary.Athlete) && IsMatch(summary.Fastest[c.Key], r)));
-		var avgMatches = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage().Where(r => summary.Average.ContainsKey(c.Key) && !r.Result.Athlete.Equals(summary.Athlete) && IsMatch(summary.Average[c.Key], r)));
+		var fastMatches = courses.ToDictionary(c => c.Key, c => c.ToArray().Fastest().Where(r => summary.Fastest.ContainsKey(c.Key) && r.Result.AthleteID != summary.Athlete.ID && IsMatch(summary.Fastest[c.Key], r)));
+		var avgMatches = courses.ToDictionary(c => c.Key, c => c.ToArray().BestAverage().Where(r => summary.Average.ContainsKey(c.Key) && r.Result.AthleteID != summary.Athlete.ID && IsMatch(summary.Average[c.Key], r)));
 
 		var matches = fastMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete))
 			.Union(avgMatches.SelectMany(c => c.Value.Select(r => r.Result.Athlete)))

@@ -51,7 +51,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 	{
 		var iteration = await iterationManager.ActiveIteration();
 		var myResults = course.Results.For(iteration)
-			.Where(r => r.Athlete.Equals(athlete)).ToArray();
+			.Where(r => r.AthleteID == athlete.ID).ToArray();
 
 		var data = new AthleteCourseResults<Time>
 		{
@@ -64,7 +64,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 
 	private ViewModel<AthleteCourseResults<Performance>> GetFieldEventViewModel(Athlete athlete, Course course)
 	{
-		var myResults = course.Results.Where(r => r.Athlete.Equals(athlete)).ToArray();
+		var myResults = course.Results.Where(r => r.AthleteID == athlete.ID).ToArray();
 
 		var data = new AthleteCourseResults<Performance>
 		{

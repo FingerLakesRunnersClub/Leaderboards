@@ -51,7 +51,7 @@ public static class ResultsExtensions
 
 		public RankedList<Count, Result> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
 		{
-			var all = results.Filter(filter ?? new Filter()).OrderBy(r => r.StartTime).ToArray();
+			var all = results.Filter(filter).OrderBy(r => r.StartTime).ToArray();
 			if (all.Length == 0)
 				return [];
 
@@ -101,7 +101,7 @@ public static class ResultsExtensions
 			];
 
 		private Result[] Filter(Filter filter)
-			=> [.. results.Where(r => filter == null || filter.IsMatch(r))];
+			=> [.. results.Where(r => filter is null || filter.IsMatch(r))];
 
 		public Statistics Statistics()
 		{

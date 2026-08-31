@@ -72,7 +72,9 @@ public sealed class AthleteControllerTests
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2020, 1, 1),
 					Duration = new TimeSpan(1, 2, 3)
 				}
@@ -117,35 +119,45 @@ public sealed class AthleteControllerTests
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2026, 1, 1),
 					Duration = new TimeSpan(0, 2, 3)
 				},
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2026, 1, 2),
 					Duration = new TimeSpan(1, 2, 3)
 				},
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2026, 1, 3),
 					Duration = new TimeSpan(2, 3, 4)
 				},
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2026, 1, 4),
 					Duration = new TimeSpan(0, 2, 3)
 				},
 				new Result
 				{
 					Athlete = athlete,
+					AthleteID = athlete.ID,
 					Course = ResultsData.Course,
+					CourseID = ResultsData.Course.ID,
 					StartTime = new DateTime(2026, 1, 5),
 					Duration = new TimeSpan(1, 2, 3)
 				}

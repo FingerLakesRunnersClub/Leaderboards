@@ -38,10 +38,10 @@ public sealed class CommunityControllerTests
 		var vm = result.Model as ViewModel<CommunityAdmin>;
 		var rows = vm!.Data.MissingRows.Union(vm!.Data.NoUserRows).Union(vm!.Data.SyncedRows).ToArray();
 		Assert.Equal(5, rows.Length);
-		Assert.Equal(CommunityData.User1, rows.First(r => r.Athlete.Equals(CommunityData.Athlete1)).User);
-		Assert.Equal(CommunityData.User2, rows.First(r => r.Athlete.Equals(CommunityData.Athlete2)).User);
-		Assert.Equal(CommunityData.User3, rows.First(r => r.Athlete.Equals(CommunityData.Athlete3)).User);
-		Assert.Null(rows.First(r => r.Athlete.Equals(CommunityData.Athlete4)).User);
-		Assert.Equal(CommunityData.User5, rows.First(r => r.Athlete.Equals(CommunityData.Private)).User);
+		Assert.Equal(CommunityData.User1, rows.First(r => r.Athlete.ID == CommunityData.Athlete1.ID).User);
+		Assert.Equal(CommunityData.User2, rows.First(r => r.Athlete.ID == CommunityData.Athlete2.ID).User);
+		Assert.Equal(CommunityData.User3, rows.First(r => r.Athlete.ID == CommunityData.Athlete3.ID).User);
+		Assert.Null(rows.First(r => r.Athlete.ID == CommunityData.Athlete4.ID).User);
+		Assert.Equal(CommunityData.User5, rows.First(r => r.Athlete.ID == CommunityData.Private.ID).User);
 	}
 }
