@@ -4,8 +4,7 @@ using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Teams;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
-using Course = FLRC.Leaderboards.Model.Course;
-using TeamMember = FLRC.Leaderboards.Web.ViewModels.TeamMember;
+using FLRC.Leaderboards.Web.ViewModels;
 
 namespace FLRC.Leaderboards.Web.Services;
 
