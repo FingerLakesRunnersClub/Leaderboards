@@ -14,7 +14,7 @@ public sealed class CommunityPostTests
 		var result = new Result { StartTime = new DateTime(2020, 1, 1), Athlete = athlete };
 
 		//act
-		var matches = post.Matches(result);
+		var matches = post.Matches(result, athlete);
 
 		//assert
 		Assert.True(matches);
@@ -30,7 +30,7 @@ public sealed class CommunityPostTests
 		var result = new Result { StartTime = new DateTime(2020, 1, 2), Athlete = athlete };
 
 		//act
-		var matches = post.Matches(result);
+		var matches = post.Matches(result, athlete);
 
 		//assert
 		Assert.False(matches);
@@ -46,7 +46,7 @@ public sealed class CommunityPostTests
 		var result = new Result { StartTime = new DateTime(2020, 1, 1), Athlete = athlete };
 
 		//act
-		var matches = post.Matches(result);
+		var matches = post.Matches(result, athlete);
 
 		//assert
 		Assert.False(matches);

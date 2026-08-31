@@ -8,11 +8,12 @@ public sealed class CommunityStarCalculator(ICommunityPostService service) : ICo
 	public CommunityStars GetStars(Result result, Result[] all, IList<CommunityStars> existing)
 	{
 		var posts = service.GetPosts(result.Course);
+		var athlete = result.Athlete;
 		var stars = new CommunityStars
 		{
 			Result = result,
 			GroupRun = result.IsGroupRun(all) && !AlreadyHasStarToday(result, existing, s => s.GroupRun),
-			StoryPost = posts.Any(p => p.Matches(result) && p.HasNarrative()) && !AlreadyHasStarToday(result, existing, s => s.StoryPost)
+			StoryPost = posts.Any(p => p.Matches(result, athlete) && p.HasNarrative()) && !AlreadyHasStarToday(result, existing, s => s.StoryPost)
 		};
 		return stars.GroupRun || stars.StoryPost
 			? stars

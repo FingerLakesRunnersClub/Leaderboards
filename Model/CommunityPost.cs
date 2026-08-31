@@ -9,8 +9,8 @@ public sealed record CommunityPost
 	public DateTime Date { get; init; }
 	public string Content { get; init; } = null!;
 
-	public bool Matches(Result result)
-		=> result.Athlete.LinkedAccounts.Any(l => l.Type == LinkedAccount.Keys.Discourse && l.Value == ID.ToString())
+	public bool Matches(Result result, Athlete athlete)
+		=> athlete.LinkedAccounts.Any(l => l.Type == LinkedAccount.Keys.Discourse && l.Value == ID.ToString())
 		   && Date.Date == result.StartTime.Date;
 
 	public bool HasNarrative()
