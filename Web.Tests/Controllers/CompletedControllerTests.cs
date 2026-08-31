@@ -20,8 +20,8 @@ public sealed class CompletedControllerTests
 		var controller = new CompletedController(iterationManager, overall);
 
 		var course = ResultsData.Course with { Results = ResultsData.Results };
-		var iteration = new Iteration { Races = [new Race { Courses = [course] }] };
-		var challenge = new Challenge { IsOfficial = true, IsPrimary = true, Courses = [course], Iteration = iteration };
+		var iteration = new Iteration { ID = Guid.NewGuid(), Races = [new Race { Courses = [course] }] };
+		var challenge = new Challenge { ID = Guid.NewGuid(), IsOfficial = true, IsPrimary = true, Courses = [course], Iteration = iteration, IterationID = iteration.ID };
 		iteration.Challenges.Add(challenge);
 		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
 		foreach (var athlete in athletes)

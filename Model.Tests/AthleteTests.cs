@@ -95,8 +95,8 @@ public sealed class AthleteTests
 	public void HasChallengeIfIterationMatches()
 	{
 		//arrange
-		var i1 = new Iteration { Name = "test1" };
-		var athlete = new Athlete { Challenges = [new Challenge { Iteration = i1 }] };
+		var i1 = new Iteration { ID = Guid.NewGuid(), Name = "test1" };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Challenges = [new Challenge { ID = Guid.NewGuid(), Iteration = i1, IterationID = i1.ID}] };
 
 		//act
 		var isRegistered = athlete.HasChallenge(i1);
@@ -109,23 +109,24 @@ public sealed class AthleteTests
 	public void CanGetChallengeForIteration()
 	{
 		//arrange
-		var i1 = new Iteration { Name = "i1" };
-		var athlete = new Athlete { Challenges = [new Challenge { Name = "c1", Iteration = i1 }] };
+		var i1 = new Iteration { ID = Guid.NewGuid(), Name = "i1" };
+		var challenge = new Challenge { ID = Guid.NewGuid(), Name = "c1", Iteration = i1, IterationID = i1.ID };
+		var athlete = new Athlete { ID = Guid.NewGuid(), Challenges = [challenge] };
 
 		//act
-		var challenge = athlete.Challenge(i1);
+		var match = athlete.Challenge(i1);
 
 		//assert
-		Assert.Equal("c1", challenge!.Name);
+		Assert.Equal("c1", match!.Name);
 	}
 
 	[Fact]
 	public void DoesNotHaveChallengeIfIterationDoesNotMatch()
 	{
 		//arrange
-		var i1 = new Iteration { Name = "test1" };
-		var i2 = new Iteration { Name = "test2" };
-		var athlete = new Athlete { Challenges = [new Challenge { Iteration = i1 }] };
+		var i1 = new Iteration { ID = Guid.NewGuid(), Name = "test1" };
+		var i2 = new Iteration { ID = Guid.NewGuid(), Name = "test2" };
+		var athlete = new Athlete { Challenges = [new Challenge { ID = Guid.NewGuid(), Iteration = i1, IterationID = i1.ID }] };
 
 		//act
 		var isRegistered = athlete.HasChallenge(i2);

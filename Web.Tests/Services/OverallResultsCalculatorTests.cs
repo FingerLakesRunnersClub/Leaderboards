@@ -129,7 +129,7 @@ public sealed class OverallResultsCalculatorTests
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 		var iteration = OverallData.Iteration;
 		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
-		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
+		var challenge = OverallData.OfficialChallenge with { Iteration = iteration, IterationID = iteration.ID };
 		iteration.Challenges.Clear();
 		iteration.Challenges.Add(challenge);
 		foreach (var athlete in athletes)
@@ -151,7 +151,7 @@ public sealed class OverallResultsCalculatorTests
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 		var iteration = OverallData.Iteration;
 		var athletes = iteration.AllCourses.SelectMany(c => c.Results).Select(r => r.Athlete).Distinct();
-		var challenge = OverallData.OfficialChallenge with { Iteration = iteration };
+		var challenge = OverallData.OfficialChallenge with { Iteration = iteration, IterationID = iteration.ID };
 		iteration.Challenges.Clear();
 		iteration.Challenges.Add(challenge);
 		foreach (var athlete in athletes)

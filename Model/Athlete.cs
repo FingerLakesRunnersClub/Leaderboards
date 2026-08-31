@@ -46,8 +46,12 @@ public record Athlete : Identifiable<Guid>
 	public bool IsRegistered(Iteration iteration)
 		=> Registrations.Contains(iteration);
 
+	private Challenge[]? _challenges;
 	public Challenge? Challenge(Iteration iteration)
-		=> Challenges.FirstOrDefault(c => c.Iteration == iteration);
+	{
+		_challenges ??= [.. Challenges];
+		return _challenges.FirstOrDefault(c => c.IterationID == iteration.ID);
+	}
 
 	public bool HasChallenge(Iteration iteration)
 		=> Challenge(iteration) is not null;
