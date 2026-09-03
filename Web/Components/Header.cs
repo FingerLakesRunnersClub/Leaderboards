@@ -1,5 +1,4 @@
 using FLRC.Leaderboards.Core.Config;
-using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Services;
@@ -14,6 +13,10 @@ public sealed class Header(IAuthService authService, IAdminService adminService,
 	public async Task<ViewViewComponentResult> InvokeAsync()
 	{
 		var iteration = await iterationManager.ActiveIteration();
+
+		if (iteration is null)
+			throw new ArgumentException("No active iteration!");
+
 		var officialCourses = iteration.OfficialChallengeCourses;
 		var otherCourses = iteration.OtherCourses;
 
