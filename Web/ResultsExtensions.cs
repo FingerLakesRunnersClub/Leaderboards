@@ -14,12 +14,17 @@ public static class ResultsExtensions
 	extension(ICollection<Result> results)
 	{
 		public Result[] For(Iteration iteration)
-			=>
+		{
+			var start = iteration.StartDate?.ToDateTime(TimeOnly.MinValue);
+			var end = iteration.EndDate?.ToDateTime(TimeOnly.MaxValue);
+
+			return
 			[
 				.. results
-					.Where(r => (iteration.StartDate is null || r.StartTime >= iteration.StartDate?.ToDateTime(TimeOnly.MinValue))
-					            && (iteration.EndDate is null || r.FinishTime <= iteration.EndDate?.ToDateTime(TimeOnly.MaxValue)))
+					.Where(r => (start is null || r.StartTime >= start)
+						&& (end is null || r.FinishTime <= end))
 			];
+		}
 
 		public RankedList<Time, Result> Fastest(Filter filter = null)
 			=> results.Rank(filter ?? new Filter(), _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => !rs.Key.IsPrivate ? new Time(rs.Min(r => r.Duration)) : Time.Max);
