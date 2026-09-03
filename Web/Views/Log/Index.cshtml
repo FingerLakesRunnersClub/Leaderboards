@@ -53,7 +53,7 @@
 								@result.Athlete.Name
 							</a>
 						</td>
-						@if (Model.Data.Course == null)
+						@if (Model.Data.Course is null)
 						{
 							<td>
 								<a href="/Results/Fastest/@result.Course.ID">

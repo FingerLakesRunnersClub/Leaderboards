@@ -22,7 +22,7 @@ public sealed record Result : IComparable<Result>
 	public Time Duration { get; init; }
 	public Performance Performance { get; init; }
 
-	public Date FinishTime => StartTime != null
+	public Date FinishTime => StartTime is not null
 		? new Date(StartTime.Value + (Duration?.Value ?? TimeSpan.Zero))
 		: null;
 
@@ -34,7 +34,7 @@ public sealed record Result : IComparable<Result>
 		};
 
 	public byte AgeOnDayOfRun
-		=> StartTime != null
+		=> StartTime is not null
 			? Athlete.AgeAsOf(StartTime.Value)
 			: Athlete.Age;
 

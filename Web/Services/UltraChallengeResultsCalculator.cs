@@ -46,7 +46,7 @@ public static class UltraChallengeResultsCalculator
 				continue;
 
 			var completion = FindCompletion(challenges, sorted, result);
-			if (completion == null)
+			if (completion is null)
 				continue;
 
 			completions.Add(completion);

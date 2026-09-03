@@ -82,7 +82,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 							.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
 					])
 				}
-				.Where(l => l != null)
+				.Where(l => l is not null)
 		];
 
 	private LeaderboardTable OverallTable(string id, ResultType type, Filter filter, Func<LeaderboardRow[]> rows)
@@ -234,8 +234,8 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 	{
 		return type switch
 		{
-			LeaderboardResultType.F => t => t.Filter.Category == Category.F || t.Filter.Category == null && t.ResultType?.Value != ResultType.Team,
-			LeaderboardResultType.M => t => t.Filter.Category == Category.M || t.Filter.Category == null && t.ResultType?.Value != ResultType.Team,
+			LeaderboardResultType.F => t => t.Filter.Category == Category.F || t.Filter.Category is null && t.ResultType?.Value != ResultType.Team,
+			LeaderboardResultType.M => t => t.Filter.Category == Category.M || t.Filter.Category is null && t.ResultType?.Value != ResultType.Team,
 			_ => t => t.ResultType?.Value == ResultType.Team
 		};
 	}

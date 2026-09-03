@@ -64,7 +64,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 					OverallRow("Courses", null, athlete, () => mostCourses),
 					OverallRow("Community", null, athlete, () => stars),
 					OverallRow("Team", null, athlete, () => team)
-				}.Where(c => c?.Value != null)
+				}.Where(c => c?.Value is not null)
 			],
 
 			OverallPoints = points,
@@ -78,7 +78,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 
 	private AthleteOverallRow OverallRow<T>(string id, Category category, Athlete athlete, Func<Ranked<T, Result>> results) where T : Formattable
 	{
-		if (!config.Competitions.TryGetValue(id, out var name) || category != null && category.Display != athlete.Category.ToString())
+		if (!config.Competitions.TryGetValue(id, out var name) || category is not null && category.Display != athlete.Category.ToString())
 			return null;
 
 		var result = results();
@@ -110,7 +110,7 @@ public sealed class AthleteSummaryCalculator(IResultService resultService, IOver
 		[
 			.. athletes.Select(their => SimilarAthleteCalculator.GetSimilarity(summary, their))
 				.Where(m => Math.Abs(m.FastestPercent.Value) < 10
-				            && (m.AveragePercent == null || Math.Abs(m.AveragePercent.Value) < 10)
+				            && (m.AveragePercent is null || Math.Abs(m.AveragePercent.Value) < 10)
 				            && m.Similarity.Value >= 100 * (1 - SimilarAthlete.Weighting)
 				            && m.Overlap.Value >= 100 * SimilarAthlete.Weighting)
 		];

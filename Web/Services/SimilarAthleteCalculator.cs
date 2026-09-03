@@ -32,15 +32,15 @@ public static class SimilarAthleteCalculator
 
 	private static Dictionary<Course, Ranked<Time, Result>> GetResultsToCompare(IDictionary<Course, Ranked<Time, Result>> mine, IDictionary<Course, Ranked<Time, Result>> theirs)
 		=> mine
-			.Where(r => r.Value != null && theirs[r.Key] != null)
+			.Where(r => r.Value is not null && theirs[r.Key] is not null)
 			.ToDictionary(r => r.Key, r => r.Value);
 
 	private static double GetDiffTotal(IDictionary<Course, Ranked<Time, Result>> my, IDictionary<Course, Ranked<Time, Result>> their)
-		=> my.Sum(r => r.Value != null && their[r.Key] != null ? Time.PercentDifference(r.Value.Value, their[r.Key].Value) : 0);
+		=> my.Sum(r => r.Value is not null && their[r.Key] is not null ? Time.PercentDifference(r.Value.Value, their[r.Key].Value) : 0);
 
 	private static double GetTotal(IDictionary<Course, Ranked<Time, Result>> fastestToCompare, IDictionary<Course, Ranked<Time, Result>> avgToCompare, AthleteSummary their) =>
-		fastestToCompare.Sum(r => r.Value != null && their.Fastest[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0)
-		+ avgToCompare.Sum(r => r.Value != null && their.Average[r.Key] != null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0);
+		fastestToCompare.Sum(r => r.Value is not null && their.Fastest[r.Key] is not null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Fastest[r.Key].Value) : 0)
+		+ avgToCompare.Sum(r => r.Value is not null && their.Average[r.Key] is not null ? 100 - Time.AbsolutePercentDifference(r.Value.Value, their.Average[r.Key].Value) : 0);
 
 	private static double GetScore(double similarity, double overlap)
 	{

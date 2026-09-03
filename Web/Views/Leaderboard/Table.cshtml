@@ -29,7 +29,7 @@
                     @result.Rank.Value
                 </td>
                 <td>
-                    @if(result.Link != null)
+                    @if(result.Link is not null)
                     {
                         <a href="@result.Link">@result.Name</a>
                     }

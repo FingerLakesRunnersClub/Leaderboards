@@ -16,11 +16,11 @@
 		? "secondary"
 		: "light";
 
-	string Style(Category category) => Model.Filter.Category == null && category == null || Model.Filter.Category == category
+	string Style(Category category) => Model.Filter.Category is null && category is null || Model.Filter.Category == category
 		? "secondary"
 		: "light";
 
-	string Style(Iteration iteration) => Model.Filter.Iteration == null && iteration.ID == Guid.Empty || Model.Filter.Iteration?.ID == iteration?.ID
+	string Style(Iteration iteration) => Model.Filter.Iteration is null && iteration.ID == Guid.Empty || Model.Filter.Iteration?.ID == iteration?.ID
 		? "secondary"
 		: "light";
 

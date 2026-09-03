@@ -58,7 +58,7 @@ public sealed class CategoryTests
 		var category = Category.Parse(cat);
 
 		//assert
-		if (expected != null)
+		if (expected is not null)
 			Assert.Equal(expected, category.Value);
 		else
 			Assert.Null(category);
