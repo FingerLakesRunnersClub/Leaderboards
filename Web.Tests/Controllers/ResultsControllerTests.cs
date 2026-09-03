@@ -36,8 +36,8 @@ public sealed class ResultsControllerTests
 		var course = new Course { Distance = 10, Units = "km" };
 		var results = new[]
 		{
-			new Result { Course = course, Athlete = a1, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
-			new Result { Course = course, Athlete = a2, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
+			new Result { Course = course, CourseID = course.ID, Athlete = a1, AthleteID = a1.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
+			new Result { Course = course, CourseID = course.ID, Athlete = a2, AthleteID = a2.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
 		};
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Find(Arg.Any<Guid>()).Returns(results);
@@ -70,8 +70,8 @@ public sealed class ResultsControllerTests
 		var course = new Course { Distance = 10, Units = "km" };
 		var results = new[]
 		{
-			new Result { Course = course, Athlete = a1, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
-			new Result { Course = course, Athlete = a2, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
+			new Result { Course = course, CourseID = course.ID, Athlete = a1, AthleteID = a1.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
+			new Result { Course = course, CourseID = course.ID, Athlete = a2, AthleteID = a2.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
 		};
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Find(Arg.Any<Guid>()).Returns(results);
@@ -104,8 +104,8 @@ public sealed class ResultsControllerTests
 		var course = new Course { Distance = 10, Units = "km" };
 		var results = new[]
 		{
-			new Result { Course = course, Athlete = a1, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
-			new Result { Course = course, Athlete = a2, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
+			new Result { Course = course, CourseID = course.ID, Athlete = a1, AthleteID = a1.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("2:34") },
+			new Result { Course = course, CourseID = course.ID, Athlete = a2, AthleteID = a2.ID, StartTime = new DateTime(2022, 4, 26), Duration = TimeSpan.Parse("1:23") }
 		};
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Find(Arg.Any<Guid>()).Returns(results);
@@ -133,7 +133,8 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		authService.GetCurrentUser().Returns(user);
 
 		//act
 		var result = await controller.Add(Guid.NewGuid());
@@ -157,9 +158,12 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2000, 1, 1) });
-		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 10, Units = "km", Race = new Race { Type = "Road" } });
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
+		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
+		authService.GetCurrentUser().Returns(user);
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
 
 		var data = new Dictionary<string, StringValues>
 		{
@@ -192,9 +196,12 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
-		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } });
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
+		var course = new Course { ID = Guid.NewGuid(), Distance = 40, Units = "km", Race = new Race { Type = "Road" } };
+		authService.GetCurrentUser().Returns(user);
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
 
 		var data = new Dictionary<string, StringValues>
 		{
@@ -227,9 +234,12 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
-		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 10, Units = "km", Race = new Race { Type = "Road" } });
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
+		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
+		authService.GetCurrentUser().Returns(user);
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.FindDuplicates(Arg.Any<Result>()).Returns([new Result()]);
 
 		var data = new Dictionary<string, StringValues>
@@ -266,14 +276,14 @@ public sealed class ResultsControllerTests
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
 		//act
-		var response = await controller.Edit(Guid.NewGuid());
+		var response = await controller.Edit(result.ID);
 
 		//assert
 		var view = response as ViewResult;
@@ -299,7 +309,7 @@ public sealed class ResultsControllerTests
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
@@ -331,7 +341,7 @@ public sealed class ResultsControllerTests
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
@@ -364,7 +374,7 @@ public sealed class ResultsControllerTests
 		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
@@ -405,7 +415,7 @@ public sealed class ResultsControllerTests
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
@@ -446,7 +456,7 @@ public sealed class ResultsControllerTests
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, Course = course, Duration = new TimeSpan(1, 2, 3) };
+		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
 		authService.GetCurrentUser().Returns(user);
 		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
@@ -484,10 +494,14 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
-		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 40, Units = "km", Race = new Race { Type = "Road" } });
-		resultService.Get(Arg.Any<Guid>()).Returns(new Result { Duration = new TimeSpan(1, 2, 3) });
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
+		var course = new Course { ID = Guid.NewGuid(), Distance = 40, Units = "km", Race = new Race { Type = "Road" } };
+		var result = new Result { ID = Guid.NewGuid(), Duration = new TimeSpan(1, 2, 3) };
+		authService.GetCurrentUser().Returns(user);
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
 		var data = new Dictionary<string, StringValues>
 		{
@@ -520,10 +534,14 @@ public sealed class ResultsControllerTests
 
 		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(new Athlete { DateOfBirth = new DateOnly(2020, 1, 1) });
-		courseService.Get(Arg.Any<Guid>()).Returns(new Course { Distance = 10, Units = "km", Race = new Race { Type = "Road" } });
-		resultService.Get(Arg.Any<Guid>()).Returns(new Result { Duration = new TimeSpan(1, 2, 3) });
+		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
+		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
+		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
+		var result = new Result { ID = Guid.NewGuid(), Duration = new TimeSpan(1, 2, 3) };
+		authService.GetCurrentUser().Returns(user);
+		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		courseService.Get(Arg.Any<Guid>()).Returns(course);
+		resultService.Get(Arg.Any<Guid>()).Returns(result);
 		resultService.FindDuplicates(Arg.Any<Result>()).Returns([new Result()]);
 
 		var data = new Dictionary<string, StringValues>

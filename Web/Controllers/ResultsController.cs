@@ -160,7 +160,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var athlete = await CurrentAthlete();
 		var result = await resultService.Get(id);
 
-		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
 			return Forbid();
 
 		var vm = new ViewModel<Result>("Edit Result", result);
@@ -174,7 +174,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var athlete = await CurrentAthlete();
 		var result = await resultService.Get(id);
 
-		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
 			return Forbid();
 
 		form.TryGetValue("Duration[h]", out var h);
@@ -222,7 +222,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var athlete = await CurrentAthlete();
 		var result = await resultService.Get(id);
 
-		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
 			return Forbid();
 
 		var vm = new ViewModel<Result>("Delete Result", result);
@@ -236,7 +236,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var athlete = await CurrentAthlete();
 		var result = await resultService.Get(id);
 
-		if (result.Athlete != athlete && !await adminService.Verify(athlete.ID))
+		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
 			return Forbid();
 
 		await resultService.Delete(result);

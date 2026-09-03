@@ -79,6 +79,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -90,6 +92,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = result.StartTime,
 			Duration = result.Duration
 		};
@@ -115,6 +119,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -126,6 +132,8 @@ public sealed class ResultServiceTests
 			ID = result.ID,
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = result.StartTime,
 			Duration = result.Duration
 		};
@@ -151,6 +159,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -162,6 +172,8 @@ public sealed class ResultServiceTests
 			ID = result.ID,
 			Course = course,
 			Athlete = new Athlete(),
+			CourseID = course.ID,
+			AthleteID = Guid.NewGuid(),
 			StartTime = result.StartTime,
 			Duration = result.Duration
 		};
@@ -187,6 +199,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -198,6 +212,8 @@ public sealed class ResultServiceTests
 			ID = result.ID,
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = result.StartTime.AddMinutes(1),
 			Duration = result.Duration
 		};
@@ -223,6 +239,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -234,6 +252,8 @@ public sealed class ResultServiceTests
 			ID = result.ID,
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = result.StartTime,
 			Duration = result.Duration.Add(TimeSpan.FromSeconds(1))
 		};
@@ -259,6 +279,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = course,
 			Athlete = athlete,
+			CourseID = course.ID,
+			AthleteID = athlete.ID,
 			StartTime = DateTime.Parse("1/2/2023 4:56pm"),
 			Duration = TimeSpan.FromMilliseconds(1234567)
 		};
@@ -270,6 +292,8 @@ public sealed class ResultServiceTests
 			ID = Guid.NewGuid(),
 			Course = new Course(),
 			Athlete = athlete,
+			CourseID = Guid.NewGuid(),
+			AthleteID = athlete.ID,
 			StartTime = result.StartTime,
 			Duration = result.Duration
 		};

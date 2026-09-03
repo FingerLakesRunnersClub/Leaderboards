@@ -20,12 +20,12 @@ public sealed class AthleteHeader(IIterationManager iterationManager, IOverallRe
 
 	private async Task<IDictionary<string, string>> GetBadges(Athlete athlete, Iteration iteration)
 	{
-		var completed = overall.Completed(iteration).Any(r => r.Result.Athlete == athlete)
-			|| overall.CompletedPersonal(iteration).Any(r => r.Result.Athlete == athlete);
+		var completed = overall.Completed(iteration).Any(r => r.Result.AthleteID == athlete.ID)
+			|| overall.CompletedPersonal(iteration).Any(r => r.Result.AthleteID == athlete.ID);
 
 		var challengeResults = await UltraChallengeResultsCalculator.Earliest(iteration);
 		var result = challengeResults
-			.Where(s => s.Value.Any(r => r.Value.Athlete == athlete))
+			.Where(s => s.Value.Any(r => r.Value.Athlete.ID == athlete.ID))
 			.ToDictionary(s => BadgeIcon(s.Key), s => s.Key.Name);
 
 		return completed

@@ -34,7 +34,7 @@ public sealed class ResultService(DB db) : IResultService
 		=> await db.Set<Result>()
 			.Include(r => r.Athlete)
 			.Where(r => r.ID != result.ID
-				&& r.Athlete == result.Athlete
+				&& r.AthleteID == result.AthleteID
 				&& r.StartTime == result.StartTime
 				&& r.Duration == result.Duration)
 			.ToArrayAsync();
