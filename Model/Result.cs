@@ -12,7 +12,7 @@ public record Result : Identifiable<Guid>
 	public virtual Athlete Athlete { get; init; } = null!;
 
 	public byte? AthleteAge
-		=> Athlete.AgeAsOf(StartTime);
+		=> field ??= Athlete.AgeAsOf(StartTime);
 
 	public DateTime FinishTime => StartTime + Duration;
 
