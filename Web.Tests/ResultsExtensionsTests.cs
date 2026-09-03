@@ -32,7 +32,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var fastest = results.Fastest(new Filter(Category.F));
+		var fastest = results.Fastest(Filter.F);
 
 		//assert
 		Assert.Equal(2, fastest.Count);
@@ -64,7 +64,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var most = results.MostRuns(new Filter(Category.M));
+		var most = results.MostRuns(Filter.M);
 
 		//assert
 		Assert.Equal(2, most.Count);
@@ -96,7 +96,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var most = results.MostMiles(new Filter(Category.M));
+		var most = results.MostMiles(Filter.M);
 
 		//assert
 		Assert.Equal(2, most.Count);
@@ -127,7 +127,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var avg = results.BestAverage(new Filter(Category.M));
+		var avg = results.BestAverage(Filter.M);
 
 		//assert
 		Assert.Equal(2, avg.Count);
@@ -142,7 +142,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var avg = results.BestAverage(new Filter(Category.F));
+		var avg = results.BestAverage(Filter.F);
 
 		//assert
 		Assert.Single(avg);
@@ -194,7 +194,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var earliest = results.Earliest(new Filter(Category.M));
+		var earliest = results.Earliest(Filter.M);
 
 		//assert
 		Assert.Equal(2, earliest.Count);
@@ -222,7 +222,7 @@ public sealed class ResultsExtensionsTests
 		var results = ResultsData.Results;
 
 		//act
-		var fastest = results.Fastest(new Filter(Category.M));
+		var fastest = results.Fastest(Filter.M);
 
 		//assert
 		Assert.Equal(75, fastest.Skip(1).First().Points.Value);

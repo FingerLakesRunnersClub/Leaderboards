@@ -28,19 +28,19 @@ public sealed class OverallController(IIterationManager iterationManager, IOvera
 
 	[HttpGet]
 	public async Task<ViewResult> Miles()
-		=> View(await GetResults(config.Competitions["Miles"], (o, i) =>  o.MostMiles(i, new Filter())));
+		=> View(await GetResults(config.Competitions["Miles"], (o, i) =>  o.MostMiles(i)));
 
 	[HttpGet]
 	public async Task<ViewResult> Courses()
-		=> View(await GetResults(config.Competitions["Courses"], (o, i) =>  o.MostCourses(i, new Filter())));
+		=> View(await GetResults(config.Competitions["Courses"], (o, i) =>  o.MostCourses(i)));
 
 	[HttpGet]
 	public async Task<ViewResult> AgeGrade()
-		=> View(await GetResults(config.Competitions["AgeGrade"], (o, i) =>  o.AgeGrade(i, new Filter())));
+		=> View(await GetResults(config.Competitions["AgeGrade"], (o, i) =>  o.AgeGrade(i)));
 
 	[HttpGet]
 	public async Task<ViewResult> Community()
-		=> View(await GetResults(config.Competitions["Community"], (o, i) =>  o.Community(i, new Filter())));
+		=> View(await GetResults(config.Competitions["Community"], (o, i) =>  o.Community(i)));
 
 	private async Task<ViewModel<OverallResults<T>>> GetResults<T>(string title, Func<IOverallResultsCalculator, Iteration, RankedList<T, Result>> results)
 	{

@@ -10,7 +10,7 @@ public sealed class FilterTests
 	public void AllResultsMatchByDefault()
 	{
 		//arrange
-		var filter = new Filter();
+		var filter = Filter.None;
 
 		//act
 		var matches = filter.IsMatch(new Result());
@@ -24,7 +24,7 @@ public sealed class FilterTests
 	{
 		//arrange
 		var result = new Result { Athlete = new Athlete { Category = 'M' } };
-		var filter = new Filter(Core.Athletes.Category.M);
+		var filter = Filter.M;
 
 		//act
 		var matches = filter.IsMatch(result);
@@ -38,7 +38,7 @@ public sealed class FilterTests
 	{
 		//arrange
 		var result = new Result { Athlete = new Athlete { Category = 'F' } };
-		var filter = new Filter(Core.Athletes.Category.M);
+		var filter = Filter.M;
 
 		//act
 		var matches = filter.IsMatch(result);

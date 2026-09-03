@@ -13,8 +13,8 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 	public Dictionary<Athlete, Award[]> GetAwards(Iteration iteration)
 	{
 		var awards = new List<Award>();
-		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(iteration, new Filter(Category.F)), 5));
-		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(iteration, new Filter(Category.M)), 5));
+		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(iteration, Filter.F), 5));
+		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(iteration, Filter.M), 5));
 		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(iteration), 10));
 		awards.AddRange(Overall("Courses", "Most Courses", overall.MostCourses(iteration), 10));
 		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(iteration), 10));
@@ -22,10 +22,10 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 		awards.AddRange(Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration));
 
 		var officialCourses = iteration.OfficialChallengeCourses;
-		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.F)))]));
-		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(new Filter(Category.M)))]));
-		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.F)))]));
-		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(new Filter(Category.M)))]));
+		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(Filter.F))]));
+		awards.AddRange(Course("Fastest/M", $"Fastest ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(Filter.M))]));
+		awards.AddRange(Course("BestAverage/F", $"Best Average ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(Filter.F))]));
+		awards.AddRange(Course("BestAverage/M", $"Best Average ({Category.M.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).BestAverage(Filter.M))]));
 		awards.AddRange(Course("MostRuns", "Most Runs", [.. officialCourses.SelectMany(c => c.Results.For(iteration).MostRuns())]));
 
 		awards.AddRange(AgeGroup(iteration, officialCourses, Category.F));

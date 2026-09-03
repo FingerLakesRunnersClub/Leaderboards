@@ -28,55 +28,55 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 		[
 			.. new List<LeaderboardTable>
 				{
-					OverallTable("Points/F", ResultType.Fastest, new Filter(Category.F), () =>
+					OverallTable("Points/F", ResultType.Fastest, Filter.F, () =>
 					[
-						.. overall.MostPoints(iteration, new Filter(Category.F)).Take(tableSize)
+						.. overall.MostPoints(iteration, Filter.F).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("Points/M", ResultType.Fastest, new Filter(Category.M), () =>
+					OverallTable("Points/M", ResultType.Fastest, Filter.M, () =>
 					[
-						.. overall.MostPoints(iteration, new Filter(Category.M)).Take(tableSize)
+						.. overall.MostPoints(iteration, Filter.M).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("PointsTop3/F", ResultType.Fastest, new Filter(Category.F), () =>
+					OverallTable("PointsTop3/F", ResultType.Fastest, Filter.F, () =>
 					[
-						.. overall.MostPoints(iteration, tableSize, new Filter(Category.F)).Take(tableSize)
+						.. overall.MostPoints(iteration, tableSize, Filter.F).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("PointsTop3/M", ResultType.Fastest, new Filter(Category.M), () =>
+					OverallTable("PointsTop3/M", ResultType.Fastest, Filter.M, () =>
 					[
-						.. overall.MostPoints(iteration, tableSize, new Filter(Category.M)).Take(tableSize)
+						.. overall.MostPoints(iteration, tableSize, Filter.M).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("AgeGrade", ResultType.BestAverage, new Filter(), () =>
+					OverallTable("AgeGrade", ResultType.BestAverage, Filter.None, () =>
 					[
 						.. overall.AgeGrade(iteration).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.AgeGrade.Display })
 					]),
 
-					OverallTable("Miles", ResultType.MostRuns, new Filter(), () =>
+					OverallTable("Miles", ResultType.MostRuns, Filter.None, () =>
 					[
 						.. overall.MostMiles(iteration).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("Courses", ResultType.MostCourses, new Filter(), () =>
+					OverallTable("Courses", ResultType.MostCourses, Filter.None, () =>
 					[
 						.. overall.MostCourses(iteration).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("Community", ResultType.Community, new Filter(), () =>
+					OverallTable("Community", ResultType.Community, Filter.None, () =>
 					[
 						.. overall.Community(iteration).Take(tableSize)
 							.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 					]),
 
-					OverallTable("Team", ResultType.Team, new Filter(), () =>
+					OverallTable("Team", ResultType.Team, Filter.None, () =>
 					[
 						.. overall.TeamPoints(iteration).Take(tableSize)
 							.Select(t => new LeaderboardRow { Rank = t.Rank, Name = t.Value.Team.Display, Link = $"/Team/Index/{t.Value.Team.Value}", Value = t.Value.TotalPoints.ToString() })
@@ -92,7 +92,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Link = $"/Overall/{id}",
 				Title = title,
 				ResultType = new FormattedResultType(type),
-				Filter = filter ?? new Filter(),
+				Filter = filter,
 				Rows = new Lazy<LeaderboardRow[]>(rows)
 			}
 			: null;
@@ -128,11 +128,11 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Title = "Fastest (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
-				Filter = new Filter(Category.F),
+				Filter = Filter.F,
 				Link = $"/Results/Fastest/{course.ID}?c=F",
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.Fastest(new Filter(Category.F)).Take(tableSize)
+					.. results.Fastest(Filter.F).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				])
 			},
@@ -141,11 +141,11 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Title = "Fastest (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Fastest),
-				Filter = new Filter(Category.M),
+				Filter = Filter.M,
 				Link = $"/Results/Fastest/{course.ID}?c=M",
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.Fastest(new Filter(Category.M)).Take(tableSize)
+					.. results.Fastest(Filter.M).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				])
 			},
@@ -154,11 +154,11 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Title = "Best Average (F)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
-				Filter = new Filter(Category.F),
+				Filter = Filter.F,
 				Link = $"/Results/BestAverage/{course.ID}?c=F",
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.BestAverage(new Filter(Category.F)).Take(tableSize)
+					.. results.BestAverage(Filter.F).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				])
 			},
@@ -167,11 +167,11 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Title = "Best Average (M)",
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.BestAverage),
-				Filter = new Filter(Category.M),
+				Filter = Filter.M,
 				Link = $"/Results/BestAverage/{course.ID}?c=M",
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.BestAverage(new Filter(Category.M)).Take(tableSize)
+					.. results.BestAverage(Filter.M).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = r.Rank, Link = $"/Athlete/Index/{r.Result.Athlete.ID}", Name = r.Result.Athlete.Name, Value = r.Value.Display })
 				])
 			},
@@ -181,7 +181,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.MostRuns),
 				Link = $"/Results/MostRuns/{course.ID}",
-				Filter = new Filter(),
+				Filter = Filter.None,
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
 					.. results.MostRuns().Take(tableSize)
@@ -194,10 +194,10 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Results/Team/{course.ID}",
-				Filter = new Filter(),
+				Filter = Filter.None,
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.TeamPoints(iteration, new Filter()).OrderByDescending(p => p.Value.AverageAgeGrade).Take(tableSize)
+					.. results.TeamPoints(iteration).OrderByDescending(p => p.Value.AverageAgeGrade).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.AgeGradePoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.AverageAgeGrade.Display })
 				])
 			},
@@ -207,10 +207,10 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Results/Team/{course.ID}",
-				Filter = new Filter(),
+				Filter = Filter.None,
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.TeamPoints(iteration, new Filter()).OrderByDescending(p => p.Value.TotalRuns).Take(tableSize)
+					.. results.TeamPoints(iteration).OrderByDescending(p => p.Value.TotalRuns).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = new Rank(r.Value.MostRunsPoints), Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalRuns.ToString() })
 				])
 			},
@@ -220,10 +220,10 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 				Course = course,
 				ResultType = new FormattedResultType(ResultType.Team),
 				Link = $"/Results/Team/{course.ID}",
-				Filter = new Filter(),
+				Filter = Filter.None,
 				Rows = new Lazy<LeaderboardRow[]>(() =>
 				[
-					.. results.TeamPoints(iteration, new Filter()).Take(tableSize)
+					.. results.TeamPoints(iteration).Take(tableSize)
 						.Select(r => new LeaderboardRow { Rank = r.Rank, Name = r.Value.Team.Display, Link = $"/Team/Index/{r.Value.Team.Value}", Value = r.Value.TotalPoints.ToString() })
 				])
 			}

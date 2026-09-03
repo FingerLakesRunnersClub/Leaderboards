@@ -27,18 +27,16 @@ public static class ResultsExtensions
 		}
 
 		public RankedList<Time, Result> Fastest(Filter filter = null)
-			=> results.Rank(filter ?? new Filter(), _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => !rs.Key.IsPrivate ? new Time(rs.Min(r => r.Duration)) : Time.Max);
+			=> results.Rank(filter, _ => true, rs => rs.OrderBy(r => r.Duration).First(), rs => !rs.Key.IsPrivate ? new Time(rs.Min(r => r.Duration)) : Time.Max);
 
 		public RankedList<Time, Result> BestAverage(Filter filter = null)
 		{
-			filter ??= new Filter();
 			var threshold = results.AverageThreshold(filter);
 			return results.Rank(filter, rs => !rs.Key.IsPrivate && rs.Count() >= threshold, rs => rs.Average(rs.First().Course, threshold), rs => new Time(rs.Average(rs.First().Course, threshold).Duration));
 		}
 
 		public ushort AverageThreshold(Filter filter = null)
 		{
-			filter ??= new Filter();
 			var groupedResults = results.GroupedResults(filter);
 			return groupedResults.Length != 0
 				? (ushort)Math.Ceiling(groupedResults.Average(r => r.Count()))
@@ -46,13 +44,13 @@ public static class ResultsExtensions
 		}
 
 		public RankedList<ushort, Result> MostRuns(Filter filter = null)
-			=> results.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(r.First().Course), r => (ushort)r.Count());
+			=> results.RankDescending(filter, _ => true, r => r.Average(r.First().Course), r => (ushort)r.Count());
 
 		public RankedList<Miles, Result> MostMiles(Filter filter = null)
-			=> results.RankDescending(filter ?? new Filter(), _ => true, r => r.Average(r.First().Course), r => new Miles(r.Count() * new Distance(r.First().Course.DistanceDisplay).Miles));
+			=> results.RankDescending(filter, _ => true, r => r.Average(r.First().Course), r => new Miles(r.Count() * new Distance(r.First().Course.DistanceDisplay).Miles));
 
 		public RankedList<Date, Result> Earliest(Filter filter = null)
-			=> results.Rank(filter ?? new Filter(), _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
+			=> results.Rank(filter, _ => true, g => g.MinBy(r => r.FinishTime), g => new Date(g.Min(r => r.FinishTime)));
 
 		public RankedList<Count, Result> CommunityStars(ICommunityStarCalculator calculator, Filter filter = null)
 		{
@@ -111,8 +109,8 @@ public static class ResultsExtensions
 		public Statistics Statistics()
 		{
 			var allAthletes = results.GroupedResults();
-			var fAthletes = results.GroupedResults(new Filter(Category.F));
-			var mAthletes = results.GroupedResults(new Filter(Category.M));
+			var fAthletes = results.GroupedResults(Web.Filter.F);
+			var mAthletes = results.GroupedResults(Web.Filter.M);
 
 			var allResultCount = results.Count;
 			var fResultCount = results.Count(r => r.Athlete.Category == 'F');
@@ -153,7 +151,7 @@ public static class ResultsExtensions
 
 
 		public RankedList<TeamResults, Result> TeamPoints(Iteration iteration, Filter filter = null)
-			=> results.RankedTeamResults(iteration, filter ?? new Filter());
+			=> results.RankedTeamResults(iteration, filter);
 
 		private RankedList<TeamResults, Result> RankedTeamResults(Iteration iteration, Filter filter)
 		{

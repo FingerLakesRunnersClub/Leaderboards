@@ -32,7 +32,7 @@ public sealed class OverallResultsCalculatorTests
 		var calculator = new OverallResultsCalculator(starCalculator);
 
 		//act
-		var mostPoints = calculator.MostPoints(OverallData.Iteration, new Filter(Category.F));
+		var mostPoints = calculator.MostPoints(OverallData.Iteration, Filter.F);
 
 		//assert
 		Assert.Equal(OverallData.Athlete3, mostPoints.First().Result.Athlete);
@@ -60,7 +60,7 @@ public sealed class OverallResultsCalculatorTests
 		var calculator = new OverallResultsCalculator(starCalculator);
 
 		//act
-		var mostPoints = calculator.MostPoints(OverallData.Iteration, 1, new Filter(Category.F));
+		var mostPoints = calculator.MostPoints(OverallData.Iteration, 1, Filter.F);
 
 		//assert
 		Assert.Equal(OverallData.Athlete3, mostPoints.First().Result.Athlete);
@@ -88,7 +88,7 @@ public sealed class OverallResultsCalculatorTests
 		var calculator = new OverallResultsCalculator(starCalculator);
 
 		//act
-		var mostMiles = calculator.MostMiles(OverallData.Iteration, new Filter(Category.F));
+		var mostMiles = calculator.MostMiles(OverallData.Iteration, Filter.F);
 
 		//assert
 		Assert.Equal(OverallData.Athlete4, mostMiles.First().Result.Athlete);
@@ -116,7 +116,7 @@ public sealed class OverallResultsCalculatorTests
 		var calculator = new OverallResultsCalculator(starCalculator);
 
 		//act
-		var ageGrade = calculator.AgeGrade(OverallData.Iteration, new Filter(Category.F));
+		var ageGrade = calculator.AgeGrade(OverallData.Iteration, Filter.F);
 
 		//assert
 		Assert.Equal(OverallData.Athlete3, ageGrade.First().Result.Athlete);
@@ -160,7 +160,7 @@ public sealed class OverallResultsCalculatorTests
 		var calculator = new OverallResultsCalculator(starCalculator);
 
 		//act
-		var completed = calculator.Completed(iteration, new Filter(Category.M));
+		var completed = calculator.Completed(iteration, Filter.M);
 
 		//assert
 		Assert.Equal(OverallData.Athlete1, completed.First().Result.Athlete);
