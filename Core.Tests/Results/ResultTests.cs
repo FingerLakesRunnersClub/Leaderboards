@@ -79,7 +79,7 @@ public sealed class ResultTests
 	[Fact]
 	public void CanGetAgeGradeForRoadResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -101,7 +101,7 @@ public sealed class ResultTests
 	[Fact]
 	public void CanGetAgeGradeForTrackResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -123,7 +123,7 @@ public sealed class ResultTests
 	[Fact]
 	public void CanGetAgeGradeForMetricFieldResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -145,7 +145,7 @@ public sealed class ResultTests
 	[Fact]
 	public void CanGetAgeGradeForImperialFieldResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -167,7 +167,7 @@ public sealed class ResultTests
 	[Fact]
 	public void AgeGradeIsNullWhenDurationIsNullForRoadResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -188,7 +188,7 @@ public sealed class ResultTests
 	[Fact]
 	public void AgeGradeIsNullWhenDurationIsNullForTrackResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
@@ -209,7 +209,7 @@ public sealed class ResultTests
 	[Fact]
 	public void AgeGradeIsNullWhenDurationIsNullForFieldResult()
 	{
-		//arrage
+		//arrange
 		var result = new Result
 		{
 			StartTime = new Date(new DateTime(2021, 1, 3)),
