@@ -1,7 +1,6 @@
 using FLRC.Leaderboards.Core.Athletes;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Core.Leaders;
-using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Core.Ranking;
 using FLRC.Leaderboards.Core.Results;
 using FLRC.Leaderboards.Model;
@@ -105,8 +104,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 		=> CourseResults(iteration, iteration.OtherCourses, type, tableSize);
 
 	private Dictionary<Course, LeaderboardTable[]> CourseResults(Iteration iteration, Course[] courses, LeaderboardResultType type, byte tableSize)
-		=> courses.OrderBy(c => new Distance(c.DistanceDisplay).Meters)
-			.ToDictionary(c => c, c => GetLeaderboardTables(iteration, c, type, tableSize));
+		=> courses.ToDictionary(c => c, c => GetLeaderboardTables(iteration, c, type, tableSize));
 
 	private LeaderboardTable[] GetLeaderboardTables(Iteration iteration, Course course, LeaderboardResultType type, byte tableSize)
 		=>
