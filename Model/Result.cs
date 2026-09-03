@@ -15,4 +15,6 @@ public record Result : Identifiable<Guid>
 		=> Athlete.AgeAsOf(StartTime);
 
 	public DateTime FinishTime => StartTime + Duration;
+
+	public virtual bool? GroupRunFlag { get; set; }
 }

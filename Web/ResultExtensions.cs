@@ -81,11 +81,10 @@ public static class ResultExtensions
 		}
 
 		public bool IsGroupRun(Result[] others)
-			=> others.Any(other
+			=> result.GroupRunFlag ??= others.Any(other
 				=> other.AthleteID != result.AthleteID
-				   && other.CourseID == result.CourseID
-				   && other.StartTime - result.StartTime <= TimeSpan.FromMinutes(5)
-				   && result.StartTime - other.StartTime <= TimeSpan.FromMinutes(5)
+					&& other.CourseID == result.CourseID
+					&& Math.Abs((result.StartTime - other.StartTime).TotalMinutes) <= 5
 			);
 	}
 }
