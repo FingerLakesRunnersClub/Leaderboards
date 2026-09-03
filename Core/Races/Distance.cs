@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Concurrent;
+using System.Text.RegularExpressions;
 
 namespace FLRC.Leaderboards.Core.Races;
 
@@ -15,16 +16,24 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 
 	private static readonly Regex RegexPattern = Patterns.Distance();
 
+	private static readonly ConcurrentDictionary<string, double> DistanceCache = new();
+	private static readonly Func<string, double, double> KeepCache = (_, d) => d;
+
 	protected static double ParseDistance(string value)
 	{
+		if (DistanceCache.TryGetValue(value, out var cached))
+			return cached;
+
 		if (value.Contains("marathon", StringComparison.InvariantCultureIgnoreCase))
-			return value.Contains("half", StringComparison.InvariantCultureIgnoreCase)
-				? MetersPerMarathon / 2
-				: MetersPerMarathon;
+			return DistanceCache.AddOrUpdate(value,
+				value.Contains("half", StringComparison.InvariantCultureIgnoreCase)
+					? MetersPerMarathon / 2
+					: MetersPerMarathon,
+				KeepCache);
 
 		var split = RegexPattern.Match(value).Groups;
 		if (split.Count < 2)
-			return 0;
+			return DistanceCache.AddOrUpdate(value, 0, KeepCache);
 
 		var digits = double.Parse(split[1].Value.Trim());
 		var units = split[2].Value.Trim();
@@ -34,14 +43,14 @@ public record Distance(string Value) : Formatted<string>(Value), IComparable<Dis
 			case "k":
 			case "km":
 			case "kms":
-				return digits * 1000;
+				return DistanceCache.AddOrUpdate(value, digits * 1000, KeepCache);
 			case "mi":
 			case "mile":
 			case "miles":
-				return digits * MetersPerMile;
+				return DistanceCache.AddOrUpdate(value, digits * MetersPerMile, KeepCache);
 		}
 
-		return digits;
+		return DistanceCache.AddOrUpdate(value, digits, KeepCache);
 	}
 
 	public int CompareTo(Distance other)
