@@ -10,6 +10,7 @@ namespace FLRC.Leaderboards.Web.Services;
 
 public sealed class OverallResultsCalculator(ICommunityStarCalculator starCalculator) : IOverallResultsCalculator
 {
+	//TODO can we cache these?
 	public RankedList<Points, Result> MostPoints(Iteration iteration, Filter filter = null)
 		=> RankedList(iteration, iteration.OfficialChallengeCourses.SelectMany(c => c.Results.For(iteration).Fastest(filter)).GroupBy(r => r.Result.Athlete).Where(g => !g.Key.IsPrivate), g => !g.Key.IsPrivate ? new Points(g.Sum(r => r.Points?.Value ?? 0)) : null, g => g.Sum(r => r.Points?.Value));
 

@@ -9,6 +9,7 @@ public sealed record CommunityPost
 	public DateTime Date { get; init; }
 	public string Content { get; init; } = null!;
 
+	//TODO cache result (or just ID?) on record and check that first
 	public bool Matches(Result result, Athlete athlete)
 		=> athlete.LinkedAccounts.Any(l => l.Type == LinkedAccount.Keys.Discourse && l.Value == ID.ToString())
 		   && Date.Date == result.StartTime.Date;

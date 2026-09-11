@@ -5,6 +5,7 @@ namespace FLRC.Leaderboards.Web.Services;
 
 public sealed class CommunityStarCalculator(ICommunityPostService service) : ICommunityStarCalculator
 {
+	//TODO cache this by result ID
 	public CommunityStars GetStars(Result result, Result[] all, IList<CommunityStars> existing)
 	{
 		var posts = service.GetPosts(result.Course);

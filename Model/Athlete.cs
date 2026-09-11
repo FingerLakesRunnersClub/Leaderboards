@@ -19,6 +19,7 @@ public record Athlete : Identifiable<Guid>
 	public virtual ICollection<Result> Results { get; init; } = [];
 
 	[JsonIgnore]
+	//TODO cache user ID as Discourse ID
 	public virtual ICollection<LinkedAccount> LinkedAccounts { get; init; } = [];
 
 	[JsonIgnore]
