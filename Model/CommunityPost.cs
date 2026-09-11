@@ -14,8 +14,9 @@ public sealed record CommunityPost
 		=> athlete.LinkedAccounts.Any(l => l.Type == LinkedAccount.Keys.Discourse && l.Value == ID.ToString())
 		   && Date.Date == result.StartTime.Date;
 
+	private bool? _hasNarrative;
 	public bool HasNarrative()
-		=> HasHeader("## Story");
+		=> _hasNarrative ??= HasHeader("## Story");
 
 	private bool HasHeader(string text)
 		=> Content.Contains(text) && NotQuoted(text);
