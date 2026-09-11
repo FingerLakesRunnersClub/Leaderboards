@@ -11,6 +11,7 @@ namespace FLRC.Leaderboards.Web;
 
 public static class ResultsExtensions
 {
+	//TODO static memory cache w/short expiration?
 	extension(ICollection<Result> results)
 	{
 		public Result[] For(Iteration iteration)
@@ -22,7 +23,7 @@ public static class ResultsExtensions
 			[
 				.. results
 					.Where(r => (start is null || r.StartTime >= start)
-						&& (end is null || r.FinishTime <= end))
+					            && (end is null || r.FinishTime <= end))
 			];
 		}
 

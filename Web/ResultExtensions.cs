@@ -31,6 +31,7 @@ public static class ResultExtensions
 				? new Points(isInFirstPlace ? 100 : firstPlace.Result.Duration.TotalSeconds / result.Duration.TotalSeconds * 100)
 				: null;
 
+		//TODO cache this
 		public AgeGrade AgeGrade()
 		{
 			if (result.Duration == TimeSpan.Zero || result.AthleteAge is null or 0)
@@ -49,6 +50,7 @@ public static class ResultExtensions
 			if (result.Course.Distance is 0 || result.Duration == TimeSpan.Zero)
 				return null;
 
+			//TODO cache this or create static converter to meters
 			var distance = new Distance(result.Course.DistanceDisplay);
 			var duration = result.Duration;
 			var key = (category, age, distance.Meters, duration);
