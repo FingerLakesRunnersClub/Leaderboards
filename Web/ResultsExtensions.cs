@@ -101,7 +101,8 @@ public static class ResultsExtensions
 			=>
 			[
 				.. results.Filter(filter)
-					.GroupBy(r => r.Athlete).Select(g => new GroupedModelResult(g))
+					.GroupBy(r => r.Athlete)
+					.Select(g => new GroupedModelResult(g))
 			];
 
 		private Result[] Filter(Filter filter)
@@ -158,17 +159,8 @@ public static class ResultsExtensions
 		{
 			var teamResults = results.GroupedResults(filter)
 				.GroupBy(g => g.Key.Team(iteration))
-				.Select(t => new TeamResults
-				{
-					Team = t.Key,
-					AverageAgeGrade = new AgeGrade(t.Select(rs => rs.MinBy(r => r.Duration))
-							.Where(r => !r.Athlete.IsPrivate)
-							.OrderBy(r => r.Duration)
-							.Take(10)
-							.Sum(r => r.AgeGrade()?.Value ?? 0) / 10
-					),
-					TotalRuns = (ushort)t.Sum(rs => rs.Count())
-				}).ToArray();
+				.Select(TeamResults)
+				.ToArray();
 
 			var fastestTeams = teamResults.OrderByDescending(t => t.AverageAgeGrade).ToArray();
 			for (var x = 0; x < fastestTeams.Length; x++)
@@ -184,6 +176,19 @@ public static class ResultsExtensions
 
 			return teamResults.Rank();
 		}
+
+		private static TeamResults TeamResults(IGrouping<Team, GroupedModelResult> t)
+			=> new()
+			{
+				Team = t.Key,
+				AverageAgeGrade = new AgeGrade(t.Select(rs => rs.MinBy(r => r.Duration))
+						.Where(r => !r.Athlete.IsPrivate)
+						.OrderBy(r => r.Duration)
+						.Take(10)
+						.Sum(r => r.AgeGrade()?.Value ?? 0) / 10
+				),
+				TotalRuns = (ushort)t.Sum(rs => rs.Count())
+			};
 	}
 
 	private static RankedList<T, Result> RankedList<T>(IOrderedEnumerable<GroupedModelResult> sorted, Func<GroupedModelResult, Result> getResult, Func<GroupedModelResult, T> getValue)
