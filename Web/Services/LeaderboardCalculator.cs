@@ -120,6 +120,7 @@ public sealed class LeaderboardCalculator(IOverallResultsCalculator overall, ICo
 
 	private static LeaderboardTable[] AllCourseTables(Iteration iteration, Course course, byte tableSize)
 	{
+		//TODO cache these per-request
 		var results = course.Results.For(iteration);
 		return
 		[
