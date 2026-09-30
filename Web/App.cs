@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using ecoAPM.Middleware;
 using FLRC.Leaderboards.Core.Auth;
 using FLRC.Leaderboards.Core.Community;
 using FLRC.Leaderboards.Core.Config;
@@ -12,8 +13,10 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Npgsql;
 
@@ -23,13 +26,10 @@ public sealed class App(string context)
 {
 	public async Task Run(string[] args)
 	{
-		var options = new WebApplicationOptions
-		{
-			Args = args,
-			WebRootPath = Path.Combine(AppContext.BaseDirectory, "wwwroot")
-		};
-		var builder = WebApplication.CreateBuilder(options);
+		var builder = WebApplication.CreateBuilder(args);
 		builder.Configuration.AddJsonFile($"{context}.json");
+		builder.Host.ConfigureHostOptions(o => o.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
+		builder.WebHost.UseWebRoot(Path.Combine(AppContext.BaseDirectory, "wwwroot"));
 
 		ConfigureServices(builder.Services);
 		builder.Services.AddSingleton<IContextProvider>(_ => new AppContextProvider(context));
@@ -44,6 +44,7 @@ public sealed class App(string context)
 	public static void ConfigureServices(IServiceCollection services)
 	{
 		services.AddDatabase();
+		services.AddEcoAPM();
 
 		services.AddControllersWithViews();
 		services.AddHttpClient();
@@ -120,6 +121,8 @@ public sealed class App(string context)
 
 	public static void Configure(IApplicationBuilder app)
 	{
+		app.UseEcoAPM();
+
 		app.UseExceptionHandler("/error");
 		app.UseStatusCodePagesWithReExecute("/error");
 
