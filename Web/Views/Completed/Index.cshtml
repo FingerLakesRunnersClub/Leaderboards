@@ -32,6 +32,7 @@
 			<table aria-labelledby="table-header" class="table table-bordered table-striped table-hover table-sm table-responsive-sm">
 				<thead>
 				<tr>
+					<th class="text-center">Rank</th>
 					<th>Name</th>
 					<th class="text-center">Age</th>
 					<th class="text-center">Category</th>
@@ -45,6 +46,7 @@
 				{
 					var challenge = row.Result.Athlete.Challenge(Model.Data.Iteration)!;
 					<tr>
+						<td class="text-center">@row.Rank.Value</td>
 						<td>
 							<a href="/Athlete/Index/@row.Result.Athlete.ID">
 								@row.Result.Athlete.Name
