@@ -140,12 +140,12 @@
 		},
 		{
 			"Source": "WebScorer",
-			"ID": 409644,
+			"ID": 451500,
 			"Name": "Danby Down and Dirty",
 			"Type": "Trail",
 			"Courses": {
-				"10K": 0,
-				"23K": 0
+				"10K": 451500,
+				"23K": 451500
 			},
 			"URL": "https://fingerlakesrunners.org/race/danby-down-and-dirty-2026/"
 		}
