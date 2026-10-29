@@ -86,6 +86,7 @@ public sealed class App(string context)
 		services.AddScoped<ILegacyDataConverter, LegacyDataConverter>();
 		services.AddScoped<IIterationManager, IterationManager>();
 		services.AddScoped<IRegistrationManager, RegistrationManager>();
+		services.AddScoped<ISessionManager, SessionManager>();
 
 		services.AddScoped<ICommunityPostAPI, DiscourseAPI>();
 		services.AddScoped<ICommunityUserAPI, DiscourseAPI>();
