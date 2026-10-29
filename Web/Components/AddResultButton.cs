@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.ViewComponents;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class AddResultButton(IIterationManager iterationManager, IAuthService authService, IAthleteService athleteService) : ViewComponent
+public sealed class AddResultButton(IIterationManager iterationManager, IAuthService authService, ISessionManager sessionManager) : ViewComponent
 {
 	public async Task<IViewComponentResult> InvokeAsync(Course course)
 	{
@@ -28,7 +28,7 @@ public sealed class AddResultButton(IIterationManager iterationManager, IAuthSer
 		if (!courseIsInActiveIteration)
 			return Empty;
 
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var athleteIsRegistered = athlete?.Registrations.Contains(iteration) ?? false;
 		if (!athleteIsRegistered)
 			return Empty;
@@ -36,13 +36,6 @@ public sealed class AddResultButton(IIterationManager iterationManager, IAuthSer
 		return View("../../../Results/AddResultButton", course.ID);
 	}
 
-	private ContentViewComponentResult Empty => Content(string.Empty);
-
-	private async Task<Athlete> CurrentAthlete()
-	{
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-
-		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"]);
-	}
+	private ContentViewComponentResult Empty
+		=> Content(string.Empty);
 }

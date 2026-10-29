@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using FLRC.Leaderboards.Core.Metrics;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
@@ -20,8 +19,7 @@ public sealed class ResultsControllerTests
 	public async Task CanGetFastestResults()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -29,7 +27,7 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -54,8 +52,7 @@ public sealed class ResultsControllerTests
 	public async Task CanGetBestAverageResults()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -63,7 +60,7 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -88,8 +85,7 @@ public sealed class ResultsControllerTests
 	public async Task CanGetMostRuns()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -97,7 +93,7 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		var a1 = new Athlete { ID = Guid.NewGuid() };
 		var a2 = new Athlete { ID = Guid.NewGuid() };
@@ -122,8 +118,7 @@ public sealed class ResultsControllerTests
 	public async Task CanViewAddForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -131,10 +126,7 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
-
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
-		authService.GetCurrentUser().Returns(user);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
 		//act
 		var result = await controller.Add(Guid.NewGuid());
@@ -147,8 +139,7 @@ public sealed class ResultsControllerTests
 	public async Task CanSubmitAddForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -156,13 +147,11 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 
 		var data = new Dictionary<string, StringValues>
@@ -185,8 +174,7 @@ public sealed class ResultsControllerTests
 	public async Task CannotSubmitInvalidResultToAddForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -194,13 +182,11 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 40, Units = "km", Race = new Race { Type = "Road" } };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 
 		var data = new Dictionary<string, StringValues>
@@ -223,8 +209,7 @@ public sealed class ResultsControllerTests
 	public async Task CannotSubmitDuplicateResultToAddForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -232,13 +217,11 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.FindDuplicates(Arg.Any<Result>()).Returns([new Result()]);
 
@@ -262,8 +245,7 @@ public sealed class ResultsControllerTests
 	public async Task CanViewEditForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -271,14 +253,16 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
@@ -294,8 +278,7 @@ public sealed class ResultsControllerTests
 	public async Task CannotViewEditFormForSomeoneElse()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -303,15 +286,17 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
@@ -326,8 +311,7 @@ public sealed class ResultsControllerTests
 	public async Task AdminCanViewEditFormForSomeoneElse()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -335,15 +319,17 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 		adminService.Verify(Arg.Any<Guid>()).Returns(true);
@@ -360,8 +346,7 @@ public sealed class ResultsControllerTests
 	public async Task CanSubmitEditForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -369,14 +354,16 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete, AthleteID = athlete.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
@@ -393,15 +380,15 @@ public sealed class ResultsControllerTests
 		await controller.Edit(Guid.NewGuid(), form);
 
 		//assert
-		await resultService.Received().Update(Arg.Any<Result>(), Arg.Is<Result>(r => r.Duration == new TimeSpan(1, 23, 45)));
+		await resultService.Received()
+			.Update(Arg.Any<Result>(), Arg.Is<Result>(r => r.Duration == new TimeSpan(1, 23, 45)));
 	}
 
 	[Fact]
 	public async Task CannotSubmitEditFormForSomeoneElse()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -409,15 +396,17 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
@@ -441,8 +430,7 @@ public sealed class ResultsControllerTests
 	public async Task AdminCanSubmitEditFormForSomeoneElse()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -450,15 +438,17 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete1 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var athlete2 = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2000, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
-		var result = new Result { ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID, Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete2);
+		var result = new Result
+		{
+			ID = Guid.NewGuid(), Athlete = athlete1, AthleteID = athlete1.ID, Course = course, CourseID = course.ID,
+			Duration = new TimeSpan(1, 2, 3)
+		};
+		sessionManager.GetCurrentAthlete().Returns(athlete2);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 		adminService.Verify(Arg.Any<Guid>()).Returns(true);
@@ -476,15 +466,15 @@ public sealed class ResultsControllerTests
 		await controller.Edit(Guid.NewGuid(), form);
 
 		//assert
-		await resultService.Received().Update(Arg.Any<Result>(), Arg.Is<Result>(r => r.Duration == new TimeSpan(1, 23, 45)));
+		await resultService.Received()
+			.Update(Arg.Any<Result>(), Arg.Is<Result>(r => r.Duration == new TimeSpan(1, 23, 45)));
 	}
 
 	[Fact]
 	public async Task CannotSubmitInvalidResultToEditForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -492,14 +482,12 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 40, Units = "km", Race = new Race { Type = "Road" } };
 		var result = new Result { ID = Guid.NewGuid(), Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 
@@ -523,8 +511,7 @@ public sealed class ResultsControllerTests
 	public async Task CannotSubmitDuplicateResultToEditForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var courseService = Substitute.For<ICourseService>();
 		var iterationService = Substitute.For<IIterationService>();
@@ -532,14 +519,12 @@ public sealed class ResultsControllerTests
 		var adminService = Substitute.For<IAdminService>();
 		var starCalculator = Substitute.For<ICommunityStarCalculator>();
 
-		var controller = new ResultsController(authService, athleteService, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
+		var controller = new ResultsController(sessionManager, iterationManager, courseService, iterationService, resultService, adminService, starCalculator);
 
-		var user = new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")]));
 		var athlete = new Athlete { ID = Guid.NewGuid(), DateOfBirth = new DateOnly(2020, 1, 1) };
 		var course = new Course { ID = Guid.NewGuid(), Distance = 10, Units = "km", Race = new Race { Type = "Road" } };
 		var result = new Result { ID = Guid.NewGuid(), Duration = new TimeSpan(1, 2, 3) };
-		authService.GetCurrentUser().Returns(user);
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 		courseService.Get(Arg.Any<Guid>()).Returns(course);
 		resultService.Get(Arg.Any<Guid>()).Returns(result);
 		resultService.FindDuplicates(Arg.Any<Result>()).Returns([new Result()]);

@@ -14,7 +14,7 @@ using SimilarAthlete = FLRC.Leaderboards.Web.ViewModels.SimilarAthlete;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class AthleteController(IIterationManager iterationManager, IAuthService authService, IAdminService adminService, IAthleteService athleteService, ICourseService courseService, IAthleteSummaryCalculator athleteSummaryCalculator) : Controller
+public sealed class AthleteController(IIterationManager iterationManager, ISessionManager sessionManager, IAdminService adminService, IAthleteService athleteService, ICourseService courseService, IAthleteSummaryCalculator athleteSummaryCalculator) : Controller
 {
 	[HttpGet]
 	public async Task<ViewResult> Index(Guid id)
@@ -121,7 +121,7 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 		var athlete = await athleteService.Get(id);
 		var results = athlete.Results.For(iteration).ToArray();
 
-		var user = await CurrentAthlete();
+		var user = await sessionManager.GetCurrentAthlete();
 		var admin = user is not null && await adminService.Verify(user.ID);
 
 		var log = new AthleteLog
@@ -147,16 +147,5 @@ public sealed class AthleteController(IIterationManager iterationManager, IAuthS
 			Matches = RankMatches(similar)
 		};
 		return new ViewModel<SimilarAthletes>("Similar Athletes", data);
-	}
-
-	private async Task<Athlete> CurrentAthlete()
-	{
-		if (!authService.IsLoggedIn())
-			return null;
-
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-
-		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"]);
 	}
 }

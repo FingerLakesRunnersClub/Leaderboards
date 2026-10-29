@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using FLRC.Leaderboards.Core.Config;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
@@ -18,9 +17,9 @@ public sealed class AddResultButtonTests
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
 		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var component = new AddResultButton(iterationManager, authService, athleteService);
+		var component = new AddResultButton(iterationManager, authService, sessionManager);
 
 		var iteration = new Iteration
 		{
@@ -31,10 +30,7 @@ public sealed class AddResultButtonTests
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		authService.IsLoggedIn().Returns(true);
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-
-		var athlete = new Athlete { Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(new Athlete { Registrations = [iteration] });
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Iterations = [iteration] } };
 
@@ -51,9 +47,9 @@ public sealed class AddResultButtonTests
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
 		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var component = new AddResultButton(iterationManager, authService, athleteService);
+		var component = new AddResultButton(iterationManager, authService, sessionManager);
 
 		var iteration = new Iteration
 		{
@@ -64,10 +60,7 @@ public sealed class AddResultButtonTests
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		authService.IsLoggedIn().Returns(true);
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-
-		var athlete = new Athlete { Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(new Athlete { Registrations = [iteration] });
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Iterations = [iteration] } };
 
@@ -84,9 +77,9 @@ public sealed class AddResultButtonTests
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
 		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var component = new AddResultButton(iterationManager, authService, athleteService);
+		var component = new AddResultButton(iterationManager, authService, sessionManager);
 
 		var iteration = new Iteration
 		{
@@ -97,9 +90,7 @@ public sealed class AddResultButtonTests
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		authService.IsLoggedIn().Returns(false);
-
-		var athlete = new Athlete { Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(new Athlete { Registrations = [iteration] });
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Iterations = [iteration] } };
 
@@ -116,9 +107,9 @@ public sealed class AddResultButtonTests
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
 		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var component = new AddResultButton(iterationManager, authService, athleteService);
+		var component = new AddResultButton(iterationManager, authService, sessionManager);
 
 		var iteration = new Iteration
 		{
@@ -129,10 +120,7 @@ public sealed class AddResultButtonTests
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		authService.IsLoggedIn().Returns(true);
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-
-		var athlete = new Athlete { Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(new Athlete { Registrations = [iteration] });
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Iterations = [iteration] } };
 
@@ -149,9 +137,9 @@ public sealed class AddResultButtonTests
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
 		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var component = new AddResultButton(iterationManager, authService, athleteService);
+		var component = new AddResultButton(iterationManager, authService, sessionManager);
 
 		var iteration = new Iteration
 		{
@@ -162,10 +150,7 @@ public sealed class AddResultButtonTests
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		authService.IsLoggedIn().Returns(true);
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity([new Claim("external_id", "123")])));
-
-		var athlete = new Athlete { Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(new Athlete { Registrations = [iteration] });
 
 		var course = new Course { ID = Guid.NewGuid(), Race = new Race { Iterations = [] } };
 

@@ -16,7 +16,7 @@ using Result = FLRC.Leaderboards.Model.Result;
 
 namespace FLRC.Leaderboards.Web.Controllers;
 
-public sealed class ResultsController(IAuthService authService, IAthleteService athleteService, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService, ICommunityStarCalculator starCalculator) : Controller
+public sealed class ResultsController(ISessionManager sessionManager, IIterationManager iterationManager, ICourseService courseService, IIterationService iterationService, IResultService resultService, IAdminService adminService, ICommunityStarCalculator starCalculator) : Controller
 {
 	private const string DuplicateError = "It looks like this result already exists, please double check the activity log.";
 
@@ -110,7 +110,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var result = new Result
 		{
 			Course = course,
-			Athlete = await CurrentAthlete(),
+			Athlete = await sessionManager.GetCurrentAthlete(),
 			StartTime = DateTime.Now
 		};
 		var vm = new ViewModel<Result>("Add Result", result);
@@ -131,7 +131,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 		var result = new Result
 		{
 			Course = await courseService.Get(id),
-			Athlete = await CurrentAthlete(),
+			Athlete = await sessionManager.GetCurrentAthlete(),
 			StartTime = DateTime.Parse(form["StartTime"]),
 			Duration = new TimeSpan(hours, minutes, seconds)
 		};
@@ -157,7 +157,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	[Authorize]
 	public async Task<IActionResult> Edit(Guid id)
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var result = await resultService.Get(id);
 
 		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
@@ -171,7 +171,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	[Authorize]
 	public async Task<IActionResult> Edit(Guid id, IFormCollection form)
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var result = await resultService.Get(id);
 
 		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
@@ -219,7 +219,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	[Authorize]
 	public async Task<IActionResult> Delete(Guid id)
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var result = await resultService.Get(id);
 
 		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
@@ -233,7 +233,7 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 	[Authorize]
 	public async Task<IActionResult> Delete(Guid id, IFormCollection form)
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var result = await resultService.Get(id);
 
 		if (result.AthleteID != athlete.ID && !await adminService.Verify(athlete.ID))
@@ -241,13 +241,5 @@ public sealed class ResultsController(IAuthService authService, IAthleteService 
 
 		await resultService.Delete(result);
 		return RedirectToAction(nameof(AthleteController.Log), nameof(Athlete), new { id = result.AthleteID });
-	}
-
-	private async Task<Athlete> CurrentAthlete()
-	{
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-
-		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"]);
 	}
 }

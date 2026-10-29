@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace FLRC.Leaderboards.Web.Controllers;
 
 [Authorize]
-public sealed class WizardController(IAthleteService athleteService, IAuthService authService, ILegacyDataConverter legacyDataConverter, IWebScorerAuthenticator webScorer) : Controller
+public sealed class WizardController(ISessionManager sessionManager, IAthleteService athleteService, IAuthService authService, ILegacyDataConverter legacyDataConverter, IWebScorerAuthenticator webScorer) : Controller
 {
 	public async Task<IActionResult> Index()
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 
 		var redirect = AccountIsReady(athlete)
 			? nameof(Complete)
@@ -24,19 +24,10 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 		return RedirectToAction(redirect);
 	}
 
-	private async Task<Athlete> CurrentAthlete()
-	{
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-
-		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"])
-		       ?? await athleteService.Find(LinkedAccount.Keys.Email, claims["email"]);
-	}
-
 	[HttpGet]
 	public async Task<IActionResult> Link()
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (AccountIsReady(athlete))
 			return RedirectToAction(nameof(Complete));
 
@@ -47,7 +38,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	[HttpPost]
 	public async Task<IActionResult> Link(IFormCollection form)
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (AccountIsReady(athlete))
 			return RedirectToAction(nameof(Complete));
 
@@ -80,7 +71,7 @@ public sealed class WizardController(IAthleteService athleteService, IAuthServic
 	[HttpGet]
 	public async Task<ViewResult> Complete()
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		var vm = new ViewModel<Athlete>("Verification Complete", athlete);
 		return View(vm);
 	}

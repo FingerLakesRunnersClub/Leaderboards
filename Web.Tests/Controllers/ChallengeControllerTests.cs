@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Controllers;
@@ -17,15 +16,11 @@ public sealed class ChallengeControllerTests
 	public async Task CanRenderDashboard()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration();
 		iterationManager.ActiveIteration().Returns(iteration);
@@ -36,7 +31,7 @@ public sealed class ChallengeControllerTests
 			Registrations = [iteration],
 			Challenges = [new Challenge { Iteration = iteration, IsPrimary = true }]
 		};
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Dashboard();
@@ -50,20 +45,16 @@ public sealed class ChallengeControllerTests
 	public async Task RegistrationShowsRefreshFormIfNotRegistered()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		iterationManager.ActiveIteration().Returns(new Iteration());
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Registration();
@@ -77,15 +68,11 @@ public sealed class ChallengeControllerTests
 	public async Task RegistrationRedirectsToSelectionPageIfRegistered()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration();
 		iterationManager.ActiveIteration().Returns(iteration);
@@ -95,7 +82,7 @@ public sealed class ChallengeControllerTests
 			LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }],
 			Registrations = [iteration]
 		};
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Registration();
@@ -109,15 +96,11 @@ public sealed class ChallengeControllerTests
 	public async Task CanUpdateRegistration()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		iterationManager.ActiveIteration().Returns(new Iteration());
 
@@ -132,21 +115,17 @@ public sealed class ChallengeControllerTests
 	public async Task CanShowSelectionForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Select();
@@ -160,21 +139,17 @@ public sealed class ChallengeControllerTests
 	public async Task SelectionFormRedirectsToRegistrationWhenNotRegistered()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Select();
@@ -188,21 +163,17 @@ public sealed class ChallengeControllerTests
 	public async Task CanShowConfirmationForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Select(new SelectChallengeForm());
@@ -216,21 +187,17 @@ public sealed class ChallengeControllerTests
 	public async Task ConfirmationFormRedirectsToRegistrationWhenNotRegistered()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Select(new SelectChallengeForm());
@@ -244,21 +211,17 @@ public sealed class ChallengeControllerTests
 	public async Task SubmittingOfficialChallengeConfirmationFormSavesData()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Classic });
@@ -272,21 +235,17 @@ public sealed class ChallengeControllerTests
 	public async Task SubmittingPersonalChallengeConfirmationFormSavesData()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		await controller.Confirm(new SelectChallengeForm { Selection = Challenge.Types.Personal });
@@ -300,21 +259,17 @@ public sealed class ChallengeControllerTests
 	public async Task CanViewDeleteConfirmationForm()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Registrations = [iteration] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Delete();
@@ -327,15 +282,11 @@ public sealed class ChallengeControllerTests
 	public async Task DeleteConfirmationFormRedirectsToDashboardWhenNoIterationFound()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		//act
 		var result = await controller.Delete(new FormCollection([]));
@@ -348,21 +299,17 @@ public sealed class ChallengeControllerTests
 	public async Task DeleteConfirmationFormRedirectsToRegistrationWhenNotRegistered()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var iteration = new Iteration { Challenges = [new Challenge { IsOfficial = true, IsPrimary = true }] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }] };
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		var result = await controller.Delete(new FormCollection([]));
@@ -375,22 +322,18 @@ public sealed class ChallengeControllerTests
 	public async Task DeleteConfirmationRemovesConnectionWhenChallengeExists()
 	{
 		//arrange
-		var authService = Substitute.For<IAuthService>();
-		var athleteService = Substitute.For<IAthleteService>();
+		var sessionManager = Substitute.For<ISessionManager>();
 		var challengeService = Substitute.For<IChallengeService>();
 		var iterationManager = Substitute.For<IIterationManager>();
 		var registrationManager = Substitute.For<IRegistrationManager>();
-		var controller = new ChallengeController(authService, athleteService, challengeService, iterationManager, registrationManager);
-
-		var claims = new[] { new Claim("external_id", "123"), new Claim("email", "test@example.com") };
-		authService.GetCurrentUser().Returns(new ClaimsPrincipal(new ClaimsIdentity(claims)));
+		var controller = new ChallengeController(sessionManager, challengeService, iterationManager, registrationManager);
 
 		var challenge = new Challenge { IsOfficial = true, IsPrimary = true };
 		var iteration = new Iteration { Challenges = [challenge] };
 		iterationManager.ActiveIteration().Returns(iteration);
 
 		var athlete = new Athlete { LinkedAccounts = [new LinkedAccount { Type = LinkedAccount.Keys.WebScorer, Value = "234" }], Challenges = [challenge]};
-		athleteService.Find(Arg.Any<string>(), Arg.Any<string>()).Returns(athlete);
+		sessionManager.GetCurrentAthlete().Returns(athlete);
 
 		//act
 		await controller.Delete(new FormCollection([]));

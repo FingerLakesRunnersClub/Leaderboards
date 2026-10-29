@@ -9,12 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace FLRC.Leaderboards.Web.Controllers;
 
 [Authorize]
-public sealed class ChallengeController(IAuthService authService, IAthleteService athleteService, IChallengeService challengeService, IIterationManager iterationManager, IRegistrationManager registrationManager) : Controller
+public sealed class ChallengeController(ISessionManager sessionManager, IChallengeService challengeService, IIterationManager iterationManager, IRegistrationManager registrationManager) : Controller
 {
 	[HttpGet]
 	public async Task<IActionResult> Dashboard()
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 
 		var iteration = await iterationManager.ActiveIteration();
 		if (iteration is null)
@@ -48,18 +48,10 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		return View(vm);
 	}
 
-	private async Task<Athlete> CurrentAthlete()
-	{
-		var user = authService.GetCurrentUser();
-		var claims = user.ClaimDictionary;
-
-		return await athleteService.Find(LinkedAccount.Keys.Discourse, claims["external_id"]);
-	}
-
 	[HttpGet]
 	public async Task<IActionResult> Registration()
 	{
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 
 		var iteration = await iterationManager.ActiveIteration();
 		if (iteration is null)
@@ -95,7 +87,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (iteration?.OfficialChallenge is null)
 			throw new NotImplementedException("No official primary challenge has been created yet");
 
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (!athlete.IsRegistered(iteration))
 			return RedirectToAction(nameof(Registration));
 
@@ -120,7 +112,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (iteration?.OfficialChallenge is null)
 			return Redirect("/");
 
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (!athlete.IsRegistered(iteration))
 			return RedirectToAction(nameof(Registration));
 
@@ -153,7 +145,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (iteration is null)
 			return Redirect("/");
 
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (!athlete.IsRegistered(iteration))
 			return RedirectToAction(nameof(Registration));
 
@@ -192,7 +184,7 @@ public sealed class ChallengeController(IAuthService authService, IAthleteServic
 		if (iteration is null)
 			return RedirectToAction(nameof(Dashboard));
 
-		var athlete = await CurrentAthlete();
+		var athlete = await sessionManager.GetCurrentAthlete();
 		if (!athlete.IsRegistered(iteration))
 			return RedirectToAction(nameof(Registration));
 
