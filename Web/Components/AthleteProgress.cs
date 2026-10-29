@@ -2,12 +2,13 @@ using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Core.Races;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
+using FLRC.Leaderboards.Web.Services;
 using FLRC.Leaderboards.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FLRC.Leaderboards.Web.Components;
 
-public sealed class AthleteProgress(IIterationManager iterationManager) : ViewComponent
+public sealed class AthleteProgress(IIterationManager iterationManager, ISessionManager sessionManager) : ViewComponent
 {
 	public async Task<IViewComponentResult> InvokeAsync(Athlete athlete)
 	{
@@ -17,7 +18,8 @@ public sealed class AthleteProgress(IIterationManager iterationManager) : ViewCo
 		    || iteration.RegistrationType == nameof(WebScorer) && !athlete.IsRegistered(iteration))
 			return Content(string.Empty);
 
-		var progress = GetProgress(athlete, iteration, false);
+		var currentAthlete = await sessionManager.GetCurrentAthlete();
+		var progress = GetProgress(athlete, iteration, athlete.ID == currentAthlete?.ID);
 		if (progress is null)
 			return Content(string.Empty);
 

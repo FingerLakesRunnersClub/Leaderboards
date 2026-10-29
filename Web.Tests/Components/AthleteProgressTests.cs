@@ -1,8 +1,8 @@
-using System.Security.Claims;
 using FLRC.Leaderboards.Core.Data;
 using FLRC.Leaderboards.Model;
 using FLRC.Leaderboards.Services;
 using FLRC.Leaderboards.Web.Components;
+using FLRC.Leaderboards.Web.Services;
 using Microsoft.AspNetCore.Mvc.ViewComponents;
 using NSubstitute;
 using Xunit;
@@ -11,16 +11,14 @@ namespace FLRC.Leaderboards.Web.Tests.Components;
 
 public sealed class AthleteProgressTests
 {
-	private static readonly ClaimsPrincipal User =
-		new (new ClaimsIdentity([new Claim("external_id", "123")]));
-
 	[Fact]
 	public async Task EmptyWhenNoActiveIteration()
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var athleteProgress = new AthleteProgress(iterationManager);
+		var athleteProgress = new AthleteProgress(iterationManager, sessionManager);
 
 		iterationManager.ActiveIteration().Returns(new Iteration { EndDate = new DateOnly(2025, 12, 31) });
 
@@ -38,8 +36,9 @@ public sealed class AthleteProgressTests
 	{
 		//arrange
 		var iterationManager = Substitute.For<IIterationManager>();
+		var sessionManager = Substitute.For<ISessionManager>();
 
-		var athleteProgress = new AthleteProgress(iterationManager);
+		var athleteProgress = new AthleteProgress(iterationManager, sessionManager);
 
 		var iteration = new Iteration { RegistrationType = nameof(WebScorer) };
 		iterationManager.ActiveIteration().Returns(iteration);
