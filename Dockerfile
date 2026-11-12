@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS builder
+FROM mcr.microsoft.com/dotnet/sdk:11.0 AS builder
 ENV TZ=America/New_York
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN dotnet test --no-build
 
 RUN dotnet publish Web --no-restore -c Release -o publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:10.0
+FROM mcr.microsoft.com/dotnet/aspnet:11.0
 RUN apt-get update && apt-get install -y locales
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen
 RUN locale-gen
