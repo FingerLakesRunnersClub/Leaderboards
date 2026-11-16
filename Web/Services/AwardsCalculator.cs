@@ -12,14 +12,16 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 {
 	public Dictionary<Athlete, Award[]> GetAwards(Iteration iteration)
 	{
-		var awards = new List<Award>();
-		awards.AddRange(Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(iteration, Filter.F), 5));
-		awards.AddRange(Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(iteration, Filter.M), 5));
-		awards.AddRange(Overall("Miles", "Overall Miles", overall.MostMiles(iteration), 10));
-		awards.AddRange(Overall("Courses", "Most Courses", overall.MostCourses(iteration), 10));
-		awards.AddRange(Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(iteration), 10));
-		awards.AddRange(Overall("Community", "Overall Community", overall.Community(iteration), 10));
-		awards.AddRange(Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration));
+		List<Award> awards =
+		[
+			.. Overall("Points/F", $"Overall Points ({Category.F.Display})", overall.MostPoints(iteration, Filter.F), 5),
+			.. Overall("Points/M", $"Overall Points ({Category.M.Display})", overall.MostPoints(iteration, Filter.M), 5),
+			.. Overall("Miles", "Overall Miles", overall.MostMiles(iteration), 10),
+			.. Overall("Courses", "Most Courses", overall.MostCourses(iteration), 10),
+			.. Overall("AgeGrade", "Overall Age Grade", overall.AgeGrade(iteration), 10),
+			.. Overall("Community", "Overall Community", overall.Community(iteration), 10),
+			.. Team(overall.TeamMembers(iteration, overall.TeamPoints(iteration)[0].Value.Team), iteration)
+		];
 
 		var officialCourses = iteration.OfficialChallengeCourses;
 		awards.AddRange(Course("Fastest/F", $"Fastest ({Category.F.Display})", [.. officialCourses.SelectMany(c => c.Results.For(iteration).Fastest(Filter.F))]));
@@ -64,14 +66,21 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 		=>
 		[
 			.. results.Where(r => r.Rank.Value == 1)
-				.Select(r => new Award
-				{
-					Name = $"{r.Result.Course.Race.Name} {title}",
-					Link = $"/Results/{type}/{r.Result.CourseID}",
-					Value = config.Awards[config.CourseLabel],
-					Athlete = r.Result.Athlete
-				})
+				.Select(r => CourseAward(type, title, r))
 		];
+
+	private Award CourseAward<T>(string type, string title, Ranked<T, Result> r)
+	{
+		var split = type.Split("/");
+		var categoryFilter = split.Length > 1 ? $"?c={split[1]}" : string.Empty;
+		return new Award
+		{
+			Name = $"{r.Result.Course.Race.Name} {title}",
+			Link = $"/Results/{split[0]}/{r.Result.Course.ID}{categoryFilter}",
+			Value = config.Awards[config.CourseLabel],
+			Athlete = r.Result.Athlete
+		};
+	}
 
 	private Award[] AgeGroup(Iteration iteration, Course[] courses, Category category)
 		=>
@@ -95,6 +104,7 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 				.Select(r => new Award
 				{
 					Name = $"{r.Result.Course.Race.Name} {team.Display} ({category.Display})",
+					Link = $"/Results/Fastest/{r.Result.Course.ID}?c={category.Display}&ag={team.Value}",
 					Value = config.Awards["Age Group"],
 					Athlete = r.Result.Athlete
 				})
