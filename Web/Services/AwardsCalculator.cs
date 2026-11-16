@@ -42,7 +42,7 @@ public sealed class AwardsCalculator(IOverallResultsCalculator overall, IConfig 
 				{
 					Name = $"{r.Rank.Display} {title}",
 					Link = $"/Overall/{type}",
-					Value = r.Rank.Value == 1 ? config.Awards["Overall"] : config.Awards["Top"],
+					Value = r.Rank.Value == 1 && results.Count(r2 => r2.Rank.Value == 1) < 10 ? config.Awards["Overall"] : config.Awards["Top"],
 					Athlete = r.Result.Athlete
 				})
 		];
